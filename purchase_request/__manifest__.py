@@ -3,8 +3,9 @@
 
 {
     "name": "Purchase Request",
-    "author": "Maurice ATCHE, "
-              "Halltech Africa",
+
+    "author": "Eficent, "
+              "Odoo Community Association (OCA)",
     "version": "11.0.1.2.6",
     "summary": "Use this module to have notification of requirements of "
                "materials and/or external services and keep track of such "
@@ -12,8 +13,7 @@
     "category": "Purchase Management",
     "depends": [
         "purchase",
-        "product",
-        "project"
+        "product"
     ],
     "data": [
         "security/purchase_request.xml",
@@ -22,7 +22,6 @@
         "data/purchase_request_data.xml",
         "reports/report_purchase_request.xml",
         "views/purchase_request_view.xml",
-        "views/project_view.xml",
         "views/purchase_request_report.xml",
         "views/product_template.xml",
         "views/purchase_order_view.xml",
