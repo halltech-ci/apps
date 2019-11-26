@@ -72,7 +72,7 @@ class PurchaseRequest(models.Model):
                                    track_visibility='onchange',
                                    default=_get_default_requested_by)
     project_id = fields.Many2one(
-        string = comodel_name='project.project',
+        string = "Project", comodel_name='project.project',
         ondelete='set null'
     )
     

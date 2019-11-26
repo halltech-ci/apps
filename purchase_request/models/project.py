@@ -8,7 +8,7 @@ class Project(models.Model):
     _inherit = 'project.project'
 
     purchase_request_ids = fields.One2many(string='Purchase', comodel_name='purchase.request',
-        inverse_name='project_id',
+        inverse_name='project_id'
     )
     
 

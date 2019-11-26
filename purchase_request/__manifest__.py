@@ -12,7 +12,8 @@
     "category": "Purchase Management",
     "depends": [
         "purchase",
-        "product"
+        "product",
+        "project"
     ],
     "data": [
         "security/purchase_request.xml",
