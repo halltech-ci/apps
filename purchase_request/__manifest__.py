@@ -17,6 +17,7 @@
     ],
     "data": [
         "security/purchase_request.xml",
+        "project_view.xml",
         "security/ir.model.access.csv",
         "data/purchase_request_sequence.xml",
         "data/purchase_request_data.xml",
