@@ -71,6 +71,11 @@ class PurchaseRequest(models.Model):
                                    required=True,
                                    track_visibility='onchange',
                                    default=_get_default_requested_by)
+    project_id = fields.Many2one(
+        string = comodel_name='project.project',
+        ondelete='set null'
+    )
+    
     assigned_to = fields.Many2one(
         'res.users', 'Approver', track_visibility='onchange',
         domain=lambda self: [('groups_id', 'in', self.env.ref(
