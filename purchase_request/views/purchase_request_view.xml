@@ -65,11 +65,13 @@
                                attrs="{'readonly': [('is_editable','=', False)]}"/>
                     </group>
                     <group>
-                        <field name="origin" class="oe_inline"
-                           attrs="{'readonly': [('is_editable','=', False)]}"/>
-                        <field name="description"
-                               attrs="{'readonly': [('is_editable','=', False)]}"/>
-                        <field name="group_id"
+                        <!--<field name="origin" class="oe_inline"
+                           attrs="{'readonly': [('is_editable','=', False)]}"/>-->
+                        <!--<field name="description"
+                               attrs="{'readonly': [('is_editable','=', False)]}"/>-->
+                        <!--<field name="group_id"
+                               attrs="{'readonly': [('is_editable','=', False)]}"/>-->
+                        <field name="project_id"
                                attrs="{'readonly': [('is_editable','=', False)]}"/>
                     </group>
                     <group>
