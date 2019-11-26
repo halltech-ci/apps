@@ -3,6 +3,7 @@
 
 {
     "name": "Purchase Request",
+
     "author": "Eficent, "
               "Odoo Community Association (OCA)",
     "version": "11.0.1.2.6",
