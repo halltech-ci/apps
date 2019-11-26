@@ -17,12 +17,12 @@
     ],
     "data": [
         "security/purchase_request.xml",
-        "project_view.xml",
         "security/ir.model.access.csv",
         "data/purchase_request_sequence.xml",
         "data/purchase_request_data.xml",
         "reports/report_purchase_request.xml",
         "views/purchase_request_view.xml",
+        "views/project_view.xml",
         "views/purchase_request_report.xml",
         "views/product_template.xml",
         "views/purchase_order_view.xml",
