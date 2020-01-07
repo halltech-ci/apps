@@ -71,7 +71,7 @@
             <field name="project_id"/>
           </xpath>
           <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
-            <field name="signed_user"/>
+            <field name="client_order_ref"/>
           </xpath>
       </field>
     </record>

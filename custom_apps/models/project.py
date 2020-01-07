@@ -21,3 +21,4 @@ class PurchaseOrder(models.Model):
                                          "project_id", 
                                          string="Purchase Order"
     )
+    project_code = fields.Char(string='Code Projet', required=True, default='')
