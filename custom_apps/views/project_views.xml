@@ -68,6 +68,9 @@
                   <field name="purchase_order_ids" readony='True'/>
               </page>
           </xpath>
+          <xpath expr="//sheet/div/h1/field[@name='name']" position='after'>
+              <field name="project_code" placeholder="Code Projet"/>
+          </xpath>
       </field>
     </record>
   </data>
