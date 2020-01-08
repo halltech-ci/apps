@@ -14,11 +14,16 @@ from odoo import models, fields, api
 #     def _value_pc(self):
 #         self.value2 = float(self.value) / 100
 
-class PurchaseOrder(models.Model):
+class Project(models.Model):
     _inherit = "project.project"
     
     purchase_order_ids = fields.One2many("purchase.order", 
                                          "project_id", 
                                          string="Purchase Order"
     )
-    project_code = fields.Char(string='Code Projet', required=True, default='')
+    project_code = fields.Char(string='Code Projet', required=True, readonly=True, default='Nouveau', copy=False)
+    
+    '''
+    @api.model
+    def create
+    '''
