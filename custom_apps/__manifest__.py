@@ -23,7 +23,7 @@
     'depends': ['base',
                'purchase',
                 'project',
-                'sale'
+                'sale_management'
                ],
 
     # always loaded
