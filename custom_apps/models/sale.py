@@ -35,13 +35,13 @@ class SaleOrder(models.Model):
     purchase_order_subject = fields.Text("Objet : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     
-    order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine",
+    sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine",
                                  required=True, index=True, default='fm')
     #Override create methode to add multiple sequencec
     @api.model
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
-            domaine_code = vals['order_type']
+            domaine_code = vals.get('sale_order_type')
             next_code = '{0}.{1}.{2}'.format('sale',domaine_code, 'sequence')
             if 'company_id' in vals:
                 vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code(next_code) or _('New')
