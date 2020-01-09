@@ -69,6 +69,7 @@
           </xpath>
           <xpath expr="//sheet/group/group" position="inside">
             <field name="project_id"/>
+            <field name="sale_order_type"/>
           </xpath>
           <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
             <field name="client_order_ref"/>
