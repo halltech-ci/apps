@@ -41,7 +41,7 @@ class SaleOrder(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
-            if vals.get('sale_order_type', 'fm') == 'fm':
+            if vals.get('sale_order_type', 'fm'):
                 domaine_code = vals.get('sale_order_type')
                 next_code = '{0}.{1}.{2}'.format('sale',domaine_code, 'sequence')
                 if 'company_id' in vals:
