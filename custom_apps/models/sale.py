@@ -34,7 +34,7 @@ class SaleOrder(models.Model):
     project_id = fields.Many2one("project.project", "Project", ondelete= "set null")
     purchase_order_subject = fields.Text("Objet : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
-    
+    sale_order_recipient = fields.Char("Destinataire")
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine",
                                  required=True, index=True, default='fm')
     #Override create methode to add multiple sequencec
