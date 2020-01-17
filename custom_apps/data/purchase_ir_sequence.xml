@@ -12,6 +12,7 @@
             <field eval="True" name="use_date_range"/>
             <field name="padding">5</field>
             <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
         </record>
     </data>
 </odoo>

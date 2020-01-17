@@ -70,6 +70,7 @@
           <!-- Insert sale quotation recipient-->
           <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
             <field name="sale_order_recipient"/>
+            <field name='project_code'/>
           </xpath>
           <!--Insert projet_id in sale quotation -->
           <xpath expr="//sheet/group/group" position="inside">
@@ -79,5 +80,31 @@
           </xpath>
       </field>
     </record>
+    
+    <record model="ir.ui.view" id="sale_quotation_tree_inherit">
+      <field name="name">sale.quotation.inherit.tree</field>
+      <field name="model">sale.order</field>
+      <field name="type">tree</field>
+      <field name="inherit_id" ref="sale.view_quotation_tree"/>
+      <field name="arch" type="xml">
+          <!-- Add project_code in tree view-->
+          <xpath expr="/tree/field[@name='partner_id']" position="after">
+            <field name="project_code"/>
+          </xpath>
+      </field>
+    </record>
+      
+    <record model="ir.ui.view" id="sale_order_tree_inherit">
+      <field name="name">sale.order.inherit.tree</field>
+      <field name="model">sale.order</field>
+      <field name="type">tree</field>
+      <field name="inherit_id" ref="sale.view_order_tree"/>
+      <field name="arch" type="xml">
+          <!-- Add project_code in tree view-->
+        <xpath expr="//tree/field[@name='partner_id']" position="after">
+            <field name="project_code"/>
+        </xpath>
+      </field>
+    </record> 
   </data>
 </odoo>

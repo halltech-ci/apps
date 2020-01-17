@@ -69,7 +69,22 @@
               </page>
           </xpath>
           <xpath expr="//sheet/div/h1/field[@name='name']" position='after'>
-              <field name="project_code" placeholder="Code Projet"/>
+              <div>
+                  <field name="project_code" placeholder="Code Projet"/>
+              </div>
+          </xpath>
+      </field>
+    </record>
+      
+    <record model="ir.ui.view" id="project_project_view_form_simplified_inherit">
+      <!--<field name="name">inherit purchase order form</field>-->
+      <field name="model">project.project</field>
+      <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+      <field name="arch" type="xml">
+          <xpath expr="//sheet/group/group/field[@name='name']" position='before'>
+            <div>
+              <field name="project_code" class="o_project_name oe_inline" string="Code Projet"/>
+            </div>
           </xpath>
       </field>
     </record>
