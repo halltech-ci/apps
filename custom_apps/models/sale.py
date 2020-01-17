@@ -34,7 +34,7 @@ class SaleOrder(models.Model):
     project_id = fields.Many2one("project.project", "Project", ondelete= "set null")
     purchase_order_subject = fields.Text("Objet : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
-    
+    sale_order_recipient = fields.Char("Destinataire")
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine",
                                  required=True, index=True, default='fm')
     #Override create methode to add multiple sequencec
@@ -58,3 +58,10 @@ class SaleOrder(models.Model):
             vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
         result = super(SaleOrder, self).create(vals)
         return result
+'''
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+    
+    
+    tax_id = fields.Many2many('account.tax', string='Taxes', domain=['|', ('active', '=', False), ('active', '=', True)], default=lambda self:self.env['account.tax']).search([('id', '=', 1)])
+''' 
