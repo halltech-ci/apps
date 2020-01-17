@@ -10,6 +10,7 @@
         </xpath>
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">
+            <h2>
             <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
                     <span t-if="doc.state not in ['draft','sent']">COMMANDE/ORDER :</span>
                     <span t-if="doc.state in ['draft','sent']">DEVIS/QUOTATION : </span>
@@ -18,6 +19,7 @@
                     <span>Pro-Forma </span>
                 </t>
                 <span t-field="doc.name"/>
+            </h2>
         </xpath>
         <!--Ajout de champ destinataire dans devis-->
         <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.payment_term_id']" position="after">
