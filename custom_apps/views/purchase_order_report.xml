@@ -8,6 +8,10 @@
                 <span t-field="o.date_order"/>
             </div>
         </xpath>
+        <!-- Add custom sequence in purchase-->
+        <xpath expr="//div[hasclass('page')]/h2" position="replace">
+            <h2>DEMANDE DE COTATION/RFQ N°:<span t-field="o.name"/></h2>
+        </xpath>
         <xpath expr="//table[hasclass('table', 'table-condensed')]//thead/tr" position="replace">
             <tr>
                 <th class="text*left"><strong>Item</strong></th>
@@ -33,46 +37,15 @@
                 </td>
             </tr>
         </xpath>
-        
-        <!--
-        <xpath expr="//table[@class='table table-condensed']//thead/tr/th" position="before">
-            <th class="text-right"><strong>Item</strong></th>
+    </template>
+    
+    <template id="inherit_report_purchaseorder_document" inherit_id="purchase.report_purchaseorder_document">
+        <!-- Add custom sequence in purchase-->
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
+            <h2 t-if="o.state != 'draft'">BON DE COMMANDE/PO CONFIRMATION N° :<span t-field="o.name"/></h2>
         </xpath>
-        <xpath expr="//table[@class='table table-condensed']//thead/tr/th[3]" position="before">
-            <th class="text-right"><strong>Unit Of Measure</strong></th>
+        <xpath expr="//div[hasclass('page')]/h2[2]" position="replace">
+            <h2 t-if="o.state == 'draft'">DEMANDE DE COTATION/RFQ N° :<span t-field="o.name"/></h2>
         </xpath>
-        <xpath expr="//table[@class='table table-condensed']//thead/tr/th[3]" position="after">
-            <th class="text-right"><strong>Unit Price</strong></th>
-            <th class="text-right"><strong>Taxes</strong></th>
-            <th class="text-right"><strong>Price Subtotal</strong></th>
-        </xpath>
-        
-        <xpath expr="//table[@class='table table-condensed']//tbody/tr/td" position="before">
-            <td class="text-right">
-                <span t-field="order_line.item"/>
-            </td>
-        </xpath>
-        
-        <xpath expr="//table[@class='table table-condensed']//tbody/tr/td[2]" position="after">
-            <td class="text-right">
-                <span t-field="order_line.product_uom"/>
-            </td>
-        </xpath>
-        
-        <xpath expr="//table[@class='table table-condensed']//tbody/tr/td/span[@t-field='order_line.product_uom']" position="replace">
-        </xpath>
-        
-        <xpath expr="//table[@class='table table-condensed']//tbody/tr/td[3]" position="after">
-            <td class="text-right">
-                <span t-field="order_line.price_unit"/>
-            </td>
-            <td class="text-right">
-                <span t-field="order_line.taxes_id"/>
-            </td>
-            <td class="text-right">
-                <span t-field="order_line.price_subtotal"/>
-            </td>
-        </xpath>
-        -->
     </template>
 </odoo>

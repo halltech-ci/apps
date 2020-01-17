@@ -58,3 +58,10 @@ class SaleOrder(models.Model):
             vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
         result = super(SaleOrder, self).create(vals)
         return result
+'''
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+    
+    
+    tax_id = fields.Many2many('account.tax', string='Taxes', domain=['|', ('active', '=', False), ('active', '=', True)], default=lambda self:self.env['account.tax']).search([('id', '=', 1)])
+''' 
