@@ -17,9 +17,9 @@ from odoo import models, fields, api, _
 class Project(models.Model):
     _inherit = "project.project"
     
-    purchase_order_ids = fields.One2many("purchase.order", 
+    sale_order_ids = fields.One2many("sale.order", 
                                          "project_id", 
-                                         string="Purchase Order"
+                                         string="Sale Orders"
     )
     
     #project_code_sequence_id = fields.Many2one(comodel_name='ir.sequence', string='Code Sequence Id', ondelete='restrict')
