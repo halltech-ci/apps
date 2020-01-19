@@ -31,7 +31,8 @@ _SALE_ORDER_DOMAINE = [('fm', 'FABRICATION MECANIQUE'),
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
-    project_id = fields.Many2one("project.project", "Project", ondelete= "set null")
+    project_id = fields.Many2one("project.project", "Project", ondelete= "restrict")
+    project_code = fields.Char("Code Projet", related='project_id.project_code')
     purchase_order_subject = fields.Text("Objet : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")

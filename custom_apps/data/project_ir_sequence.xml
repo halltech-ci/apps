@@ -5,13 +5,14 @@
         <!-- Sequences for sale.order -->
         <record id="seq_project_sequence" model="ir.sequence">
             <field name="name">Project Sequence</field>
-            <field name="code">project.sequence</field>
-            <field name="prefix">P.%(range_year)s/</field>
+            <field name="code">project.code.sequence</field>
+            <field name="prefix">P%(range_year)s/</field>
             <field eval="1" name="number_next"/>
             <field eval="1" name="number_increment"/>
             <field eval="True" name="use_date_range"/>
-            <field name="padding">5</field>
+            <field name="padding">6</field>
             <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
         </record>
     </data>
 </odoo>
