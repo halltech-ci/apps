@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for sale.order -->
+        <!-- Sequence for CM order -->
+        <record id="seq_sale_cm_sequence" model="ir.sequence">
+            <field name="name">Sale CM Sequence</field>
+            <field name="code">sale.cm.sequence</field>
+            <field name="prefix">CM/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_fm_sequence" model="ir.sequence">
+            <field name="name">Sale FM Sequence</field>
+            <field name="code">sale.fm.sequence</field>
+            <field name="prefix">FM/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_gc_sequence" model="ir.sequence">
+            <field name="name">Sale GC Sequence</field>
+            <field name="code">sale.gc.sequence</field>
+            <field name="prefix">GC/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_ct_sequence" model="ir.sequence">
+            <field name="name">Sale CT Sequence</field>
+            <field name="code">sale.ct.sequence</field>
+            <field name="prefix">CT/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_em_sequence" model="ir.sequence">
+            <field name="name">Sale EM Sequence</field>
+            <field name="code">sale.em.sequence</field>
+            <field name="prefix">EM/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_bt_sequence" model="ir.sequence">
+            <field name="name">Sale BT Sequence</field>
+            <field name="code">sale.bt.sequence</field>
+            <field name="prefix">BT/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_ra_sequence" model="ir.sequence">
+            <field name="name">Sale RA Sequence</field>
+            <field name="code">sale.ra.sequence</field>
+            <field name="prefix">RA/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_mi_sequence" model="ir.sequence">
+            <field name="name">Sale MI Sequence</field>
+            <field name="code">sale.mi.sequence</field>
+            <field name="prefix">MI/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_me_sequence" model="ir.sequence">
+            <field name="name">Sale ME Sequence</field>
+            <field name="code">sale.me.sequence</field>
+            <field name="prefix">ME/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_mm_sequence" model="ir.sequence">
+            <field name="name">Sale MM Sequence</field>
+            <field name="code">sale.mm.sequence</field>
+            <field name="prefix">MM/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_cu_sequence" model="ir.sequence">
+            <field name="name">Sale CU Sequence</field>
+            <field name="code">sale.cu.sequence</field>
+            <field name="prefix">CU/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_ep_sequence" model="ir.sequence">
+            <field name="name">Sale EP Sequence</field>
+            <field name="code">sale.ep.sequence</field>
+            <field name="prefix">EP/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,10 @@
+A FAIRE POUR CONCEPTOR
+
+1. Ajout de sequence auto increment dans projet ==> FAIT
+2. Ajout de workflow de validation des demandes d'achats
+3. Personnalisation des numero de devis selon le format FM/2020/000010 ==> FAIT
+4. Suppression des colonnes taxes dans devis, facture et demande de cotation
+5. Ajout de objet dans devis et facture ==> FAIT
+6. Ajout de l_editeur en bas de page dans devis, demande de cotation et facture ==> FAIT
+7. Activation du champs employe ou client dans fiche de contact.
+8. Empecher que le gestionnaire des achats ne puisse modifier les DA approuver.

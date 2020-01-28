@@ -19,11 +19,17 @@ class PurchaseOrder(models.Model):
     
     proforma_invoice = fields.Char(string="N° Devis Fournisseur :", store=True)
     total_amount_letter = fields.Text(string="Montant total en lettre:")
-    project_id = fields.Many2one("project.project", "Project", ondelete="set null")
-    sale_order_id = fields.Many2one("sale.order", "Sale Order", ondelete="set null")
-    #product_code = fields.Many2one("product.product", "Product Code", related="product_id.default_code")
+    project_id = fields.Many2one("project.project", "Project", ondelete="cascade")
+    sale_order_id = fields.Many2one("sale.order", "Sale Order", ondelete="cascade")
     
-
+    #Overide create method to add custom sequence
+    @api.model
+    def create(self, vals):
+        if vals.get('name', 'New') == 'New':
+            vals['name'] = self.env['ir.sequence'].next_by_code('purchase.order.sequence') or '/'
+        return super(PurchaseOrder, self).create(vals)
+    
+    
 class PurchaseOrderLine(models.Model):
     _inherit = "purchase.order.line"
     
