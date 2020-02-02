@@ -147,5 +147,65 @@
             <field name="company_id" eval="False"/>
             <field name='implementation'>standard</field>
         </record>
+        
+        <record id="seq_sale_erp_sequence" model="ir.sequence">
+            <field name="name">Sale ERP Sequence</field>
+            <field name="code">sale.erp.sequence</field>
+            <field name="prefix">ERP/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_gtp_sequence" model="ir.sequence">
+            <field name="name">SaleGTP Sequence</field>
+            <field name="code">sale.gtp.sequence</field>
+            <field name="prefix">GTP/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_tel_sequence" model="ir.sequence">
+            <field name="name">Sale TEL Sequence</field>
+            <field name="code">sale.tel.sequence</field>
+            <field name="prefix">TEL/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_rit_sequence" model="ir.sequence">
+            <field name="name">Sale RIT Sequence</field>
+            <field name="code">sale.rit.sequence</field>
+            <field name="prefix">RIT/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <record id="seq_sale_sse_sequence" model="ir.sequence">
+            <field name="name">Sale SSE Sequence</field>
+            <field name="code">sale.sse.sequence</field>
+            <field name="prefix">SSE/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
     </data>
 </odoo>
