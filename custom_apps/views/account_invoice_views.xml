@@ -1,0 +1,20 @@
+<odoo>
+  <data>
+        <record model="ir.ui.view" id="account_invoice_form_inherit">
+      <!--<field name="name">inherit purchase order form</field>-->
+      <field name="model">account.invoice</field>
+      <field name="inherit_id" ref="account.invoice_form"/>
+      <field name="arch" type="xml">
+          <!-- Insert BL number on sale invoice-->
+          <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
+              <field name="delivery_document"/>
+          </xpath>
+          <!-- Insert source document on sale invoice-->
+          <xpath expr="//sheet/group/group/field[@name='user_id']" position="after">
+              <field name="origin" string='N° de Devis:'/>
+              <field name='customer_reference'/>
+          </xpath>
+      </field>
+    </record>      
+  </data>
+</odoo>

@@ -25,7 +25,12 @@ _SALE_ORDER_DOMAINE = [('fm', 'FABRICATION MECANIQUE'),
                           ('me', 'MAINTENANCE ELECTROMECANIQUE'),
                           ('mm', 'MAINTENANCE MECANIQUE'),
                           ('cu', 'CONSTRUCTION USINE'),
-                          ('ep', 'ETUDES DE PROJET')
+                          ('ep', 'ETUDES DE PROJET'),
+                          ('erp', 'ERP'),
+                          ('gtp', 'GESTION DE TEMPS'),
+                          ('tel', 'TELEPHONIE'),
+                          ('rit', 'RESEAUX - TELECOMS'),
+                          ('sse', 'SECURITE - SURETE - ELECTRONIQUE')
     ]
 
 class SaleOrder(models.Model):
