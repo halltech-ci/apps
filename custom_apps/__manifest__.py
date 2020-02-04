@@ -36,9 +36,11 @@
         'views/purchase_order_report.xml',
         'views/sale_views.xml',
         'views/sale_order_report.xml',
+        'views/account_invoice_views.xml',
         'data/project_ir_sequence.xml',
         'data/sale_ir_sequence.xml',
         'data/purchase_ir_sequence.xml',
+        
     ],
     # only loaded in demonstration mode
     'demo': [
