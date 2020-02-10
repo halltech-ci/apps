@@ -42,10 +42,10 @@
     <template id="inherit_report_purchaseorder_document" inherit_id="purchase.report_purchaseorder_document">
         <!-- Add custom sequence in purchase-->
         <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
-            <h2 t-if="o.state != 'draft'">BON DE COMMANDE/PO CONFIRMATION N° :<span t-field="o.name"/></h2>
+            <h2 t-if="o.state != 'draft'">BON DE COMMANDE/PURCHASE ORDER N°:<span t-field="o.name"/></h2>
         </xpath>
         <xpath expr="//div[hasclass('page')]/h2[2]" position="replace">
-            <h2 t-if="o.state == 'draft'">DEMANDE DE COTATION/RFQ N° :<span t-field="o.name"/></h2>
+            <h2 t-if="o.state == 'draft'">DEMANDE DE COTATION/RFQ N°:<span t-field="o.name"/></h2>
         </xpath>
     </template>
 </odoo>

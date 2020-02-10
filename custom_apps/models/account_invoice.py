@@ -18,5 +18,5 @@ from odoo import models, fields, api
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
     
-    delivery_document=fields.Char(string='N° Bordereau de Livraison :')
-    customer_reference=fields.Char(string='Ref. Commande Client :')
+    delivery_document=fields.Char(string='N° Bordereau de Livraison')
+    customer_reference=fields.Char(string='Ref. Commande Client')
