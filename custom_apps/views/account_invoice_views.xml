@@ -8,7 +8,7 @@
           <!-- Insert BL number on sale invoice-->
           <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
               <field name="delivery_document"/>
-              <field name='signataire_facture' string='Signataire'/>
+              <!--<field name='signataire_facture' string='Signataire'/> -->
           </xpath>
           <!-- Insert source document on sale invoice-->
           <xpath expr="//sheet/group/group/field[@name='user_id']" position="after">
