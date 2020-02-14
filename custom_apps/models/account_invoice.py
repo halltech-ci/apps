@@ -20,3 +20,5 @@ class AccountInvoice(models.Model):
     
     delivery_document=fields.Char(string='N° Bordereau de Livraison')
     customer_reference=fields.Char(string='Ref. Commande Client')
+    signataire_facture=fields.Many2one('res.users', string='Signataire')
+    invoice_object=fields.Char(string='Objet :')
