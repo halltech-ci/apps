@@ -78,6 +78,11 @@
             <field name="sale_order_type"/>
             <field name="client_order_ref"/>
           </xpath>
+          <xpath expr="//sheet//notebook/page/field[@name='order_line']/form/group/group/div/field[@name='product_uom']" position="replace">
+            <div>
+                <field name="product_uom" groups="product.group_uom" class="oe_inline oe_no_button" force_save="1" attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}" options="{'no_create': True}"/>
+            </div>
+          </xpath>
       </field>
     </record>
     
