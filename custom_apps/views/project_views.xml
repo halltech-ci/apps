@@ -32,5 +32,16 @@
           </xpath>
       </field>
     </record>
+    
+    <!-- display Project Code in tree view-->
+    <record model="ir.ui.view" id="project_view_project_list">
+      <field name="model">project.project</field>
+      <field name="inherit_id" ref="project.view_project"/>
+      <field name="arch" type="xml">
+          <xpath expr="//field[@name='name']" position='before'>
+              <field name="project_code" string="Code"/>
+          </xpath>
+      </field>
+    </record>
   </data>
 </odoo>
