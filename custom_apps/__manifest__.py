@@ -39,6 +39,7 @@
         'views/sale_order_report.xml',
         'views/account_invoice_views.xml',
         'views/account_invoice_report.xml',
+        'views/hr_employee_views.xml',
         'data/project_ir_sequence.xml',
         'data/sale_ir_sequence.xml',
         'data/purchase_ir_sequence.xml',

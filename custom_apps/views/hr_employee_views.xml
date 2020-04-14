@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="hr_employee_form_inherit">
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+          <!-- Insert proforma_invoice in purchase order form-->
+          <xpath expr="//sheet//notebook/page[@name='hr_settings']/group" position="inside">
+              <group string="Hiring Informations">
+                  <field name="hiring_date"/>
+              </group>      
+          </xpath>          
+      </field>
+    </record>
+  </data>
+</odoo>
