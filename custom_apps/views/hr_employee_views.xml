@@ -8,6 +8,7 @@
           <xpath expr="//sheet//notebook/page[@name='hr_settings']/group" position="inside">
               <group string="Hiring Informations">
                   <field name="hiring_date"/>
+                  <field name="seniority"/>
               </group>      
           </xpath>          
       </field>
