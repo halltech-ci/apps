@@ -9,6 +9,7 @@
               <group string="Hiring Informations">
                   <field name="hiring_date"/>
                   <field name="seniority"/>
+            <!--  <field name="Release_date"/>-->
               </group>      
           </xpath>          
       </field>

@@ -24,7 +24,8 @@
                'purchase',
                 'project',
                 'sale_management',
-                'stock'
+                'stock',
+                'hr',
                ],
 
     # always loaded
