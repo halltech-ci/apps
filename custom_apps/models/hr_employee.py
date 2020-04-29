@@ -2,9 +2,9 @@
 
 from odoo import models, fields, api
 
-class HrEmployee(models.Model):
+class Employee(models.Model):
     _inherit="hr.employee"
-    
+    Release_date = fields.Date(string='Release date') 
     hiring_date = fields.Date(string='Hiring Date', required=True, default=fields.Date.today())
     seniority = fields.Integer(string="Seniority", store=True, compute='_compute_seniority')
       
