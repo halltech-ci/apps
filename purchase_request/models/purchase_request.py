@@ -115,7 +115,7 @@ class PurchaseRequest(models.Model):
     #project = fields.Many2one('project.project', string="Project")
     project_code = fields.Char(related='sale_order.project_code', string="Project", readonly=True)
     sale_order = fields.Many2one('sale.order', string='Sale Order')
-    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Request Type", required=True)
+    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Request Type")
 
     @api.depends('line_ids')
     def _compute_line_count(self):
