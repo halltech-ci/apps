@@ -2,7 +2,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0).
 
 {
-    "name": "Purchase Request",
+    "name": "Purchase Order Request",
     "author": "Eficent, "
               "Odoo Community Association (OCA)",
     "version": "11.0.1.2.6",

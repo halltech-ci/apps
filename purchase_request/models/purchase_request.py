@@ -111,6 +111,11 @@ class PurchaseRequest(models.Model):
         compute='_compute_line_count',
         readonly=True
     )
+    
+    #project = fields.Many2one('project.project', string="Project")
+    project_code = fields.Char(related='sale_order.project_code', string="Project", readonly=True)
+    sale_order = fields.Many2one('sale.order', string='Sale Order')
+    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Request Type", required=True)
 
     @api.depends('line_ids')
     def _compute_line_count(self):
@@ -179,7 +184,9 @@ class PurchaseRequest(models.Model):
     @api.multi
     def button_to_approve(self):
         self.to_approve_allowed_check()
+        #send email to approver
         return self.write({'state': 'to_approve'})
+    
 
     @api.multi
     def button_approved(self):
@@ -296,6 +303,8 @@ class PurchaseRequestLine(models.Model):
         related='company_id.currency_id',
         readonly=True,
     )
+    
+    project = fields.Char(related="request_id.project_code", string="Project", readonly=True)
 
     @api.multi
     @api.depends('product_id', 'name', 'product_uom_id', 'product_qty',
