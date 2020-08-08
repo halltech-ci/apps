@@ -56,7 +56,27 @@ class PurchaseRequest(models.Model):
                 rec.is_editable = False
             else:
                 rec.is_editable = True
-
+                
+    @api.multi
+    @api.depends('requested_by')
+    def _compute_has_manager(self):
+        for rec in self:
+            if rec.requested_by:
+                employee = self.env['hr.employee'].search([('work_email', '=', rec.requested_by.email)], limit = 1)
+                if (employee.department_id) and (employee.department_id.manager_id):
+                    rec.has_manager = True
+                else:
+                    rec.has_manager = False
+    
+    def _compute_is_project_approver(self):
+        for rec in self:
+            if self._compute_has_manager():
+                if (self.env['hr.employee'].search([('project_apporver', '=', True)])).exists():
+                    rec.is_project_apporver = True
+                else:
+                    rec.is_project_approver = False
+                
+    
     name = fields.Char('Request Reference', required=True,
                        default=_get_default_name,
                        track_visibility='onchange')
@@ -71,11 +91,8 @@ class PurchaseRequest(models.Model):
                                    required=True,
                                    track_visibility='onchange',
                                    default=_get_default_requested_by)
-    assigned_to = fields.Many2one(
-        'res.users', 'Approver', track_visibility='onchange',
-        domain=lambda self: [('groups_id', 'in', self.env.ref(
-            'purchase_request.group_purchase_request_manager').id)]
-    )
+    assigned_to = fields.Many2one('res.users', 'Approver', track_visibility='onchange', domain=lambda self: [('groups_id', 'in', self.env.ref(
+            'purchase_request.group_purchase_request_manager').id)])
     description = fields.Text('Description')
     company_id = fields.Many2one('res.company', 'Company',
                                  required=True,
@@ -116,7 +133,9 @@ class PurchaseRequest(models.Model):
     project_code = fields.Char(related='sale_order.project_code', string="Project", readonly=True)
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Request Type")
-
+    has_manager = fields.Boolean(compute='_compute_has_manager')
+    is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
+    
     @api.depends('line_ids')
     def _compute_line_count(self):
         for rec in self:
@@ -184,6 +203,7 @@ class PurchaseRequest(models.Model):
     @api.multi
     def button_to_approve(self):
         self.to_approve_allowed_check()
+        self.to_approve_check()
         #send email to approver
         return self.write({'state': 'to_approve'})
     
@@ -216,8 +236,15 @@ class PurchaseRequest(models.Model):
                 raise UserError(
                     _("You can't request an approval for a purchase request "
                       "which is empty. (%s)") % rec.name)
-
-
+    
+    @api.multi
+    def to_approve_check(self):
+        for rec in self:
+            if rec.purchase_type == 'project' and not rec.is_project_approver:
+                raise UserError(
+                    _("You don't have permission to approve this request"))
+                
+    
 class PurchaseRequestLine(models.Model):
 
     _name = "purchase.request.line"
