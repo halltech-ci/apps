@@ -13,13 +13,15 @@
     "depends": [
         "purchase",
         "product",
-        'hr'
+        'hr',
+        'mail'
     ],
     "data": [
         "security/purchase_request.xml",
         "security/ir.model.access.csv",
         "data/purchase_request_sequence.xml",
         "data/purchase_request_data.xml",
+        'data/mail_template_data.xml',
         "reports/report_purchase_request.xml",
         "views/purchase_request_view.xml",
         "views/purchase_request_report.xml",
