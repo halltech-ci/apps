@@ -17,6 +17,9 @@ from odoo import models, fields, api
 class ProductTemplate(models.Model):
     _inherit = "product.template"
     #Make default_code field mandatory
-    default_code = fields.Char(
-        'Internal Reference', compute='_compute_default_code',
-        inverse='_set_default_code', store=True, required=True)
+    def _get_sale_uom_id(self):
+        return self.env["product.uom"].search([], limit=1, order='id').id
+    
+    type = fields.Selection(default='service')
+    uom_so_id = fields.Many2one('product.uom', 'Sale Unit of Measure', default=_get_sale_uom_id, 
+        help="Default Unit of Measure used for purchase orders. It must be in the same category than the default unit of measure.")
