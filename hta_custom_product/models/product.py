@@ -1,10 +1,10 @@
 # Copyright (C) 2018 - TODAY, Open Source Integrators
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models
+from odoo import models, fields, api, _
 
 
-class ProductProduct(models.Model):
+class Product.Product(models.Model):
     _inherit = 'product.product'
     
     def _get_default_code(self):
