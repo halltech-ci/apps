@@ -4,7 +4,7 @@
 from odoo import models, fields, api, _
 
 
-class Product.Product(models.Model):
+class ProductProduct(models.Model):
     _inherit = 'product.product'
     
     def _get_default_code(self):
