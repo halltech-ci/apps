@@ -13,6 +13,6 @@ class ProductProduct(models.Model):
 
     default_code = fields.Char('Internal Reference', index=True, default=_get_default_code)
 
-    _sql_constraints = [
-        ('default_code_uniq', 'unique(default_code)',
-            'Internal Reference must be unique across the database!'), ]
+    #_sql_constraints = [
+    #    ('default_code_uniq', 'unique(default_code)',
+    #        'Internal Reference must be unique across the database!'), ]
