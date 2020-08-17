@@ -22,6 +22,7 @@
     # any module necessary for this one to work correctly
     'depends': ['base',
                'hr_payroll',
+               'hr_timesheet_sheet',
                ],
 
     # always loaded
