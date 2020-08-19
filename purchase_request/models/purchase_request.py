@@ -136,6 +136,14 @@ class PurchaseRequest(models.Model):
     has_manager = fields.Boolean(compute='_compute_has_manager')
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     
+    def action_send_email(self):
+        self.ensure_one()
+        template_id = self.env.ref('purchase_request.email_template_purchase_approve').id
+        template = self.env['mail.template'].browse(template_id)
+        template.send_mail(self.id, force_send=True)
+            
+                    
+    
     @api.depends('line_ids')
     def _compute_line_count(self):
         for rec in self:
@@ -185,6 +193,7 @@ class PurchaseRequest(models.Model):
         request = super(PurchaseRequest, self).create(vals)
         if vals.get('assigned_to'):
             request.message_subscribe_users(user_ids=[request.assigned_to.id])
+            self.action_send_email()
         return request
 
     @api.multi
@@ -203,13 +212,12 @@ class PurchaseRequest(models.Model):
     @api.multi
     def button_to_approve(self):
         self.to_approve_allowed_check()
-        self.to_approve_check()
         #send email to approver
         return self.write({'state': 'to_approve'})
     
-
     @api.multi
     def button_approved(self):
+        self.to_approve_check()
         return self.write({'state': 'approved'})
 
     @api.multi
@@ -242,7 +250,7 @@ class PurchaseRequest(models.Model):
         for rec in self:
             if rec.purchase_type == 'project' and not rec.is_project_approver:
                 raise UserError(
-                    _("You don't have permission to approve this request"))
+                    _("You don't have permission to approve this request. (%s)") % rec.name)
                 
     
 class PurchaseRequestLine(models.Model):
