@@ -8,6 +8,7 @@ class HrEmployee(models.Model):
     hiring_date = fields.Date(string='Hiring Start Date', related="contract_id.date_start")
     hiring_end = fields.Date(string='End Hiring Date')
     seniority = fields.Integer(string="Seniority", store=True, compute='_compute_seniority')
+    nbre_part = fields.Integer(string="Nombre de Part", default=1)
     
     @api.depends('hiring_date')
     def _compute_seniority(self):
