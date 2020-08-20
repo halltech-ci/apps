@@ -7,10 +7,18 @@
           
           <xpath expr="//sheet//notebook/page[@name='hr_settings']/group" position="inside">
               <group string="Hiring Informations">
-                  <field name="hiring_date" readonly="True"/>
-                  <field name="seniority"/>
-                  <field name="hiring_end"/>
-              </group>      
+                <group>
+                    <field name="matricule" />
+                    <field name="ssnid" string="N° CNPS"/>
+                </group>
+              </group>
+              <group string="">
+                  <group>
+                    <field name="hiring_date" readonly="True"/>
+                    <field name="seniority"/>
+                    <field name="hiring_end"/>
+                  </group>
+              </group>
           </xpath>
           <xpath expr="//sheet//notebook/page[@name='personal_information']/group/group[3]" position="inside">
                 <field name="nbre_part"/>

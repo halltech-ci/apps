@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+     <template id="report_hta_payslip_template">
+         <t t-call="web.html_container">
+             <t t-foreach="docs" t-as="o">
+                 <t t-call="web.internal_layout">
+                     <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <table class="table table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td><span>BULLETIN DE PAIE</span></td>
+                                        <td>
+                                            <span>Du :</span>
+                                            <span t-field="o.date_from"/>
+                                            <span>au </span>
+                                            <span t-field="o.date_to"/>
+                                        </td>
+                                        <td>
+                                            <span>Date de paie:</span>   
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-xs-8 pull-right">
+                                    <table class="table table-condensed table-bordered" style="border: 1px solid black">
+                                        <thead style="border: 1px solid black">
+                                            <tr style="border: 1px solid black">
+                                                <th class="text-center" colspan="4">
+                                                    <span>Monsieur/Madame:</span>
+                                                    <span t-field="o.employee_id.name"/>
+                                                </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody style="border: 1px solid black">
+                                            <tr style="border: 1px solid black">
+                                                <td class="text-left"><span><strong>Position:</strong></span></td>
+                                                <td class="text-left"><span t-field="o.employee_id.marital"/></td>
+                                                <td class="text-left"><span><strong>Taux Horaire:</strong></span></td>
+                                                <td class="text-left"><span t-field="o.contract_id.hourly_rate"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"><span><strong>Matricule:</strong></span></td>
+                                                <td class="text-left"><span t-field="o.employee_id.matricule"/></td>
+                                                <td class="text-left"><span><strong>Niveau:</strong></span></td>
+                                                <td class="text-left"><span></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"><span><strong>Emploi:</strong></span></td>
+                                                <td class="text-left"><span t-field="o.employee_id.job_id.name"/></td>
+                                                <td class="text-left"><span><strong>Echelon:</strong></span></td>
+                                                <td class="text-left"><span></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"><span><strong>Categorie:</strong></span></td>
+                                                <td class="text-left"></td>
+                                                <td class="text-left"><span><strong>Qualififation:</strong></span></td>
+                                                <td class="text-left"><span></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"><span><strong>N° CNPS:</strong></span></td>
+                                                <td class="text-left"><span t-field="o.employee_id.ssnid"/></td>
+                                                <td class="text-left"><span><strong>Service:</strong></span></td>
+                                                <td class="text-left"><span t-field="o.employee_id.department_id.name"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"><span><strong>RIB:</strong></span></td>
+                                                <td class="text-left"><span/></td>
+                                                <td class="text-left"><span><strong>Banque:</strong></span></td>
+                                                <td class="text-left"><span t-field="o.employee_id.bank_account_id"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xs-4 pull-left">
+                                    <span>LOGO</span>
+                                </div>
+                            </div>
+                            <div></div>
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr style="border: 1px solid black">
+                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Rubriques</th>
+                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Salaire de Base</th>
+                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Taux(%)</th>
+                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Gains</th>
+                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Retenues</th>
+                                        <th class="text-center" colspan="2" style="border: 1px solid black">Cotisations patronales</th>
+                                    </tr>
+                                    <tr style="border: 1px solid black">
+                                        <td class="text-center" style="border: 0.5px solid black">Taux(%)</td>
+                                        <td class="text-center" style="border: 0.5px solid black">Montant</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                     </div>
+                 </t>
+             </t>
+         </t>
+        </template>
+    </data>
+</odoo>

@@ -32,7 +32,8 @@
         'views/templates.xml',
         'views/hr_employee_views.xml',
         'views/hr_payslip_views.xml',
-        'report/report_payslip_template.xml'
+        'report/report_hta_payslip_template.xml',
+        'report/bulletin_paye_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
