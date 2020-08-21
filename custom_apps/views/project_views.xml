@@ -1,6 +1,6 @@
 <odoo>
   <data>
-        <record model="ir.ui.view" id="edit_project_inherit">
+    <record model="ir.ui.view" id="edit_project_inherit">
       <!--<field name="name">inherit purchase order form</field>-->
       <field name="model">project.project</field>
       <field name="inherit_id" ref="project.edit_project"/>
@@ -32,5 +32,17 @@
           </xpath>
       </field>
     </record>
+    
+    <record model="ir.ui.view" id="project_view_list_inherit">
+      <!--<field name="name">inherit purchase order form</field>-->
+      <field name="model">project.project</field>
+      <field name="inherit_id" ref="project.view_project"/>
+      <field name="arch" type="xml">
+          <xpath expr="//tree/field[@name='user_id']" position='after'>
+              <field name="project_code"/>
+          </xpath>
+      </field>
+    </record>
+    
   </data>
 </odoo>
