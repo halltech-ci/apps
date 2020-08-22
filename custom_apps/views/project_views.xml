@@ -48,12 +48,13 @@
       </field>
     </record>
     
+    <!--
     <record id="open_view_project_all_list" model="ir.actions.act_window.view">
         <field name="act_window_id" ref="project.open_view_project_all" />
         <field name="view_mode">tree</field>
         <field name="sequence">2</field>
         <field name="view_id" ref="project.view_project" />
     </record>
-    
+    -->
   </data>
 </odoo>
