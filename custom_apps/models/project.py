@@ -23,7 +23,7 @@ class Project(models.Model):
     project_code_sequence_id = fields.Many2one(comodel_name='ir.sequence', string='Code Sequence Id', ondelete='cascade')
     project_code = fields.Char(string='Code Projet', required=True, readonly=True, copy=False, default= lambda self: _('New'))
     
-    
+    #Create method to compute project_code from id like P%year/0000 + id
     @api.model
     def create(self, vals):
         # Prevent double project creation
