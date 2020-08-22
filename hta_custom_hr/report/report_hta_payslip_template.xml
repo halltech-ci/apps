@@ -96,7 +96,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr t-foreach="get_payslip_lines(o.line_ids)" t-as="p">
+                                        <t t-if="p.code=='BASIC'">
+                                            <td><strong><span t-esc="p.name"/></strong></td>
+                                            <td>
+                                                <t t-if="p.code=='TH'">
+                                                    <span t-esc="p.amount"/>
+                                                </t>
+                                            </td>    
+                                            <td>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </t>
                                     </tr>
                                 </tbody>
                             </table>

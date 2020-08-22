@@ -25,7 +25,20 @@ class FichePayeParser(models.AbstractModel):
             for line in line_ids:
                 category_total += line.total
         return category_total
-
+    
+    #objs represent les lignes du bulletin de paie
+    def parse_payslip_lines(self, obj):
+        code_dict = {}
+        p_lines = self.env['hr.payslip'].search([('id', '=', obj.id)]).line_ids
+        code_dict = {}
+        for line in p_lines:
+            code = line.code
+            name = line.name
+            val = line.amount
+            dico = {code:[name, val],}
+            code_dict.update(dico)
+        return code_dict
+        
     def get_employer_line(self, obj, parent_line):
         return self.env['hr.payslip.line'].search([('slip_id', '=', obj.id), ('salary_rule_id.parent_rule_id.id', '=', parent_line.salary_rule_id.id)], limit=1)
 
@@ -41,4 +54,5 @@ class FichePayeParser(models.AbstractModel):
             'get_payslip_lines': self.get_payslip_lines,
             'get_total_by_rule_category': self.get_total_by_rule_category,
             'get_employer_line': self.get_employer_line,
+            'parse_payslip_lines': self.parse_payslip_lines
         }
