@@ -6,11 +6,15 @@
       <field name="inherit_id" ref="project.edit_project"/>
       <field name="arch" type="xml">
           <!-- Insert purchase order page on project-->
-          <xpath expr="//page[@name='settings']" 
-                 position="after">
+          <xpath expr="//page[@name='settings']" position="after">
               <page string="Sale Orders">
                   <field name="sale_order_ids" readony='True'/>
               </page>
+              <!--
+              <page string="Purchase Orders">
+                  <field name="purchase_order_ids" readony='True'/>
+              </page>
+              -->
           </xpath>
           <xpath expr="//sheet/div/h1/field[@name='name']" position='after'>
               <div>

@@ -96,22 +96,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr t-foreach="get_payslip_lines(o.line_ids)" t-as="p">
-                                        <t t-if="p.code=='BASIC'">
-                                            <td><strong><span t-esc="p.name"/></strong></td>
-                                            <td>
+                                    <t t-foreach="get_payslip_lines(o.line_ids)" t-as="p">
+                                        <tr t-if="p.code=='BASIC'" style="border: 1px solid black">
+                                            <td style="border: 1px solid black"><strong><span t-esc="p.name"/></strong></td>
+                                            <td style="border: 1px solid black">
                                                 <t t-if="p.code=='TH'">
                                                     <span t-esc="p.amount"/>
                                                 </t>
                                             </td>    
-                                            <td>
-                                            </td>
+                                            <td style="border: 1px solid black"></td>
+                                            <td style="border: 1px solid black"></td>
+                                            <td style="border: 1px solid black"></td>
+                                            <td style="border: 1px solid black"></td>
+                                            <td style="border: 1px solid black"></td>
+                                        </tr>
+                                        <tr t-if="p.code !='BASIC'">
+                                            <td><span t-esc="p.name"/></td>
+                                            <td ></td>
+                                            <td></td>
+                                            <td><span t-esc="p.amount"/></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
-                                        </t>
-                                    </tr>
+                                        </tr>
+                                    </t>
                                 </tbody>
                             </table>
                         </div>
