@@ -18,3 +18,5 @@ class MrpProduction(models.Model):
     _inherit = "mrp.production"
     
     
+    
+    
