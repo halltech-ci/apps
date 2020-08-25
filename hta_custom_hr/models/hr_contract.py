@@ -17,9 +17,21 @@ from odoo import models, fields, api
 class HrContract(models.Model):
     _inherit = "hr.contract"
     
-    hourly_rate = fields.Monetary(string="Hourly Cost", compute="_compute_employee_hourly_rate")
+    hourly_rate = fields.Monetary(string="Taux Horaire", compute="_compute_employee_hourly_rate")
+    prime_transport = fields.Monetary(string="Prime de Transport")
+    prime_communication = fields.Monetary(string="Prime de Communication")
+    sursalaire = fields.Monetary(string="Sursalaire")
+    prime_logement = fields.Monetary(string="Prime de logement")
+    prime_responsabilite = fields.Monetary(string="Prime de responsabilité")
+    gratification = fields.Monetary(string="Gratification")
+    autres_avantages = fields.Monetary(string="Autres Avantages")
+    conges_payes = fields.Monetary(string="Congés Payés")
+    
     
     @api.depends("wage")
     def _compute_employee_hourly_rate(self):
         for rec in self:
             rec.hourly_rate = rec.wage/173.33
+    
+    
+    

@@ -1,0 +1,27 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="hta_hr_contract_form_inherits">
+      <field name="model">hr.contract</field>
+      <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+      <field name="arch" type="xml">
+          <xpath expr="//sheet//notebook/page[@name='information']/group/group/field[@name='advantages']" position="after">
+              <field name="hourly_rate"/>
+              <field name="sursalaire"/>
+          </xpath>
+          
+          <xpath expr="//group[@name='salary_and_advantages']" position="after">
+              <group string="Employee Costs" groups="hr.group_hr_manager">
+              </group>
+              
+              <group string="Diverses Primes">
+                  <field name="prime_responsabilite"/>
+                  <field name="prime_communication"/>
+              </group>
+              
+              <group string="Yearly Advantages" name="yearly_advantages"></group>
+          </xpath>
+          
+      </field>
+    </record>
+  </data>
+</odoo>

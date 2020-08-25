@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- HR SALARY RULE CATEGORIES-->
+    <!-- SALAIRE NET -->
+    <record id="hr_payroll_net_salary" model="hr.salary.rule.category">
+        <field name="name">Salaire Net</field>
+        <field name="code">NET</field>
+    </record>
+    <!--SALAIRE BRUT -->
+    <record id="hr_payroll_brut_salary" model="hr.salary.rule.category">
+        <field name="name">Salaire Brut</field>
+        <field name="code">BRUT</field>
+    </record>
+    <!-- BASIC SALARY-->
+    <record id="hr_payroll_basic_salary" model="hr.salary.rule.category">
+        <field name="name">BASE</field>
+        <field name="code">BASIC</field>
+    </record>
+
+    
+<!-- HR SALARY RULE -->
+    <record id="hr_salary_rule_employee_basic" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_basic_salary"/> 
+        <field name="name">Salaire de Base</field>
+        <field name="code">BASIC</field>
+        <field name="sequence">42</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.wage
+        </field>
+    </record>
+
+</odoo>
