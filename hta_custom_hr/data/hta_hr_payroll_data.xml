@@ -13,16 +13,25 @@
         <field name="code">BRUT</field>
     </record>
     <!-- BASIC SALARY-->
-    <record id="hr_payroll_basic_salary" model="hr.salary.rule.category">
+    <!--<record id="hr_payroll_basic_salary" model="hr.salary.rule.category">
         <field name="name">BASE</field>
         <field name="code">BASIC</field>
+    </record>-->
+    <!-- CATEGORIE RETENUES-->
+    <record id="hr_payroll_retenue_salary" model="hr.salary.rule.category">
+        <field name="name">Retenues</field>
+        <field name="code">RET</field>
+    </record>
+    
+    <record id="hr_payroll_prime_salary" model="hr.salary.rule.category">
+        <field name="name">Primes</field>
+        <field name="code">PRIME</field>
     </record>
 
-    
-<!-- HR SALARY RULE -->
-    <record id="hr_salary_rule_employee_basic" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_basic_salary"/> 
-        <field name="name">Salaire de Base</field>
+<!-- Regle de calcul salaire Brut -->
+    <record id="hr_salary_rule_employee_brut" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Salaire Brut</field>
         <field name="code">BASIC</field>
         <field name="sequence">42</field>
         <field name="condition_select">none</field>
@@ -31,5 +40,133 @@
 result = contract.wage
         </field>
     </record>
+    <!-- Reglge de calcul de salaire Prime de responsabilite-->
+    <record id="hr_salary_rule_prime_reponsabilite" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de responsabilite</field>
+        <field name="code">PDR</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_responsablite
+        </field>
+    </record>
+    <!-- Regle de calcul Prime de Transport-->
+    <record id="hr_salary_rule_prime_transport" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de transport</field>
+        <field name="code">PDTR</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_transport
+        </field>
+    </record>
+    <!-- Regle de calcul Prime de communication-->
+    <record id="hr_salary_rule_prime_reponsabilite" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de communication</field>
+        <field name="code">PDC</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_communication
+        </field>
+    </record>
+    <!-- Regle de caclcul Prime de logement -->
+    <record id="hr_salary_rule_prime_logement" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de logement</field>
+        <field name="code">PDL</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_logement
+        </field>
+    </record>
+    <!-- Regle de calcul indemnite de logement-->
+    <record id="hr_salary_rule_indemnite_logement" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Indemnite de logement</field>
+        <field name="code">IDL</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_logement
+        </field>
+    </record>
 
+    <!-- Prime de responsabilite-->
+    <record id="hr_salary_rule_prime_salissure" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de salissure</field>
+        <field name="code">PDS</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_salissure
+        </field>
+    </record>
+    
+    <!-- Regle de calcul Prime anciennete-->
+    <record id="hr_salary_rule_prime_anciennete" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime anciennete</field>
+        <field name="code">PDA</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_anciennete
+        </field>
+    </record>
+    
+    <!-- Regle de calcul Prime de rendement-->
+    <record id="hr_salary_rule_prime_rendement" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de rendement</field>
+        <field name="code">PDR</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_rendement
+        </field>
+    </record>
+    <!-- Regle de calcul gratification-->
+    <record id="hr_salary_rule_prime_gratification" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de gratification</field>
+        <field name="code">PDG</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.gratification
+        </field>
+    </record>
+
+
+
+    <!-- Regle de calcul de salaire base imposable -->
+    <record id="hr_salary_rule_employee_imposable" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Base Imposable</field>
+        <field name="code">SBI</field>
+        <field name="sequence">42</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories.PDR
+        </field>
+    </record>
+    
+
+    
 </odoo>

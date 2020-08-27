@@ -5,20 +5,28 @@
       <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
       <field name="arch" type="xml">
           <xpath expr="//sheet//notebook/page[@name='information']/group/group/field[@name='advantages']" position="after">
-              <field name="hourly_rate"/>
               <field name="sursalaire"/>
+              <field name="prime_anciennete" string="Prime Ancienneté"/>
+              <!--<field name="hourly_rate"/>-->
           </xpath>
           
-          <xpath expr="//group[@name='salary_and_advantages']" position="after">
-              <group string="Employee Costs" groups="hr.group_hr_manager">
-              </group>
-              
-              <group string="Diverses Primes">
+          <xpath expr="//group[@name='salary_and_advantages']" position="after">              
+              <group string="Primes et gratification">
                   <field name="prime_responsabilite"/>
+                  <field name="prime_transport"/>
+                  <field name="prime_rendement"/>
                   <field name="prime_communication"/>
+                  <field name="gratification"/>
               </group>
-              
-              <group string="Yearly Advantages" name="yearly_advantages"></group>
+              <group string="Employee Costs">
+                  
+                  <field name="salaire_brut" string="Slaire brut"/>
+              </group>
+              <group string="Indemnité forfaitaires" name="yearly_advantages">
+                  <field name="prime_logement" string="indemnité de logement"/>
+                  <field name="indemnite_transport" string="Indemnité de Transport"/>
+                  <field name="autres_avantages" string="Autre Avantages"/>
+              </group>
           </xpath>
           
       </field>
