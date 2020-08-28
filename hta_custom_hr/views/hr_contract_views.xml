@@ -6,7 +6,7 @@
       <field name="arch" type="xml">
           <xpath expr="//sheet//notebook/page[@name='information']/group/group/field[@name='advantages']" position="after">
               <field name="sursalaire"/>
-              <field name="prime_anciennete" string="Prime Ancienneté"/>
+              <!--<field name="prime_anciennete" string="Prime Ancienneté"/>-->
               <!--<field name="hourly_rate"/>-->
           </xpath>
           
