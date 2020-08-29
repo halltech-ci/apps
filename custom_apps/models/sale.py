@@ -60,3 +60,11 @@ class SaleOrder(models.Model):
             vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
         result = super(SaleOrder, self).create(vals)
         return result
+    
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+
+    #sale order disable inventory check
+    @api.onchange('product_uom_qty', 'product_uom', 'route_id')
+    def _onchange_product_id_check_availability(self):
+        return {}
