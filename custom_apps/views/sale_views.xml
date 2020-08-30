@@ -15,12 +15,19 @@
           <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
             <field name="sale_order_recipient"/>
             <field name='project_code'/>
+              <field name='tax_id' options="{'no_create': True}" />
           </xpath>
           <!--Insert projet_id in sale quotation -->
           <xpath expr="//sheet/group/group" position="inside">
             <field name="project_id"/>
             <field name="sale_order_type"/>
             <field name="client_order_ref"/>
+          </xpath>
+          
+          <xpath expr="//sheet/notebook/page/group[@name='sale_total']/field[@name='amount_untaxed']" position="after">
+            <field name="discount_rate"/>
+            <field name="discount_amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+            <field name="amount_with_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
           </xpath>
       </field>
     </record>
