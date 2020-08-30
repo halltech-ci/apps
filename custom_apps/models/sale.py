@@ -31,6 +31,7 @@ _SALE_ORDER_DOMAINE = [('fm', 'FABRICATION MECANIQUE'),
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    '''
     @api.depends('order_line.price_total', 'discount_rate', 'tax_id.amount')
     def _amount_all(self):
         """
@@ -50,7 +51,7 @@ class SaleOrder(models.Model):
                 'discount_amount': discount_amount,
                 'amount_with_discount': amount_with_discount
             })
-
+    '''
     
     project_id = fields.Many2one("project.project", "Project", ondelete= "cascade")
     project_code = fields.Char("Code Projet", related='project_id.project_code')
