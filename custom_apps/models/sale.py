@@ -60,12 +60,12 @@ class SaleOrder(models.Model):
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine",
                                  required=True, index=True, default='fm')
     discount_rate = fields.Float(string='Discount (%)', digits=dp.get_precision('Discount'), default=0.0)
-    amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, readonly=True, compute='_amount_all', track_visibility='always')
-    discount_amount = fields.Monetary(string='Discount Amount', store=True, readonly=True, compute='_amount_all', track_visibility='always')
-    amount_tax = fields.Monetary(string='Taxes', store=True, readonly=True, compute='_amount_all')
+    #amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, readonly=True, compute='_amount_all', track_visibility='always')
+    #discount_amount = fields.Monetary(string='Discount Amount', store=True, readonly=True, compute='_amount_all', track_visibility='always')
+    #amount_tax = fields.Monetary(string='Taxes', store=True, readonly=True, compute='_amount_all')
     tax_id = fields.Many2one('account.tax', string='Taxes', default=lambda self:self.env['account.tax'].search([('type_tax_use', '=', 'sale')], limit=1))
-    amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all')
-    amount_with_discount = fields.Monetary(string='Amount with discount', store=True, readonly=True, compute='_amount_all')
+    #amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all')
+    #amount_with_discount = fields.Monetary(string='Amount with discount', store=True, readonly=True, compute='_amount_all')
     #Override create methode to add multiple sequencec
     
     @api.model
@@ -91,6 +91,9 @@ class SaleOrder(models.Model):
     
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
+    
+    
+    tax_id = fields.Many2one('account.tax', string='Taxes', related="order_id.tax_id")
 
     #sale order disable inventory check
     @api.onchange('product_uom_qty', 'product_uom')

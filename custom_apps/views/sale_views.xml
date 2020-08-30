@@ -23,11 +23,19 @@
             <field name="sale_order_type"/>
             <field name="client_order_ref"/>
           </xpath>
-          
+          <!--
           <xpath expr="//sheet/notebook/page/group[@name='sale_total']/field[@name='amount_untaxed']" position="after">
             <field name="discount_rate"/>
             <field name="discount_amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
             <field name="amount_with_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+          </xpath>
+          -->
+          <xpath expr="//sheet/notebook/page/field[@name='order_line']/form/group/group[2]/field[@name='tax_id']" position="replace">
+              <field name="tax_id" invisible='1'/>
+          </xpath>
+          
+          <xpath expr="//sheet/notebook/page/field[@name='order_line']/tree/field[@name='tax_id']" position="replace">
+              <field name="tax_id" invisible='1'/>
           </xpath>
       </field>
     </record>
