@@ -22,7 +22,7 @@
     # any module necessary for this one to work correctly
     'depends': ['base',
                'hr_payroll',
-               'hr_timesheet_sheet',
+               #'hr_timesheet_sheet',
                ],
 
     # always loaded
@@ -31,7 +31,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/hr_employee_views.xml',
-        'views/hr_payslip_views.xml',
+        #'views/hr_payslip_views.xml',
         'report/report_hta_payslip_template.xml',
         'report/bulletin_paye_report.xml',
         'views/hr_contract_views.xml',
