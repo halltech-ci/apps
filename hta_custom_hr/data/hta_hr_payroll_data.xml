@@ -17,10 +17,16 @@
         <field name="name">BASE</field>
         <field name="code">BASIC</field>
     </record>-->
+    
     <!-- CATEGORIE RETENUES-->
     <record id="hr_payroll_retenue_salary" model="hr.salary.rule.category">
         <field name="name">Retenues</field>
         <field name="code">RET</field>
+    </record>
+    <!-- CATEGORIE RETENUES FISCALES-->
+    <record id="hr_payroll_retenue_fiscale" model="hr.salary.rule.category">
+        <field name="name">Retenues Fiscales</field>
+        <field name="code">RFISC</field>
     </record>
     
     <record id="hr_payroll_variable_salary" model="hr.salary.rule.category">
@@ -41,6 +47,11 @@
     <record id="hr_payroll_prime_salary" model="hr.salary.rule.category">
         <field name="name">Primes</field>
         <field name="code">PRIME</field>
+    </record>
+    <!--Categorie retenues sociale-->
+    <record id="hr_payroll_retenue_social" model="hr.salary.rule.category">
+        <field name="name">Retenues Sociales</field>
+        <field name="code">SOCIAL</field>
     </record>
 
 <!-- Regle de calcul salaire Brut -->
@@ -227,7 +238,7 @@ result = SBRUT + PDA
     
     <!-- Regle de calcul impot sur salaire -->
     <record id="hr_salary_rule_impot_salaire" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_retenue_salary"/> 
+        <field name="category_id" ref="hr_payroll_retenue_fiscale"/> 
         <field name="name">Impot sur salaire</field>
         <field name="code">IS</field>
         <field name="sequence">7</field>
@@ -252,7 +263,7 @@ result = SBRUT*80/100
     </record>
     <!-- Regle de calcul contribution national -->
     <record id="hr_salary_rule_contribution_nationale" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_retenue_salary"/> 
+        <field name="category_id" ref="hr_payroll_retenue_fiscale"/> 
         <field name="name">Contribution Nationale</field>
         <field name="code">CN</field>
         <field name="sequence">8</field>
@@ -312,7 +323,7 @@ result = RGI/employee.nbre_part
     
     <!-- Regle de calcul variable Q -->
     <record id="hr_salary_rule_igr" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_retenue_salary"/> 
+        <field name="category_id" ref="hr_payroll_retenue_fiscale"/> 
         <field name="name">Impot Général sur le Revenu</field>
         <field name="code">IGR</field>
         <field name="sequence">8</field>
@@ -355,7 +366,7 @@ result = SBI*6.3/100
     <!-- Regle de calcul regime de retraite employeur -->
     <record id="hr_salary_rule_retraite_employe" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_retenue_salary"/> 
-        <field name="name">Regime de Retraite Patronal</field>
+        <field name="name">Regime de Retraite Employe</field>
         <field name="code">RRE</field>
         <field name="sequence">8</field>
         <field name="condition_select">none</field>
@@ -440,6 +451,73 @@ result = categories.COT
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = categories.RET
+        </field>
+    </record>
+    
+    <!-- Regle de calcul prestations familiales -->
+    <record id="hr_salary_rule_prestation_familiales" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_retenue_social"/> 
+        <field name="name">Prestations Familiales</field>
+        <field name="code">PF</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+if SBRUT &gt; 70000:
+    result = 70000 * 5.75/100
+else:
+    result = SBRUT * 5.75/100
+        </field>
+    </record>
+    <!-- Regle de calcul accident de travail -->
+    <record id="hr_salary_rule_accident_travail" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_retenue_social"/> 
+        <field name="name">Accident de Travail</field>
+        <field name="code">AT</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+if SBRUT &gt; 70000:
+    result = 70000 * 0.04
+else:
+    result = SBRUT * 0.04
+        </field>
+    </record>
+    <!-- Regle de calcul total des retenues sociales -->
+    <record id="hr_salary_rule_total_social" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL DES RETENUES SOCIALES</field>
+        <field name="code">TSOCIAL</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories.SOCIAL
+        </field>
+    </record>
+    <!-- Regle de calcul total des retenues sociales -->
+    <record id="hr_salary_rule_total_retenue_fiscale" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL DES RETENUES FISCALES</field>
+        <field name="code">TFISC</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories.RFISC
+        </field>
+    </record>
+    <!-- Regle de calcul salaire net -->
+    <record id="hr_salary_rule_net_salary" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">SALAIRE NET</field>
+        <field name="code">SNET</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SBI - TFISC - RRE - CMUE
         </field>
     </record>
 </odoo>
