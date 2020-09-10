@@ -453,6 +453,21 @@ result = categories.COT
 result = categories.RET
         </field>
     </record>
+    <!-- Regle de calcul de la base sociale -->
+    <record id="hr_salary_rule_base_sociale" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">BASE SOCIALE</field>
+        <field name="code">BSO</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+if SBRUT &gt; 70000:
+    result = 70000
+else:
+    result = SBRUT
+        </field>
+    </record>
     
     <!-- Regle de calcul prestations familiales -->
     <record id="hr_salary_rule_prestation_familiales" model="hr.salary.rule">
@@ -463,10 +478,7 @@ result = categories.RET
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-if SBRUT &gt; 70000:
-    result = 70000 * 5.75/100
-else:
-    result = SBRUT * 5.75/100
+result = BSO*5.75/100
         </field>
     </record>
     <!-- Regle de calcul accident de travail -->
@@ -478,10 +490,7 @@ else:
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-if SBRUT &gt; 70000:
-    result = 70000 * 0.04
-else:
-    result = SBRUT * 0.04
+result = BSO*4/100
         </field>
     </record>
     <!-- Regle de calcul total des retenues sociales -->

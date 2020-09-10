@@ -8,119 +8,440 @@
                      <div class="page">
                         <div class="oe_structure"/>
                         <div class="row">
-                            <table class="table table-condensed">
+                            <table class="table table-condensed table-bordered">
                                 <tbody>
-                                    <tr>
-                                        <td><span>BULLETIN DE PAIE</span></td>
-                                        <td>
-                                            <span>Du :</span>
-                                            <span t-field="o.date_from"/>
-                                            <span>au </span>
-                                            <span t-field="o.date_to"/>
-                                        </td>
-                                        <td>
-                                            <span>Date de paie:</span>   
-                                        </td>
+                                    <t t-value="get_payslip_lines(o.line_ids)" t-set="lines"/>
+                                    <tr style="border: 1px solid black">
+                                        <td colspan="3">BULLETIN DE PAIE</td>
+                                        <td colspan="3">Periode du ....... au .......</td>
+                                        <td colspan="3">Paiement le : ........ Par ......</td>
                                     </tr>
+                                    <tr style="border: 1px solid black">
+                                        <td colspan="3" rowspan='3'>LOGO</td>
+                                        <td>Matricule</td>
+                                        <td>Niveau</td>
+                                        <td>Coefficient</td>
+                                        <td>Indice</td>
+                                        <td>Anciennete</td>
+                                        <td>N° CNPS</td>
+                                    </tr>
+                                    <tr style="border: 1px solid black">
+                                        <td colspan="2">Catgorie</td>
+                                        <td colspan="2">Emploi Occupé</td>
+                                        <td colspan="2">Départment</td>
+                                    </tr>
+                                    <tr style="border: 1px solid black">
+                                        <td colspan="2">Qualification</td>
+                                        <td colspan="1">Horaire</td>
+                                        <td colspan="3">Convention Collective Inter professionnel</td>
+                                    </tr>
+                                    <tr style="border: 1px solid black">
+                                        <td colspan="2" rowspan='2'>Congés</td>
+                                        <td>Acquis</td>
+                                        <td colspan="2">Reste à prendre</td>
+                                        <td>Pris</td>
+                                        <td colspan='3'></td>
+                                    </tr>
+                                    <tr style="border: 1px solid black">
+                                        <td>0.0</td>
+                                        <td colspan="2">0.0</td>
+                                        <td>0.0</td>
+                                        <td colspan='3'></td>
+                                    </tr>
+                                    <tr style="border: 1px solid black">
+                                        <td colspan="2">Date de congés:</td>
+                                        <td>Du ........ au .......</td>
+                                        <td colspan="2">Du ........ au .......</td>
+                                        <td>Du ........ au .......</td>
+                                        <td colspan='3'></td>
+                                    </tr>
+                                    
                                 </tbody>
                             </table>
-                            <div class="row">
-                                <div class="col-xs-8 pull-right">
-                                    <table class="table table-condensed table-bordered" style="border: 1px solid black">
-                                        <thead style="border: 1px solid black">
-                                            <tr style="border: 1px solid black">
-                                                <th class="text-center" colspan="4">
-                                                    <span>Monsieur/Madame:</span>
-                                                    <span t-field="o.employee_id.name"/>
-                                                </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody style="border: 1px solid black">
-                                            <tr style="border: 1px solid black">
-                                                <td class="text-left"><span><strong>Position:</strong></span></td>
-                                                <td class="text-left"><span t-field="o.employee_id.marital"/></td>
-                                                <td class="text-left"><span><strong>Taux Horaire:</strong></span></td>
-                                                <td class="text-left"><span t-field="o.contract_id.hourly_rate"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-left"><span><strong>Matricule:</strong></span></td>
-                                                <td class="text-left"><span t-field="o.employee_id.matricule"/></td>
-                                                <td class="text-left"><span><strong>Niveau:</strong></span></td>
-                                                <td class="text-left"><span></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-left"><span><strong>Emploi:</strong></span></td>
-                                                <td class="text-left"><span t-field="o.employee_id.job_id.name"/></td>
-                                                <td class="text-left"><span><strong>Echelon:</strong></span></td>
-                                                <td class="text-left"><span></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-left"><span><strong>Categorie:</strong></span></td>
-                                                <td class="text-left"></td>
-                                                <td class="text-left"><span><strong>Qualififation:</strong></span></td>
-                                                <td class="text-left"><span></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-left"><span><strong>N° CNPS:</strong></span></td>
-                                                <td class="text-left"><span t-field="o.employee_id.ssnid"/></td>
-                                                <td class="text-left"><span><strong>Service:</strong></span></td>
-                                                <td class="text-left"><span t-field="o.employee_id.department_id.name"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-left"><span><strong>RIB:</strong></span></td>
-                                                <td class="text-left"><span/></td>
-                                                <td class="text-left"><span><strong>Banque:</strong></span></td>
-                                                <td class="text-left"><span t-field="o.employee_id.bank_account_id"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-xs-4 pull-left">
-                                    <span>LOGO</span>
-                                </div>
-                            </div>
-                            <div></div>
                             <table class="table table-condensed table-bordered">
-                                <thead>
-                                    <tr style="border: 1px solid black">
-                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Rubriques</th>
-                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Salaire de Base</th>
-                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Taux(%)</th>
-                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Gains</th>
-                                        <th class="text-center" rowspan="2" style="border: 1px solid black">Retenues</th>
-                                        <th class="text-center" colspan="2" style="border: 1px solid black">Cotisations patronales</th>
-                                    </tr>
-                                    <tr style="border: 1px solid black">
-                                        <td class="text-center" style="border: 0.5px solid black">Taux(%)</td>
-                                        <td class="text-center" style="border: 0.5px solid black">Montant</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-foreach="get_payslip_lines(o.line_ids)" t-as="p">
-                                        <tr t-if="p.code=='BASIC'" style="border: 1px solid black">
-                                            <td style="border: 1px solid black"><strong><span t-esc="p.name"/></strong></td>
-                                            <td style="border: 1px solid black">
-                                                <t t-if="p.code=='TH'">
-                                                    <span t-esc="p.amount"/>
-                                                </t>
-                                            </td>    
-                                            <td style="border: 1px solid black"></td>
-                                            <td style="border: 1px solid black"></td>
-                                            <td style="border: 1px solid black"></td>
-                                            <td style="border: 1px solid black"></td>
-                                            <td style="border: 1px solid black"></td>
-                                        </tr>
-                                        <tr t-if="p.code !='BASIC'">
-                                            <td><span t-esc="p.name"/></td>
-                                            <td ></td>
-                                            <td></td>
-                                            <td><span t-esc="p.amount"/></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </t>
-                                </tbody>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center' rowspan="2">N°</td>
+                                    <td class='text-center' rowspan="2" colspan="3">Rubrique</td>
+                                    <td class='text-center' rowspan="2">Base</td>
+                                    <td class='text-center' colspan="3">Part Salariale</td>
+                                    <td class='text-center' colspan="2">Cotisations Patronales</td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>Taux</td>
+                                    <td class='text-center'>Gain</td>
+                                    <td class='text-center'>Retenues</td>
+                                    <td class='text-center'>Taux</td>
+                                    <td class='text-center'>Montant</td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>230</td>
+                                    <td class='text-left' colspan="3">Indemnité compensatrice préavis</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>240</td>
+                                    <td class='text-left' colspan="3">INDEMNITE DE LICENCIEMENT</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>230</td>
+                                    <td class='text-left' colspan="3">Salaire de base</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>230</td>
+                                    <td class='text-left' colspan="3">Sursalaire</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>252</td>
+                                    <td class='text-left' colspan="3">Indemnité de congés</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Gratification/Départ</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Prime de responsabilité</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Prime de communication</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Prime de transport</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Prime de logement</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Autres avantages</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">SALAIRE BRUT</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Prime ancienneté</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">SALAIRE BRUT IMPOSABLE</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>SBI</td>
+                                    <td></td>
+                                    <td></td>
+                                    
+                                    
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Regime de retraite</td>
+                                    <td>SBI</td>
+                                    <td>6.3</td>
+                                    <td></td>
+                                    <td>Valeur</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Prestations Familiales</td>
+                                    <td>BSO</td>
+                                    <td>7.75%</td>
+                                    <td></td>
+                                    <td>PF</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Accident de Travail</td>
+                                    <td>BSO</td>
+                                    <td>4%</td>
+                                    <td></td>
+                                    <td>AT</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">TOTAL DES RETENUES SOCIALES</td>
+                                    <td>BSO</td>
+                                    <td>6.3</td>
+                                    <td></td>
+                                    <td>TSOCIAL</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Assurance Maladie CMU</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>CMUE</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>CMUP</td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Impots Sur Salaire (IS)</td>
+                                    <td>SBI</td>
+                                    <td>1.2</td>
+                                    <td></td>
+                                    <td>IS</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Contribution Nationale (CN)</td>
+                                    <td>SBI</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>CN</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Impot General Sur le Revenu (IGR)</td>
+                                    <td>SBI</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>IGR</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">TOTAL DES RETENUES FISCALES</td>
+                                    <td>SBI</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>TFISC</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Formation Continue</td>
+                                    <td>SBRUT</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>0.6</td>
+                                    <td>FC</td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Taxe Apprentissage</td>
+                                    <td>SBRUT</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>0.4</td>
+                                    <td>TA</td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">TOTAL DES COTISATIONS</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>TRET</td>
+                                    <td></td>
+                                    <td>TCOTPA</td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">SALAIRE NET</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>SNET</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Indemnité de transport</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>ITR</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">Avances et Acompte perçus</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>AVS</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center'>318</td>
+                                    <td class='text-left' colspan="3">NET A PAYER</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>NAP</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr></tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-center' colspan='4'><strong>CUMULS</strong></td>
+                                    <td class='text-center'><strong>ANNEE</strong></td>
+                                    <td class='text-center'><strong>PERIODE</strong></td>
+                                    <td colspan="2" class='text-center'><strong>CONGES PAYES</strong></td>
+                                    <td colspan="2" class='text-center'><strong>CHARGES PATRONALES</strong></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-left' colspan='4'>Heures travaillées:</td>
+                                    <td></td>
+                                    <td>173.33</td>
+                                    <td colspan="2">Acquis N-1:</td>
+                                    <td colspan="2">Total patronal</td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-left' colspan='4'>Salaire Brut:</td>
+                                    <td></td>
+                                    <td>SBRUT</td>
+                                    <td colspan="2">Pris:</td>
+                                    <td colspan="2" class='text-center'><strong>NET A PAYER</strong></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-left' colspan='4'>Cotisations Salarié:</td>
+                                    <td></td>
+                                    <td>COTS</td>
+                                    <td colspan="2">Reste</td>
+                                    <td colspan="2" rowspan="2"></td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class='text-left' colspan='4'>Salaire Net:</td>
+                                    <td></td>
+                                    <td>SNET</td>
+                                    <td colspan="2">Acquis N</td>
+                                </tr>
+                                <tr></tr>
+                                <tr>
+                                    <td colspan='10'><h5>DANS VOTRE INTERET ET POUR VOUS AIDER A FAIRE VALOIR VOS DROITS, CONSERVEZ
+                                        CE BULLETIN DE PAIE SANS LIMITATION DE DUREE</h5>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                      </div>
