@@ -8,57 +8,71 @@
                      <div class="page">
                         <div class="oe_structure"/>
                         <div class="row">
-                            <table class="table table-condensed table-bordered">
+                            <table class="table table-condensed">
                                 <tbody>
-                                    <t t-value="get_payslip_lines(o.line_ids)" t-set="lines"/>
-                                    <tr style="border: 1px solid black">
-                                        <td colspan="3">BULLETIN DE PAIE</td>
-                                        <td colspan="3">Periode du ....... au .......</td>
-                                        <td colspan="3">Paiement le : ........ Par ......</td>
+                                    <tr>
+                                        <td><span>BULLETIN DE PAIE</span></td>
+                                        <td>
+                                            <span>Du :</span>
+                                            <span t-field="o.date_from"/>
+                                            <span>au </span>
+                                            <span t-field="o.date_to"/>
+                                        </td>
+                                        <td>
+                                            <span>Date de paie:</span>   
+                                        </td>
                                     </tr>
-                                    <tr style="border: 1px solid black">
-                                        <td colspan="3" rowspan='3'>LOGO</td>
-                                        <td>Matricule</td>
-                                        <td>Niveau</td>
-                                        <td>Coefficient</td>
-                                        <td>Indice</td>
-                                        <td>Anciennete</td>
-                                        <td>N° CNPS</td>
-                                    </tr>
-                                    <tr style="border: 1px solid black">
-                                        <td colspan="2">Catgorie</td>
-                                        <td colspan="2">Emploi Occupé</td>
-                                        <td colspan="2">Départment</td>
-                                    </tr>
-                                    <tr style="border: 1px solid black">
-                                        <td colspan="2">Qualification</td>
-                                        <td colspan="1">Horaire</td>
-                                        <td colspan="3">Convention Collective Inter professionnel</td>
-                                    </tr>
-                                    <tr style="border: 1px solid black">
-                                        <td colspan="2" rowspan='2'>Congés</td>
-                                        <td>Acquis</td>
-                                        <td colspan="2">Reste à prendre</td>
-                                        <td>Pris</td>
-                                        <td colspan='3'></td>
-                                    </tr>
-                                    <tr style="border: 1px solid black">
-                                        <td>0.0</td>
-                                        <td colspan="2">0.0</td>
-                                        <td>0.0</td>
-                                        <td colspan='3'></td>
-                                    </tr>
-                                    <tr style="border: 1px solid black">
-                                        <td colspan="2">Date de congés:</td>
-                                        <td>Du ........ au .......</td>
-                                        <td colspan="2">Du ........ au .......</td>
-                                        <td>Du ........ au .......</td>
-                                        <td colspan='3'></td>
-                                    </tr>
-                                    
                                 </tbody>
                             </table>
-                            <table class="table table-condensed table-bordered">
+                            <table class="table-sm table-condensed table-bordered">
+                                <tr style="border: 1px solid black">
+                                    <td class="text-center" colspan="4" rowspan="8">
+                                        <span>LOGO</span>
+                                    </td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class="text-center" colspan="6">
+                                        <span>Monsieur/Madame:</span>
+                                        <span t-field="o.employee_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr style="border: 1px solid black">
+                                    <td class="text-left"><span><strong>Position:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span t-field="o.employee_id.marital"/></td>
+                                    <td class="text-left"><span><strong>Taux Horaire:</strong></span></td>
+                                    <td colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left"><span><strong>Matricule:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span t-field="o.employee_id.matricule"/></td>
+                                    <td class="text-left"><span><strong>Niveau:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left"><span><strong>Emploi:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span t-field="o.employee_id.job_id.name"/></td>
+                                    <td class="text-left"><span><strong>Echelon:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left"><span><strong>Categorie:</strong></span></td>
+                                    <td class="text-left" colspan="2"></td>
+                                    <td class="text-left"><span><strong>Qualififation:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left"><span><strong>N° CNPS:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span t-field="o.employee_id.ssnid"/></td>
+                                    <td class="text-left"><span><strong>Service:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span t-field="o.employee_id.department_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left"><span><strong>RIB:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span/></td>
+                                    <td class="text-left"><span><strong>Banque:</strong></span></td>
+                                    <td class="text-left" colspan="2"><span t-field="o.employee_id.bank_account_id"/></td>
+                                </tr>
+
                                 <tr style="border: 1px solid black">
                                     <td class='text-center' rowspan="2">N°</td>
                                     <td class='text-center' rowspan="2" colspan="3">Rubrique</td>
@@ -438,8 +452,8 @@
                                 </tr>
                                 <tr></tr>
                                 <tr>
-                                    <td colspan='10'><h5>DANS VOTRE INTERET ET POUR VOUS AIDER A FAIRE VALOIR VOS DROITS, CONSERVEZ
-                                        CE BULLETIN DE PAIE SANS LIMITATION DE DUREE</h5>
+                                    <td colspan='10' style="font-size:10px;"><span><strong>DANS VOTRE INTERET ET POUR VOUS AIDER A FAIRE VALOIR VOS DROITS, CONSERVEZ
+                                        CE BULLETIN DE PAIE SANS LIMITATION DE DUREE</strong></span>
                                     </td>
                                 </tr>
                             </table>
