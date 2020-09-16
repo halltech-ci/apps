@@ -31,6 +31,7 @@ class HrContract(models.Model):
     autres_avantages = fields.Monetary(string="Autres Avantages")
     conges_payes = fields.Monetary(string="Congés Payés")
     salaire_brut = fields.Monetary(string="Salary Cost")
+    avs = fields.Monetary(string="Avances et  Acomptes perçus")
     
     
     """

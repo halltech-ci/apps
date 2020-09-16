@@ -8,23 +8,24 @@
                      <div class="page">
                         <div class="oe_structure"/>
                         <div class="row">
-                            <table class="table table-condensed">
+                            <table class="table table-condensed table-bordered">
                                 <tbody>
                                     <tr>
-                                        <td><span>BULLETIN DE PAIE</span></td>
-                                        <td>
+                                        <td colspan="4" class="text-center"><span>BULLETIN DE PAIE</span></td>
+                                        <td colspan="4">
                                             <span>Du :</span>
                                             <span t-field="o.date_from"/>
                                             <span>au </span>
                                             <span t-field="o.date_to"/>
                                         </td>
-                                        <td>
+                                        <td colspan="2" class="text-left">
                                             <span>Date de paie:</span>   
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                             <table class="table-sm table-condensed table-bordered">
+                                <t t-set="lines" t-value="parse_payslip_lines(o)"/>
                                 <tr style="border: 1px solid black">
                                     <td class="text-center" colspan="4" rowspan="8">
                                         <span>LOGO</span>
@@ -40,7 +41,7 @@
                                     <td class="text-left"><span><strong>Position:</strong></span></td>
                                     <td class="text-left" colspan="2"><span t-field="o.employee_id.marital"/></td>
                                     <td class="text-left"><span><strong>Taux Horaire:</strong></span></td>
-                                    <td colspan="2"></td>
+                                    <td colspan="2" class="text-center"><span t-esc="lines.get('TH')[1]"/></td>
                                 </tr>
                                 <tr>
                                     <td class="text-left"><span><strong>Matricule:</strong></span></td>
@@ -96,8 +97,6 @@
                                     <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>240</td>
@@ -108,32 +107,26 @@
                                     <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>230</td>
                                     <td class='text-left' colspan="3">Salaire de base</td>
                                     <td></td>
                                     <td></td>
+                                    <td class="text-right"><span t-esc="lines.get('BASIC')[1]"/></td>
                                     <td></td>
-                                    <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>230</td>
                                     <td class='text-left' colspan="3">Sursalaire</td>
                                     <td></td>
                                     <td></td>
+                                     <td class="text-center"><span t-esc="lines.get('SS')[1]"/></td>
                                     <td></td>
-                                    <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>252</td>
@@ -143,69 +136,57 @@
                                     <td></td>
                                     <td>Valeur</td>
                                     <td></td>
-                                    <td></td>
-                                    
-                                    
+                                    <td></td> 
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Gratification/Départ</td>
                                     <td></td>
                                     <td></td>
+                                    <td>0.0</td>
                                     <td></td>
-                                    <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Prime de responsabilité</td>
                                     <td></td>
                                     <td></td>
+                                    <td class="text-right"><span t-esc="lines.get('PDR')[1]"/></td>
                                     <td></td>
-                                    <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Prime de communication</td>
                                     <td></td>
                                     <td></td>
+                                    <td class="text-right"><span t-esc="lines.get('PDC')[1]"/></td>
                                     <td></td>
-                                    <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Prime de transport</td>
                                     <td></td>
                                     <td></td>
+                                    <td class="text-right"><span t-esc="lines.get('PDTR')[1]"/></td>
                                     <td></td>
-                                    <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Prime de logement</td>
                                     <td></td>
                                     <td></td>
+                                     <td class="text-right"><span t-esc="lines.get('PDL')[1]"/></td>
                                     <td></td>
-                                    <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
@@ -213,22 +194,19 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td>Valeur</td>
+                                    <td class="text-right">0.0</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">SALAIRE BRUT</td>
                                     <td></td>
                                     <td></td>
+                                    <td class="text-right"><span t-esc="lines.get('SBRUT')[1]"/></td>
                                     <td></td>
-                                    <td>Valeur</td>
                                     <td></td>
                                     <td></td>
-                                    
                                     
                                 </tr>
                                 <tr style="border: 1px solid black">
@@ -236,134 +214,130 @@
                                     <td class='text-left' colspan="3">Prime ancienneté</td>
                                     <td></td>
                                     <td></td>
+                                    <td class="text-right"><span t-esc="lines.get('PDA')[1]"/></td>              
+                                    <td></td>    
                                     <td></td>
-                                    <td>Valeur</td>
                                     <td></td>
-                                    <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">SALAIRE BRUT IMPOSABLE</td>
                                     <td></td>
                                     <td></td>
+                                    <td class="text-right"><span t-esc="lines.get('SBI')[1]"/></td>
                                     <td></td>
-                                    <td>SBI</td>
                                     <td></td>
                                     <td></td>
-                                    
-                                    
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Regime de retraite</td>
-                                    <td>SBI</td>
-                                    <td>6.3</td>
+                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]"/></td>
+                                    <td class="text-center">6,3</td>
                                     <td></td>
-                                    <td>Valeur</td>
-                                    <td></td>
-                                    <td></td>
+                                    <td class="text-right"><span t-esc="lines.get('RRE')[1]"/></td>
+                                    <td class="text-center">7,7</td>
+                                    <td class="text-right"><span t-esc="lines.get('RRP')[1]"/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Prestations Familiales</td>
-                                    <td>BSO</td>
-                                    <td>7.75%</td>
-                                    <td></td>
-                                    <td>PF</td>
+                                    <td class="text-center"><span t-esc="lines.get('BSO')[1]"/></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td class="text-center"><span>5,75</span></td>
+                                    <td class="text-center"><span t-esc="lines.get('PF')[1]"/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Accident de Travail</td>
-                                    <td>BSO</td>
-                                    <td>4%</td>
-                                    <td></td>
-                                    <td>AT</td>
+                                    <td class="text-center"><span t-esc="lines.get('BSO')[1]"/></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td class="text-center">4</td>
+                                    <td class="text-center"><span t-esc="lines.get('AT')[1]"/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">TOTAL DES RETENUES SOCIALES</td>
-                                    <td>BSO</td>
-                                    <td>6.3</td>
-                                    <td></td>
-                                    <td>TSOCIAL</td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('RRE')[1]"/></td>
+                                    <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('TSOCPA')[1]"/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Assurance Maladie CMU</td>
                                     <td></td>
                                     <td></td>
-                                    <td>CMUE</td>
                                     <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('CMUE')[1]"/></td>
                                     <td></td>
-                                    <td>CMUP</td>
+                                    <td class="text-center"><span t-esc="lines.get('CMUP')[1]"/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Impots Sur Salaire (IS)</td>
-                                    <td>SBI</td>
-                                    <td>1.2</td>
+                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]"/></td>
+                                    <td class="text-center">1,2</td>
                                     <td></td>
-                                    <td>IS</td>
+                                    <td class="text-center"><span t-esc="lines.get('IS')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Contribution Nationale (CN)</td>
-                                    <td>SBI</td>
+                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]"/></td>
                                     <td></td>
                                     <td></td>
-                                    <td>CN</td>
+                                    <td class="text-center"><span t-esc="lines.get('CN')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Impot General Sur le Revenu (IGR)</td>
-                                    <td>SBI</td>
+                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]"/></td>
                                     <td></td>
                                     <td></td>
-                                    <td>IGR</td>
+                                    <td class="text-center"><span t-esc="lines.get('IGR')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">TOTAL DES RETENUES FISCALES</td>
-                                    <td>SBI</td>
                                     <td></td>
                                     <td></td>
-                                    <td>TFISC</td>
+                                    <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('TFISC')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Formation Continue</td>
-                                    <td>SBRUT</td>
+                                    <td class="text-center"><span t-esc="lines.get('SBRUT')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td>0.6</td>
-                                    <td>FC</td>
+                                    <td class="text-center">0,6</td>
+                                    <td class="text-center"><span t-esc="lines.get('FC')[1]"/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Taxe Apprentissage</td>
-                                    <td>SBRUT</td>
+                                    <td class="text-center"><span t-esc="lines.get('SBRUT')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td>0.4</td>
-                                    <td>TA</td>
+                                    <td class="text-center">0,4</td>
+                                    <td class="text-center"><span t-esc="lines.get('TAPP')[1]"/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
@@ -371,16 +345,16 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td>TRET</td>
+                                    <td class="text-center"><span t-esc="lines.get('TCOTEM')[1]"/></td>
                                     <td></td>
-                                    <td>TCOTPA</td>
+                                    <td class="text-center"><span t-esc="lines.get('TCOTPA')[1]"/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">SALAIRE NET</td>
                                     <td></td>
                                     <td></td>
-                                    <td>SNET</td>
+                                    <td class="text-center"><span t-esc="lines.get('SNET')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -390,7 +364,7 @@
                                     <td class='text-left' colspan="3">Indemnité de transport</td>
                                     <td></td>
                                     <td></td>
-                                    <td>ITR</td>
+                                    <td class="text-center"><span t-esc="lines.get('IDTR')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -400,7 +374,7 @@
                                     <td class='text-left' colspan="3">Avances et Acompte perçus</td>
                                     <td></td>
                                     <td></td>
-                                    <td>AVS</td>
+                                    <td class="text-center"><span t-esc="lines.get('AVS')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -410,7 +384,7 @@
                                     <td class='text-left' colspan="3">NET A PAYER</td>
                                     <td></td>
                                     <td></td>
-                                    <td>NAP</td>
+                                    <td class="text-center"><span t-esc="lines.get('NETAP')[1]"/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>

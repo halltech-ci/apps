@@ -26,7 +26,7 @@ class FichePayeParser(models.AbstractModel):
                 category_total += line.total
         return category_total
     
-    #objs represent les lignes du bulletin de paie
+    #Here obj represent payslip object
     def parse_payslip_lines(self, obj):
         code_dict = {}
         p_lines = self.env['hr.payslip'].search([('id', '=', obj.id)]).line_ids
@@ -35,7 +35,7 @@ class FichePayeParser(models.AbstractModel):
             code = line.code
             name = line.name
             val = line.amount
-            dico = {code:[name, val],}
+            dico = {code:[name, val],}#example: TH:['Taux Horaire', 177.33]
             code_dict.update(dico)
         return code_dict
         

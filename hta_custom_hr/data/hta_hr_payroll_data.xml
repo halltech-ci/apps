@@ -54,7 +54,7 @@
         <field name="code">SOCIAL</field>
     </record>
 
-<!-- Regle de calcul salaire Brut -->
+<!-- Regle de calcul salaire de Base -->
     <record id="hr_salary_rule_employee_brut" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_brut_salary"/> 
         <field name="name">Salaire de Base</field>
@@ -143,8 +143,8 @@ result = contract.prime_logement
     <!-- Regle de calcul indemnite de logement-->
     <record id="hr_salary_rule_indemnite_logement" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_prime_salary"/> 
-        <field name="name">Indemnite de logement</field>
-        <field name="code">IDL</field>
+        <field name="name">Indemnite de transport</field>
+        <field name="code">IDTR</field>
         <field name="sequence">6</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
@@ -496,13 +496,37 @@ result = BSO*4/100
     <!-- Regle de calcul total des retenues sociales -->
     <record id="hr_salary_rule_total_social" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
-        <field name="name">TOTAL DES RETENUES SOCIALES</field>
-        <field name="code">TSOCIAL</field>
+        <field name="name">TOTAL RETENUES SOCIALES PATRONALES</field>
+        <field name="code">TSOCPA</field>
         <field name="sequence">8</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.SOCIAL
+result = RRP + PF + AT
+        </field>
+    </record>
+    <!-- Regle de calcul total des cotisations patronales -->
+    <record id="hr_salary_rule_total_cotisation_patronale" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL COTISATIONS PATRONALES</field>
+        <field name="code">TCOTPA</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = TSOCPA + FC + TAPP + CMUP
+        </field>
+    </record>
+    <!-- Regle de calcul total des cotisations salarie -->
+    <record id="hr_salary_rule_total_cotisation_employe" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL COTISATIONS EMPLOYE</field>
+        <field name="code">TCOTEM</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = RRE + TFISC + CMUE
         </field>
     </record>
     <!-- Regle de calcul total des retenues sociales -->
@@ -514,7 +538,7 @@ result = categories.SOCIAL
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.RFISC
+result = IS + CN + IGR
         </field>
     </record>
     <!-- Regle de calcul salaire net -->
@@ -526,7 +550,31 @@ result = categories.RFISC
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = SBI - TFISC - RRE - CMUE
+result = SBI - RRE - TFISC - CMUE
+        </field>
+    </record>
+    <!-- Regle de calcul avance percus -->
+    <record id="hr_salary_rule_net_avs" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Avances et Acomptes perçus</field>
+        <field name="code">AVS</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.avs
+        </field>
+    </record>
+    <!-- Regle de calcul salaire net percu-->
+    <record id="hr_salary_rule_net_percu" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">SALAIRE NET A PAYER</field>
+        <field name="code">NETAP</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SNET + IDTR - AVS
         </field>
     </record>
 </odoo>
