@@ -6,7 +6,7 @@
             model="hr.payslip" 
             string="Bulletin de paie"
             report_type="qweb-pdf"
-            paperformat="paperformat_hta_custom_hr"
+            paperformat="hta_custom_hr.paperformat_hta_custom_hr"
             name="hta_custom_hr.report_hta_payslip_template" 
             file="hta_custom_hr.report_hta_payslip_template"
         />
