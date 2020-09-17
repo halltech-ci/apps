@@ -3,7 +3,7 @@
     <data>
         <report 
             id="action_report_report_hta_payslip_template" 
-            model="hr.payslip" 
+            model="report.hta_custom_hr.report_hta_payslip_template" 
             string="Bulletin de paie"
             report_type="qweb-pdf"
             paperformat="hta_custom_hr.paperformat_hta_custom_hr"
