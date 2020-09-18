@@ -8,24 +8,20 @@
                      <div class="page">
                         <div class="oe_structure"/>
                         <div class="row">
-                            <table class="table table-condensed table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <td colspan="4" class="text-center"><span>BULLETIN DE PAIE</span></td>
-                                        <td colspan="4">
-                                            <span>Du :</span>
-                                            <span t-field="o.date_from"/>
-                                            <span>au </span>
-                                            <span t-field="o.date_to"/>
-                                        </td>
-                                        <td colspan="2" class="text-left">
-                                            <span>Date de paie:</span>   
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
                             <table class="table-sm table-condensed table-bordered">
                                 <t t-set="lines" t-value="parse_payslip_lines(o)"/>
+                                <tr>
+                                    <td colspan="4" class="text-center"><span>BULLETIN DE PAIE</span></td>
+                                    <td colspan="4">
+                                        <span>Du :</span>
+                                        <span t-field="o.date_from"/>
+                                        <span>au </span>
+                                        <span t-field="o.date_to"/>
+                                    </td>
+                                    <td colspan="2" class="text-left">
+                                        <span>Date de paie:</span>   
+                                    </td>
+                                </tr>
                                 <tr style="border: 1px solid black">
                                     <td class="text-center" colspan="4" rowspan="8">
                                         <span>LOGO</span>
@@ -424,13 +420,8 @@
                                     <td>SNET</td>
                                     <td colspan="2">Acquis N</td>
                                 </tr>
-                                <tr></tr>
-                                <tr>
-                                    <td colspan='10' style="font-size:10px;"><span><strong>DANS VOTRE INTERET ET POUR VOUS AIDER A FAIRE VALOIR VOS DROITS, CONSERVEZ
-                                        CE BULLETIN DE PAIE SANS LIMITATION DE DUREE</strong></span>
-                                    </td>
-                                </tr>
                             </table>
+                            <p class="mt32">DANS VOTRE INTERET ET POUR VOUS AIDER A FAIRE VALOIR VOS DROITS, CONSERVEZ CE BULLETIN DE PAIE SANS LIMITATION DE DUREE</p>
                         </div>
                      </div>
                  </t>

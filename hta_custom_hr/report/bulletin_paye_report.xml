@@ -6,11 +6,10 @@
             model="report.hta_custom_hr.report_hta_payslip_template" 
             string="Bulletin de paie"
             report_type="qweb-pdf"
-            paperformat="hta_custom_hr.paperformat_hta_custom_hr"
             name="hta_custom_hr.report_hta_payslip_template" 
             file="hta_custom_hr.report_hta_payslip_template"
         />
-        
+        <!--
         <record id="paperformat_hta_custom_hr" model="report.paperformat">
             <field name="name">Payslip</field>
             <field name="default" eval="False"/>
@@ -26,5 +25,6 @@
             <field name="header_spacing">15</field>
             <field name="dpi">90</field>
         </record>
+        -->
     </data>
 </odoo>
