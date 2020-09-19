@@ -219,7 +219,7 @@ result = contract.gratification
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = (BASIC + SS + PDR + PDL + PDC)/173.33
+result = (BASIC )/173.33
         </field>
     </record>
 
@@ -514,7 +514,7 @@ result = RRP + PF + AT
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = TSOCPA + FC + TAPP + CMUP
+result = TSOCPA + FC + TAPP + CMUP + IS
         </field>
     </record>
     <!-- Regle de calcul total des cotisations salarie -->
@@ -526,7 +526,7 @@ result = TSOCPA + FC + TAPP + CMUP
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = RRE + TFISC + CMUE
+result = RRP + IS + CN + IGR + CMUE
         </field>
     </record>
     <!-- Regle de calcul total des retenues sociales -->
@@ -550,7 +550,7 @@ result = IS + CN + IGR
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = SBI - RRE - TFISC - CMUE
+result = SBI - RRP - TFISC - CMUE
         </field>
     </record>
     <!-- Regle de calcul avance percus -->

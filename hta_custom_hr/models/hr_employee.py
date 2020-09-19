@@ -23,6 +23,9 @@ class HrEmployee(models.Model):
                 rec.seniority = int(age.days/366)
             else:
                 rec.seniority = 0
+                
+    def _get_overtime(self, date_from, date_to):
+        pass
 
     
     
