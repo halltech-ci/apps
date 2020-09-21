@@ -261,7 +261,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('RRP')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('RRE')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
                                     <td></td>
                                     <td class="text-center"><strong><span t-esc="lines.get('TSOCPA')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
                                 </tr>
@@ -313,7 +313,7 @@
                                     <td></td>
                                     <td class="text-center"><strong><span t-esc="lines.get('TFISC')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
                                     <td></td>
-                                    <td></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('IS')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>

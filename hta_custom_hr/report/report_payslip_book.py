@@ -14,4 +14,8 @@ class ReportPayslipBook(models.AbstractModel):
     _description="Payslip reporting book"
     
     
+    def _get_employee_slips_lines(self, slip_id, employee_id):
+        pass
+    
+    
     

@@ -541,18 +541,6 @@ result = RRP + PF + AT
 result = TSOCPA + FC + TAPP + CMUP + IS
         </field>
     </record>
-    <!-- Regle de calcul total des cotisations salarie -->
-    <record id="hr_salary_rule_total_cotisation_employe" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
-        <field name="name">TOTAL COTISATIONS EMPLOYE</field>
-        <field name="code">TCOTEM</field>
-        <field name="sequence">8</field>
-        <field name="condition_select">none</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">
-result = RRP + IS + CN + IGR + CMUE
-        </field>
-    </record>
     <!-- Regle de calcul total des retenues sociales -->
     <record id="hr_salary_rule_total_retenue_fiscale" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
@@ -563,6 +551,18 @@ result = RRP + IS + CN + IGR + CMUE
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = IS + CN + IGR
+        </field>
+    </record>
+    <!-- Regle de calcul total des cotisations salarie -->
+    <record id="hr_salary_rule_total_cotisation_employe" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL COTISATIONS EMPLOYE</field>
+        <field name="code">TCOTEM</field>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = RRE + IS + CN + IGR + CMUE
         </field>
     </record>
     <!-- Regle de calcul salaire net -->
