@@ -189,7 +189,7 @@
                                     <td class='text-left' colspan="3">Autres avantages</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center">0</td>
+                                    <td class="text-center"><span t-esc="lines.get('AAV')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -210,7 +210,7 @@
                                     <td class='text-left' colspan="3">Prime ancienneté</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('PDA')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>              
+                                    <td class="text-center"><span t-esc="lines.get('PDA')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>          
                                     <td></td>    
                                     <td></td>
                                     <td></td>
@@ -231,9 +231,9 @@
                                     <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
                                     <td class="text-center"><span>6,3</span></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('RRP')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('RRE')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
                                     <td class="text-center">7,7</td>
-                                    <td class="text-right"><span t-esc="lines.get('RRE')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('RRP')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-center'>318</td>

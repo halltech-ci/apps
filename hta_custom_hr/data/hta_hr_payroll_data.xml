@@ -87,10 +87,21 @@ result = contract.sursalaire
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = BASIC + SS + PDR + PDL + PDC + PDTR + PDG
+result = BASIC + SS + PDR + PDL + PDC + PDTR + PDG + AAV + PREND
         </field>
     </record>
-
+    <!-- Reglge de calcul de salaire autres avantages-->
+    <record id="hr_salary_rule_autres_avantages" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Autres Avantages</field>
+        <field name="code">AAV</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.autres_avantages
+        </field>
+    </record>
     
     <!-- Reglge de calcul de salaire Prime de responsabilite-->
     <record id="hr_salary_rule_prime_reponsabilite" model="hr.salary.rule">
@@ -101,7 +112,7 @@ result = BASIC + SS + PDR + PDL + PDC + PDTR + PDG
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = contract.prime_responsablite
+result = contract.prime_responsabilite
         </field>
     </record>
     <!-- Regle de calcul Prime de Transport-->
@@ -117,7 +128,7 @@ result = contract.prime_transport
         </field>
     </record>
     <!-- Regle de calcul Prime de communication-->
-    <record id="hr_salary_rule_prime_reponsabilite" model="hr.salary.rule">
+    <record id="hr_salary_rule_prime_communication" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_prime_salary"/> 
         <field name="name">Prime de communication</field>
         <field name="code">PDC</field>
@@ -153,7 +164,7 @@ result = contract.indemnite_transport
         </field>
     </record>
 
-    <!-- Prime de responsabilite-->
+    <!-- Prime de salissure-->
     <record id="hr_salary_rule_prime_salissure" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_prime_salary"/> 
         <field name="name">Prime de salissure</field>
@@ -175,20 +186,33 @@ result = contract.prime_salissure
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-seniority = employee.seniority
+val = employee.seniority
 result = 0
-if seniority &gt;= 2 and seniority &lt;=25 :
-    result = contract.wage*seniority/100
-if seniority &gt;= 25:
+if val &gt;= 2 and val &lt;25 :
+    result = contract.wage*val*0.01
+if val &gt;= 25:
     result = contract.wage*0.25
         </field>
     </record>
+    <!-- Regle de calcul Prime anciennete-->
+    <record id="hr_salary_rule_anciennete" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Anciennete</field>
+        <field name="code">ANC</field>
+        <field name="sequence">5</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = employee.seniority
+        </field>
+    </record>
+
     
     <!-- Regle de calcul Prime de rendement-->
     <record id="hr_salary_rule_prime_rendement" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_prime_salary"/> 
         <field name="name">Prime de rendement</field>
-        <field name="code">PDR</field>
+        <field name="code">PREND</field>
         <field name="sequence">6</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
@@ -337,7 +361,7 @@ elif Q &gt;= 25000 and Q &lt; 45583:
     result = (RGI*1/11) - (2273*PART)
 elif (Q &gt;= 45667 and Q &lt; 81583):
     result = (RGI*15/115) - (4076*PART)
-elif (Q &gt;= 81583 and Q &lt;= 126583):
+elif (Q &gt;= 81667 and Q &lt;= 126583):
     result= (RGI*1/6) - (7031*PART)  
 elif (Q &gt;= 126667 and Q &lt; 220333):
     result= (RGI*0.2) - (11250*PART)  
@@ -359,7 +383,7 @@ else:
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = SBI*6.3/100
+result = SBI*7.7/100
         </field>
     </record>
     
@@ -372,7 +396,7 @@ result = SBI*6.3/100
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = SBI*7.7/100
+result = SBI*6.3/100
         </field>
     </record>
     

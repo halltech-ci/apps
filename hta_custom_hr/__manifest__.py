@@ -34,6 +34,10 @@
         #'views/hr_payslip_views.xml',
         'report/report_hta_payslip_template.xml',
         'report/bulletin_paye_report.xml',
+        #'report/payslip_book.xml',
+        'report/payslip_reporting_template.xml',
+        'report/report_payslip_book.xml',
+        'wizard/payslip_reporting_book.xml',
         'views/hr_contract_views.xml',
         'data/hta_hr_payroll_data.xml'
     ],

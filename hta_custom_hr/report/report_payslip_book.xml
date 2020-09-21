@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Livre de paie-->
+<odoo>
+  <data>
+    <record model="report.paperformat" id="paperformat_payslip_reporting">
+        <field name="name">paperformat.payslip.report</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_width">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">30</field>
+        <field name="margin_right">5</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+    
+    <report id="action_payslip_reporting_book"
+            model="payslip.reporting.book"
+            string="Payslip Reporting Book"
+            report_type="qweb-html"
+            name="hta_custom_hr.payslip_reporting_template"
+            file="hta_custom_hr.payslip_reporting_template"
+            paperformat="paperformat_payslip_reporting"
+            menu="True"
+    />
+  </data>
+</odoo>
+
+
+
+<!--
+<odoo>
+    <data>
+     <template id="report_hta_payslip_template">
+         <t t-call="web.html_container">
+             <t t-foreach="docs" t-as="o">
+                 <t t-call="web.internal_layout">
+                     <div class="page">
+                     </div>
+                 </t>
+             </t>
+         </t>
+     </template>
+    </data>
+</odoo>
+-->
