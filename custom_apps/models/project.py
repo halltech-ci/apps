@@ -18,7 +18,7 @@ class Project(models.Model):
     _inherit = "project.project"
     
     sale_order_ids = fields.One2many("sale.order", "project_id", string="Sale Orders")
-    #purchase_order_ids = fileds.One2many("purchase.order", "project_id", string="Purchase Order")
+    #purchase_order_lines = fields.One2many("purchase.order.line", "project_id", string="Purchase Orders")
     
     project_code_sequence_id = fields.Many2one(comodel_name='ir.sequence', string='Code Sequence Id', ondelete='cascade')
     project_code = fields.Char(string='Code Projet', required=True, readonly=True, copy=False, default= lambda self: _('New'))

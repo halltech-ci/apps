@@ -8,8 +8,10 @@ class HrEmployee(models.Model):
     hiring_date = fields.Date(string='Hiring Start Date', related="contract_id.date_start")
     hiring_end = fields.Date(string='End Hiring Date')
     seniority = fields.Integer(string="Seniority", store=True, compute='_compute_seniority')
-    nbre_part = fields.Integer(string="Nombre de Part", default=1)
+    nbre_part = fields.Float(string="Nombre de Part", default=1)
     matricule = fields.Char("N° matricule")
+    
+    
     
     @api.depends('hiring_date')
     def _compute_seniority(self):
@@ -21,6 +23,9 @@ class HrEmployee(models.Model):
                 rec.seniority = int(age.days/366)
             else:
                 rec.seniority = 0
+                
+    def _get_overtime(self, date_from, date_to):
+        pass
 
     
     

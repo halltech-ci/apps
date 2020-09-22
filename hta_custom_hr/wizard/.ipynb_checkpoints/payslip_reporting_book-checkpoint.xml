@@ -1,0 +1,35 @@
+<odoo>
+  <data>
+      <!-- Define custom report wizard form view-->
+      <record model="ir.ui.view" id="payslip_reporting_wizard">
+        <field name="name">Payslip Reporting Book</field>
+        <field name="model">payslip.reporting.book</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Payslip Reporing Book">
+                <group col="4" string="Date">
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </group>
+                <footer>
+                    <button name="generate_pdf_report" string="Print PDF" type="object" class="oe_highlight"/>
+                    <button name="generate_xls_report" string="Print Excel" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!-- Define action to show custom report form view-->  
+    <record id="action_payslip_reporting_wizard" model="ir.actions.act_window">
+        <field name="name">Payslip Reporting</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">payslip.reporting.book</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="payslip_reporting_wizard"/>
+        <field name="target">new</field>
+    </record>
+    <!-- Display custom report form in menu-->
+    <menuitem id="payslip_reporting_book" name="Payslip Reporting Book" parent="account.menu_finance_reports" groups="account.group_account_manager" sequence="1"
+    action="action_payslip_reporting_wizard"/>
+  </data>
+</odoo>

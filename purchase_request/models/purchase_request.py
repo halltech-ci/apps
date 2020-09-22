@@ -340,6 +340,7 @@ class PurchaseRequestLine(models.Model):
     )
     
     project = fields.Char(related="request_id.project_code", string="Project", readonly=True)
+    product_code = fields.Char(related="product_id.default_code", sting="Code Article")
 
     @api.multi
     @api.depends('product_id', 'name', 'product_uom_id', 'product_qty',
