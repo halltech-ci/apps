@@ -20,13 +20,19 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base',
+               'account',
+               'analytic',
+               ],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'reports/hta_profit_loss_template.xml',
+        'reports/hta_custom_report.xml',
+        'wizard/profit_loss_wizard.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
