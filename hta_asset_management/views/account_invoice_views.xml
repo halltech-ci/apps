@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!-- Add "Asset Category" to supplier invoices -->
+    <record model="ir.ui.view" id="view_hta_invoice_asset">
+        <field name="name">hta_account.asset.invoice.supplier</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="before">
+                <field string="Asset Staring Date" name="asset_starting_date" domain="[('type','=','purchase')]" context="{'default_type':'purchase'}" attrs="{'invisible': [('asset_category_id','=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
