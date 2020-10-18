@@ -28,7 +28,6 @@
                   <field name="autres_avantages" string="Autre Avantages"/>
               </group>
           </xpath>
-          
       </field>
     </record>
   </data>

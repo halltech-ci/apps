@@ -9,8 +9,7 @@ class HrEmployee(models.Model):
     hiring_end = fields.Date(string='End Hiring Date')
     seniority = fields.Integer(string="Seniority", store=True, compute='_compute_seniority')
     nbre_part = fields.Float(string="Nombre de Part", default=1)
-    matricule = fields.Char("N° matricule")
-    
+    matricule = fields.Char("N° matricule")   
     
     
     @api.depends('hiring_date')

@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+    <!-- inherit hr_contract view to add debit and credit account -->
+      <record id="hr_expense_form_inherit" model="ir.ui.view">
+          <field name="model">hr.expense</field>
+          <field name="inherit_id" ref="hr_expense.hr_expense_form_view"/>
+          <field name="arch" type="xml">
+              <xpath expr="//sheet/group/group[1]/field[@name='quantity']" position="replace">
+                  
+              </xpath>
+          </field>
+      </record>
+    
+  </data>
+</odoo>

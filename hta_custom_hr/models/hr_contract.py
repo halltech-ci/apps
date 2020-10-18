@@ -32,8 +32,8 @@ class HrContract(models.Model):
     conges_payes = fields.Monetary(string="Congés Payés")
     salaire_brut = fields.Monetary(string="Salary Cost")
     avs = fields.Monetary(string="Avances et  Acomptes perçus")
-    
-    
+    partner_id = fields.Many2one('res.partner', string="Partner")
+   
     """
     @api.depends('wage')
     def _compute_anciennete(self):

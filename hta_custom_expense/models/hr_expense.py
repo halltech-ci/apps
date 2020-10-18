@@ -2,28 +2,21 @@
 
 from odoo import models, fields, api
 
-# class hta_custom_expense(models.Model):
-#     _name = 'hta_custom_expense.hta_custom_expense'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         self.value2 = float(self.value) / 100
-
-
+"""
+In expense amount is given to employee and employee must justify expense with bill.
+If he can not justify employee account is credited with the amount
+"""
 class HrExpense(models.Model):
     #_name = "hr.expense"
     _inherit = "hr.expense"
     
     payment_mode = fields.Selection([
-        ("employee_account", "Employee (to justify)"),
+        ("employee_account", "Employee (To be justify)"),
         ("own_account", "Employee (to reimburse)"),
         ("company_account", "Company")
-    ], default='own_account', states={'done': [('readonly', True)], 'post': [('readonly', True)], 'submitted': [('readonly', True)]}, string="Payment By")
+    ], default='employee_account', states={'done': [('readonly', True)], 'post': [('readonly', True)], 'submitted': [('readonly', True)]}, string="Payment By")
+    product_uom_id = fields.Many2one(required=False)
+    #quantity = fields.Float(required=False)
+    unit_amount = fields.Float(required=False, string="Amount")
     
-    #employee_id = fields.Many2one(string="AssignTo")
-    #requested_by = fields.Many2one('hr.employee', string="Requested By", required=True, readonly=True, default=lambda self: self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1))
+    
