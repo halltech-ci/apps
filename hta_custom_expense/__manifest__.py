@@ -28,7 +28,8 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/hr_expense_views.xml'
+        'views/hr_expense_views.xml',
+        #'data/advance_product.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

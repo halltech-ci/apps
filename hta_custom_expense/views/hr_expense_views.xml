@@ -1,15 +1,32 @@
 <odoo>
   <data>
-    <!-- inherit hr_contract view to add debit and credit account -->
+    <!--  -->
       <record id="hr_expense_form_inherit" model="ir.ui.view">
           <field name="model">hr.expense</field>
           <field name="inherit_id" ref="hr_expense.hr_expense_form_view"/>
           <field name="arch" type="xml">
-              <h1 position="after">
-                <field name="advance"/><label for="advance"/>
+            <h1 position="after">
+                <field name="is_rfq"/><label for="is_rfq"/>
             </h1>
+            <xpath expr="//sheet/group/group/field[@name='product_id']" position="before">
+                <field name="requested_by" readonly="True"/>
+            </xpath>
           </field>
       </record>
-    
+      
+      <record id="hr_expense_sheet_inherit_form" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.form</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+          <field name="arch" type="xml">
+              <xpath expr="/form/sheet/group/group" position="after">
+                <group>
+                    <field name="justify_amount"/>
+                    <field name="amount_residual"/>
+                    <field name="assigned_to"/>
+                </group>
+            </xpath>
+          </field>
+      </record>
   </data>
 </odoo>
