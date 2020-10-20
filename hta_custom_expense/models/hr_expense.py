@@ -27,6 +27,7 @@ class HrExpense(models.Model):
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange',
                     default=_get_default_requested_by)
     employee_id = fields.Many2one(string='Destinataire')
+    journal_id = fields.Many2one('account.journal', string="Journal")
     
     """
     @api.multi
