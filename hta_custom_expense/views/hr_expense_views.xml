@@ -26,6 +26,9 @@
                     <field name="assigned_to"/>
                 </group>
             </xpath>
+              <xpath expr="/form/sheet/group/group/field[@name='total_amount']" position="replace">
+                  <field name="total_amount"/>
+              </xpath>
           </field>
       </record>
   </data>
