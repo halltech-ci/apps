@@ -9,9 +9,8 @@ class HrEmployee(models.Model):
     hiring_end = fields.Date(string='End Hiring Date')
     seniority = fields.Integer(string="Seniority", store=True, compute='_compute_seniority')
     nbre_part = fields.Float(string="Nombre de Part", default=1)
-    matricule = fields.Char("N° matricule")
-    
-    
+    matricule = fields.Char("N° matricule")   
+    partner_id = fields.Many2one('res.partner', string="Partner", ondelete="cascade")
     
     @api.depends('hiring_date')
     def _compute_seniority(self):
@@ -26,6 +25,22 @@ class HrEmployee(models.Model):
                 
     def _get_overtime(self, date_from, date_to):
         pass
+    
+    def create_employee_partner(self):
+        user_group = self.env.ref("base.group_user") or False
+        partner_res = self.env['res.partner']
+        for record in self:
+            if not record.partner_id:
+                partner_id = partner_res.create({
+                    'name': record.name,
+                    #'partner_id': record.partner_id.id,
+                    'function': record.job_id.name,
+                    'groups_id': user_group,
+                    'employee': True,
+                    'customer': False,
+                    'tz': self._context.get('tz'),
+                })
+                record.partner_id = partner_id
 
     
     
