@@ -16,14 +16,15 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml
     # for the full list
-    'category': 'Hr',
-    'version': '0.1',
+    'category': 'Human Resources',
+    'version': '10.0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['base',
                'hr_payroll',
                'account',
                'hr_payroll_account',
+               'project',
                #'hr_timesheet_sheet',
                ],
 
@@ -41,6 +42,7 @@
         'report/report_payslip_book.xml',
         'wizard/payslip_reporting_book.xml',
         'views/hr_contract_views.xml',
+        'views/hr_attendance_views.xml',
         'data/hta_hr_payroll_data.xml'
     ],
     # only loaded in demonstration mode
