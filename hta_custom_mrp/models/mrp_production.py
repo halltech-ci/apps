@@ -21,7 +21,7 @@ class MrpOrderLine(models.Model):
     _description = "MRP order line"
     
     mrp_production_id = fields.Many2one('mrp.production', string='Product ID')
-    product_id = fields.Many2one("product.prodcut", string='Product')
+    product_id = fields.Many2one("product.product", string='Product')
     product_uom_qty = fields.Float('Quantity')
     
     

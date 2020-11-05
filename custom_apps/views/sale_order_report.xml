@@ -36,7 +36,7 @@
         <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]" position="after">
             <div>
               <strong>Objet:</strong>
-                 <span t-field="doc.purchase_order_subject"/>
+                 <span t-field="doc.description"/>
             </div>
         </xpath>
     </template>
