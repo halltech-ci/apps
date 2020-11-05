@@ -8,7 +8,7 @@
           <!-- Insert sale order object-->
           <xpath expr="//sheet/group" position="after">
               <group>
-                  <field name="purchase_order_subject"/>
+                  <field name="description"/>
               </group>
           </xpath>
           <!-- Insert sale quotation recipient-->

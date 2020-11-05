@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hta_custom_mrp_hta_custom_mrp,hta_custom_mrp.hta_custom_mrp,model_hta_custom_mrp_hta_custom_mrp,,1,0,0,0
+access_mrp_order_line,access_mrp_order_line,model_mrp_order_line,base.group_user,1,1,1,0
