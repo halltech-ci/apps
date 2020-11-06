@@ -6,10 +6,7 @@ from odoo.addons import decimal_precision as dp
 class SaleOrder(models.Model):
     _inherit = "sale.order"
     
-    #description = fields.Text('Description')
     sale_mrp_product = fields.Many2one('product.product', ondelete='cascade')
-    #mrp_bom_id = fields.Many2one("mrp.bom")
-    #sale_mrp = fields.Many2one('mrp.production')
     
     """
     Create BOM associated to the SO. 
@@ -32,7 +29,11 @@ class SaleOrder(models.Model):
                 })
             order.sale_mrp_product = product_prod
             
+            
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
     
+    in_mrp_line = fields.Boolean(string="MRP line", default=True)
         
             
                 
