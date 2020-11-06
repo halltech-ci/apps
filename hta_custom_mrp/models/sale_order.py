@@ -34,6 +34,7 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
     
     in_mrp_line = fields.Boolean(string="MRP line", default=True)
+    mrp_production_id = fields.Many2one('mrp.production')
         
             
                 
