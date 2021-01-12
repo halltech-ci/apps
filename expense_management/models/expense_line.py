@@ -62,6 +62,41 @@ class ExpenseLine(models.Model):
     def action_approve(self):
         self.request_state = "approve"       
     
+    def _get_account_move_line_values(self):
+        move_line_values_by_expense = {}
+        for expense in self:
+            move_line_name = expense.name
+            account_src = expense.account_src
+            account_dst = expense.account_dst
+            account_date = fields.Date.context_today(expense)
+            company_currency = expense.company_id.currency_id
+            partner_id = expense.employee_id.address_home_id.commercial_partner_id.id
+            move_line_values = []
+            move_line_src = {
+                'name': move_line_name,
+                'debit': expense.amount if expense.amount > 0 else 0,
+                'credit': -expense.amount if expense.amount < 0 else 0,
+                'account_id': account_src.id,
+                'analytic_account_id': expense.analytic_account.id,
+                'expense_line_id': expense.id,
+                'partner_id': partner_id,
+                'currency_id': company_currency,
+                }
+            move_line_values.append(move_line_src)
+            move_line_dst = {
+                'name': move_line_name,
+                'debit': amount > 0 and amount,
+                'credit': total_amount < 0 and -amount,
+                'account_id': account_dst,
+                'date_maturity': account_date,
+                'currency_id': company_currency,
+                'expense_line_id': expense.id,
+                'partner_id': partner_id,
+            }
+            move_line_values.append(move_line_dst)
+            move_line_values_by_expense[expense.id] = move_line_values
+        return move_line_values_by_expense
+    
     def unlink(self):
         for expense in self:
             if expense.request_state in ['done', 'approved']:

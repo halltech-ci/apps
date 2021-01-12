@@ -75,6 +75,20 @@ class ExpenseRequest(models.Model):
         }
         return move_values
     
+    def create_move_values(self):
+        ref = self.name
+        account_date = self.date
+        journal = self.journal
+        company = self.company_id
+        lines = self.mapped('line_ids')
+        move_value = {
+            'ref':ref,
+            'date': account_date,
+            'journal': journal.id,
+            'company': company.id,
+            #'line_ids':
+        }
+    
    
     def action_move_create(self):
         '''
@@ -86,7 +100,6 @@ class ExpenseRequest(models.Model):
             company_currency = expense.company_id.currency_id
             different_currency = expense.currency_id != company_currency
      
-    
     
     def action_submit(self):
         for line in self.line_ids:
