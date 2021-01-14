@@ -114,13 +114,13 @@ result = contract.indemnite_licencement
     <record id="hr_salary_rule_employee_salary_base" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_brut_salary"/> 
         <field name="name">Salaire de Base</field>
-        <field name="code">BASE</field>
+        <field name="code">BASIC</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="sequence">1</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = contract.salaire_base
+result = contract.wage
         </field>
     </record>
     <!-- Regle de calcul du sursalaire -->
@@ -146,7 +146,7 @@ result = contract.sursalaire
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = BASE + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HS15 + HS50 + HS75 + HS100 + PREND + PDA + ICP + IL + ICG
+result = BASIC + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HS15 + HS50 + HS75 + HS100 + PREND + PDA + ICP + IL + ICG
         </field>
     </record>
     <!-- Reglge de calcul de salaire autres avantages-->
@@ -189,6 +189,19 @@ result = contract.prime_responsabilite
 result = contract.prime_transport
         </field>
     </record>
+    <!-- Regle de calcul taux horaire-->
+    <record id="hr_salary_rule_employee_taux_horaire" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Taux Horaire</field>
+        <field name="code">TH</field>
+        <field name="sequence">6</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = (BASIC )/173.33
+        </field>
+    </record>
     
 <!-- Regle de calcul heure sup-->
     <record id="hr_salary_rule_hs15" model="hr.salary.rule">
@@ -200,15 +213,16 @@ result = contract.prime_transport
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
+val = TH 
 result = 0
 if payslip.worked_days_line_ids:
     for line in payslip.worked_days_line_ids: 
         if line.name == 'HS 15%':
-            result = line.number_of_hours * contract.wage * 0.15
+            result = line.number_of_hours * val * 0.15
 
         </field>
-        
     </record>
+    
         <record id="hr_salary_rule_hs50" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
         <field name="name">Heure Supplementaire 50%</field>
@@ -218,11 +232,12 @@ if payslip.worked_days_line_ids:
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
+val = TH
 result = 0
 if payslip.worked_days_line_ids:
     for line in payslip.worked_days_line_ids: 
         if line.name == 'HS 50%':
-            result = line.number_of_hours * contract.wage * 0.50
+            result = line.number_of_hours * val * 0.50
 
         </field>
     </record>
@@ -235,11 +250,12 @@ if payslip.worked_days_line_ids:
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
+val = TH
 result = 0
 if payslip.worked_days_line_ids:
     for line in payslip.worked_days_line_ids: 
         if line.name == 'HS 75%':
-            result = line.number_of_hours * contract.wage * 0.75
+            result = line.number_of_hours * val * 0.75
 
         </field>
     </record>
@@ -252,11 +268,12 @@ if payslip.worked_days_line_ids:
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
+val = TH
 result = 0
 if payslip.worked_days_line_ids:
     for line in payslip.worked_days_line_ids: 
         if line.name == 'HS 100%':
-            result = line.number_of_hours * contract.wage * 1
+            result = line.number_of_hours * val * 1
 
         </field>
     </record>
@@ -377,18 +394,7 @@ result = contract.gratification
 
     <!-- Regle de calcul du taux horaire.
      TH = (SB + SS + PDR + PDL + PDC)/173.33-->
-    <record id="hr_salary_rule_employee_taux" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_brut_salary"/> 
-        <field name="name">Taux Horaire</field>
-        <field name="code">TH</field>
-        <field name="sequence">7</field>
-        <field name="struct_id" ref="structure_days_work"/>
-        <field name="condition_select">none</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">
-result = (BASE )/173.33
-        </field>
-    </record>
+
 
     <!-- Regle de calcul de salaire base imposable -->
     <record id="hr_salary_rule_employee_imposable" model="hr.salary.rule">
