@@ -42,6 +42,7 @@ class ExpenseRequest(models.Model):
     journal = fields.Many2one('account.journal', string='Journal', required=True, 
                               default=lambda self:self.env['account.journal'].search([('type', '=', 'cash')])
                              )
+    move_id = fields.Many2one('account.move', string='Account Move')
     
     @api.depends("state")
     def _compute_to_approve_allowed(self):
@@ -57,50 +58,62 @@ class ExpenseRequest(models.Model):
         for request in self:
             request.total_amount = sum(request.line_ids.mapped('amount'))
     
-    def prepare_move_values(self):
-        """
-        This function prepares move values related to an expense line
-        """
-        self.ensure_one()
-        journal = self.journal
-        account_date = self.date
-        move_values = {
-            'journal_id': journal.id,
-            'company_id': self.company_id.id,
-            'date': account_date,
-            'ref': self.name,
-            # force the name to the default value, to avoid an eventual 'default_name' in the context
-            # to set it to '' which cause no number to be given to the account.move when posted.
-            'name': '/',
-        }
-        return move_values
-    
     def create_move_values(self):
-        ref = self.name
-        account_date = self.date
-        journal = self.journal
-        company = self.company_id
-        lines = self.mapped('line_ids')
-        move_value = {
-            'ref':ref,
-            'date': account_date,
-            'journal': journal.id,
-            'company': company.id,
-            #'line_ids':
-        }
+        #res = super(ExpenseRequest, self).create_move_values()
+        for request in self:
+            ref = request.name
+            account_date = fields.Date.today()#self.date
+            journal = request.journal
+            company = request.company_id
+            analytic_account = request.analytic_account
+            move_value = {
+                'ref':ref,
+                'date': account_date,
+                'journal_id': journal.id,
+                'company_id': company.id,
+            }
+            expense_line_ids = []
+            lines = request.mapped('line_ids')
+            for line in lines:
+                if not (line.employee_id.address_home_id.property_account_payable_id):
+                    raise UserError(_('Pas de compte pour : "%s" !') % (line.employee_id))
+                partner_id = line.employee_id.address_home_id.id
+                debit_line = (0, 0, {
+                    'name': line.name,
+                    'account_id': line.debit_account,
+                    'debit': line.amount > 0.0 and line.amount or 0.0,
+                    'credit': line.amount < 0.0 and -line.amount or 0.0, 
+                    'partner_id': partner_id,
+                    'journal_id': journal.id,
+                    'date': account_date,
+                    'analytic_account_id': analytic_account.id,
+
+                })
+                expense_line_ids.append(debit_line)
+                credit_line = (0, 0, {
+                    'name': line.name,
+                    'account_id': line.employee_id.address_home_id.property_account_payable_id.id,
+                    'debit': line.amount < 0.0 and line.amount or 0.0,
+                    'credit': line.amount > 0.0 and -line.amount or 0.0, 
+                    'partner_id': partner_id,
+                    'journal_id': journal.id,
+                    'date': account_date,
+                    'analytic_account_id': analytic_account.id,
+
+                })
+                expense_line_ids.append(credit_line)
+            move_value['line_ids'] = expense_line_ids
+            move = self.env['account.move'].create(move_value)
+            request.write({'move_id': move.id})
+            move.post()
+        #return res
     
-   
-    def action_move_create(self):
-        '''
-        main function that is called when trying to create the accounting entries related to an expense
-        '''
-        move_obj = self.env['account.move']
-        payment_obj = self.env['account.payment']
-        for expense in self:
-            company_currency = expense.company_id.currency_id
-            different_currency = expense.currency_id != company_currency
-     
-    
+    """def create_move_values(self):
+        #self.create_move_values()
+        for line in self.line_ids:
+            line.action_post()
+        return self.write({'state': 'post'})
+    """
     def action_submit(self):
         for line in self.line_ids:
             line.action_submit()
