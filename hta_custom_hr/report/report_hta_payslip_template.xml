@@ -22,9 +22,10 @@
                                         <span>Date de paie:</span>   
                                     </td>
                                 </tr>
-                                <tr style="border: 1px solid black">
-                                    <td class="text-center" colspan="4" rowspan="8">
-                                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-center" alt="Logo"/>
+                                <tr>
+                                    <td colspan="4" rowspan="8">
+                                        <p align="center"><img src='/web/binary/company_logo' style="repeat-x center center; width: 129px" alt="Logo"/></p>
+                                           
                                     </td>
                                 </tr>
                                 <tr style="border: 1px solid black">
