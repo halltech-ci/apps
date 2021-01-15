@@ -59,7 +59,6 @@ class ExpenseRequest(models.Model):
             request.total_amount = sum(request.line_ids.mapped('amount'))
     
     def create_move_values(self):
-        #res = super(ExpenseRequest, self).create_move_values()
         for request in self:
             ref = request.name
             account_date = fields.Date.today()#self.date
@@ -109,6 +108,12 @@ class ExpenseRequest(models.Model):
         return True
     
     def action_post(self):
+        if self.state == 'post':
+            raise UserError(
+                    _(
+                        "You can not post request already in posted state"
+                    )
+                )
         post = self.create_move_values()
         if post:
             for line in self.line_ids:

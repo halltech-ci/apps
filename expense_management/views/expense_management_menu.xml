@@ -127,6 +127,11 @@
                               <field name='requested_by' attrs="{'readonly': [('request_state', 'not in', ['draft', 'submit'])]}"/>
                               <field name="company_id" groups="base.group_multi_company"/>
                               <field name='payed_by' groups='account.group_account_user'/>
+                              <field name='transfer_amount' groups='account.group_account_user'
+                                     attrs="{'invisible': [('payed_by', 'in', ['cash', 'check'])],
+                                            'required': [('payed_by', 'not in', ['cash', 'check'])]
+                                            }"
+                                     />
                               <field name="credit_account" groups='account.group_account_user'
                                      attrs="{'readonly': [('request_state', 'not in', ['approve'])]}"
                               />  
