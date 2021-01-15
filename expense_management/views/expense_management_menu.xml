@@ -24,11 +24,17 @@
                     class="oe_highlight"
                     attrs="{'invisible': [('state', 'in', ['approve'])]}"
             />
-            <button name="create_move_values"
+            <button name="action_post"
                     string="Post"
                     type="object"
                     class="oe_highlight"
-                    attrs="{'invisible': [('state', 'not in', ['post'])]}"
+                    attrs="{'invisible': [('state', 'in', ['post'])]}"
+            />
+            <button name="button_rejected"
+                    string='Reject'
+                    type='object'
+                    class="oe_highlight"
+                    attrs="{'invisible': [('state', 'in', ['post'])]}"
             />
             <field name="state"
                  widget="statusbar"
@@ -47,7 +53,6 @@
               <group>
                   <group>
                       <field name="project_id"/>
-                      <field name="analytic_account" groups="analytic.group_analytic_accounting"/>
                       <field name='journal'/>
                   </group>
                   <group>
@@ -64,7 +69,7 @@
                               <field name='employee_id'/>
                               <field name='amount'/>
                               <field name='payment_mode'/>
-                              <field name='payed_by'/>
+                              <field name='analytic_account'/>
                               <field name='request_state'/>
                           </tree>
                       </field>
@@ -84,6 +89,7 @@
                     <field name="requested_by"/>
                     <field name="date"/>
                     <field name="total_amount" sum="Total Amount"/>
+                    <field name="project_id"/>
                     <field name="currency_id" invisible="1"/>
                     <field name="state"/>
                     <field name="company_id" groups="base.group_multi_company"/>
@@ -109,8 +115,8 @@
                             <group>
                               <field name='employee_id'/>
                               <field name='amount'/>
+                              <field name="analytic_account"/>
                               <field name='payment_mode' groups='account.group_account_user'/>
-                              <field name='payed_by' groups='account.group_account_user'/>
                               <field name="debit_account" groups='account.group_account_user'
                                      attrs="{'readonly': [('request_state', 'not in', ['approve'])]}"
                                      />
@@ -120,9 +126,10 @@
                               <field name='date'/>
                               <field name='requested_by' attrs="{'readonly': [('request_state', 'not in', ['draft', 'submit'])]}"/>
                               <field name="company_id" groups="base.group_multi_company"/>
+                              <field name='payed_by' groups='account.group_account_user'/>
                               <field name="credit_account" groups='account.group_account_user'
                                      attrs="{'readonly': [('request_state', 'not in', ['approve'])]}"
-                                     />  
+                              />  
                             </group>
                         </group>
                     </sheet>

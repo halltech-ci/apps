@@ -78,27 +78,27 @@ class ExpenseRequest(models.Model):
                 if not (line.employee_id.address_home_id.property_account_payable_id):
                     raise UserError(_('Pas de compte pour : "%s" !') % (line.employee_id))
                 partner_id = line.employee_id.address_home_id.id
-                debit_line = (0, 0, {
+                debit_line = (0, 0, {#received
                     'name': line.name,
-                    'account_id': line.debit_account,
+                    'account_id': line.debit_account.id,
                     'debit': line.amount > 0.0 and line.amount or 0.0,
                     'credit': line.amount < 0.0 and -line.amount or 0.0, 
                     'partner_id': partner_id,
                     'journal_id': journal.id,
                     'date': account_date,
-                    'analytic_account_id': analytic_account.id,
+                    'analytic_account_id': line.analytic_account.id,
 
                 })
                 expense_line_ids.append(debit_line)
-                credit_line = (0, 0, {
+                credit_line = (0, 0, {#give
                     'name': line.name,
-                    'account_id': line.employee_id.address_home_id.property_account_payable_id.id,
-                    'debit': line.amount < 0.0 and line.amount or 0.0,
-                    'credit': line.amount > 0.0 and -line.amount or 0.0, 
+                    'account_id': line.credit_account.id,#employee_id.address_home_id.property_account_payable_id.id,
+                    'debit': line.amount < 0.0 and -line.amount or 0.0,
+                    'credit': line.amount > 0.0 and line.amount or 0.0, 
                     'partner_id': partner_id,
                     'journal_id': journal.id,
                     'date': account_date,
-                    'analytic_account_id': analytic_account.id,
+                    'analytic_account_id': line.analytic_account.id,
 
                 })
                 expense_line_ids.append(credit_line)
@@ -106,14 +106,15 @@ class ExpenseRequest(models.Model):
             move = self.env['account.move'].create(move_value)
             request.write({'move_id': move.id})
             move.post()
-        #return res
+        return True
     
-    """def create_move_values(self):
-        #self.create_move_values()
-        for line in self.line_ids:
-            line.action_post()
-        return self.write({'state': 'post'})
-    """
+    def action_post(self):
+        post = self.create_move_values()
+        if post:
+            for line in self.line_ids:
+                line.action_post()
+            return self.write({'state': 'post'})
+    
     def action_submit(self):
         for line in self.line_ids:
             line.action_submit()
@@ -131,6 +132,10 @@ class ExpenseRequest(models.Model):
         for line in self.line_ids:
             line.action_approve()
         return self.write({"state": "approve"})
+    
+    def button_rejected(self):
+        self.mapped("line_ids").do_cancel()
+        return self.write({"state": "cancel"})
     
     def to_approve_allowed_check(self):
         for rec in self:

@@ -29,9 +29,17 @@ class ExpenseLine(models.Model):
     def _default_employee_id(self):
         return self.env.user.employee_id
     
+    @api.model
+    def _get_employee_id_domain(self):
+        employee_ids = self.env['hr.employee'].search([]).ids
+        res = [('address_home_id.property_account_payable_id', '!=', False), ('id', 'in', employee_ids)]
+        
+        return res
+    
+    
     name = fields.Char('Description', required=True)
     request_state = fields.Selection(selection=REQUEST_STATE, string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
-    employee_id = fields.Many2one('hr.employee', string="Beneficiaire", required=True, default=_default_employee_id, check_company=True)
+    employee_id = fields.Many2one('hr.employee', string="Beneficiaire", required=True, check_company=True, domain=lambda self: self._get_employee_id_domain())
     request_id = fields.Many2one('expense.request', string='Expense Request')
     date = fields.Datetime(readonly=True, related='request_id.date', string="Date")
     amount = fields.Float("Montant", required=True, digits='Product Price')
@@ -39,16 +47,22 @@ class ExpenseLine(models.Model):
                                  default=lambda self: self.env.company
                                 )
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange', related='request_id.requested_by')
-    payment_mode = fields.Selection(selection=PAYMENT_MODE, string="Payment Mode", default='company')
+    payment_mode = fields.Selection(selection=PAYMENT_MODE, string="Payment Mode", default='justify')
     payed_by = fields.Selection(selection=PAYMENT_TYPE, string="Payer Par", default='cash')
-    analytic_account = fields.Many2one('account.analytic.account', related='request_id.analytic_account', 
-                                       string='Analytic Account')
+    analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account')
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, 
                                   default=lambda self: self.env.company.currency_id
                                  )
     accounting_date = fields.Date(string='Accounting Date')
     debit_account = fields.Many2one('account.account', string='Debit Account')
     credit_account = fields.Many2one('account.account', string='Credit Account')
+    
+    """
+    @api.onchange('payment_mode')
+    def onchange_payment_mode(self):
+        if self.payment_mode == ('justify', 'Employee (To justify)'):
+            self.debit_account = self.employee_id.address_home_id.property_account_payable_id
+    """
     
     def action_submit(self):
         self._action_submit()
@@ -64,6 +78,9 @@ class ExpenseLine(models.Model):
     
     def action_post(self):
         self.request_state = "post"
+    def do_cancel(self):
+        """Actions to perform when cancelling a purchase request line."""
+        self.write({"request_state": 'cancel'})
     
     def _get_account_move_line_values(self):
         move_line_values_by_expense = {}
