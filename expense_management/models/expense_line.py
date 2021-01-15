@@ -56,13 +56,7 @@ class ExpenseLine(models.Model):
     accounting_date = fields.Date(string='Accounting Date')
     debit_account = fields.Many2one('account.account', string='Debit Account')
     credit_account = fields.Many2one('account.account', string='Credit Account')
-    
-    """
-    @api.onchange('payment_mode')
-    def onchange_payment_mode(self):
-        if self.payment_mode == ('justify', 'Employee (To justify)'):
-            self.debit_account = self.employee_id.address_home_id.property_account_payable_id
-    """
+    transfer_amount = fields.Float('Frais de transfert', digits='Product Price')
     
     def action_submit(self):
         self._action_submit()
