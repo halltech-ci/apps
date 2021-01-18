@@ -39,9 +39,7 @@ class ExpenseRequest(models.Model):
     analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account')
     project_id = fields.Many2one('project.project', string='Projet')
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
-    journal = fields.Many2one('account.journal', string='Journal', required=True, 
-                              default=lambda self:self.env['account.journal'].search([('type', '=', 'cash')])
-                             )
+    journal = fields.Many2one('account.journal', string='Journal', required=True, domain=[('type', 'in', ['cash', 'bank'])], default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
     move_id = fields.Many2one('account.move', string='Account Move')
     
     @api.depends("state")
