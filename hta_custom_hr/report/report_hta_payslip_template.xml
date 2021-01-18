@@ -25,7 +25,6 @@
                                 <tr>
                                     <td colspan="4" rowspan="8">
                                         <p align="center"><img src='/web/binary/company_logo' style="repeat-x center center; width: 129px" alt="Logo"/></p>
-                                           
                                     </td>
                                 </tr>
                                 <tr style="border: 1px solid black">
@@ -116,7 +115,7 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr style="border: 1px solid black">
+                                <tr t-if="lines.get('SS')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>230</td>
                                     <td class='text-left' colspan="3">Sursalaire</td>
                                     <td></td>
