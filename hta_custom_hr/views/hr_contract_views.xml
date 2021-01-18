@@ -20,6 +20,7 @@
                   <field name="gratification"/>
               </group>
               <group string="Employee Costs">
+                  <field name="salaire_base" string="Salaire de Base"/>
                   <field name="salaire_brut" string="Slaire brut"/>
               </group>
               <group string="Indemnité forfaitaires" name="yearly_advantages">

@@ -114,13 +114,13 @@ result = contract.indemnite_licencement
     <record id="hr_salary_rule_employee_salary_base" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_brut_salary"/> 
         <field name="name">Salaire de Base</field>
-        <field name="code">BASIC</field>
+        <field name="code">BASE</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="sequence">1</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = contract.wage
+result = contract.salaire_base
         </field>
     </record>
     <!-- Regle de calcul du sursalaire -->
@@ -146,7 +146,7 @@ result = contract.sursalaire
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = BASIC + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HS15 + HS50 + HS75 + HS100 + PREND + PDA + ICP + IL + ICG
+result = BASE + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HS15 + HS50 + HS75 + HS100 + PREND + PDA + ICP + IL + ICG
         </field>
     </record>
     <!-- Reglge de calcul de salaire autres avantages-->
@@ -199,7 +199,7 @@ result = contract.prime_transport
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = (BASIC )/173.33
+result = (BASE )/173.33
         </field>
     </record>
     
