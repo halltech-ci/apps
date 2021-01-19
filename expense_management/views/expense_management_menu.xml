@@ -22,7 +22,8 @@
                     string="Approve"
                     type="object"
                     class="oe_highlight"
-                    attrs="{'invisible': [('state', 'in', ['approve'])]}"
+                    attrs="{'invisible': [('state', 'not in', ['to_approve'])]}"
+                    groups="expense_management.group_expense_approver_1"
             />
             <button name="action_post"
                     string="Post"
