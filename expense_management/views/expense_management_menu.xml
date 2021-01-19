@@ -53,8 +53,8 @@
                
               <group>
                   <group>
-                      <field name="project_id"/>
-                      <field name='journal'/>
+                      <field name='journal' options="{'no_create': True}"/>
+                      <field name="total_amount" readonly='True'/>
                   </group>
                   <group>
                       <field name="date" readonly='True'/>
@@ -119,7 +119,7 @@
                               <field name="analytic_account" required='True' options="{'no_create': True}"/>
                               <field name="project" options="{'no_create': True}" />
                               <field name='payment_mode' groups='account.group_account_user'/>
-                              <field name="debit_account" groups='account.group_account_user'
+                              <field name="credit_account" groups='account.group_account_user'
                                      attrs="{'readonly': [('request_state', 'not in', ['approve'])]}"
                                      />
                               <field name='request_state' invisible='1'/>
@@ -134,8 +134,8 @@
                                             'required': [('payed_by', 'not in', ['cash', 'check'])]
                                             }"
                                      />
-                              <field name="credit_account" groups='account.group_account_user'
-                                     attrs="{'readonly': [('request_state', 'not in', ['approve'])]}"
+                              <field name="debit_account" groups='account.group_account_user'
+                                     attrs="{'readonly': [('request_state', 'not in', ['approve'])], 'invisible': [('payment_mode', 'in', ('justify'))]}"
                               />  
                             </group>
                         </group>
