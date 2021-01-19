@@ -34,6 +34,7 @@ class SaleOrder(models.Model):
             if 'date_order' in vals:
                 seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
             if 'company_id' in vals:
+                #if self.company_id.name == 'CONCEPTOR INDUSTRY':
                 vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code(
                     next_code, sequence_date=seq_date) or _('New')
             else:
