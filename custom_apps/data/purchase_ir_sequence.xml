@@ -5,7 +5,7 @@
         <record id="seq_purchase_cm_sequence" model="ir.sequence">
             <field name="name">purchase DA Sequence</field>
             <field name="code">purchase.da.sequence</field>
-            <field name="prefix">CM%(y)s-</field>
+            <field name="prefix">DA%(y)s-</field>
             <field eval="1" name="number_next"/>
             <field eval="1" name="number_increment"/>
             <field eval="True" name="use_date_range"/>
@@ -28,7 +28,7 @@
         <!-- Sequence for CM order -->
         <record id="seq_purchase_bd_sequence" model="ir.sequence">
             <field name="name">Purchase BC Sequence</field>
-            <field name="code">purchase.BC.sequence</field>
+            <field name="code">purchase.bc.sequence</field>
             <field name="prefix">BC%(y)s-</field>
             <field eval="1" name="number_next"/>
             <field eval="1" name="number_increment"/>

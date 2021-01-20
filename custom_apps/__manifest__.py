@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale','project',],
+    'depends': ['sale','project', 'purchase_request',],
 
     # always loaded
     'data': [
@@ -31,6 +31,7 @@
         'views/sale_order_views.xml',
         #data sequence
         'data/sale_ir_sequence.xml',
+        'data/purchase_ir_sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

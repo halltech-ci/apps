@@ -15,7 +15,7 @@
                 </h3>
             </div>
             <div class="article mt0 o_report_layout_standard">
-                <table class="table-x-small table-condensed table-bordered">
+                <table class="table-x-string table-condensed table-bordered">
                     <thead>
                         <tr>
                             <th class='text-center'>Lines</th>
@@ -59,7 +59,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>MARGE COMMERCIALE</td>
+                            <td>Ventes de produits fabriqués</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -70,7 +70,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>Vente de Produit Fabriqué</td>
+                            <td>Travaux, services vendus</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -81,7 +81,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>Travaux, Service vendus</td>
+                            <td>Produits accessoires</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -92,7 +92,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Production stockée (ou déstockage)</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -103,7 +103,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Production immobilisée</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -114,7 +114,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Subventions d'exploitation</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -125,7 +125,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Autres produits</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -136,7 +136,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Transferts de charges d'exploitation</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -147,7 +147,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Achats de matières premières et fournitures liées</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -158,7 +158,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Variation de stocks de matières premières et fournitures liées</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -169,7 +169,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Autres achats</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -180,7 +180,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Variation de stocks d’autres approvisionnements</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -191,7 +191,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Transports</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -202,7 +202,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Services extérieurs</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -213,7 +213,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Impôts et taxes</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -224,7 +224,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Autres charges</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -235,7 +235,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Charges de personnel</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -246,7 +246,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Reprises d’amortissements, de provisions et dépréciations</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -257,7 +257,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Dotations aux amortissements, aux provisions et dépréciations</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -268,7 +268,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Revenus financiers et assimilés</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -279,7 +279,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Reprises de provisions et dépréciations financières</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -291,7 +291,7 @@
                         </tr>
          
                                                 <tr>
-                            <td>line2</td>
+                            <td>Transferts de charges financières</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -302,7 +302,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Frais financiers et charges assimilés</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -313,7 +313,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Dotations aux provisions et aux dépréciations financières</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -324,7 +324,7 @@
                             </t>
                         </tr>
                                                 <tr>
-                            <td>line2</td>
+                            <td>Produits des cessions d'immobilisations</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -334,8 +334,8 @@
                                     </t>
                             </t>
                         </tr>
-                                                <tr>
-                            <td>line2</td>
+                        <tr>
+                            <td>Autres Produits HAO</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
@@ -345,8 +345,51 @@
                                     </t>
                             </t>
                         </tr>
-                          
-                            
+                        <tr>
+                            <td>Valeurs comptables des cessions d'immobilisations</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[29]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Autres Charges HAO</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[30]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Participation des travailleurs</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[31]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Impôts sur le résultat</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[32]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>

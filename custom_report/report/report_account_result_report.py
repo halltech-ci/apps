@@ -39,7 +39,7 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code IN ('701100','701200','701300','701400')) 
+                WHERE ( x_aa.code LIKE '701%') 
                 AND  (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s')"""%(date_start,date_end) +"""
                 UNION ALL
                 SELECT  SUM(x_aml.balance) AS x_balance_achat 
@@ -47,59 +47,87 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '601%'  OR x_aa.code LIKE '601%' OR x_aa.code LIKE '603%' OR x_aa.code LIKE '604%') 
+                WHERE ( x_aa.code LIKE '601%') 
                 AND  (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s')"""%(date_start,date_end) +"""
                 
                 UNION ALL
-                (SELECT  SUM(x_aml.balance) AS x_balance_vente_product_frab 
+                (SELECT  SUM(x_aml.balance) AS x_balance_Variation_de_stocks_de_marchandises	
+ 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '7061%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '6031%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Travaux_Service_vendus
+                (SELECT  SUM(x_aml.balance) AS Ventes_de_produits_fabri
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE  ( x_aa.code LIKE '7062%' 
-                         OR x_aa.code LIKE '7063%'
-                         OR x_aa.code LIKE '7064%'
-                         OR x_aa.code LIKE '7071%'
-                         OR x_aa.code LIKE '7072%'
-                         OR x_aa.code LIKE '7073%'
-                         OR x_aa.code LIKE '7074%'
-                         OR x_aa.code LIKE '7075%'
-                         OR x_aa.code LIKE '7076%'
-                         OR x_aa.code LIKE '7077%')
+                WHERE  ( x_aa.code IN ('702','703','704'))
                          AND (x_aml.analytic_account_id= """+ analytic_id+""") 
                          AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Produit_Accessoires 
+                (SELECT  SUM(x_aml.balance) AS Travaux_services_vendus 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '7062%' 
-                         OR x_aa.code LIKE '7063%'
-                         OR x_aa.code LIKE '7064%'
-                         OR x_aa.code LIKE '7071%'
-                         OR x_aa.code LIKE '7072%'
-                         OR x_aa.code LIKE '7073%'
-                         OR x_aa.code LIKE '7074%'
-                         OR x_aa.code LIKE '7075%'
-                         OR x_aa.code LIKE '7076%'
-                         OR x_aa.code LIKE '7077%')  
+                WHERE (x_aa.code IN ('705','706')) 
                          AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Transfert_de_charges_exploitation 
+                (SELECT  SUM(x_aml.balance) AS Produits_accessoires 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE ( x_aa.code LIKE '707%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                        UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Production_stocke_ou_destockage 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE ( x_aa.code LIKE '73%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                        UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Production_immobilisee	 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE ( x_aa.code LIKE '72%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS 	Subventions_exploitation 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE ( x_aa.code LIKE '71%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS 	Autres_produits	 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE  (x_aa.code LIKE '75%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Transferts_de_charges_exploitation 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
@@ -107,26 +135,17 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 WHERE ( x_aa.code LIKE '781%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
-                        UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Achats_de_matieres_premieres_fournitures 
+                                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Achats_de_matieres_premieres_et_fournitures_liees 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '6021%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '602%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
-                        UNION ALL
-                (SELECT  SUM(x_aml.balance) AS x_balance_vente_product_frab 
-                FROM account_move_line AS x_aml 
-                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
-                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
-                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '7061%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
-
-        """%(date_start,date_end)+"""
-                UNION ALL
-                (SELECT  SUM(x_aml.balance) AS 	Variation_de_stocks_de_matiere_premieres_et_fourniture 
+                                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Variation_de_stocks_de_matieres_premieres_et_fournitures_liees 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
@@ -135,23 +154,17 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
 
         """%(date_start,date_end)+"""
                                 UNION ALL
-                (SELECT  SUM(x_aml.balance) AS 	Autres_achat 
+                (SELECT  SUM(x_aml.balance) AS 	Autres_achats 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE  (x_aa.code LIKE '6051%' 
-                         OR x_aa.code LIKE '6052%'
-                         OR x_aa.code LIKE '6053%'
-                         OR x_aa.code LIKE '6054%'
-                         OR x_aa.code LIKE '6055%'
-                         OR x_aa.code LIKE '6056%'
-                         OR x_aa.code LIKE '6057%'
-                         OR x_aa.code LIKE '6058%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE (x_aa.code IN ('604','605','608')) 
+                        AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                 UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Variatin_de_stocks_autre_approvisionnements 
+                (SELECT  SUM(x_aml.balance) AS Variation_de_stocks_autres_approvisionnements	 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
@@ -159,17 +172,8 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 WHERE ( x_aa.code LIKE '6033%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
-                                UNION ALL
-                (SELECT  SUM(x_aml.balance) AS x_balance_vente_product_frab 
-                FROM account_move_line AS x_aml 
-                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
-                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
-                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '7061%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
-
-        """%(date_start,date_end)+"""
-                                UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Transport 
+                                    UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Transports	 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
@@ -178,18 +182,16 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
 
         """%(date_start,date_end)+"""
                                 UNION ALL
-                (SELECT  SUM(x_aml.balance) AS 	Services_extérieurs 
+                (SELECT  SUM(x_aml.balance) AS Services_exterieurs 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '62%' 
-                        OR x_aa.code LIKE '63%') 
-                        AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '62%' OR x_aa.code LIKE '62%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                 UNION ALL
-                (SELECT  SUM(x_aml.balance) AS 	Impots_taxes 
+                (SELECT  SUM(x_aml.balance) AS Impots_et_taxes 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
@@ -198,7 +200,7 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
 
         """%(date_start,date_end)+"""
                                 UNION ALL
-                (SELECT  SUM(x_aml.balance) AS 	Autres_Charges 
+                (SELECT  SUM(x_aml.balance) AS 	Autres_charges 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
@@ -206,8 +208,8 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 WHERE ( x_aa.code LIKE '65%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
-                                UNION ALL
-                (SELECT  SUM(x_aml.balance) AS 	Charge_personnel 
+                                        UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Charges_de_personnel 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
@@ -215,44 +217,44 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 WHERE ( x_aa.code LIKE '66%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
-                                UNION ALL
-                (SELECT  SUM(x_aml.balance) AS 	Reprise_amortissement_provisions_depreciation 
+                                        UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Reprises_amortissements_de_provisions_et_depreciations 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '0%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE (x_aa.code IN ('791','798','799')) AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Dotations_amortissement_provisions_et_depreciation 
+                (SELECT  SUM(x_aml.balance) AS Dotations_aux_amortissements_aux_provisions_et_depreciations 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '681%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE (x_aa.code IN ('681','691')) AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Revenus_financiere_assimiles 
+                (SELECT  SUM(x_aml.balance) AS Revenus_financiers_et_assimiles 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '0%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '77%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Revenus_de_provisions_et_depreciation_financiere 
+                (SELECT  SUM(x_aml.balance) AS Reprises_de_provisions_et_depreciations_financieres 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '0%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '797%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Transfert_de_charge_financiere 
+                (SELECT  SUM(x_aml.balance) AS Transferts_de_charges_financieres 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
@@ -261,66 +263,75 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
 
         """%(date_start,date_end)+"""
                                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Frais_financiere_et_charges_assimilees 
+                (SELECT  SUM(x_aml.balance) AS Frais_financiers_et_charges_assimiles 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '66%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '67%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Dotations_aux_provisions_et_aux_depreciation_financiere 
+                (SELECT  SUM(x_aml.balance) AS Dotations_aux_provisions_et_aux_depreciations_financieres 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '0%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '697%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Produits_des_cessions_immobilisation 
+                (SELECT  SUM(x_aml.balance) AS Produits_des_cessions_immobilisations 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '841%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '82%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Autres_produits_HAO 
+                (SELECT  SUM(x_aml.balance) AS Autres_Produits_HAO 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '66%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '84%' OR x_aa.code LIKE '86%' OR x_aa.code LIKE '88%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                         UNION ALL
-                (SELECT  SUM(x_aml.balance) AS Valeurs_Comptables_des_cessions_immobilisations 
+                (SELECT  SUM(x_aml.balance) AS 	Valeurs_comptables_des_cessions_immobilisations 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '0%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '81%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
-                                        UNION ALL
+                                                UNION ALL
                 (SELECT  SUM(x_aml.balance) AS Autres_Charges_HAO 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '858%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '83%' OR x_aa.code LIKE '85%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
-                                        UNION ALL
-                (SELECT  SUM(x_aml.balance) AS 	Participation_des_Travailleurs 
+                                                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Participation_des_travailleurs 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE ( x_aa.code LIKE '871%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+                WHERE ( x_aa.code LIKE '87%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS Impots_sur_le_resultat 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE ( x_aa.code LIKE '89%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)
         
