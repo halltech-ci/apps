@@ -2,4 +2,5 @@
 
 from . import models
 #from . import project
-#from . import sale
+from . import sale
+from . import purchase
