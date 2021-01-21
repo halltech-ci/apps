@@ -21,7 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['purchase_request',
-               'sale_custom'],
+               'custom_apps'],
 
     # always loaded
     'data': [
