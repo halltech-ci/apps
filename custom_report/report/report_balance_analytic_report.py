@@ -48,9 +48,12 @@ class ReportBalanceReportView(models.AbstractModel):
         docs = []
         if data['form']['analytic']:
             analytic_id = data['form']['analytic'][0]
-            lines = self.env['account.analytic.account'].search([('id','=',analytic_id)])
+            lines = self.env['account.analytic.account'].search([('id','=',analytic_id),
+                                                                ('create_date','>=',date_start),
+                                                                 ('create_date','<=',date_end)])
         else:
-            lines = self.env['account.analytic.account'].search([])
+            lines = self.env['account.analytic.account'].search([('create_date','>=',date_start),
+                                                                 ('create_date','<=',date_end)])
         for line in lines:
             analytic = line.id
             id_aan = str(analytic)

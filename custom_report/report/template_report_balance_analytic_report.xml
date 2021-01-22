@@ -44,8 +44,14 @@
                                             <th><span t-esc="lines.get('code_analytic')"/></th>
                                             <th><span t-esc="lines.get('x_debit')"/></th>
                                             <th><span t-esc="lines.get('x_credit')"/></th>
-                                            <th t-if="lines.get('solde_debit')>0" ><span t-esc="lines.get('solde_debit')"/></th>
-                                            <th t-if="lines.get('solde_credit')>0"><span t-esc="lines.get('solde_credit')"/></th>
+                                            <t t-if="lines.get('solde_debit')>0">
+                                                <th><span t-esc="lines.get('solde_debit')"/></th>
+                                                <th></th>
+                                            </t>
+                                            <t t-if="lines.get('solde_credit')>0">
+                                                <th></th>
+                                                <th><span t-esc="lines.get('solde_credit')"/></th>
+                                            </t>
                                         </tr>   
                                     </t>
                                 </t>  
