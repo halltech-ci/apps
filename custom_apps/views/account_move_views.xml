@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <!-- Insert Account Move object-->
           <xpath expr="//sheet/notebook/page/field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="after">
-            <field name="account_account_id"/>  
+            <field name="account_id_cle"/>  
             <field name="etiquet_analytic_id"/>
           </xpath>
         </field>
