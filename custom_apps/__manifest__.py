@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale_management','project',],
+    'depends': ['sale','project', 'purchase_request',],
 
     # always loaded
     'data': [
@@ -29,6 +29,11 @@
         'views/templates.xml',
         'views/account_analytic_tag_views.xml',
         'views/account_move_views.xml',
+        'views/project_views.xml',
+        'views/sale_order_views.xml',
+        #data sequence
+        'data/sale_ir_sequence.xml',
+        'data/purchase_ir_sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -39,9 +39,7 @@ class ExpenseRequest(models.Model):
     analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account')
     project_id = fields.Many2one('project.project', string='Projet')
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
-    journal = fields.Many2one('account.journal', string='Journal', required=True, 
-                              default=lambda self:self.env['account.journal'].search([('type', '=', 'cash')])
-                             )
+    journal = fields.Many2one('account.journal', string='Journal', required=True, domain=[('type', 'in', ['cash', 'bank'])], default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
     move_id = fields.Many2one('account.move', string='Account Move')
     
     @api.depends("state")
@@ -74,12 +72,13 @@ class ExpenseRequest(models.Model):
             expense_line_ids = []
             lines = request.mapped('line_ids')
             for line in lines:
-                if not (line.employee_id.address_home_id.property_account_payable_id):
+                if not (line.employee_id.address_home_id.property_account_receivable_id):
                     raise UserError(_('Pas de compte pour : "%s" !') % (line.employee_id))
                 partner_id = line.employee_id.address_home_id.id
+                debit_account = line.employee_id.address_home_id.property_account_receivable_id if self.payment_mode == 'justify' else self.line.debit_account
                 debit_line = (0, 0, {#received
                     'name': line.name,
-                    'account_id': line.debit_account.id,
+                    'account_id': debit_account.id,
                     'debit': line.amount > 0.0 and line.amount or 0.0,
                     'credit': line.amount < 0.0 and -line.amount or 0.0, 
                     'partner_id': partner_id,

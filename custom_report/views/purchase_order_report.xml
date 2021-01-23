@@ -4,8 +4,23 @@
         
         <!-- Add custom sequence in purchase-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">
-            <h2>DEMANDE DE COTATION/RFQ N°:<span t-field="o.name"/></h2>
+            <h4 class="text-center">DEMANDE DE COTATION/RFQ N°: <span t-field="o.name"/></h4>
+            <!-- Adding date and project in purchase request-->
+            <div id="informations" class="row mt32 mb32">
+                <div class="col-6 bm-2">
+                    <strong>DATE:</strong>
+                    <span t-field="o.date_order" class="m-0"/>
+                </div>
+                <div class="col-6 bm-2">
+                    <strong>PROJET:</strong>
+                    <span t-field="o.project_id" class="m-0"/>
+                </div>
+            </div>
         </xpath>
+        <!-- Delete company header-->
+        <xpath expr="//t[@t-set='address']" position="replace"></xpath>
+        <xpath expr="//t[@t-call='web.external_layout']/t[3]" position="replace"></xpath>
+        <!-- Overriding purchase request table -->
         <xpath expr="//table[hasclass('table', 'table-sm')]//thead/tr" position="replace">
             <tr>
                 <th class="text-left"><strong>Description</strong></th>
