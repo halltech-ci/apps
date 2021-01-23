@@ -25,7 +25,7 @@
                'hr_payroll',
                'account',
                'hr_payroll_account',
-               'purchase',
+               'purchase_request_custom',
                'sale_management',],
 
     # always loaded
