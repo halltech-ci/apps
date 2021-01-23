@@ -1,7 +1,7 @@
 <odoo>
     <report id="balance_analytic_report"
         model="balance.analytic.report.wizard"
-        string="Account Analytic Report"
+        string="Balance Analytic Report"
         report_type="qweb-html"
         name="custom_report.balance_report_view"
         
@@ -26,35 +26,33 @@
                             <th class='text-center'>M. Debit</th>
                             <th class='text-center'>M. Credit</th>
                             <th class='text-center'>S. Debit</th>
-                            <th class='text-center'>S. Credit</th>
+                            <th class='text-center'>S. Credi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <t t-foreach="docs" t-as="line"> 
                                 <t t-set="analytic" t-value="line['get_lines']"/> 
                                 <t t-if="analytic">
-                                    <t t-foreach="analytic" t-as="lines">
                                         <tr class='text-center'>
-                                            <th><span t-esc="lines.get('code_account')"/></th>
-                                            <th><span t-esc="lines.get('name_account')"/></th>
+                                            <th><span t-esc="analytic.get('code_account')"/></th>
+                                            <th><span t-esc="analytic.get('name_account')"/></th>
                                             <th>
-                                                <span t-esc="lines.get('code_project')"/> 
+                                                <span t-esc="analytic.get('code_project')"/> 
                                             </th>
-                                            <th><span t-esc="lines.get('name_project')"/></th>
-                                            <th><span t-esc="lines.get('code_analytic')"/></th>
-                                            <th><span t-esc="lines.get('x_debit')"/></th>
-                                            <th><span t-esc="lines.get('x_credit')"/></th>
-                                            <t t-if="lines.get('solde_debit')>0">
-                                                <th><span t-esc="lines.get('solde_debit')"/></th>
+                                            <th><span t-esc="analytic.get('name_project')"/></th>
+                                            <th><span t-esc="analytic.get('name_tags')"/></th>
+                                            <th><span t-esc="analytic.get('x_debit')"/></th>
+                                            <th><span t-esc="analytic.get('x_credit')"/></th>
+                                            <t t-if="analytic.get('solde_debit')>0">
+                                                <th><span t-esc="analytic.get('solde_debit')"/></th>
                                                 <th></th>
                                             </t>
-                                            <t t-if="lines.get('solde_credit')>0">
+                                            <t t-if="analytic.get('solde_credit')>0">
                                                 <th></th>
-                                                <th><span t-esc="lines.get('solde_credit')"/></th>
+                                                <th><span t-esc="analytic.get('solde_credit')"/></th>
                                             </t>
                                         </tr>   
-                                    </t>
-                                </t>  
+                                    </t> 
                         </t>
                     </tbody>
                 </table>

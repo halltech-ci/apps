@@ -3,3 +3,5 @@
 from . import models
 #from . import project
 #from . import sale
+from . import account_tag
+from . import account_move
