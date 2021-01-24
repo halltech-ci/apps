@@ -27,6 +27,8 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/account_analytic_tag_views.xml',
+        'views/account_move_views.xml',
         'views/project_views.xml',
         'views/sale_order_views.xml',
         #data sequence
