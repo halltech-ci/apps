@@ -39,6 +39,9 @@
             <xpath expr="//sheet/group/group[2]/field[@name='company_id']" position="after">
                 <field name="project_id"/>
             </xpath>
+            <xpath expr="//sheet/group/group[1]/field[@name='partner_id']" position="after">
+                <field name="dest_address_id"/>
+            </xpath>
         </field>
     </record>
   </data>
