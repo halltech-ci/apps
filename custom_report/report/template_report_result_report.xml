@@ -282,7 +282,7 @@
                                     </t>
                             </t>
                         </tr>
-                        <tr>
+                        <tr class="table-danger">
                             <td>EXCEDENT BRUT D'EXPLOITATION</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
