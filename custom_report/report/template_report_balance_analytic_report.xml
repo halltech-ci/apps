@@ -7,6 +7,7 @@
         
         menu="False"/>
 
+
     <template id="balance_report_view">
         <t t-call="web.html_container">
             <div class="header" style="border-bottom: 1px solid black;">
@@ -26,12 +27,12 @@
                             <th class='text-center'>M. Debit</th>
                             <th class='text-center'>M. Credit</th>
                             <th class='text-center'>S. Debit</th>
-                            <th class='text-center'>S. Credi</th>
+                            <th class='text-center'>S. Credit</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="docs.get('get_lines')" t-as="line"> 
-                                <t t-set="analytic" t-value="line['get_lines']"/> 
+                        <t t-foreach="docs" t-as="line"> 
+                                <t t-set="analytic" t-value="line"/> 
                                     <t t-foreach="analytic" t-as="lines"> 
                                         <tr class='text-center'>
                                             <th><span t-esc="lines.get('code_account')"/></th>
