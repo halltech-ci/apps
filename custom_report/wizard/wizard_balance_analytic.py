@@ -2,7 +2,6 @@
 
 from odoo import models, fields, api
 
-from odoo import models, fields, api
 
 class BalanceAnalyticReportWizard(models.TransientModel):
     _name = 'balance.analytic.report.wizard'
@@ -21,4 +20,5 @@ class BalanceAnalyticReportWizard(models.TransientModel):
         }
         # ref `module_name.report_id` as reference.
         return self.env.ref('custom_report.balance_analytic_report').with_context(landscape=True).report_action(self, data=data)
-
+    
+    
