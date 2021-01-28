@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
-        <xpath expr="//div[@t-if='doc.signature']" position="after">
+        <!-- Delete initial position of signature-->
+        <xpath expr="//div[@name='signature']" position="replace"></xpath>
+        <!-- -->
+        <xpath expr="//p[@t-field='doc.note']" position="after">
             <div class="text-right">
-                <br/><br/>
                 <strong>
                     <span t-field="doc.user_id"/>
                 </strong>
+                <div t-if="doc.signature" class="mt32 ml64 mr4" name="signature">
+                    <div class="offset-8">
+                        <strong>Signature</strong>
+                    </div>
+                    <div class="offset-8">
+                        <img t-att-src="image_data_uri(doc.signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                    </div>
+                    <div class="offset-8 text-center">
+                        <p t-field="doc.signed_by"/>
+                    </div>
+                </div>
             </div>
         </xpath>
         <!-- Change quotation name-->
