@@ -26,7 +26,9 @@
                'account',
                'hr_payroll_account',
                'purchase_request_custom',
-               'sale_management',],
+               'sale_management',
+               'sale_order_secondary_unit',
+               ],
 
     # always loaded
     'data': [
@@ -35,6 +37,7 @@
         'views/templates.xml',
         'views/purchase_order_report.xml',
         'views/sale_order_report.xml',
+        'views/sale_order_views.xml',
         #report
         'report/template_report_project_report.xml',
         'report/template_report_analytic_report.xml',
