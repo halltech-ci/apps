@@ -24,7 +24,7 @@ class SaleOrder(models.Model):
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine", required=True, index=True, default='fm')
-
+    
     @api.model
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
