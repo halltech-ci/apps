@@ -7,3 +7,6 @@ class ProjectTask(models.Model):
     _inherit = "project.task"
     
     stock_request_ids = fields.One2many('stock.request', 'task_id', string='Stock Request')
+    
+    def button_action_product(self):
+        pass
