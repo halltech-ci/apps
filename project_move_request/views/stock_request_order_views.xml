@@ -14,6 +14,9 @@
             <xpath expr="//sheet/group/group/field[@name='picking_policy']" position="after">
                 <field name="project_task"/>
             </xpath>
+            <xpath expr="//sheet/notebook/page[@name='items']/field[@name='stock_request_ids']/tree/field[@name='product_uom_qty']" position="before">
+                <field name="initial_qty"/>
+            </xpath>
             
             <xpath expr="//sheet/notebook/page[@name='items']" position="after">
                 <page name='timesheet' string="Timesheet">

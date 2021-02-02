@@ -10,6 +10,7 @@ class StockRequestOrder(models.Model):
     
     project_task = fields.Many2one('project.task')
     timesheet_ids = fields.One2many(related="project_task.timesheet_ids")
+    equipment_ids = fields.One2many('maintenance.equipment', 'request_order')
     
     """
     @api.onchange('project_task')

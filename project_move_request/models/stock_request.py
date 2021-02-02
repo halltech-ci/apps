@@ -8,7 +8,7 @@ class StockRequest(models.Model):
     
     task_id = fields.Many2one('project.task', string='Task')
     initial_qty = fields.Float('Initial Qty', digits="Product Unit of Measure")
-    product_uom_qty = fields.Float(required=False)
+    product_uom_qty = fields.Float(required=False, states={"draft": [("readonly", False)]}, readonly=True)
     
     @api.constrains('initial_qty', 'product_uom_qty')
     def compare_product_qty(self):
