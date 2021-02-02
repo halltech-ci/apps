@@ -11,6 +11,7 @@ class StockRequestOrder(models.Model):
     project_task = fields.Many2one('project.task')
     timesheet_ids = fields.One2many(related="project_task.timesheet_ids")
     
+    """
     @api.onchange('project_task')
     def _onchange_project_task(self):
         for rec in self:
@@ -35,7 +36,7 @@ class StockRequestOrder(models.Model):
                     lines.append((0, 0, vals))
                     #lines.append((6, 0, line_ids))
                 rec.stock_request_ids = lines
-    
+    """
     @api.model
     def create(self, vals):
         upd_vals = vals.copy()
