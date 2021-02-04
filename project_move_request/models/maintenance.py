@@ -7,3 +7,5 @@ class MaintenanceEquipment(models.Model):
     _inherit = "maintenance.equipment"
     
     request_order = fields.Many2one('stock.request.order')
+    use_cost = fields.Float('Cost')
+    use_time = fields.Float('Use Time')

@@ -17,7 +17,7 @@
             <xpath expr="//sheet/notebook/page[@name='items']/field[@name='stock_request_ids']/tree/field[@name='product_uom_qty']" position="before">
                 <field name="initial_qty"/>
             </xpath>
-            
+            <!-- Add timesheet in stock request order-->
             <xpath expr="//sheet/notebook/page[@name='items']" position="after">
                 <page name='timesheet' string="Timesheet">
                     <field name="timesheet_ids" readonly='1'>
@@ -29,6 +29,17 @@
                             <field name="unit_amount" widget="timesheet_uom"/>
                             <field name="project_id" />
                             <field name="company_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+            <!-- Add equipment in stock request-->
+                <page name='timesheet' string="Equipements">
+                    <field name="equipment_ids" widget="many2many">
+                        <tree editable="bottom" string="Equipements">
+                            <field name="name"/>
+                            <field name='serial_no'/>
+                            <field name="category_id"/>
+                            <field name="use_cost"/>
                         </tree>
                     </field>
                 </page>
