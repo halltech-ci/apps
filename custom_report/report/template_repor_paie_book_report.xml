@@ -42,7 +42,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Basic Salary' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Basic Salary' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -54,7 +54,7 @@
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
                                              <td t-if="'Sursalaire' in lines.get('x_hpl_name')">
-                                                 <span t-esc="lines.get('x_hpl_total')"/>
+                                                 <span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/>
                                             </td>
                                         </t>
                                     </t>
@@ -63,10 +63,10 @@
                         <tr>
                             <td>Prime de responsabilité</td>
                             <t t-foreach="docs" t-as="line">
-                                <t t-set="paie" t-value="line['get_lines']"/> 
+                                <t t-set="paie" t-value="line['get_lines']" t-options='{"widget": "float", "precision": 0}'/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Prime de responsabilite' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Prime de responsabilite' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -77,7 +77,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Prime de communication' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Prime de communication' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -88,7 +88,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Prime de transport' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Prime de transport' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -99,7 +99,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Heure Supplementaire' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Heure Supplementaire' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -110,7 +110,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Prime de logement' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Prime de logement' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -121,7 +121,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Autres Avantages' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Autres Avantages' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -132,7 +132,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Prime anciennete' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Prime anciennete' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -143,7 +143,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Salaire Brut' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Salaire Brut' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -155,7 +155,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Base Imposable' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Base Imposable' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -166,7 +166,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Regime de Retraite Employe' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Regime de Retraite Employe' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -177,7 +177,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Prestations Familiales' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Prestations Familiales' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -188,7 +188,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'TOTAL RETENUES SOCIALES PATRONALES' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'TOTAL RETENUES SOCIALES PATRONALES' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -199,7 +199,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'CMU Employe' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'CMU Employe' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -210,7 +210,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Contribution Nationale' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Contribution Nationale' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -221,7 +221,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Impot Général sur le Revenu' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Impot Général sur le Revenu' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -232,7 +232,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'TOTAL DES RETENUES FISCALES' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'TOTAL DES RETENUES FISCALES' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -243,7 +243,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Formation Continue' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Formation Continue' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -254,7 +254,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Taxe Apprentissage' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Taxe Apprentissage' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -265,7 +265,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'TOTAL DES COTISATIONS' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'TOTAL DES COTISATIONS' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -276,7 +276,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Salaire Net' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Salaire Net' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -287,7 +287,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Indemnite de transport' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Indemnite de transport' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -298,7 +298,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Avances et Acomptes perçus' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'Avances et Acomptes perçus' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
@@ -309,7 +309,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'SALAIRE NET A PAYER' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')"/></td>
+                                             <td t-if="'SALAIRE NET A PAYER' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>

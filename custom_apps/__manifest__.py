@@ -27,6 +27,7 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/account_cash_views.xml',
         #'views/account_analytic_tag_views.xml',
         'views/account_move_views.xml',
         'views/account_account_views.xml',
