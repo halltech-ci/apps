@@ -37,7 +37,7 @@
                                     <td class="text-left"><span><strong>Position:</strong></span></td>
                                     <td class="text-left" colspan="2"><span t-field="o.employee_id.marital"/></td>
                                     <td class="text-left"><span><strong>Taux Horaire:</strong></span></td>
-                                    <td colspan="2" class="text-center"><span t-esc="lines.get('TH')[1]" t-esc-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td colspan="2" class="text-center"><span t-esc="lines.get('TH')[1]" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
                                 <tr>
 
@@ -90,7 +90,7 @@
                                     <td class='text-left' colspan="3">Indemnité compensatrice préavis</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('ICP')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('ICP')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -100,7 +100,7 @@
                                     <td class='text-left' colspan="3">INDEMNITE DE LICENCIEMENT</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('IL')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('IL')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -110,7 +110,7 @@
                                     <td class='text-left' colspan="3">Salaire de base</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('BASE')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('BASE')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -120,7 +120,7 @@
                                     <td class='text-left' colspan="3">Sursalaire</td>
                                     <td></td>
                                     <td></td>
-                                     <td class="text-center"><span t-esc="lines.get('SS')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                     <td class="text-center"><span t-esc="lines.get('SS')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -130,7 +130,7 @@
                                     <td class='text-left' colspan="3">Indemnité de congés</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('ICG')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('ICG')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td> 
@@ -140,7 +140,7 @@
                                     <td class='text-left' colspan="3">Gratification/Départ</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('PDG')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('PDG')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -150,7 +150,7 @@
                                     <td class='text-left' colspan="3">Prime de responsabilité</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('PDR')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('PDR')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -160,7 +160,7 @@
                                     <td class='text-left' colspan="3">Prime de communication</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('PDC')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('PDC')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -170,7 +170,7 @@
                                     <td class='text-left' colspan="3">Prime de transport</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('PDTR')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('PDTR')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -181,7 +181,7 @@
                                     <td class='text-left' colspan="3">Heure Supplementaire 15%</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('HS15')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('HS15')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -191,7 +191,7 @@
                                     <td class='text-left' colspan="3">Heure Supplementaire 50%</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('HS50')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('HS50')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -201,7 +201,7 @@
                                     <td class='text-left' colspan="3">Heure Supplementaire 75%</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('HS75')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('HS75')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -211,7 +211,7 @@
                                     <td class='text-left' colspan="3">Heure Supplementaire 100%</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('HS100')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('HS100')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -221,7 +221,7 @@
                                     <td class='text-left' colspan="3">Prime de logement</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('PDL')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('PDL')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -231,7 +231,7 @@
                                     <td class='text-left' colspan="3">Prime ancienneté</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('PDA')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>          
+                                    <td class="text-center"><span t-esc="lines.get('PDA')[1]" t-options='{"widget": "float", "precision": 0}'/></td>          
                                     <td></td>    
                                     <td></td>
                                     <td></td>
@@ -241,7 +241,7 @@
                                     <td class='text-left' colspan="3">Autres avantages</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('AAV')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('AAV')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -251,7 +251,7 @@
                                     <td class='text-left' colspan="3"><strong>SALAIRE BRUT</strong></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('SBRUT')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('SBRUT')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -263,7 +263,7 @@
                                     <td class='text-left' colspan="3"><strong>SALAIRE BRUT IMPOSABLE</strong></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('SBI')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('SBI')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -271,32 +271,32 @@
                                 <tr t-if="lines.get('SBI')[1]>0 and lines.get('RRE')[1]>0 and lines.get('RRP')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Regime de retraite</td>
-                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td class="text-center"><span>6,3</span></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('RRE')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('RRE')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td class="text-center">7,7</td>
-                                    <td class="text-center"><span t-esc="lines.get('RRP')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('RRP')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr t-if="lines.get('BSO')[1]>0 and lines.get('PF')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Prestations Familiales</td>
-                                    <td class="text-center"><span t-esc="lines.get('BSO')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('BSO')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td class="text-center"><span>5,75</span></td>
-                                    <td class="text-center"><span t-esc="lines.get('PF')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('PF')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr t-if="lines.get('BSO')[1]>0 and lines.get('AT')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Accident de Travail</td>
-                                    <td class="text-center"><span t-esc="lines.get('BSO')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('BSO')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td class="text-center">4</td>
-                                    <td class="text-center"><span t-esc="lines.get('AT')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('AT')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr t-if="lines.get('RRE')[1]>0 and lines.get('TSOCPA')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
@@ -304,9 +304,9 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('RRE')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('RRE')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('TSOCPA')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('TSOCPA')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                 </tr>
                                 <tr t-if="lines.get('CMUE')[1]>0 and lines.get('CMUP')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
@@ -314,37 +314,37 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('CMUE')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('CMUE')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('CMUP')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('CMUP')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr t-if="lines.get('SBI')[1]>0 and lines.get('IS')[1]>0 and lines.get('IS')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Impots Sur Salaire (IS)</td>
-                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td class="text-center">1,2</td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('IS')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('IS')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td class="text-center">1,2</td>
-                                    <td class="text-center"><span t-esc="lines.get('IS')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('IS')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr t-if="lines.get('SBI')[1]>0 and lines.get('CN')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Contribution Nationale (CN)</td>
-                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('CN')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('CN')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr t-if="lines.get('SBI')[1]>0 and lines.get('IGR')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Impot General Sur le Revenu (IGR)</td>
-                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('IGR')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('IGR')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -354,29 +354,29 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('TFISC')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('TFISC')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('IS')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('IS')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                 </tr>
                                 <tr t-if="lines.get('SBRUT')[1]>0 and lines.get('FC')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Formation Continue</td>
-                                    <td class="text-center"><span t-esc="lines.get('SBRUT')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SBRUT')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td class="text-center">0,6</td>
-                                    <td class="text-center"><span t-esc="lines.get('FC')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('FC')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr t-if="lines.get('SBRUT')[1]>0 and lines.get('TAPP')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">Taxe Apprentissage</td>
-                                    <td class="text-center"><span t-esc="lines.get('SBRUT')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SBRUT')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td class="text-center">0,4</td>
-                                    <td class="text-center"><span t-esc="lines.get('TAPP')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('TAPP')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr t-if="lines.get('TCOTEM')[1]>0 and lines.get('TCOTPA')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
@@ -384,16 +384,16 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('TCOTEM')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('TCOTEM')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('TCOTPA')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('TCOTPA')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                 </tr>
                                 <tr t-if="lines.get('SNET')[1]>0" style="border: 1px solid black">
                                     <td class='text-center'>318</td>
                                     <td class='text-left' colspan="3">SALAIRE NET</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('SNET')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SNET')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -403,7 +403,7 @@
                                     <td class='text-left' colspan="3">Indemnité de transport</td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('IDTR')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('IDTR')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -425,7 +425,7 @@
                                     <td class='text-left' colspan="3"><strong>NET A PAYER</strong></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-center"><strong><span t-esc="lines.get('NETAP')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></strong></td>
+                                    <td class="text-center"><strong><span t-esc="lines.get('NETAP')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -443,26 +443,26 @@
                                     <td><span t-esc="duration"/></td>
                                     <td class="text-center">173,33</td>
                                     <td colspan="2">Acquis N-1:</td>
-                                    <td colspan="2" class="text-center"><span t-esc="lines.get('TCOTPA')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td colspan="2" class="text-center"><span t-esc="lines.get('TCOTPA')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-left' colspan='4'>Salaire Brut:</td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('SBRUT')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SBRUT')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td colspan="2">Pris:</td>
                                     <td colspan="2" class='text-center'><strong>NET A PAYER</strong></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-left' colspan='4'>Cotisations Salarié:</td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('TCOTEM')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('TCOTEM')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td colspan="2">Reste:</td>
-                                    <td colspan="2" rowspan="2" class="text-center"><span t-esc="lines.get('NETAP')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td colspan="2" rowspan="2" class="text-center"><span t-esc="lines.get('NETAP')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
                                 <tr style="border: 1px solid black">
                                     <td class='text-left' colspan='4'>Salaire Net:</td>
                                     <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('SNET')[1]" t-esc-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SNET')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td colspan="2">Acquis N:</td>
                                 </tr>
                                 <tr></tr>

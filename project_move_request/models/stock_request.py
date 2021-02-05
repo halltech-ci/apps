@@ -8,11 +8,11 @@ class StockRequest(models.Model):
     
     task_id = fields.Many2one('project.task', string='Task')
     initial_qty = fields.Float('Initial Qty', digits="Product Unit of Measure")
-    product_uom_qty = fields.Float(required=False)
+    product_uom_qty = fields.Float(required=False, states={"draft": [("readonly", False)]}, readonly=True)
     
     @api.constrains('initial_qty', 'product_uom_qty')
     def compare_product_qty(self):
-        if self.task_id:
+        if self.initial_qty > 0 and self.product_uom_qty > 0:
             if self.initial_qty < self.product_uom_qty:
                 raise ValidationError(_("{0} quantity can not be greater than {1}".format(self.product_id.name, self.initial_qty)))
             
