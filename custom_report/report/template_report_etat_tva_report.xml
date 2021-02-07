@@ -34,12 +34,12 @@
                                     <t t-foreach="Tva" t-as="lines">
                                         <tr class='text-center'>
                                             <th>
-                                                <span t-esc="lines.get('partner')"/> 
+                                                <span t-esc="lines.get('partner')" t-options='{"widget": "float", "precision": 0}'/> 
                                             </th>
-                                            <th><span t-esc="lines.get('refence')"/></th>
-                                            <th><span t-esc="lines.get('x_date')"/></th>
-                                            <th><span t-esc="lines.get('total')"/></th>
-                                            <th><span t-esc="lines.get('tax')"/></th>
+                                            <th><span t-esc="lines.get('refence')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                            <th><span t-esc="lines.get('x_date')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                            <th><span t-esc="lines.get('total')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                            <th><span t-esc="lines.get('tax')" t-options='{"widget": "float", "precision": 0}'/></th>
                                         </tr> 
                                     </t>
                                 </t>

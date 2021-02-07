@@ -31,7 +31,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[0][0]"/>
+                                            <span t-esc="project[0][0]" />
                                         </td>
                                     </t>
                                     
@@ -178,7 +178,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[13][0]"/>
+                                            <span t-esc="project[13][0]" />
                                         </td>
                                     </t>
                             </t>
@@ -299,7 +299,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[24][0]"/>
+                                            <span t-esc="project[24][0]" />
                                         </td>
                                     </t>
                             </t>
@@ -388,7 +388,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[32][0]"/>
+                                            <span t-esc="project[32][0]" t-options='{"widget": "float", "precision": 0}'/>
                                         </td>
                                     </t>
                             </t>
