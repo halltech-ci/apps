@@ -23,6 +23,7 @@
     'depends': ['stock_request',
                 'purchase_stock',
                 'project',
+                'maintenance',
                 #'hr_timesheet'
                ],
 

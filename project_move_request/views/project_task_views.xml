@@ -6,6 +6,13 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
+            <header>
+                <button name="button_action_product"
+                    string="PLAN"
+                    type="object"
+                    class="oe_highlight"
+            />
+            </header>
             <xpath expr="/form/sheet/notebook" position="inside">
                 <page name="stock_requests" string="Stock Requests">
                     <field name="stock_request_ids" />
