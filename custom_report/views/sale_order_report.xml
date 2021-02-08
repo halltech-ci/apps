@@ -73,10 +73,6 @@
             <th name="th_sec_qty" class="text-right" groups="uom.group_uom">Second. Qty</th>
             <th name="th_sec_unit" class="text-right" groups="uom.group_uom">Second. Unit</th>
         </xpath>
-        <xpath expr="//span[@t-field='line.product_uom_qty']/.." position='before'>
-            <td name="td_sec_qty" class="text-right" groups="uom.group_uom"><span t-field="line.secondary_uom_qty"/></td>
-            <td name="td_sec_qty" class="text-right" groups="uom.group_uom"><span t-field="line.secondary_uom_id"/></td>
-        </xpath>
         <!-- Delete tax from report-->
         <xpath expr="//table[hasclass('table','table-sm','o_main_table')]/thead/tr/th[@name='th_taxes']" position="replace">
         </xpath>
