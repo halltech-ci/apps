@@ -60,13 +60,31 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 WHERE ( x_aa.code LIKE '6031%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
+                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS MARGE_COMMERCIALE		
+ 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE ( x_aa.code LIKE '701%'
+                        AND x_aa.code LIKE '601%'
+                        AND x_aa.code LIKE '6031%'
+                        ) 
+                    AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
                         UNION ALL
                 (SELECT  SUM(x_aml.balance) AS Ventes_de_produits_fabri
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE  ( x_aa.code IN ('702','703','704'))
+                WHERE  ( x_aa.code LIKE '702%'
+                        OR x_aa.code LIKE '703%'
+                        OR x_aa.code LIKE '704%'
+                        OR x_aa.code LIKE '702%'
+                        )
                          AND (x_aml.analytic_account_id= """+ analytic_id+""") 
                          AND (x_aml.date BETWEEN '%s' AND '%s'))
 
@@ -77,7 +95,8 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
-                WHERE (x_aa.code IN ('705','706')) 
+                WHERE (x_aa.code LIKE '705%'
+                        OR x_aa.code LIKE '706%') 
                          AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
@@ -88,6 +107,29 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
                 WHERE ( x_aa.code LIKE '707%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                    UNION ALL
+                (SELECT  SUM(x_aml.balance) AS CHIFFRE_AFFAIRES			
+ 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE (x_aa.code LIKE '701%') 
+                        AND
+                        (x_aa.code LIKE '702%'
+                        OR x_aa.code LIKE '703%'
+                        OR x_aa.code LIKE '704%')
+                        
+                        AND
+                        
+                        (x_aa.code LIKE '705%'
+                        OR x_aa.code LIKE '706%')
+                        AND 
+                        (x_aa.code LIKE '707%')
+                         
+                    AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                         UNION ALL
@@ -208,7 +250,52 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 WHERE ( x_aa.code LIKE '65%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
-                                        UNION ALL
+                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS VALEUR_AJOUTEE			
+ 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE
+                    ( (x_aa.code LIKE '701%') 
+                        AND
+                        (x_aa.code LIKE '702%'
+                        OR x_aa.code LIKE '703%'
+                        OR x_aa.code LIKE '704%')
+                        
+                        AND
+                        
+                        (x_aa.code LIKE '705%'
+                        OR x_aa.code LIKE '706%')
+                        AND 
+                        (x_aa.code LIKE '707%')
+                    ) 
+                    AND (x_aa.code LIKE '601%')
+                    AND (x_aa.code LIKE '6031%')
+
+                    AND ( x_aa.code LIKE '73%'
+                        OR x_aa.code LIKE '72%'
+                        OR x_aa.code LIKE '71%'
+                        OR x_aa.code LIKE '75%'
+                        OR x_aa.code LIKE '781%'
+                        OR x_aa.code LIKE '602%'
+                        OR x_aa.code LIKE '6032%'
+                        OR  x_aa.code LIKE '604%'
+                        OR x_aa.code LIKE '605%'
+                        OR  x_aa.code LIKE '608%'
+                        OR x_aa.code LIKE '6033%'
+                        OR  x_aa.code LIKE '61%'
+                        OR x_aa.code LIKE '62%'
+                        OR  x_aa.code LIKE '63%'
+                        OR  x_aa.code LIKE '64%'
+                        OR  x_aa.code LIKE '65%'
+                        ) 
+                    AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                   
+                    UNION ALL
                 (SELECT  SUM(x_aml.balance) AS Charges_de_personnel 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
@@ -217,7 +304,52 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 WHERE ( x_aa.code LIKE '66%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
-                                        UNION ALL
+                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS EXCEDENT_BRUT_EXPLOITATION			
+ 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE 
+                    (( (x_aa.code LIKE '701%') 
+                        AND
+                        (x_aa.code LIKE '702%'
+                        OR x_aa.code LIKE '703%'
+                        OR x_aa.code LIKE '704%')
+                        
+                        AND
+                        
+                        (x_aa.code LIKE '705%'
+                        OR x_aa.code LIKE '706%')
+                        AND 
+                        (x_aa.code LIKE '707%')
+                    ) 
+                    AND (x_aa.code LIKE '601%')
+                    AND (x_aa.code LIKE '6031%')
+
+                    AND ( x_aa.code LIKE '73%'
+                        OR x_aa.code LIKE '72%'
+                        OR x_aa.code LIKE '71%'
+                        OR x_aa.code LIKE '75%'
+                        OR x_aa.code LIKE '781%'
+                        OR x_aa.code LIKE '602%'
+                        OR x_aa.code LIKE '6032%'
+                        OR  x_aa.code LIKE '604%'
+                        OR x_aa.code LIKE '605%'
+                        OR  x_aa.code LIKE '608%'
+                        OR x_aa.code LIKE '6033%'
+                        OR  x_aa.code LIKE '61%'
+                        OR x_aa.code LIKE '62%'
+                        OR  x_aa.code LIKE '63%'
+                        OR  x_aa.code LIKE '64%'
+                        OR  x_aa.code LIKE '65%'
+                        ) )
+                        AND ( x_aa.code LIKE '66%')
+                    AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                UNION ALL
                 (SELECT  SUM(x_aml.balance) AS Reprises_amortissements_de_provisions_et_depreciations 
                 FROM account_move_line AS x_aml 
                 INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
@@ -233,6 +365,58 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
                 WHERE (x_aa.code IN ('681','691')) AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS RESULTAT_EXPLOITATION			
+ 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE
+                    ( x_aa.code LIKE '791%'
+                        OR x_aa.code LIKE '798%'
+                        OR x_aa.code LIKE '799%'
+                    )
+                    AND ( x_aa.code LIKE '681%'
+                        OR x_aa.code LIKE '691%'
+                    )
+                    AND ((( (x_aa.code LIKE '701%') 
+                        AND
+                        (x_aa.code LIKE '702%'
+                        OR x_aa.code LIKE '703%'
+                        OR x_aa.code LIKE '704%')
+                        
+                        AND
+                        
+                        (x_aa.code LIKE '705%'
+                        OR x_aa.code LIKE '706%')
+                        AND 
+                        (x_aa.code LIKE '707%')
+                    ) 
+                    AND (x_aa.code LIKE '601%')
+                    AND (x_aa.code LIKE '6031%')
+
+                    AND ( x_aa.code LIKE '73%'
+                        OR x_aa.code LIKE '72%'
+                        OR x_aa.code LIKE '71%'
+                        OR x_aa.code LIKE '75%'
+                        OR x_aa.code LIKE '781%'
+                        OR x_aa.code LIKE '602%'
+                        OR x_aa.code LIKE '6032%'
+                        OR  x_aa.code LIKE '604%'
+                        OR x_aa.code LIKE '605%'
+                        OR  x_aa.code LIKE '608%'
+                        OR x_aa.code LIKE '6033%'
+                        OR  x_aa.code LIKE '61%'
+                        OR x_aa.code LIKE '62%'
+                        OR  x_aa.code LIKE '63%'
+                        OR  x_aa.code LIKE '64%'
+                        OR  x_aa.code LIKE '65%'
+                        ) )
+                        AND ( x_aa.code LIKE '66%'))
+                    AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
                                         UNION ALL
@@ -280,6 +464,81 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 WHERE ( x_aa.code LIKE '697%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
+                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS RESULTAT_FINANCIER		
+ 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE ( x_aa.code LIKE '77%'
+                        OR x_aa.code LIKE '797%'
+                        OR x_aa.code LIKE '787%'
+                        OR x_aa.code LIKE '67%'
+                        OR x_aa.code LIKE '697%'
+                        ) 
+                    AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS RESULTAT_DES_ACTIVITES_ORDINAIRES		
+ 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE 
+                    (( x_aa.code LIKE '77%'
+                        OR x_aa.code LIKE '797%'
+                        OR x_aa.code LIKE '787%'
+                        OR x_aa.code LIKE '67%'
+                        OR x_aa.code LIKE '697%'
+                        )
+                    )
+                    AND (( x_aa.code LIKE '791%'
+                        OR x_aa.code LIKE '798%'
+                        OR x_aa.code LIKE '799%'
+                    )
+                    AND ( x_aa.code LIKE '681%'
+                        OR x_aa.code LIKE '691%'
+                    )
+                    AND ((( (x_aa.code LIKE '701%') 
+                        AND
+                        (x_aa.code LIKE '702%'
+                        OR x_aa.code LIKE '703%'
+                        OR x_aa.code LIKE '704%')
+                        
+                        AND
+                        
+                        (x_aa.code LIKE '705%'
+                        OR x_aa.code LIKE '706%')
+                        AND 
+                        (x_aa.code LIKE '707%')
+                    ) 
+                    AND (x_aa.code LIKE '601%')
+                    AND (x_aa.code LIKE '6031%')
+
+                    AND ( x_aa.code LIKE '73%'
+                        OR x_aa.code LIKE '72%'
+                        OR x_aa.code LIKE '71%'
+                        OR x_aa.code LIKE '75%'
+                        OR x_aa.code LIKE '781%'
+                        OR x_aa.code LIKE '602%'
+                        OR x_aa.code LIKE '6032%'
+                        OR  x_aa.code LIKE '604%'
+                        OR x_aa.code LIKE '605%'
+                        OR  x_aa.code LIKE '608%'
+                        OR x_aa.code LIKE '6033%'
+                        OR  x_aa.code LIKE '61%'
+                        OR x_aa.code LIKE '62%'
+                        OR  x_aa.code LIKE '63%'
+                        OR  x_aa.code LIKE '64%'
+                        OR  x_aa.code LIKE '65%'
+                        ) )
+                        AND ( x_aa.code LIKE '66%')))
+                    AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
                                         UNION ALL
                 (SELECT  SUM(x_aml.balance) AS Produits_des_cessions_immobilisations 
                 FROM account_move_line AS x_aml 
@@ -316,6 +575,24 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 WHERE ( x_aa.code LIKE '83%' OR x_aa.code LIKE '85%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)+"""
+                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS RESULTAT_HORS_ACTIVITES_ORDINAIRES		
+ 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE ( x_aa.code LIKE '82%'
+                        OR x_aa.code LIKE '84%'
+                        OR x_aa.code LIKE '86%'
+                        OR x_aa.code LIKE '88%'
+                        OR x_aa.code LIKE '81%'
+                        OR x_aa.code LIKE '83%'
+                        OR x_aa.code LIKE '85%'
+                        ) 
+                    AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
                                                 UNION ALL
                 (SELECT  SUM(x_aml.balance) AS Participation_des_travailleurs 
                 FROM account_move_line AS x_aml 
@@ -332,6 +609,77 @@ class ReportAccountAnalyticReportView(models.AbstractModel):
                 INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
                 INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
                 WHERE ( x_aa.code LIKE '89%') AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
+
+        """%(date_start,date_end)+"""
+                UNION ALL
+                (SELECT  SUM(x_aml.balance) AS RESULTAT_NET		
+ 
+                FROM account_move_line AS x_aml 
+                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id 
+                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id 
+                INNER JOIN project_project AS x_pp ON x_pp.analytic_account_id = x_aml.analytic_account_id 
+                WHERE 
+                    ((( x_aa.code LIKE '77%'
+                        OR x_aa.code LIKE '797%'
+                        OR x_aa.code LIKE '787%'
+                        OR x_aa.code LIKE '67%'
+                        OR x_aa.code LIKE '697%'
+                        )
+                    )
+                    AND (( x_aa.code LIKE '791%'
+                        OR x_aa.code LIKE '798%'
+                        OR x_aa.code LIKE '799%'
+                    )
+                    AND ( x_aa.code LIKE '681%'
+                        OR x_aa.code LIKE '691%'
+                    )
+                    AND ((( (x_aa.code LIKE '701%') 
+                        AND
+                        (x_aa.code LIKE '702%'
+                        OR x_aa.code LIKE '703%'
+                        OR x_aa.code LIKE '704%')
+                        
+                        AND
+                        
+                        (x_aa.code LIKE '705%'
+                        OR x_aa.code LIKE '706%')
+                        AND 
+                        (x_aa.code LIKE '707%')
+                    ) 
+                    AND (x_aa.code LIKE '601%')
+                    AND (x_aa.code LIKE '6031%')
+
+                    AND ( x_aa.code LIKE '73%'
+                        OR x_aa.code LIKE '72%'
+                        OR x_aa.code LIKE '71%'
+                        OR x_aa.code LIKE '75%'
+                        OR x_aa.code LIKE '781%'
+                        OR x_aa.code LIKE '602%'
+                        OR x_aa.code LIKE '6032%'
+                        OR  x_aa.code LIKE '604%'
+                        OR x_aa.code LIKE '605%'
+                        OR  x_aa.code LIKE '608%'
+                        OR x_aa.code LIKE '6033%'
+                        OR  x_aa.code LIKE '61%'
+                        OR x_aa.code LIKE '62%'
+                        OR  x_aa.code LIKE '63%'
+                        OR  x_aa.code LIKE '64%'
+                        OR  x_aa.code LIKE '65%'
+                        ) )
+                        AND ( x_aa.code LIKE '66%')))
+                        )
+                        
+                    AND ( x_aa.code LIKE '82%'
+                        OR x_aa.code LIKE '84%'
+                        OR x_aa.code LIKE '86%'
+                        OR x_aa.code LIKE '88%'
+                        OR x_aa.code LIKE '81%'
+                        OR x_aa.code LIKE '83%'
+                        OR x_aa.code LIKE '85%'
+                        )
+                    AND (x_aa.code LIKE '87%')
+                    AND (x_aa.code LIKE '89%')
+                    AND (x_aml.analytic_account_id= """+ analytic_id+""") AND (x_aml.date BETWEEN '%s' AND '%s'))
 
         """%(date_start,date_end)
         

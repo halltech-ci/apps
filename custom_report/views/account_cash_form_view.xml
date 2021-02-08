@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bank_statement_form_inherit" model="ir.ui.view">
+        <field name="name">bank_statement_views</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form" />
+        <field name="arch" type="xml">
+            <header>
+                <button name="%(custom_report.action_account_cash_report_wizard)"
+                    string="Editer Rapport"
+                    type="action"
+                    class="oe_highlight"
+            />
+            </header>
+        </field>
+    </record>
+</odoo>

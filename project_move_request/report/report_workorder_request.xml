@@ -29,7 +29,7 @@
                             </div>
                         </div>
                         <t t-if="o.stock_request_ids">
-                            <h3>Matieres Premieres</h3>
+                            <h4>MATIERES PREMIERES</h4>
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
@@ -41,6 +41,44 @@
                                         </th>
                                         <th>
                                             <strong>Qty</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Unit</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.stock_request_ids" t-as="line">
+                                        <td>
+                                            <span t-field="line.product_id.default_code" />
+                                        </td>
+                                        <td>
+                                            <span t-field="line.product_id" />
+                                        </td>
+                                        <td>
+                                            <span t-field="line.product_uom_qty" />
+                                        </td>
+                                        <td>
+                                            <span t-field="line.product_uom_id" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        
+                        <t t-if="o.timesheet_ids">
+                            <h4>RESSOURCES HUMAINES</h4>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <strong>Nom</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Qualification</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Temps</strong>
                                         </th>
                                         <th>
                                             <strong>Unit</strong>

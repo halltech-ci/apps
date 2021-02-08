@@ -30,11 +30,11 @@
                                 <t t-if="project">
                                     <t t-foreach="project" t-as="lines"> 
                                         <th>
-                                            <span t-esc="lines.get('project')"/> 
+                                            <span t-esc="lines.get('project')" t-options='{"widget": "float", "precision": 0}'/> 
                                         </th>
-                                        <th><span t-esc="lines.get('debit')"/></th>
-                                        <th><span t-esc="lines.get('credit')"/></th>
-                                        <th><span t-esc="lines.get('marge')"/></th>
+                                        <th><span t-esc="lines.get('debit')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                        <th><span t-esc="lines.get('credit')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                        <th><span t-esc="lines.get('marge')" t-options='{"widget": "float", "precision": 0}'/></th>
                                     </t>
                                 </t>
                                 

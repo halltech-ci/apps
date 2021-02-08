@@ -25,8 +25,10 @@
                'hr_payroll',
                'account',
                'hr_payroll_account',
-               'purchase',
-               'sale_management',],
+               'purchase_request_custom',
+               'sale_management',
+               'sale_order_secondary_unit',
+               ],
 
     # always loaded
     'data': [
@@ -35,6 +37,8 @@
         'views/templates.xml',
         'views/purchase_order_report.xml',
         'views/sale_order_report.xml',
+        'views/account_cash_form_view.xml',
+        'views/sale_order_views.xml',
         #report
         'report/template_report_project_report.xml',
         'report/template_report_analytic_report.xml',
@@ -42,6 +46,7 @@
         'report/template_repor_paie_book_report.xml',
         'report/template_report_etat_tva_report.xml',
         'report/template_report_balance_analytic_report.xml',
+        'report/template_report_cash_report.xml',
         #wizard
         'wizard/wizard_project_project_views.xml',
         'wizard/wizard_account_analytic_views.xml',
@@ -49,6 +54,7 @@
         'wizard/wizard_paie_book_views.xml',
         'wizard/wizard_etat_tva_views.xml',
         'wizard/wizard_balance_analytic_views.xml',
+        'wizard/wizard_account_cash_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

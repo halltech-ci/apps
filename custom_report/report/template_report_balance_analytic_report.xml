@@ -1,11 +1,12 @@
 <odoo>
     <report id="balance_analytic_report"
         model="balance.analytic.report.wizard"
-        string="Account Analytic Report"
+        string="Balance Analytic Report"
         report_type="qweb-html"
         name="custom_report.balance_report_view"
         
         menu="False"/>
+
 
     <template id="balance_report_view">
         <t t-call="web.html_container">
@@ -31,24 +32,30 @@
                     </thead>
                     <tbody>
                         <t t-foreach="docs" t-as="line"> 
-                                <t t-set="analytic" t-value="line['get_lines']"/> 
-                                <t t-if="analytic">
-                                    <t t-foreach="analytic" t-as="lines">
-                                        <tr class='text-center'>
-                                            <th><span t-esc="lines.get('code_account')"/></th>
-                                            <th><span t-esc="lines.get('name_account')"/></th>
-                                            <th>
-                                                <span t-esc="lines.get('code_project')"/> 
-                                            </th>
-                                            <th><span t-esc="lines.get('name_project')"/></th>
-                                            <th><span t-esc="lines.get('code_analytic')"/></th>
-                                            <th><span t-esc="lines.get('x_debit')"/></th>
-                                            <th><span t-esc="lines.get('x_credit')"/></th>
-                                            <th t-if="lines.get('solde_debit')>0" ><span t-esc="lines.get('solde_debit')"/></th>
-                                            <th t-if="lines.get('solde_credit')>0"><span t-esc="lines.get('solde_credit')"/></th>
-                                        </tr>   
-                                    </t>
-                                </t>  
+                                <t t-set="balance" t-value="line['get_lines']"/>
+                                    <t t-if="balance"> 
+                                        <t t-foreach="balance" t-as="lines"> 
+                                            <tr class='text-center'>
+                                                <th> <span t-esc="lines.get('code_account')" t-options='{"widget": "float", "precision": 0}'/> </th>
+                                                <th><span t-esc="lines.get('name_account')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                                <th>
+                                                    <span t-esc="lines.get('code_project')" t-options='{"widget": "float", "precision": 0}'/> 
+                                                </th>
+                                                <th><span t-esc="lines.get('name_project')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                                <th><span t-esc="lines.get('name_analytic')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                                <th><span t-esc="lines.get('x_debit')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                                <th><span t-esc="lines.get('x_credit')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                                <t t-if="lines.get('solde_debit')>0">
+                                                    <th><span t-esc="lines.get('solde_debit')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                                    <th></th>
+                                                </t>
+                                                <t t-if="lines.get('solde_credit')>0">
+                                                    <th></th>
+                                                    <th><span t-esc="lines.get('solde_credit')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                </t> 
                         </t>
                     </tbody>
                 </table>
