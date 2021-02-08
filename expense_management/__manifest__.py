@@ -20,7 +20,8 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hr',
+    'depends': ['base',
+                'hr',
                'project',
                'account'],
 
