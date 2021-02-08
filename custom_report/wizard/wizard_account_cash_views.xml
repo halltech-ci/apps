@@ -24,7 +24,7 @@
         </field>
     </record>
     
-    <record id="cash_report_wizard" model="ir.actions.act_window" >
+    <record id="create_cash_report_wizard" model="ir.actions.act_window" >
         <field name="name">Account Cash Report</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">account.cash.report.wizard</field>
