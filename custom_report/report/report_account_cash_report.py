@@ -122,15 +122,14 @@ class ReportCashReportView(models.AbstractModel):
                 date_lines = bank_line.date
                 amount = bank_line.amount + amount
                 date_lines = bank_line.date
-                montant_init = bank_line.amount
+               
                 date_statement = str(date_lines)
                 libelle = bank_line.name
                 partner = bank_line.partner_id
                 montant = bank_line.amount
                 
                 balance_final = amount + balance_start   
-                montant_initial = balance_final - (amount)  
-            name_lines = bank_line.name
+            name_lines = line.name
             balance_days = amount + balance_start
             get_lines = self.get_lines(statement_id,balance_final,
                                                date_start,date_end)
@@ -156,8 +155,6 @@ class ReportCashReportView(models.AbstractModel):
             'date_start': date_start,
             'date_end': date_end,
             'docs': docs,
-            'montant_sum':montant_init,
-            'montant_initial':montant_initial,
             'balance_final_days':balance_final,
             'amount':amount,
             'cash': cash,
