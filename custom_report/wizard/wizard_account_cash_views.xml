@@ -24,14 +24,15 @@
         </field>
     </record>
     
-    <record id="create_cash_report_wizard" model="ir.actions.act_window" >
-        <field name="name">Account Cash Report</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">account.cash.report.wizard</field>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="cash_report_wizard" />
-        <field name="target">new</field>
 
-    </record>
+    
+    <act_window 
+        id="create_cash_report_wizard"
+        name="Account Cash Report"
+        res_model="account.cash.report.wizard"
+        view_mode="form"
+        target="new"
+        />
+
 
 </odoo>
