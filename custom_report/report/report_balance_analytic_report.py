@@ -20,10 +20,10 @@ class ReportBalanceReportView(models.AbstractModel):
                 SELECT x_aa.code AS code_account, x_aa.name AS name_account, pp.key AS code_project, pp.name AS name_project, x_aat.name AS name_analytic, SUM(x_aml.debit) AS x_debit, SUM(x_aml.credit) AS x_credit, (SUM(x_aml.debit)-SUM(x_aml.credit)) AS solde_debit, (SUM(x_aml.credit)-SUM(x_aml.debit)) AS solde_credit
 
                 FROM account_move_line AS x_aml
-                INNER JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id
-                INNER JOIN account_analytic_tag AS x_aat ON  x_aat.id = x_aml.etiquet_analytic_id
-                INNER JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id
-                INNER JOIN project_project AS pp ON pp.analytic_account_id = x_aan.id
+                LEFT JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id
+                LEFT JOIN account_analytic_tag AS x_aat ON  x_aat.id = x_aml.etiquet_analytic_id
+                LEFT JOIN account_analytic_account AS x_aan ON x_aan.id = x_aml.analytic_account_id
+                LEFT JOIN project_project AS pp ON pp.analytic_account_id = x_aan.id
                 WHERE 
                     ( x_aa.code LIKE '6%') OR ( x_aa.code LIKE '7%') OR ( x_aa.code LIKE '8%')
                     AND
