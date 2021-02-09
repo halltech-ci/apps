@@ -13,6 +13,8 @@ class ReportCashReportView(models.AbstractModel):
     _name = 'report.custom_report.cash_report_view'
     
     _description = 'Report Account Cash'
+    
+    # Recuperer le montant initial de la caisse à une date donnée
     def get_amount_montant_init(self, statement_id, balance_final,date_start,date_end):
         
         #params = [balance_final,tuple(statement_id),date_start,date_end]
@@ -29,7 +31,8 @@ class ReportCashReportView(models.AbstractModel):
 
         self.env.cr.execute(query)
         return self.env.cr.dictfetchall()
-
+    
+    # requette sql pour Recuperer les depenses de la caisse à une date donnée
     def get_amount_depense(self, statement_id, balance_final,date_start,date_end):
         
         #params = [balance_final,tuple(statement_id),date_start,date_end]
@@ -49,6 +52,7 @@ class ReportCashReportView(models.AbstractModel):
         self.env.cr.execute(query)
         return self.env.cr.dictfetchall()
     
+    # requette sql pour Recuperer les appro de la caisse à une date donnée
     def get_amount_appro(self, statement_id, balance_final,date_start,date_end):
         
         #params = [balance_final,tuple(statement_id),date_start,date_end]
@@ -68,6 +72,7 @@ class ReportCashReportView(models.AbstractModel):
         self.env.cr.execute(query)
         return self.env.cr.dictfetchall()
     
+    # requette sql pour Recuperer les lignes des transaction de la caisse à une date donnée
     def get_lines(self, statement_id,balance_final, date_start,date_end):
         
         #params = [balance_final,tuple(statement_id),date_start,date_end]
@@ -130,10 +135,9 @@ class ReportCashReportView(models.AbstractModel):
                 
                 balance_final = amount + balance_start   
             name_lines = line.name
-            balance_days = amount + balance_start
+            
             get_lines = self.get_lines(statement_id,balance_final,
                                                date_start,date_end)
-            
             get_amount_appro = self.get_amount_appro(statement_id,balance_final,
                                                date_start,date_end)
             get_amount_depense = self.get_amount_depense(statement_id,balance_final,
