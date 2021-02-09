@@ -23,43 +23,24 @@
                                         <t t-if="cash">
                                         <t t-foreach="cash" t-as="lines">
                                             <span  style="font-size: 18px; font-weight: bold;">
-                                                <span>Montant Initial:</span> <t t-esc="lines.get('x_balance')" t-options='{"widget": "float", "precision": 0}'/>
+                                                <span>Montant Initial:</span> <t t-esc="lines.get('x_montant_init')" t-options='{"widget": "float", "precision": 0}'/>
                                             </span>
                                         </t>
                                         </t>
                                     </t>        
-                                <span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>
-                                <t t-foreach="docs" t-as="line">
-                                        <t t-set="cash" t-value="line['get_amount_depense']"/>
-                                        <t t-if="cash">
-                                        <t t-foreach="cash" t-as="lines">
-                                            <span  style="font-size: 18px;font-weight: bold;">
-                                                <span>Depense: </span> <t t-esc="lines.get('x_amount_depense')" t-options='{"widget": "float", "precision": 0}'/>
-                                            </span>
-                                            
-                                        </t>
-                                        </t>
-                                    </t>
-                                
-                                <span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>
-                                <span  style="font-size: 18px; font-weight: bold;">
-                                    <span>Montant Final: </span> <t t-esc="balance_final_days" t-options='{"widget": "float", "precision": 0}'/>
-                                </span>
-                                
-
                             </div>
                         </div>
                     </div>
                     <br/><br/>
-                    <table class="table table-sm" >
+                    <table class="table table-sm table-condensed table-bordered" >
                         <thead class="thead-dark">
                             <tr>
-                                <th class='text-center' scope="col">Date</th>
-                                <th class='text-center' scope="col">Libelle</th>
-                                <th class='text-center' scope="col">Projet</th>
-                                <th class='text-center' scope="col">Reference</th>
-                                <th class='text-center' scope="col">Partenaire</th>
-                                <th class='text-center' scope="col">Montant</th>
+                                <th class='text-center'>Date</th>
+                                <th class='text-center'>Libelle</th>
+                                <th class='text-center'>Projet</th>
+                                <th class='text-center'>Reference</th>
+                                <th class='text-center'>Partenaire</th>
+                                <th class='text-center'>Montant</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,22 +70,11 @@
                             <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
                                 <table class="table table-sm">
                                     <t t-foreach="docs" t-as="line">
-                                        <t t-set="cash" t-value="line['get_amount_montant_init']"/>
-                                        <t t-if="cash">
-                                        <t t-foreach="cash" t-as="lines">
-                                            <tr class="table-primary">
-                                                <th class='text-center'>INITIALE</th>
-                                                <th class="text-center"><span t-esc="lines.get('x_balance')" t-options='{"widget": "float", "precision": 0}'/></th>
-                                            </tr>
-                                        </t>
-                                        </t>
-                                    </t>
-                                    <t t-foreach="docs" t-as="line">
                                         <t t-set="cash" t-value="line['get_amount_depense']"/>
                                         <t t-if="cash">
                                         <t t-foreach="cash" t-as="lines">
                                             <tr class="table-danger">
-                                                <th class='text-center'>DEPENSE</th>
+                                                <th class='text-center'>Total décaissement</th>
                                                 <th class="text-center"><span t-esc="lines.get('x_amount_depense')" t-options='{"widget": "float", "precision": 0}'/></th>
                                             </tr>
                                         </t>
@@ -115,14 +85,14 @@
                                         <t t-if="cash">
                                         <t t-foreach="cash" t-as="lines">
                                             <tr class="table-danger">
-                                                <th class='text-center'>APPROV</th>
+                                                <th class='text-center'>Total Approvisionnement</th>
                                                 <th class="text-center"><span t-esc="lines.get('x_amount_profil')" t-options='{"widget": "float", "precision": 0}'/></th>
                                             </tr>
                                         </t>
                                         </t>
                                     </t>
                                     <tr class="table-success">
-                                            <th class='text-center'>FINAL</th>
+                                            <th class='text-center'>Solde comptable</th>
                                             <th class="text-center"><span t-esc="balance_final_days" t-options='{"widget": "float", "precision": 0}'/></th>
                                     </tr>
                                 </table>

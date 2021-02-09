@@ -19,7 +19,7 @@
                 <table class="table table-condensed table-bordered">
                     <thead>
                         <tr>
-                            <th class='text-center'>Lines</th>
+                            <th class='text-center'>Ligne</th>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="name" t-value="line['name']"/>
                                     <t t-if="name">
@@ -93,17 +93,7 @@
                                     </t>
                             </t>
                         </tr>
-                        <tr>
-                            <td>Heure Supplementaire</td>
-                            <t t-foreach="docs" t-as="line">
-                                <t t-set="paie" t-value="line['get_lines']"/> 
-                                    <t t-if="paie">
-                                        <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Heure Supplementaire' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
-                                        </t>
-                                    </t>
-                            </t>
-                        </tr>
+                        
                         <tr>
                             <td>Prime de logement</td>
                             <t t-foreach="docs" t-as="line">

@@ -31,11 +31,11 @@
                                     <t t-foreach="analytic" t-as="lines">
                                         <tr class='text-center'>
                                             <th>
-                                                <span t-esc="lines.get('x_analytic_account_id')" t-options='{"widget": "float", "precision": 0}'/> 
+                                                <span t-esc="lines.get('x_analytic_account_id')"/> 
                                             </th>
-                                            <th><span t-esc="lines.get('x_debit')" t-options='{"widget": "float", "precision": 0}'/></th>
-                                            <th><span t-esc="lines.get('x_credit')" t-options='{"widget": "float", "precision": 0}'/></th>
-                                            <th><span t-esc="lines.get('resultat')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                            <th><span t-esc="lines.get('x_debit')" /></th>
+                                            <th><span t-esc="lines.get('x_credit')"/></th>
+                                            <th><span t-esc="lines.get('resultat')"/></th>
                                         </tr>   
                                     </t>
                                 </t>  

@@ -127,11 +127,14 @@ class ReportCashReportView(models.AbstractModel):
                 date_lines = bank_line.date
                 amount = bank_line.amount + amount
                 date_lines = bank_line.date
+               
                 date_statement = str(date_lines)
                 libelle = bank_line.name
                 partner = bank_line.partner_id
                 montant = bank_line.amount
+                
                 balance_final = amount + balance_start   
+            name_lines = line.name
             
             get_lines = self.get_lines(statement_id,balance_final,
                                                date_start,date_end)
@@ -143,6 +146,7 @@ class ReportCashReportView(models.AbstractModel):
                                                date_start,date_end)
 
             docs.append ({
+                    'name': name_lines,
                     'get_lines':get_lines,
                     'get_amount_appro':get_amount_appro,
                     'get_amount_depense':get_amount_depense,
