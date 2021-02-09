@@ -18,7 +18,7 @@
                 <table class="table-x-string table-condensed table-bordered">
                     <thead>
                         <tr>
-                            <th class='text-center'>Lines</th>
+                            <th class='text-center'>Ligne</th>
                             <t t-foreach="docs" t-as="doc">
                                 <th class='text-center'><span t-esc="doc['name']"/></th>
                             </t>
@@ -388,7 +388,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[32][0]" t-options='{"widget": "float", "precision": 0}'/>
+                                            <span t-esc="project[32][0]" />
                                         </td>
                                     </t>
                             </t>
