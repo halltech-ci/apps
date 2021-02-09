@@ -134,7 +134,6 @@ class ReportCashReportView(models.AbstractModel):
                 montant = bank_line.amount
                 
                 balance_final = amount + balance_start   
-                name_lines = line.name
             
                 get_lines = self.get_lines(statement_id,balance_final,
                                                date_start,date_end)
@@ -145,8 +144,7 @@ class ReportCashReportView(models.AbstractModel):
                 get_amount_montant_init = self.get_amount_montant_init(statement_id,balance_final,
                                                date_start,date_end)
 
-            docs.append ({
-                    'name': name_lines,
+                docs.append ({
                     'get_lines':get_lines,
                     'get_amount_appro':get_amount_appro,
                     'get_amount_depense':get_amount_depense,
