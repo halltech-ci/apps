@@ -32,7 +32,9 @@
         'views/views.xml',
         'views/templates.xml',
         #Menu
-        'views/expense_management_menu.xml'
+        'views/res_config_settings_views.xml',
+        'views/expense_management_menu.xml',
+        
     ],
     # only loaded in demonstration mode
     'demo': [
