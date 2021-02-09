@@ -23,13 +23,16 @@
             </form>
         </field>
     </record>
+    
 
+    
     <act_window 
-        id="action_account_cash_report_wizard"
+        id="create_cash_report_wizard"
         name="Account Cash Report"
         res_model="account.cash.report.wizard"
         view_mode="form"
         target="new"
         />
+
 
 </odoo>
