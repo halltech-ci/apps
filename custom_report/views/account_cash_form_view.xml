@@ -6,12 +6,14 @@
         <field name="inherit_id" ref="account.view_bank_statement_form" />
         <field name="arch" type="xml">
             <header>
-                <button name="%(custom_report.action_account_cash_report_wizard)"
-                    string="Editer Rapport"
-                    type="action"
+                <button name="button_cash_report"
+                    string="Rapport de Caisse"
+                    type="object"
                     class="oe_highlight"
             />
             </header>
         </field>
+        <!-- <button name="%(custom_report.create_cash_report_wizard)d" string="Edit Report"type="action" class="oe_highlight"
+            />-->
     </record>
 </odoo>

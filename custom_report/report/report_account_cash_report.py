@@ -13,6 +13,8 @@ class ReportCashReportView(models.AbstractModel):
     _name = 'report.custom_report.cash_report_view'
     
     _description = 'Report Account Cash'
+    
+    # Recuperer le montant initial de la caisse à une date donnée
     def get_amount_montant_init(self, statement_id, balance_final,date_start,date_end):
         
         #params = [balance_final,tuple(statement_id),date_start,date_end]
@@ -29,7 +31,8 @@ class ReportCashReportView(models.AbstractModel):
 
         self.env.cr.execute(query)
         return self.env.cr.dictfetchall()
-
+    
+    # requette sql pour Recuperer les depenses de la caisse à une date donnée
     def get_amount_depense(self, statement_id, balance_final,date_start,date_end):
         
         #params = [balance_final,tuple(statement_id),date_start,date_end]
@@ -49,6 +52,7 @@ class ReportCashReportView(models.AbstractModel):
         self.env.cr.execute(query)
         return self.env.cr.dictfetchall()
     
+    # requette sql pour Recuperer les appro de la caisse à une date donnée
     def get_amount_appro(self, statement_id, balance_final,date_start,date_end):
         
         #params = [balance_final,tuple(statement_id),date_start,date_end]
@@ -68,6 +72,7 @@ class ReportCashReportView(models.AbstractModel):
         self.env.cr.execute(query)
         return self.env.cr.dictfetchall()
     
+    # requette sql pour Recuperer les lignes des transaction de la caisse à une date donnée
     def get_lines(self, statement_id,balance_final, date_start,date_end):
         
         #params = [balance_final,tuple(statement_id),date_start,date_end]
@@ -122,19 +127,17 @@ class ReportCashReportView(models.AbstractModel):
                 date_lines = bank_line.date
                 amount = bank_line.amount + amount
                 date_lines = bank_line.date
-                montant_init = bank_line.amount
+               
                 date_statement = str(date_lines)
                 libelle = bank_line.name
                 partner = bank_line.partner_id
                 montant = bank_line.amount
                 
                 balance_final = amount + balance_start   
-                montant_initial = balance_final - (amount)  
-            name_lines = bank_line.name
-            balance_days = amount + balance_start
+            name_lines = line.name
+            
             get_lines = self.get_lines(statement_id,balance_final,
                                                date_start,date_end)
-            
             get_amount_appro = self.get_amount_appro(statement_id,balance_final,
                                                date_start,date_end)
             get_amount_depense = self.get_amount_depense(statement_id,balance_final,
@@ -156,8 +159,6 @@ class ReportCashReportView(models.AbstractModel):
             'date_start': date_start,
             'date_end': date_end,
             'docs': docs,
-            'montant_sum':montant_init,
-            'montant_initial':montant_initial,
             'balance_final_days':balance_final,
             'amount':amount,
             'cash': cash,
