@@ -144,7 +144,7 @@ class ReportCashReportView(models.AbstractModel):
                 get_amount_montant_init = self.get_amount_montant_init(statement_id,balance_final,
                                                date_start,date_end)
 
-                docs.append ({
+            docs.append ({
                     'get_lines':get_lines,
                     'get_amount_appro':get_amount_appro,
                     'get_amount_depense':get_amount_depense,
