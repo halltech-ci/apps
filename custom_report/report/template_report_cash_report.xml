@@ -23,7 +23,7 @@
                                         <t t-if="cash">
                                         <t t-foreach="cash" t-as="lines">
                                             <span  style="font-size: 18px; font-weight: bold;">
-                                                <span>Montant Initial:</span> <t t-esc="lines.get('x_montant_init')" t-options='{"widget": "float", "precision": 0}'/>
+                                                <span>Montant Initial:</span> <t t-esc="lines.get('x_balance')" t-options='{"widget": "float", "precision": 0}'/>
                                             </span>
                                         </t>
                                         </t>
@@ -94,7 +94,7 @@
                                         <t t-foreach="cash" t-as="lines">
                                             <tr class="table-primary">
                                                 <th class='text-center'>INITIALE</th>
-                                                <th class="text-center"><span t-esc="lines.get('x_montant_init')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                                <th class="text-center"><span t-esc="lines.get('x_balance')" t-options='{"widget": "float", "precision": 0}'/></th>
                                             </tr>
                                         </t>
                                         </t>
