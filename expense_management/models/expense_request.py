@@ -42,21 +42,31 @@ class ExpenseRequest(models.Model):
     journal = fields.Many2one('account.journal', string='Journal', required=True, domain=[('type', 'in', ['cash', 'bank'])], default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
     statement_id = fields.Many2one('account.bank.statement', string="Caisse")
     move_id = fields.Many2one('account.move', string='Account Move')
-    is_expense_approver = fields.Boolean(compute="_compuute_is_expense_approver")
+    is_expense_approver = fields.Boolean(compute="_compute_is_expense_approver")
     
     @api.depends("state")
     def _compute_to_approve_allowed(self):
         for rec in self:
             rec.to_approve_allowed = rec.state == "submit"
-    """
+    
     @api.depends('total_amount')
-    def _compuute_is_expense_approver(self):
+    def _compute_is_expense_approver(self):
         for rec in self:
             user = self.env.user
-            if user.has_group("expense_request.group_expense_approver_1") and rec.total_amount >= 25000:
-                pass
-    """    
-    
+            limit_1 = rec.company_id.approve_limit_1 
+            limit_2 = rec.company_id.approve_limit_2
+            if rec.total_amount <= limit_1:
+                if user.has_group("expense_request.group_expense_approver_1"):
+                    rec.is_expense_approver = True
+            elif rec.total_amount > limit_1 and rec.total_amount <= limit_2:
+                if user.has_group("expense_request.group_expense_approver_2"):
+                    rec.is_expense_approver = True
+            elif rec.total_amount > limit_2:
+                if user.has_group("expense_request.group_expense_approver_3"):
+                    rec.is_expense_approver = True
+            else:
+                rec.is_expense_approver = False
+                    
     @api.onchange('company_id')
     def _onchange_expense_company_id(self):
         self.employee_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid), ('company_id', '=', self.company_id.id)])
@@ -149,12 +159,13 @@ class ExpenseRequest(models.Model):
     
     def button_to_approve(self):
         self.to_approve_allowed_check()
+        #self.is_approver_check()
         for line in self.line_ids:
             line.action_to_approve()
         return self.write({"state": "to_approve"})
     
     def button_approve(self):
-        #self.to_approve_allowed_check()
+        self.is_approver_check()
         for line in self.line_ids:
             line.action_approve()
         return self.write({"state": "approve"})
@@ -169,6 +180,16 @@ class ExpenseRequest(models.Model):
                 raise UserError(
                     _(
                         "You can't request an approval for a expense request "
+                        "which is empty. (%s)"
+                    )
+                    % rec.name
+                )
+    def is_approver_check(self):
+        for rec in self:
+            if not rec.is_expense_approver:
+                raise UserError(
+                    _(
+                        "You are not allowed to approve this expense request "
                         "which is empty. (%s)"
                     )
                     % rec.name
