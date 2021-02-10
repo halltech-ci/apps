@@ -77,10 +77,11 @@ class ReportCashReportView(models.AbstractModel):
         
         #params = [balance_final,tuple(statement_id),date_start,date_end]
         query = """
-                        SELECT (x_absl.date) AS x_date, x_absl.ref AS x_reference, x_absl.name AS x_libelle, x_pp.name AS x_project, x_absl.partner_id x_partner, x_absl.amount AS x_amount, SUM("""+str(balance_final)+""") AS x_balance,(("""+str(balance_final)+""")-SUM(x_absl.amount)) AS x_montant_initial, SUM(x_absl.amount) AS x_sum_amount
+                        SELECT (x_absl.date) AS x_date, x_absl.ref AS x_reference, x_absl.name AS x_libelle, x_pp.name AS x_project, x_rp.name x_partner, x_absl.amount AS x_amount, SUM("""+str(balance_final)+""") AS x_balance,(("""+str(balance_final)+""")-SUM(x_absl.amount)) AS x_montant_initial, SUM(x_absl.amount) AS x_sum_amount
                         FROM account_bank_statement_line AS x_absl
                         INNER JOIN account_bank_statement AS x_abs ON x_abs.id = x_absl.statement_id
                         LEFT JOIN project_project AS x_pp ON x_pp.id = x_absl.project_id
+                        LEFT JOIN res_partner AS x_rp ON x_rp.id = x_absl.partner_id
                         WHERE   
                             (x_absl.statement_id = """+str(statement_id)+""")
                              AND
