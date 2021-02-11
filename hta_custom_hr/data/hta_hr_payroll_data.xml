@@ -345,9 +345,9 @@ result = contract.prime_salissure
 val = employee.seniority
 result = 0
 if val &gt;= 2 and val &lt;25 :
-    result = contract.wage*val*0.01
+    result = contract.salaire_base*val*0.01
 if val &gt;= 25:
-    result = contract.wage*0.25
+    result = contract.salaire_base*0.25
         </field>
     </record>
     <!-- Regle de calcul Prime anciennete-->
