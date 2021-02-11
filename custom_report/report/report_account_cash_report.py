@@ -87,6 +87,7 @@ class ReportCashReportView(models.AbstractModel):
                              AND
                             (x_absl.date BETWEEN '%s' AND '%s')
                         GROUP BY x_date,x_reference, x_libelle, x_project, x_partner,x_amount
+                        ORDER BY ASC x_date
                         """%(date_start,date_end)
 
         self.env.cr.execute(query)
