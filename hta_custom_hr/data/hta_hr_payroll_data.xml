@@ -146,7 +146,7 @@ result = contract.sursalaire
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = BASE + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HS15 + HS50 + HS75 + HS100 + PREND + ICP + IL + ICG
+result = BASE + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HS15 + HS50 + HS75 + HS100 + PREND + ICP + IL + ICG + PAMCI
         </field>
     </record>
     <!-- Reglge de calcul de salaire autres avantages-->
@@ -289,6 +289,19 @@ if payslip.worked_days_line_ids:
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = contract.prime_communication
+        </field>
+    </record>
+    <!-- Regle de calcul Prime Assurance MCI-->
+    <record id="hr_salary_rule_prime_assu_mci" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime Assurance MCI</field>
+        <field name="code">PAMCI</field>
+        <field name="sequence">6</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_assurance_mci
         </field>
     </record>
     <!-- Regle de caclcul Prime de logement -->
