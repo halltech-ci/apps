@@ -213,6 +213,16 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
+                                <tr t-if="lines.get('PAMCI')[1]>0" style="border: 1px solid black">
+                                   
+                                    <td class='text-left' colspan="3">Prime Assurance MCI</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('PAMCI')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                                 
                                 <tr t-if="lines.get('AAV')[1]>0" style="border: 1px solid black">
                                     
