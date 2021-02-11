@@ -1,19 +1,19 @@
 <odoo>
     <record id="paperformat_custom_report_cash" model="report.paperformat">
-            <field name="name">Payslip</field>
+            <field name="name">Cash</field>
             <field name="default" eval="False"/>
-            <field name="format">A4</field>
-            <field name="page_width">0</field>
-            <field name="page_width">0</field>
+            <field name="format">custom</field>
+            <field name="page_height">210</field>
+            <field name="page_width">350</field>
             <field name="orientation">Portrait</field>
-            <field name="margin_top">5</field>
-            <field name="margin_bottom">5</field>
-            <field name="margin_right">8</field>
-            <field name="margin_left">7</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_right">3</field>
+            <field name="margin_left">3</field>
             <field name="header_line" eval="False"/>
-            <field name="header_spacing">15</field>
+            <field name="header_spacing">3</field>
             <field name="dpi">90</field>
-        </record>
+    </record>
     <report id="account_cash_report"
         model="account.cash.report.wizard"
         string="Account Cash Report"
@@ -89,7 +89,7 @@
                                         <t t-if="cash">
                                         <t t-foreach="cash" t-as="lines">
                                             <tr class="table-danger">
-                                                <th class='text-center'>Total décaissement</th>
+                                                <th class='text-center'>Total décaissements</th>
                                                 <th class="text-center"><span t-esc="lines.get('x_amount_depense')" t-options='{"widget": "float", "precision": 0}'/></th>
                                             </tr>
                                         </t>
@@ -100,7 +100,7 @@
                                         <t t-if="cash">
                                         <t t-foreach="cash" t-as="lines">
                                             <tr class="table-danger">
-                                                <th class='text-center'>Total Approvisionnement</th>
+                                                <th class='text-center'>Total Approvisionnements</th>
                                                 <th class="text-center"><span t-esc="lines.get('x_amount_profil')" t-options='{"widget": "float", "precision": 0}'/></th>
                                             </tr>
                                         </t>

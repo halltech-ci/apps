@@ -285,6 +285,16 @@
                                     <td class="text-center"><span>5,75</span></td>
                                     <td class="text-center"><span t-esc="lines.get('PF')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
+                                <tr t-if="lines.get('CMUE')[1]>0 and lines.get('CMUP')[1]>0" style="border: 1px solid black">
+                                    
+                                    <td class='text-left' colspan="3">ASSURANCE MALADIE CMU</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('CMUE')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('CMUP')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                </tr>
                                 <tr t-if="lines.get('BSO')[1]>0 and lines.get('AT')[1]>0" style="border: 1px solid black">
                                     
                                     <td class='text-left' colspan="3">Accident de Travail</td>
@@ -305,16 +315,7 @@
                                     <td></td>
                                     <td class="text-center"><strong><span t-esc="lines.get('TSOCPA')[1]" t-options='{"widget": "float", "precision": 0}'/></strong></td>
                                 </tr>
-                                <tr t-if="lines.get('CMUE')[1]>0 and lines.get('CMUP')[1]>0" style="border: 1px solid black">
-                                    
-                                    <td class='text-left' colspan="3"><strong>ASSURANCE MALADIE CMU</strong></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('CMUE')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
-                                    <td></td>
-                                    <td class="text-center"><span t-esc="lines.get('CMUP')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
-                                </tr>
+                                
                                 <tr t-if="lines.get('SBI')[1]>0 and lines.get('IS')[1]>0 and lines.get('IS')[1]>0" style="border: 1px solid black">
                                     
                                     <td class='text-left' colspan="3">Impots Sur Salaire (IS)</td>
