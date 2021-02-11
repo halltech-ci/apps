@@ -26,6 +26,7 @@ class HrContract(models.Model):
     indemnite_licencement = fields.Monetary(string="Indemnité de Licencement")
     indemnite_compensatrice = fields.Monetary(string="Indemnité de compensatrice préavis ")
     indemnite_conge = fields.Monetary(string="Indemnité de conge")
+    prime_assurance_mci = fields.Monetary(string="Prime Assurance MCI")
     prime_communication = fields.Monetary(string="Communication")
     sursalaire = fields.Monetary(string="Sursalaire")
     prime_logement = fields.Monetary(string="Logement")
