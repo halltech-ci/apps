@@ -1,23 +1,38 @@
 <odoo>
+    <record id="paperformat_custom_report_cash" model="report.paperformat">
+            <field name="name">Payslip</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="page_width">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_right">8</field>
+            <field name="margin_left">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">15</field>
+            <field name="dpi">90</field>
+        </record>
     <report id="account_cash_report"
         model="account.cash.report.wizard"
         string="Account Cash Report"
-        report_type="qweb-html"
+        report_type="qweb-pdf"
+        paperformat='paperformat_custom_report_cash'
         name="custom_report.cash_report_view"
         
         menu="False"/>
 
     <template id="cash_report_view">
         <t t-call="web.html_container">
-            <div class="header" style="border-bottom: 1px solid black;">
-                <h3 class="text-center">RAPPORT CAISSE
-                    <span style="font-size: 14px;"><strong>From</strong>: <t t-esc="date_start"/> <strong>To</strong>: <t t-esc="date_end"/></span>
-                </h3>
-            </div>
                 <div class="article mt0 o_report_layout_standard">
                     <div class="container">
                         <div class="row">
                             <div class="col-sm" style="display: block;text-align:center;">
+                                <h3 class="text-center">RAPPORT CAISSE
+                                    <span style="font-size: 14px;"><strong>From</strong>: <t t-esc="date_start"/> <strong>To</strong>: <t t-esc="date_end"/></span>
+                                </h3>
+                                <br/>
                                 <t t-foreach="docs" t-as="line">
                                         <t t-set="cash" t-value="line['get_amount_montant_init']"/>
                                         <t t-if="cash">
