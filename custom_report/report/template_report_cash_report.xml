@@ -63,15 +63,15 @@
                                     <t t-set="analytic" t-value="line['get_lines']"/> 
                                     <t t-if="analytic">
                                         <t t-foreach="analytic" t-as="lines">
-                                            <tr class='text-center'>
-                                                <th>
+                                            <tr>
+                                                <th class='text-center'>
                                                     <span t-esc="lines.get('x_date').strftime('%d/%m/%Y')"/> 
                                                 </th>
                                                 <td> <span t-esc="lines.get('x_libelle')" /> </td>
                                                 <td><span t-esc="lines.get('x_project')" /> </td>
-                                                <td><span t-esc="lines.get('x_reference')" /> </td>
-                                                <td><span t-esc="lines.get('x_partner')" /> </td>
-                                                <td><span t-esc="lines.get('x_amount')" t-options='{"widget": "float", "precision": 0}'/></td>
+                                                <td class='text-center'><span t-esc="lines.get('x_reference')" /> </td>
+                                                <td class='text-center'><span t-esc="lines.get('x_partner')" /> </td>
+                                                <td class='text-center'><span t-esc="lines.get('x_amount')" t-options='{"widget": "float", "precision": 0}'/></td>
                                             </tr>   
                                         </t>
                                     </t>  
