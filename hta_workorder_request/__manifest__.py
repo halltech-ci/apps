@@ -22,6 +22,7 @@
     # any module necessary for this one to work correctly
     'depends': ['stock',
                 'product',
+                'project'
                ],
 
     # always loaded
@@ -30,7 +31,9 @@
         'views/views.xml',
         'views/templates.xml',
         'views/workorder_request_views.xml',
-        'views/workorder_request_menu.xml'
+        'views/workorder_request_menu.xml',
+        #data
+        'data/workorder_ir_sequence.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

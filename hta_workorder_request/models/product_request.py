@@ -17,7 +17,15 @@ class ProductRequest(models.Model):
     def _get_default_requested_by(self):
         return self.env["res.users"].browse(self.env.uid)
     
-    name = fields.Char()
+    @api.model
+    def _get_default_name(self):
+        return self.env["ir.sequence"].next_by_code("purchase.request")
+    
+    name = fields.Char(string="Request Reference",
+        required=True,
+        default=_get_default_name,
+        track_visibility="onchange",
+    )
     company_id = fields.Many2one("res.company", "Company",
         required=True,
         readonly=True,
@@ -49,6 +57,12 @@ class ProductRequest(models.Model):
         track_visibility="onchange",
         default=_get_default_requested_by,
         index=True,
+    )
+    project_task_id = fields.Many2one('project.task', string="Project Task")
+    project_id = fields.Many2one('project.task', string="Project")
+    analytic_account_id = fields.Many2one("account.analytic.account",
+        string="Analytic Account",
+        track_visibility="onchange",
     )
     
     

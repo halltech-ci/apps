@@ -63,6 +63,8 @@ class ProductRequestLine(models.Model):
         "product_request_line_id",
         string="Product Request Allocation",
     )
+    task_id = fields.Many2one('project.task', related="request_id.project_task_id")
+    project_id = fields.Many2one('project.project', related="request_id.project_id")
     
     @api.depends('product_request_allocation_ids',
                 )
