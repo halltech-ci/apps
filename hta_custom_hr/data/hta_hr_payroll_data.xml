@@ -447,7 +447,7 @@ result = SBI*0.012
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = SBRUT*80/100
+result = (SBI*0.8)
         </field>
     </record>
     <!-- Regle de calcul contribution national -->
