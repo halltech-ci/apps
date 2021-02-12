@@ -65,7 +65,7 @@
                                         <t t-foreach="analytic" t-as="lines">
                                             <tr class='text-center'>
                                                 <th>
-                                                    <span t-esc="lines.get('x_date')"/> 
+                                                    <span t-esc="lines.get('x_date').strftime('%d/%m/%Y')"/> 
                                                 </th>
                                                 <td> <span t-esc="lines.get('x_libelle')" /> </td>
                                                 <td><span t-esc="lines.get('x_project')" /> </td>
