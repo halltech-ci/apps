@@ -32,6 +32,7 @@
         'views/templates.xml',
         'views/workorder_request_views.xml',
         'views/workorder_request_menu.xml',
+        'views/project_views.xml',
         #data
         'data/workorder_ir_sequence.xml'
     ],

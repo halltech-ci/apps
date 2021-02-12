@@ -52,5 +52,20 @@
           </form>
       </field>
     </record>
+      
+    <record id="view_product_request_tree" model="ir.ui.view">
+            <field name="name">product.request.tree</field>
+            <field name="model">product.request</field>
+          <field name="arch" type="xml">
+              <tree string="Product Request" decoration-warning="state=='draft'" decoration-danger="state=='cancel'">
+                    <field name="date"/>
+                    <field name="name" string="Product Request"/>
+                    <field name="requested_by"/>
+                    <field name="project_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="state"/>
+               </tree>
+          </field>
+     </record>
   </data>
 </odoo>

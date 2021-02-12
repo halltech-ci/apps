@@ -59,7 +59,7 @@ class ProductRequest(models.Model):
         index=True,
     )
     project_task_id = fields.Many2one('project.task', string="Project Task")
-    project_id = fields.Many2one('project.task', string="Project")
+    project_id = fields.Many2one('project.project', string="Project")
     analytic_account_id = fields.Many2one("account.analytic.account",
         string="Analytic Account",
         track_visibility="onchange",
