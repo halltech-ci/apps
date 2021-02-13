@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError, ValidationError
 
 REQUEST_STATE = [('draft', 'Draft'),
         ('submit', 'Submitted'),
@@ -63,11 +64,17 @@ class ProductRequestLine(models.Model):
         "product_request_line_id",
         string="Product Request Allocation",
     )
-    task_id = fields.Many2one('project.task', related="request_id.project_task_id")
+    task_id = fields.Many2one('project.task', string='Project Task')
     project_id = fields.Many2one('project.project', related="request_id.project_id")
     
-    @api.depends('product_request_allocation_ids',
-                )
+    
+    @api.constrains('initial_qty', 'product_qty')
+    def compare_product_qty(self):
+        if self.initial_qty > 0 and self.product_qty > 0:
+            if self.initial_qty < self.product_qty:
+                raise ValidationError(_("{0} quantity can not be greater than {1}".format(self.product_id.name, self.initial_qty)))
+    
+    @api.depends('product_request_allocation_ids',)
     def _compute_qty(self):
         for request in self:
             done_qty = sum(
@@ -78,5 +85,11 @@ class ProductRequestLine(models.Model):
             )
             request.qty_done = done_qty
             request.qty_in_progress = open_qty
+            
+    def action_to_approve(self):
+        self.request_state = "to_approve"
+    
+    def action_approve(self):
+        self.request_state = "open"
     
     

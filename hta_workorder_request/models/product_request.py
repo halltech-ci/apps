@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 REQUEST_STATES = [
     ("draft", "Draft"),
+    ("to_approve", "To Approve"),
     ("open", "In progress"),
     ("done", "Done"),
     ("cancel", "Cancelled"),
@@ -65,6 +66,28 @@ class ProductRequest(models.Model):
         track_visibility="onchange",
     )
     
+    @api.onchange('project_task_id')
+    def _onchange_project_task_id(self):
+        for rec in self:
+            data = self.env['project.task'].search([('id', '=', rec.project_task_id.id)]).mapped('product_lines')
+            lines = [(5, 0, 0)]
+            for line in data:
+                lines.append((4, line.id, 0))
+            rec.line_ids = lines
+    
+    
+    def button_to_approve(self):
+        #self.to_approve_allowed_check()
+        #self.is_approver_check()
+        for line in self.line_ids:
+            line.action_to_approve()
+        return self.write({"state": "to_approve"})
+    
+    def button_approve(self):
+        #self.is_approver_check()
+        for line in self.line_ids:
+            line.action_approve()
+        return self.write({"state": "open"})
     
     @api.model
     def create(self, vals):

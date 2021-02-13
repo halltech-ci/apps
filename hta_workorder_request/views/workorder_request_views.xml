@@ -7,9 +7,19 @@
       <field name="arch" type="xml">
           <form string="Product Request">
               <header>
+                  <button name="button_to_approve"
+                    string="Request Approval"
+                    type="object"
+                    class="oe_highlight"
+                  />
+                  <button name="button_approve"
+                    string="Approve"
+                    type="object"
+                    class="oe_highlight"
+                  />
                   <field name="state"
                      widget="statusbar"
-                     statusbar_visible="draft,open,done,cancel"
+                     statusbar_visible="draft,to_approve,open,done,cancel"
                      statusbar_colors='{"done":"blue"}'
                  />
               </header>
@@ -28,7 +38,7 @@
                   </group>
                   <group>
                       <field name="date" readonly='True'/>
-                      <field name="project_task_id" readonly='True'/>
+                      <field name="project_task_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                       <field name="company_id" options="{'no_create': True}"/>
                   </group>
               </group>
@@ -37,9 +47,9 @@
                       <field name="line_ids">
                           <tree editable="bottom">
                               <field name='product_id' options="{'no_create': True}"/>
-                              <field name='initial_qty'/>
-                              <field name='product_qty'/>
-                              <field name='qty_done'/>
+                              <field name='initial_qty' invisible='1'/>
+                              <field name='product_qty' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
+                              <field name='qty_done' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
                               <field name='analytic_account_id' options="{'no_create': True}"/>
                               <field name="project_id" readonly='True'/>
                               <field name="task_id" readonly='True'/>
