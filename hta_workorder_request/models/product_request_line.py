@@ -66,6 +66,7 @@ class ProductRequestLine(models.Model):
     )
     task_id = fields.Many2one('project.task', string='Project Task')
     project_id = fields.Many2one('project.project', related="request_id.project_id")
+    move_ids = fields.One2many('stock.move', 'product_line_id', string='Reservation', readonly=True, ondelete='set null', copy=False)
     
     
     @api.constrains('initial_qty', 'product_qty')

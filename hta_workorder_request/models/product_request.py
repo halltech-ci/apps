@@ -65,6 +65,23 @@ class ProductRequest(models.Model):
         string="Analytic Account",
         track_visibility="onchange",
     )
+    #Manage stock for product request
+    picking_count = fields.Integer(compute='_compute_picking', string='Picking count', default=0, store=True)
+    picking_ids = fields.Many2many('stock.picking', compute='_compute_picking', string='Transfert', copy=False, store=True)
+    #delivery_count = fields.Integer(string='Delivery Orders', compute='_compute_picking_ids')
+    
+    @api.depends('line_ids.move_ids.picking_id')
+    def _compute_picking(self):
+        for request in self:
+            pickings = self.env['stock.picking']
+            for line in request.line_ids:
+                moves = line.move_ids
+                pickings |= moves.mapped('picking_id')
+            request.picking_ids = pickings
+            request.picking_count = len(pickings)
+    
+    def action_view_picking(self):
+        pass
     
     @api.onchange('project_task_id')
     def _onchange_project_task_id(self):
@@ -74,7 +91,6 @@ class ProductRequest(models.Model):
             for line in data:
                 lines.append((4, line.id, 0))
             rec.line_ids = lines
-    
     
     def button_to_approve(self):
         #self.to_approve_allowed_check()

@@ -24,6 +24,23 @@
                  />
               </header>
               <sheet>
+                  <div class="oe_button_box" name="button_box">
+                      <field name="picking_ids" invisible="1" />
+                      <button
+                            type="object"
+                            name="action_view_picking"
+                            class="oe_stat_button"
+                            icon="fa-truck"
+                            attrs="{'invisible': [('picking_count', '!=', 0)]}"
+                            groups="stock.group_stock_user"
+                        >
+                            <field
+                                name="picking_count"
+                                widget="statinfo"
+                                string="Transfers"
+                            />
+                        </button>
+                  </div>
                   <div class="oe_edit_only">
                      <label for="name" class="oe_inline" />
                   </div>
