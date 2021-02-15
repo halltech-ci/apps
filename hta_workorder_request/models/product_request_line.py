@@ -66,8 +66,10 @@ class ProductRequestLine(models.Model):
     )
     task_id = fields.Many2one('project.task', string='Project Task')
     project_id = fields.Many2one('project.project', related="request_id.project_id")
+    display_type = fields.Selection([('line_section', "Section"), ('line_note', "Note")], 
+        default=False, help="Technical field for UX purpose.")
+    #manage product_requestpicking
     move_ids = fields.One2many('stock.move', 'product_line_id', string='Reservation', readonly=True, ondelete='set null', copy=False)
-    
     
     @api.constrains('initial_qty', 'product_qty')
     def compare_product_qty(self):
@@ -92,5 +94,32 @@ class ProductRequestLine(models.Model):
     
     def action_approve(self):
         self.request_state = "open"
+    
+    
+    def _get_stock_move_price_unit(self):
+        self.ensure_one()
+        line = self[0]
+        price_unit = line.product_id.standard_price
+        return price_unit
+    
+    def _prepare_stock_moves(self, picking):
+        """ Prepare the stock moves data for one order line. This function returns a list of
+        dictionary ready to be used in stock.move's create()
+        """
+        self.ensure_one()
+        res = []
+        if self.product_id.type not in ['product', 'consu']:
+            return res
+        qty = 0.0
+        price_unit = self._get_stock_move_price_unit()
+        outgoing_moves = self.env['stock.move']
+    """
+    def _create_stock_moves(self, picking):
+        values = []
+        for line in self.filtered(lambda l: not l.display_type):
+            for val in line._prepare_stock_moves(picking):
+                values.append(val)
+        return self.env['stock.move'].create(values)
+    """
     
     

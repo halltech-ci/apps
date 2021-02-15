@@ -31,7 +31,7 @@
                             name="action_view_picking"
                             class="oe_stat_button"
                             icon="fa-truck"
-                            attrs="{'invisible': [('picking_count', '!=', 0)]}"
+                            attrs="{'invisible': [('picking_count', '=', 0)]}"
                             groups="stock.group_stock_user"
                         >
                             <field
@@ -52,11 +52,14 @@
                   <group>
                       <field name='requested_by' options="{'no_create': True}"/>
                       <field name="analytic_account_id" options="{'no_create': True}"/>
+                      <field name="picking_type_id"/>
+                      <field name="source_location_id"/>
                   </group>
                   <group>
                       <field name="date" readonly='True'/>
                       <field name="project_task_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                       <field name="company_id" options="{'no_create': True}"/>
+                      <field name="dest_location_id"/>
                   </group>
               </group>
               <notebook>
