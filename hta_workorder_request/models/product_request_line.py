@@ -6,11 +6,10 @@ from odoo.exceptions import UserError, ValidationError
 REQUEST_STATE = [('draft', 'Draft'),
         ('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
-        ('approve', 'Approved'),
+       ("open", "In progress"),
         ('done', 'Done'),
         ('cancel', 'Refused')
         ]
-
 
 class ProductRequestLine(models.Model):
     _name = "product.request.line"
@@ -39,7 +38,7 @@ class ProductRequestLine(models.Model):
         store=True,
     )
     initial_qty = fields.Float('Initial Qty', digits="Product Unit of Measure")
-    product_qty = fields.Float('Product Qty', digits="Product Unit of Measure")
+    product_uom_qty = fields.Float('Product Qty', digits="Product Unit of Measure")
     qty_reserved = fields.Float('Used Qty', digits="Product Unit of Measure",
         readonly=True,
         compute="_compute_qty",
@@ -70,12 +69,14 @@ class ProductRequestLine(models.Model):
         default=False, help="Technical field for UX purpose.")
     #manage product_requestpicking
     move_ids = fields.One2many('stock.move', 'product_line_id', string='Reservation', readonly=True, ondelete='set null', copy=False)
+    #move_dest_ids = fields.One2many('stock.move', 'created_product_request_line_id', 'Downstream Moves')
     
-    @api.constrains('initial_qty', 'product_qty')
+    @api.constrains('initial_qty', 'product_uom_qty')
     def compare_product_qty(self):
-        if self.initial_qty > 0 and self.product_qty > 0:
-            if self.initial_qty < self.product_qty:
-                raise ValidationError(_("{0} quantity can not be greater than {1}".format(self.product_id.name, self.initial_qty)))
+        for line in self:
+            if line.initial_qty > 0 and line.product_uom_qty > 0:
+                if self.initial_qty < self.product_uom_qty:
+                    raise ValidationError(_("{0} quantity can not be greater than {1}".format(self.product_id.name, self.initial_qty)))
     
     @api.depends('product_request_allocation_ids',)
     def _compute_qty(self):
@@ -101,25 +102,5 @@ class ProductRequestLine(models.Model):
         line = self[0]
         price_unit = line.product_id.standard_price
         return price_unit
-    
-    def _prepare_stock_moves(self, picking):
-        """ Prepare the stock moves data for one order line. This function returns a list of
-        dictionary ready to be used in stock.move's create()
-        """
-        self.ensure_one()
-        res = []
-        if self.product_id.type not in ['product', 'consu']:
-            return res
-        qty = 0.0
-        price_unit = self._get_stock_move_price_unit()
-        outgoing_moves = self.env['stock.move']
-    """
-    def _create_stock_moves(self, picking):
-        values = []
-        for line in self.filtered(lambda l: not l.display_type):
-            for val in line._prepare_stock_moves(picking):
-                values.append(val)
-        return self.env['stock.move'].create(values)
-    """
     
     

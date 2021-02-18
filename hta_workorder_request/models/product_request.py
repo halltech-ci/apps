@@ -77,6 +77,7 @@ class ProductRequest(models.Model):
         track_visibility="onchange",
     )
     #Manage stock for product request
+    picking_id = fields.Many2one('stock.picking')
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
     picking_count = fields.Integer(string='Picking Orders', compute='_compute_picking_ids', default=0)
     picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type',
@@ -93,8 +94,8 @@ class ProductRequest(models.Model):
         states={'draft': [('readonly', False)], 'to_approve': [('readonly', False)]},
         default=_default_warehouse_id, check_company=True
     )
-    source_location_id = fields.Many2one('stock.location', 'Source Location')
-    dest_location_id = fields.Many2one('stock.location', 'Dest Location')
+    location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
+    location_dest_id = fields.Many2one('stock.location', 'Dest Location', related='picking_type_id.default_location_dest_id')
     
     @api.model
     def _get_picking_type(self, company_id):
@@ -153,10 +154,16 @@ class ProductRequest(models.Model):
     
     def button_approve(self):
         #self.is_approver_check()
+        self._create_picking()
         for line in self.line_ids:
             line.action_approve()
         return self.write({"state": "open", 'date_approve': fields.Datetime.now()})
-    
+    """
+    def button_approve(self, force=False):
+        result = super(ProductRequest, self).button_approve(force=force)
+        self._create_picking()
+        return result
+    """
     @api.model
     def create(self, vals):
         request = super(ProductRequest, self).create(vals)
@@ -166,40 +173,61 @@ class ProductRequest(models.Model):
         res = super(ProductRequest, self).write(vals)
         return res
     
-    @api.model
-    def _prepare_picking(self):
-        return {
-            'picking_type_id': self.picking_type_id.id,
-            #'partner_id': self.partner_id.id,
-            'user_id': False,
-            'date': self.date_approve,
-            'origin': self.name,
-            #'location_dest_id': self.dest_location_id.id,
-            'location_id': self.source_location_id.id,
-            'company_id': self.company_id.id,
-        }
-    
     def _create_picking(self):
-        StockPicking = self.env['stock.picking']
         for request in self:
-            if any([ptype in ['product', 'consu'] for ptype in request.line_ids.mapped('product_id.type')]):
-                pickings = request.picking_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
-                if not pickings:
-                    res = request._prepare_picking()
-                    picking = StockPicking.create(res)
-                else:
-                    picking = pickings[0]
-                moves = request.line_ids._create_stock_moves(picking)
-                moves = moves.filtered(lambda x: x.state not in ('done', 'cancel'))._action_confirm()
-                seq = 0
-                for move in sorted(moves, key=lambda move: move.date_expected):
-                    seq += 5
-                    move.sequence = seq
-                #moves._action_assign()
-                #picking.message_post_with_view('mail.message_origin_link',
-                #    values={'self': picking, 'origin': order},
-                #    subtype_id=self.env.ref('mail.mt_note').id)
+            #prepare picking
+            picking_type_id = request.picking_type_id
+            location_id = request.location_src_id
+            origin = request.name
+            company_id = request.company_id
+            date = request.date_approve
+            picking_value = {
+                'picking_type_id': picking_type_id.id,
+                'location_id': location_id.id,
+                'origin': origin,
+                'company_id': self.company_id.id,
+                'date': date,
+                'location_id':picking_type_id.default_location_src_id.id,
+                'location_dest_id': picking_type_id.default_location_dest_id.id
+            }
+            values = []
+            product_lines = request.mapped('line_ids')
+            for line in product_lines:
+                #create stock_move (move_lines)
+                description_picking = line.product_id.with_context(self.env.user.lang)._get_description(request.picking_type_id)
+                moves = (0, 0, {
+                    'name': line.name,
+                    'product_id': line.product_id.id,
+                    'description_picking': description_picking,
+                    'product_uom_qty': line.product_uom_qty,
+                    'product_uom': line.product_uom_id.id,
+                    'location_id': location_id.id,
+                    'location_dest_id':picking_type_id.location_dest_id.id,
+                    'price_unit': line.product_id.standard_price,
+                    'product_line_id': line.id,
+                    'company_id': self.company_id.id,
+                    'move_line_ids': (0, 0, {
+                        'company_id': self.company_id.id,
+                        'product_id': line.product_id.id,
+                        'product_uom_id': line.product_uom_id.id,
+                        'product_uom_qty': line.product_uom_qty,
+                        'location_id': picking_type_id.default_location_src_id.id,
+                        'location_dest_id':picking_type_id.location_dest_id.id,
+                        }
+                        )
+                    }
+                    )
+                values.append(moves)
+            picking_value['move_lines'] = values
+            line_ids = []
+            for val in values:
+                line_ids.append(val[2]['move_line_ids']) 
+            picking_value['move_line_ids'] = line_ids
+            picking = self.env['stock.picking'].create(picking_value)
+            request.write({'picking_id':picking.id})
         return True
+                
+            
     
 
     

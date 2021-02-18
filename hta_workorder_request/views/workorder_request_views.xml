@@ -53,13 +53,13 @@
                       <field name='requested_by' options="{'no_create': True}"/>
                       <field name="analytic_account_id" options="{'no_create': True}"/>
                       <field name="picking_type_id"/>
-                      <field name="source_location_id"/>
+                      <field name="location_src_id"/>
                   </group>
                   <group>
                       <field name="date" readonly='True'/>
                       <field name="project_task_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                       <field name="company_id" options="{'no_create': True}"/>
-                      <field name="dest_location_id"/>
+                      <field name="location_dest_id"/>
                   </group>
               </group>
               <notebook>
@@ -68,7 +68,7 @@
                           <tree editable="bottom">
                               <field name='product_id' options="{'no_create': True}"/>
                               <field name='initial_qty' invisible='1'/>
-                              <field name='product_qty' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
+                              <field name='product_uom_qty' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
                               <field name='qty_done' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
                               <field name='analytic_account_id' options="{'no_create': True}"/>
                               <field name="project_id" readonly='True'/>
