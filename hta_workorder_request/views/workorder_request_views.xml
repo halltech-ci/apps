@@ -70,6 +70,7 @@
                               <field name='initial_qty' invisible='1'/>
                               <field name='product_uom_qty' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
                               <field name='qty_done' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
+                              <field name='product_uom_id' string="Unit" readonly='True'/>
                               <field name='analytic_account_id' options="{'no_create': True}"/>
                               <field name="project_id" readonly='True'/>
                               <field name="task_id" readonly='True'/>

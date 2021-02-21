@@ -31,6 +31,7 @@ class ProductRequestLine(models.Model):
     product_uom_id = fields.Many2one("uom.uom",
         string="Product Unit of Measure",
         track_visibility="onchange",
+        related='product_id.uom_id'
     )
     requested_by = fields.Many2one("res.users",
         related="request_id.requested_by",
@@ -39,12 +40,9 @@ class ProductRequestLine(models.Model):
     )
     initial_qty = fields.Float('Initial Qty', digits="Product Unit of Measure")
     product_uom_qty = fields.Float('Product Qty', digits="Product Unit of Measure")
-    qty_reserved = fields.Float('Used Qty', digits="Product Unit of Measure",
-        readonly=True,
-        compute="_compute_qty",
-        store=True,
-        help="Quantity in progress.",)
-    qty_done = fields.Float('Qty Done', digits="Product Unit of Measure")
+    qty_done = fields.Float('Qty Done', digits="Product Unit of Measure",
+        compute='_compute_qty_done',
+    )
     product_request_allocation_ids = fields.One2many("product.request.allocation",
         "product_request_line_id",
         string="Product Request Allocation",
@@ -78,24 +76,23 @@ class ProductRequestLine(models.Model):
                 if self.initial_qty < self.product_uom_qty:
                     raise ValidationError(_("{0} quantity can not be greater than {1}".format(self.product_id.name, self.initial_qty)))
     
-    @api.depends('product_request_allocation_ids',)
-    def _compute_qty(self):
-        for request in self:
-            done_qty = sum(
-                request.product_request_allocation_ids.mapped("allocated_product_qty")
-            )
-            open_qty = sum(
-                request.product_request_allocation_ids.mapped("open_product_qty")
-            )
-            request.qty_done = done_qty
-            request.qty_in_progress = open_qty
-            
+    @api.depends('move_ids')
+    def _compute_qty_done(self):
+        for line in self:
+            qty = 0
+            if len(line.move_ids) > 0:
+                for move in line.move_ids:
+                    qty += move.quantity_done
+            line.qty_done = qty
+           
     def action_to_approve(self):
         self.request_state = "to_approve"
     
     def action_approve(self):
         self.request_state = "open"
     
+    def action_done(self):
+        self.request_state = "done"
     
     def _get_stock_move_price_unit(self):
         self.ensure_one()
