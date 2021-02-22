@@ -1,13 +1,13 @@
 <odoo>
-    <record id="balance_analytic_report_wizard" model="ir.ui.view" >
-        <field name="name">Balance Analytic</field>
-        <field name="model">balance.analytic.report.wizard</field>
+    <record id="cash_report_wizard" model="ir.ui.view" >
+        <field name="name">Account Cash Report</field>
+        <field name="model">account.cash.report.wizard</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
-            <form string="Balance Analytic Report">
+            <form string="Account Cash Report">
                 <group>
                     <group>
-                        <field name="analytic"/>
+                        <field name="cash_journal"/>
                     </group>
                     <group>
                         <field name="date_start"/>
@@ -18,26 +18,21 @@
                 </group>
                 <footer>
                     <button name="get_report" string="Get Report" type="object" class="oe_highlight"/>
-                    
                     <button string="Cancel" special="cancel"/>
                 </footer>
             </form>
         </field>
     </record>
+    
 
+    
     <act_window 
-        id="action_balance_analytic_report_wizard"
-        name="Balance Analytic Report"
-        res_model="balance.analytic.report.wizard"
+        id="create_cash_report_wizard"
+        name="Account Cash Report"
+        res_model="account.cash.report.wizard"
         view_mode="form"
         target="new"
         />
 
-    <menuitem 
-        id="menu_balance_analytic_report_wizard"
-        action="action_balance_analytic_report_wizard"
-        name = "Balance Analytic"
-        sequence="14"
-        parent="account.account_reports_management_menu"
-        />
+
 </odoo>

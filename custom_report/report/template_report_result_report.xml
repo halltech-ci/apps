@@ -18,7 +18,7 @@
                 <table class="table-x-string table-condensed table-bordered">
                     <thead>
                         <tr>
-                            <th class='text-center'>Lines</th>
+                            <th class='text-center'>Ligne</th>
                             <t t-foreach="docs" t-as="doc">
                                 <th class='text-center'><span t-esc="doc['name']"/></th>
                             </t>
@@ -31,9 +31,11 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[0]"/>
+                                            <span t-esc="project[0][0]" />
                                         </td>
                                     </t>
+                                    
+                                
                             </t>
                         </tr>
                         <tr>
@@ -42,7 +44,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[1]"/>
+                                            <span t-esc="project[1][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -53,18 +55,31 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[2]"/>
+                                            <span t-esc="project[2][0]"/>
                                         </td>
                                     </t>
                             </t>
                         </tr>
-                                                <tr>
+                        
+                        <tr class="table-danger">
+                            <td>MARGE  COMMERCIALE </td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[3][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        
+                        <tr>
                             <td>Ventes de produits fabriqués</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[3]"/>
+                                            <span t-esc="project[4][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -75,7 +90,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[4]"/>
+                                            <span t-esc="project[5][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -86,18 +101,29 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[5]"/>
+                                            <span t-esc="project[6][0]"/>
                                         </td>
                                     </t>
                             </t>
                         </tr>
-                                                <tr>
+                        <tr class="table-danger">
+                            <td>CHIFFRE D'AFFAIRES</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[7][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
                             <td>Production stockée (ou déstockage)</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[6]"/>
+                                            <span t-esc="project[8][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -108,7 +134,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[7]"/>
+                                            <span t-esc="project[9][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -119,7 +145,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[8]"/>
+                                            <span t-esc="project[10][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -130,7 +156,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[9]"/>
+                                            <span t-esc="project[11][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -141,7 +167,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[10]"/>
+                                            <span t-esc="project[12][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -152,7 +178,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[11]"/>
+                                            <span t-esc="project[13][0]" />
                                         </td>
                                     </t>
                             </t>
@@ -163,7 +189,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[12]"/>
+                                            <span t-esc="project[14][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -174,18 +200,18 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[13]"/>
+                                            <span t-esc="project[15][0]"/>
                                         </td>
                                     </t>
                             </t>
                         </tr>
-                                                <tr>
+                        <tr>
                             <td>Variation de stocks d’autres approvisionnements</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[14]"/>
+                                            <span t-esc="project[16][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -196,7 +222,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[15]"/>
+                                            <span t-esc="project[17][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -207,7 +233,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[16]"/>
+                                            <span t-esc="project[18][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -218,40 +244,62 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[17]"/>
+                                            <span t-esc="project[19][0]"/>
                                         </td>
                                     </t>
                             </t>
                         </tr>
-                                                <tr>
+                        <tr>
                             <td>Autres charges</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[18]"/>
+                                            <span t-esc="project[20][0]"/>
                                         </td>
                                     </t>
                             </t>
                         </tr>
-                                                <tr>
+                        <tr class="table-danger">
+                            <td>VALEUR AJOUTEE</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[21][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
                             <td>Charges de personnel</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[19]"/>
+                                            <span t-esc="project[22][0]"/>
                                         </td>
                                     </t>
                             </t>
                         </tr>
-                                                <tr>
+                        <tr class="table-danger">
+                            <td>EXCEDENT BRUT D'EXPLOITATION</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[23][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
                             <td>Reprises d’amortissements, de provisions et dépréciations</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[20]"/>
+                                            <span t-esc="project[24][0]" />
                                         </td>
                                     </t>
                             </t>
@@ -262,18 +310,29 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[21]"/>
+                                            <span t-esc="project[25][0]"/>
                                         </td>
                                     </t>
                             </t>
                         </tr>
-                                                <tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT D'EXPLOITATION</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[26][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
                             <td>Revenus financiers et assimilés</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[22]"/>
+                                            <span t-esc="project[27][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -284,7 +343,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[23]"/>
+                                            <span t-esc="project[28][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -296,7 +355,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[24]"/>
+                                            <span t-esc="project[29][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -307,7 +366,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[25]"/>
+                                            <span t-esc="project[30][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -318,18 +377,40 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[26]"/>
+                                            <span t-esc="project[31][0]"/>
                                         </td>
                                     </t>
                             </t>
                         </tr>
-                                                <tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT  FINANCIER</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[32][0]" />
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT  DES ACTIVITES ORDINAIRES</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[33][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
                             <td>Produits des cessions d'immobilisations</td>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[27]"/>
+                                            <span t-esc="project[34][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -340,7 +421,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[28]"/>
+                                            <span t-esc="project[35][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -351,7 +432,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[29]"/>
+                                            <span t-esc="project[36][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -362,7 +443,18 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[30]"/>
+                                            <span t-esc="project[37][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT HORS ACTIVITES ORDINAIRES</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[38][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -373,7 +465,7 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[31]"/>
+                                            <span t-esc="project[39][0]"/>
                                         </td>
                                     </t>
                             </t>
@@ -384,7 +476,18 @@
                                 <t t-set="project" t-value="line['get_lines']"/> 
                                     <t t-if="project">
                                         <td>
-                                            <span t-esc="project[32]"/>
+                                            <span t-esc="project[40][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT NET</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[41][0]"/>
                                         </td>
                                     </t>
                             </t>

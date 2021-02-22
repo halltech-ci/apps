@@ -33,7 +33,7 @@
                                             <th>
                                                 <span t-esc="lines.get('x_analytic_account_id')"/> 
                                             </th>
-                                            <th><span t-esc="lines.get('x_debit')"/></th>
+                                            <th><span t-esc="lines.get('x_debit')" /></th>
                                             <th><span t-esc="lines.get('x_credit')"/></th>
                                             <th><span t-esc="lines.get('resultat')"/></th>
                                         </tr>   

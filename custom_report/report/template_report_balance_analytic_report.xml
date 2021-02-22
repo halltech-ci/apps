@@ -7,6 +7,7 @@
         
         menu="False"/>
 
+
     <template id="balance_report_view">
         <t t-call="web.html_container">
             <div class="header" style="border-bottom: 1px solid black;">
@@ -26,33 +27,35 @@
                             <th class='text-center'>M. Debit</th>
                             <th class='text-center'>M. Credit</th>
                             <th class='text-center'>S. Debit</th>
-                            <th class='text-center'>S. Credi</th>
+                            <th class='text-center'>S. Credit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <t t-foreach="docs" t-as="line"> 
-                                <t t-set="analytic" t-value="line['get_lines']"/> 
-                                <t t-if="analytic">
-                                        <tr class='text-center'>
-                                            <th><span t-esc="analytic.get('code_account')"/></th>
-                                            <th><span t-esc="analytic.get('name_account')"/></th>
-                                            <th>
-                                                <span t-esc="analytic.get('code_project')"/> 
-                                            </th>
-                                            <th><span t-esc="analytic.get('name_project')"/></th>
-                                            <th><span t-esc="analytic.get('name_tags')"/></th>
-                                            <th><span t-esc="analytic.get('x_debit')"/></th>
-                                            <th><span t-esc="analytic.get('x_credit')"/></th>
-                                            <t t-if="analytic.get('solde_debit')>0">
-                                                <th><span t-esc="analytic.get('solde_debit')"/></th>
-                                                <th></th>
-                                            </t>
-                                            <t t-if="analytic.get('solde_credit')>0">
-                                                <th></th>
-                                                <th><span t-esc="analytic.get('solde_credit')"/></th>
-                                            </t>
-                                        </tr>   
-                                    </t> 
+                                <t t-set="balance" t-value="line['get_lines']"/>
+                                    <t t-if="balance"> 
+                                        <t t-foreach="balance" t-as="lines"> 
+                                            <tr class='text-center'>
+                                                <th> <span t-esc="lines.get('code_account')"/> </th>
+                                                <th><span t-esc="lines.get('name_account')" /></th>
+                                                <th>
+                                                    <span t-esc="lines.get('code_project')"/> 
+                                                </th>
+                                                <th><span t-esc="lines.get('name_project')" /></th>
+                                                <th><span t-esc="lines.get('name_analytic')" /></th>
+                                                <th><span t-esc="lines.get('x_debit')" /></th>
+                                                <th><span t-esc="lines.get('x_credit')"/></th>
+                                                <t t-if="lines.get('solde_debit')>0">
+                                                    <th><span t-esc="lines.get('solde_debit')" /></th>
+                                                    <th></th>
+                                                </t>
+                                                <t t-if="lines.get('solde_credit')>0">
+                                                    <th></th>
+                                                    <th><span t-esc="lines.get('solde_credit')"/></th>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                </t> 
                         </t>
                     </tbody>
                 </table>

@@ -1,0 +1,137 @@
+<odoo>
+    <record id="paperformat_custom_report_cash" model="report.paperformat">
+            <field name="name">Cash</field>
+            <field name="default" eval="False"/>
+            <field name="format">custom</field>
+            <field name="page_height">210</field>
+            <field name="page_width">300</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">4</field>
+            <field name="margin_bottom">9</field>
+            <field name="margin_right">3</field>
+            <field name="margin_left">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+    </record>
+    <report id="account_cash_report"
+        model="account.cash.report.wizard"
+        string="Account Cash Report"
+        report_type="qweb-pdf"
+        paperformat='paperformat_custom_report_cash'
+        name="custom_report.cash_report_view"
+        
+        menu="False"/>
+
+    <template id="cash_report_view">
+        <t t-call="web.html_container">
+                <div class="article mt0 o_report_layout_standard">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm" style="display: block;text-align:center;">
+                                <h3 class="text-center">RAPPORT CAISSE
+                                    <span style="font-size: 14px;"><strong>From</strong>: <t t-esc="date_start"/> <strong>To</strong>: <t t-esc="date_end"/></span>
+                                </h3>
+                                <br/>
+                                <t t-foreach="docs" t-as="line">
+                                        <t t-set="cash" t-value="line['get_amount_montant_init']"/>
+                                        <t t-if="cash">
+                                        <t t-foreach="cash" t-as="lines">
+                                            <span  style="font-size: 18px; font-weight: bold;">
+                                                <span>Montant Initial:</span> <t t-esc="lines.get('x_montant_init')" t-options='{"widget": "float", "precision": 0}'/>
+                                            </span>
+                                        </t>
+                                        </t>
+                                    </t>        
+                            </div>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <table class="table table-sm table-condensed table-bordered" >
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class='text-center'>Date</th>
+                                <th class='text-center'>Libelle</th>
+                                <th class='text-center'>Projet</th>
+                                <th class='text-center'>Reference</th>
+                                <th class='text-center'>Partenaire</th>
+                                <th class='text-center'>Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="line"> 
+                                    <t t-set="analytic" t-value="line['get_lines']"/> 
+                                    <t t-if="analytic">
+                                        <t t-foreach="analytic" t-as="lines">
+                                            <tr>
+                                                <th class='text-center'>
+                                                    <span t-esc="lines.get('x_date').strftime('%d/%m/%Y')"/> 
+                                                </th>
+                                                <td> <span t-esc="lines.get('x_libelle')" /> </td>
+                                                <td><span t-esc="lines.get('x_project')" /> </td>
+                                                <td class='text-center'><span t-esc="lines.get('x_reference')" /> </td>
+                                                <td class='text-center'><span t-esc="lines.get('x_partner')" /> </td>
+                                                <td class='text-center'><span t-esc="lines.get('x_amount')" t-options='{"widget": "float", "precision": 0}'/></td>
+                                            </tr>   
+                                        </t>
+                                    </t>  
+                            </t>
+
+                        </tbody>
+                    </table>
+                    <br/>
+                    <div class="clearfix" name="so_total_summary">
+                        <div id="total" class="row" name="total">
+                            <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                <table class="table table-sm">
+                                    <t t-foreach="docs" t-as="line">
+                                        <t t-set="cash" t-value="line['get_amount_depense']"/>
+                                        <t t-if="cash">
+                                        <t t-foreach="cash" t-as="lines">
+                                            <tr class="table-danger">
+                                                <th class='text-center'>Total décaissements</th>
+                                                <th class="text-center"><span t-esc="lines.get('x_amount_depense')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                            </tr>
+                                        </t>
+                                        </t>
+                                    </t>
+                                    <t t-foreach="docs" t-as="line">
+                                        <t t-set="cash" t-value="line['get_amount_appro']"/>
+                                        <t t-if="cash">
+                                        <t t-foreach="cash" t-as="lines">
+                                            <tr class="table-danger">
+                                                <th class='text-center'>Total Approvisionnements</th>
+                                                <th class="text-center"><span t-esc="lines.get('x_amount_profil')" t-options='{"widget": "float", "precision": 0}'/></th>
+                                            </tr>
+                                        </t>
+                                        </t>
+                                    </t>
+                                    <tr class="table-success">
+                                            <th class='text-center'>Solde comptable</th>
+                                            <th class="text-center"><span t-esc="balance_final_days" t-options='{"widget": "float", "precision": 0}'/></th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div> 
+            <div class="footer o_standard_footer" style="border-top: 1px solid black;">
+                <div class="row text-center">
+                    <div class="col col-12 text-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">Page:</li>
+                            <li class="list-inline-item">
+                                <span class="page"/>
+                            </li>
+                            <li class="list-inline-item">/</li>
+                            <li class="list-inline-item">
+                                <span class="topage"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
