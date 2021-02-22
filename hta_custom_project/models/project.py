@@ -3,7 +3,7 @@
 from odoo import models, fields, api
 
 
-class ProjectTask(models.Model):
+class Project(models.Model):
     _inherit = "project.project"
     
     code = fields.Char(string="Project Number", required=True, default="/", readonly=True)
