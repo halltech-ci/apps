@@ -162,5 +162,11 @@
               action="expense_management_action_window"/>
     <menuitem name="Reports" id="expense_management.report" parent="expense_management.menu_root"
               action="expense_management_action_window"/>
+    
+    <menuitem id="menu_expense_management_config" name="Settings" parent="expense_management.menu_root"
+        sequence="999"
+        action="action_expense_management_config"
+        groups="base.group_system"
+    />
   </data>
 </odoo>

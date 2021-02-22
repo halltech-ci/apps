@@ -1,0 +1,22 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="workorder_action_window">
+      <field name="name">Workorder Request</field>
+      <field name="res_model">product.request</field>
+      <field name="view_mode">tree,form</field>
+      <!--<field name="view_id" ref="product_request_view"/>-->
+    </record>
+    
+    <menuitem id="hta_workorder_request.menu_root"
+        name="Workorder Request"
+        sequence="100"
+        web_icon="hta_workorder_request,static/description/icon.png"
+    />
+    
+    <menuitem name="Product Request" id="hta_workorder_request.request" parent="hta_workorder_request.menu_root"
+              action="workorder_action_window"/>
+    
+  </data>
+</odoo>
