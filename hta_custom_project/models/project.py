@@ -6,7 +6,7 @@ from odoo import models, fields, api, _
 class Project(models.Model):
     _inherit = "project.project"
     
-    code = fields.Char(string="Project Number", required=True, default="/", readonly=True)
+    code = fields.Char(string="Project Code", required=True, default="/", readonly=True)
 
     _sql_constraints = [
         ("project_unique_code", "UNIQUE (code)", _("The code must be unique!"))
