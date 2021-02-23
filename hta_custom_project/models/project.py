@@ -7,6 +7,7 @@ class Project(models.Model):
     _inherit = "project.project"
     
     code = fields.Char(string="Project Code", required=True, default="/", readonly=True)
+    project_description = fields.Text(string='Description')
 
     _sql_constraints = [
         ("project_unique_code", "UNIQUE (code)", _("The code must be unique!"))

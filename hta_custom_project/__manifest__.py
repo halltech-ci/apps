@@ -20,13 +20,15 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['project'],
+    'depends': ['project',
+               ],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/project_views.xml',
         #date sequence
         'data/project_ir_sequence.xml',
     ],
