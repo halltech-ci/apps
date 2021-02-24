@@ -1,0 +1,21 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="edit_project_code_inherit">
+      <!--<field name="name">inherit purchase order form</field>-->
+      <field name="model">project.project</field>
+      <field name="inherit_id" ref="project.edit_project"/>
+      <field name="arch" type="xml">
+          <!-- Insert purchase order page on project-->
+          <xpath expr="//h1" position="before">
+                <h1>
+                    <field name="code" readony='True'/>
+                </h1>
+          </xpath>
+          <xpath expr="//h1" position="after">
+              <label for="project_description"/>
+              <field name="project_description"/>
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>
