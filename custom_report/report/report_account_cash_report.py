@@ -7,7 +7,7 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DATETIME_FORMAT
 
 class ReportCashReportView(models.AbstractModel):
     """
-        Abstract Model specially for report template.
+        Abstract Model specially for report templates.
         _name = Use prefix `report.` along with `module_name.report_name`
     """
     _name = 'report.custom_report.cash_report_view'
