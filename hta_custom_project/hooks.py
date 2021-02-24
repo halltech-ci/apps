@@ -26,5 +26,5 @@ def post_init_hook(cr, registry):
     for project_id in projects.ids:
         cr.execute(
             "UPDATE project_project " "SET code = %s " "WHERE id = %s;",
-            (sequence_obj.next_by_code("project.project"), project_id),
+            (sequence_obj.next_by_code("project.code"), project_id),
         )
