@@ -5,15 +5,15 @@
       <field name="model">project.project</field>
       <field name="inherit_id" ref="project.edit_project"/>
       <field name="arch" type="xml">
-          <!-- Insert purchase order page on project-->
-          <xpath expr="//h1" position="before">
-                <h1>
-                    <field name="code" readony='True'/>
-                </h1>
-          </xpath>
+          <!-- Insert code and description project-->
           <xpath expr="//h1" position="after">
               <label for="project_description"/>
               <field name="project_description"/>
+          </xpath>
+          <xpath expr="//h1" position="before">
+              <h1>
+                 <field name="code" readony='True'/>
+              </h1>
           </xpath>
       </field>
     </record>
