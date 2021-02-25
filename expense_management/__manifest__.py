@@ -20,7 +20,8 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hr',
+    'depends': ['base',
+                'hr',
                'project',
                'account'],
 
@@ -31,7 +32,9 @@
         'views/views.xml',
         'views/templates.xml',
         #Menu
-        'views/expense_management_menu.xml'
+        'views/res_config_settings_views.xml',
+        'views/expense_management_menu.xml',
+        
     ],
     # only loaded in demonstration mode
     'demo': [

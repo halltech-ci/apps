@@ -37,7 +37,6 @@ class PurchaseOrder(models.Model):
                     or order.user_has_groups('purchase.group_purchase_manager'):
                 order.button_approve()
             else:
-                order.write({'state': 'to approve',
-                             'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')
-                            })
+                order.write({'state': 'to approve'})
+            order.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
         return True

@@ -7,7 +7,8 @@ class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
     
     project_id = fields.Many2one('project.project', string='Project', readonly = True,
-                                 default=lambda self: self.env['purchase.order.line'].search([('order_id', '=', self.id)], limit=1).project_id.key)
+        default=lambda self: self.env['purchase.order.line'].search([('order_id', '=', self.id)], limit=1).project_id.code,
+    )
     
     
 class PurchaseOrderLine(models.Model):

@@ -21,7 +21,9 @@
 
     # any module necessary for this one to work correctly
     'depends': ['purchase_request',
-               'custom_apps'],
+               'custom_apps',
+               'hta_custom_project'
+               ],
 
     # always loaded
     'data': [
