@@ -42,13 +42,15 @@ class ExpenseRequest(models.Model):
     journal = fields.Many2one('account.journal', string='Journal', required=True, domain=[('type', 'in', ['cash', 'bank'])], default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
     statement_id = fields.Many2one('account.bank.statement', string="Caisse")
     move_id = fields.Many2one('account.move', string='Account Move')
-    is_expense_approver = fields.Boolean(compute="_compute_is_expense_approver")
+    is_expense_approver = fields.Boolean(string="Is Approver",
+        #compute="_compute_is_expense_approver",
+    )
     
     @api.depends("state")
     def _compute_to_approve_allowed(self):
         for rec in self:
             rec.to_approve_allowed = rec.state == "submit"
-    
+    """
     @api.depends('total_amount')
     def _compute_is_expense_approver(self):
         for rec in self:
@@ -66,7 +68,7 @@ class ExpenseRequest(models.Model):
                     rec.is_expense_approver = True
             else:
                 rec.is_expense_approver = False
-                    
+    """                
     @api.onchange('company_id')
     def _onchange_expense_company_id(self):
         self.employee_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid), ('company_id', '=', self.company_id.id)])
