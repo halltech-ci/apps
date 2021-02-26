@@ -24,6 +24,7 @@ class Project(models.Model):
     @api.model
     def create(self, vals):
         # Prevent double project creation
+        #project = super(Project, self).create(vals)
         if vals.get('code', '/') == '/':
             self = self.with_context(mail_create_nosubscribe=True)
             vals['code'] = self.env['ir.sequence'].next_by_code('project.code') or '/'
@@ -32,6 +33,7 @@ class Project(models.Model):
                 project.subtask_project_id = project.id
             if project.privacy_visibility == 'portal' and project.partner_id:
                 project.message_subscribe(project.partner_id.ids)
+        project = super(Project, self).create(vals)
         return project
     
     def copy(self, default=None):
