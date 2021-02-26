@@ -16,7 +16,7 @@ def pre_init_hook(cr):
 
 def post_init_hook(cr, registry):
     """
-    This post-init-hook will update all existing task assigning them the
+    This post-init-hook will update all existing project assigning them the
     corresponding sequence code.
     """
     env = api.Environment(cr, SUPERUSER_ID, dict())
