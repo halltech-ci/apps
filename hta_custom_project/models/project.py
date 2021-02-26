@@ -13,14 +13,14 @@ class Project(models.Model):
         ("project_unique_code", "UNIQUE (code)", _("The code must be unique!"))
     ]
     
-    """@api.model_create_multi
+    @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get("code", "/") == "/":
-                vals["code"] = self.env["ir.sequence"].next_by_code("project.code")
+                vals["code"] = self.env["ir.sequence"].next_by_code("project.code") or '/'
         return super().create(vals_list)
-    """
     
+    """
     @api.model
     def create(self, vals):
         # Prevent double project creation
@@ -35,7 +35,7 @@ class Project(models.Model):
                 project.message_subscribe(project.partner_id.ids)
         project = super(Project, self).create(vals)
         return project
-    
+    """
     def copy(self, default=None):
         self.ensure_one()
         if default is None:
