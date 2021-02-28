@@ -22,7 +22,7 @@
     # any module necessary for this one to work correctly
     'depends': ['sale',
                 'hta_custom_project', 
-                'purchase_request_custom',],
+                ],
 
     # always loaded
     'data': [

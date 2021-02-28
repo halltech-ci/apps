@@ -21,6 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['purchase_request',
+                'custom_apps'
                ],
 
     # always loaded
