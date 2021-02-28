@@ -13,7 +13,7 @@ PAYMENT_TYPE = [('cash', 'Espece'),
                ]
 
 REQUEST_STATE = [('draft', 'Draft'),
-        ('submit', 'Submitted'),
+        #('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
         ('post', 'Posted'),
