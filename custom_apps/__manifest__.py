@@ -20,7 +20,9 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale','project', 'purchase_request',],
+    'depends': ['sale',
+                'hta_custom_project', 
+                ],
 
     # always loaded
     'data': [

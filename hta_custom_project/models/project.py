@@ -9,9 +9,9 @@ class Project(models.Model):
     code = fields.Char(string="Project Code", required=True, default="/", readonly=True)
     project_description = fields.Char(string='Description')
 
-    """_sql_constraints = [
+    _sql_constraints = [
         ("project_unique_code", "UNIQUE (code)", _("The code must be unique!"))
-    ]"""
+    ]
     
     @api.model_create_multi
     def create(self, vals_list):

@@ -5,6 +5,10 @@ from odoo import models, fields, api
 class PurchaseRequest(models.Model):
     _inherit = "purchase.request"
     
+    @api.model
+    def _get_default_name(self):
+        return self.env["ir.sequence"].next_by_code("purchase.da.sequence")
+    
     @api.depends('requested_by')
     def _compute_has_manager(self):
         for rec in self:
