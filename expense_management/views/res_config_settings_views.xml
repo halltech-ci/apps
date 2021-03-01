@@ -10,6 +10,7 @@
                 <div class="app_settings_block"
                     data-string="Expense Management"
                     data-key="expense_management"
+                     groups='expense_management.group_expense_management_manager'
                      >
                     <h2>Expense Configuration</h2>
                     <div class="row mt16 o_settings_container">
