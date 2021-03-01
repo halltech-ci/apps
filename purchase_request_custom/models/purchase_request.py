@@ -5,6 +5,10 @@ from odoo import models, fields, api
 class PurchaseRequest(models.Model):
     _inherit = "purchase.request"
     
+    @api.model
+    def _get_default_name(self):
+        return self.env["ir.sequence"].next_by_code("purchase.da.sequence")
+    
     @api.depends('requested_by')
     def _compute_has_manager(self):
         for rec in self:
@@ -24,7 +28,8 @@ class PurchaseRequest(models.Model):
                     rec.is_project_approver = False
     '''
     sale_order = fields.Many2one('sale.order', string='Sale Order')
-    project_code = fields.Many2one('project.project' ,related='sale_order.project_id', string="Project", readonly=True)
+    project = fields.Many2one('project.project' ,related='sale_order.project_id', string="Project", readonly=True)
+    project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
     purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Request Type")
     has_manager = fields.Boolean(compute='_compute_has_manager')
     #is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
@@ -49,5 +54,5 @@ class PurchaseRequest(models.Model):
 class PurchaseRequestLine(models.Model):
     _inherit = "purchase.request.line"
     
-    project = fields.Many2one(related="request_id.project_code", string="Project", readonly=True)
+    project = fields.Many2one(related="request_id.project", string="Project", readonly=True)
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")

@@ -89,14 +89,6 @@
         <xpath expr="//table[hasclass('table','table-sm','o_main_table')]/thead/tr/th[@name='th_priceunit']" position='before'>
             <th name="th_unit" class="text-right">Unite</th>
         </xpath>
-        <!-- Manage secondary unit-->
-        <xpath expr="//table[hasclass('table','table-sm','o_main_table')]//th[2]" position="replace"></xpath>
-        <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[2]" position="replace"></xpath>
-        
-        <!--<xpath expr="//table[hasclass('table','table-sm','o_main_table')]//th[2]" position="before">
-            <th name="th_sec_qty" class="text-right" groups="uom.group_uom">Second. Qty</th>
-            <th name="th_sec_unit" class="text-right" groups="uom.group_uom">Second. Unit</th>
-        </xpath>-->
         <!-- Delete tax from report-->
         <xpath expr="//table[hasclass('table','table-sm','o_main_table')]/thead/tr/th[@name='th_taxes']" position="replace">
         </xpath>

@@ -20,7 +20,7 @@ class ExpenseRequest(models.Model):
     name = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
-        ('submit', 'Submitted'),
+        #('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
         ('post', 'Posted'),
@@ -42,11 +42,20 @@ class ExpenseRequest(models.Model):
     journal = fields.Many2one('account.journal', string='Journal', required=True, domain=[('type', 'in', ['cash', 'bank'])], default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
     statement_id = fields.Many2one('account.bank.statement', string="Caisse")
     move_id = fields.Many2one('account.move', string='Account Move')
+    is_expense_approver = fields.Boolean(string="Is Approver",
+        compute="_compute_is_expense_approver",
+    )
     
     @api.depends("state")
     def _compute_to_approve_allowed(self):
         for rec in self:
-            rec.to_approve_allowed = rec.state == "submit" 
+            rec.to_approve_allowed = rec.state == "submit"
+    
+    """This method will check approver limit"""
+    def _compute_is_approver(self):
+        for req in self:
+            req.is_expense_approver = False
+            
     
     @api.onchange('company_id')
     def _onchange_expense_company_id(self):
@@ -56,69 +65,36 @@ class ExpenseRequest(models.Model):
     def _compute_amount(self):
         for request in self:
             request.total_amount = sum(request.line_ids.mapped('amount'))
+            
     """This create account_bank_statetment_line in bank_statement given in expense request"""
     def create_bank_statement(self):
         for request in self:
             ref = request.name
-            statement_id = request.statement_id.id
-            lines = request.mapped('line_ids')
-            for line in lines:
+            statement_id = request.statement_id
+            journal_id = request.journal.id
+            company = request.company_id.id
+            expense_lines = request.mapped('line_ids')
+            value = []
+            for line in expense_lines:
                 #ref = line.name
-                libelle = line.name
+                name = line.name
                 partner_id = line.employee_id.address_home_id.id
-                amount = line.amount
-            
-    
-    def create_move_values(self):
-        for request in self:
-            ref = request.name
-            account_date = fields.Date.today()#self.date
-            journal = request.journal
-            company = request.company_id
-            analytic_account = request.analytic_account
-            move_value = {
-                'ref':ref,
-                'date': account_date,
-                'journal_id': journal.id,
-                'company_id': company.id,
-            }
-            expense_line_ids = []
-            lines = request.mapped('line_ids')
-            for line in lines:
-                if not (line.employee_id.address_home_id.property_account_receivable_id):
-                    raise UserError(_('Pas de compte pour : "%s" !') % (line.employee_id))
-                partner_id = line.employee_id.address_home_id.id
-                debit_account = line.employee_id.address_home_id.property_account_receivable_id if line.payment_mode == 'justify' else line.debit_account
-                debit_line = (0, 0, {#received
-                    'name': line.name,
-                    'account_id': debit_account.id,
-                    'debit': line.amount > 0.0 and line.amount or 0.0,
-                    'credit': line.amount < 0.0 and -line.amount or 0.0, 
-                    'partner_id': partner_id,
-                    'journal_id': journal.id,
-                    'date': account_date,
-                    'analytic_account_id': line.analytic_account.id,
-
+                if line.amount < 0:
+                    amount = line.amount
+                else:
+                    amount = -line.amount
+                #amount = line.amount
+                project_id = line.project.id
+                lines = (0, 0, {
+                    "name": line.name,
+                    "partner_id": line.employee_id.address_home_id.id,
+                    'amount': amount,
+                    'project_id': line.project.id
                 })
-                expense_line_ids.append(debit_line)
-                credit_line = (0, 0, {#give
-                    'name': line.name,
-                    'account_id': line.credit_account.id,#employee_id.address_home_id.property_account_payable_id.id,
-                    'debit': line.amount < 0.0 and -line.amount or 0.0,
-                    'credit': line.amount > 0.0 and line.amount or 0.0, 
-                    'partner_id': partner_id,
-                    'journal_id': journal.id,
-                    'date': account_date,
-                    'analytic_account_id': line.analytic_account.id,
-
-                })
-                expense_line_ids.append(credit_line)
-            move_value['line_ids'] = expense_line_ids
-            move = self.env['account.move'].create(move_value)
-            request.write({'move_id': move.id})
-            move.post()
+                value.append(lines)
+            statement_id.write({'line_ids': value})
         return True
-    
+            
     def action_post(self):
         if self.state == 'post':
             raise UserError(
@@ -126,11 +102,12 @@ class ExpenseRequest(models.Model):
                         "You can not post request already in posted state"
                     )
                 )
-        post = self.create_move_values()
+        post = self.create_bank_statement()
         if post:
             for line in self.line_ids:
                 line.action_post()
             return self.write({'state': 'post'})
+        return True
     
     def action_submit(self):
         for line in self.line_ids:
@@ -140,12 +117,13 @@ class ExpenseRequest(models.Model):
     
     def button_to_approve(self):
         self.to_approve_allowed_check()
+        #self.is_approver_check()
         for line in self.line_ids:
             line.action_to_approve()
         return self.write({"state": "to_approve"})
     
     def button_approve(self):
-        #self.to_approve_allowed_check()
+        self.is_approver_check()
         for line in self.line_ids:
             line.action_approve()
         return self.write({"state": "approve"})
@@ -164,6 +142,16 @@ class ExpenseRequest(models.Model):
                     )
                     % rec.name
                 )
+    def is_approver_check(self):
+        for rec in self:
+            if not rec.is_expense_approver:
+                raise UserError(
+                    _(
+                        "You are not allowed to approve this expense request "
+                        ". (%s)"
+                    )
+                    % rec.name
+                )
     
     @api.model
     def create(self, vals):
@@ -174,12 +162,4 @@ class ExpenseRequest(models.Model):
         res = super(ExpenseRequest, self).write(vals)
         return res
     
-    '''def activity_update(self):
-        for expense_report in self.filtered(lambda hol: hol.state == 'submit'):
-            self.activity_schedule(
-                'hr_expense.mail_act_expense_approval',
-                user_id=expense_report.sudo()._get_responsible_for_approval().id or self.env.user.id)
-        self.filtered(lambda hol: hol.state == 'approve').activity_feedback(['hr_expense.mail_act_expense_approval'])
-        self.filtered(lambda hol: hol.state == 'cancel').activity_unlink(['hr_expense.mail_act_expense_approval'])
-    '''
     

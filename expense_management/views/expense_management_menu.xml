@@ -6,30 +6,24 @@
       <field name="arch" type="xml">
         <form string="Exepnse Request">
           <header>
-            <button name="action_submit"
-                    string="Submit"
-                    type="object"
-                    class="oe_highlight"
-                    attrs="{'invisible': [('state', 'not in', ['draft'])]}"
-            />
             <button name="button_to_approve"
                     string="To Approve"
                     type="object"
                     class="oe_highlight"
-                    attrs="{'invisible': [('state', 'in', ['to_approve', 'approve'])]}"
+                    states="draft"
             />
             <button name="button_approve"
                     string="Approve"
                     type="object"
                     class="oe_highlight"
-                    attrs="{'invisible': [('state', 'not in', ['to_approve'])]}"
+                    states="to_approve"
                     groups="expense_management.group_expense_approver_1"
             />
             <button name="action_post"
                     string="Post"
                     type="object"
                     class="oe_highlight"
-                    attrs="{'invisible': [('state', 'in', ['post'])]}"
+                    states="approve"
             />
             <button name="button_rejected"
                     string='Reject'
@@ -39,7 +33,7 @@
             />
             <field name="state"
                  widget="statusbar"
-                 statusbar_visible="draft,submit,to_approve,approved,post,cancel"
+                 statusbar_visible="draft,to_approve,approved,post,cancel"
                  statusbar_colors='{"approved":"blue"}'
              />
           </header>
@@ -162,5 +156,11 @@
               action="expense_management_action_window"/>
     <menuitem name="Reports" id="expense_management.report" parent="expense_management.menu_root"
               action="expense_management_action_window"/>
+    
+    <menuitem id="menu_expense_management_config" name="Settings" parent="expense_management.menu_root"
+        sequence="999"
+        action="action_expense_management_config"
+        groups="base.group_system"
+    />
   </data>
 </odoo>
