@@ -35,6 +35,7 @@
         'views/account_account_views.xml',
         'views/project_views.xml',
         'views/sale_order_views.xml',
+        'views/sale_order_line_views.xml',
         #data sequence
         'data/sale_ir_sequence.xml',
         'data/purchase_ir_sequence.xml',
