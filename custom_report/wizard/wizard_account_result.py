@@ -20,4 +20,5 @@ class AccountResultReportWizard(models.TransientModel):
         }
         # ref `module_name.report_id` as reference.
         return self.env.ref('custom_report.account_result_report').with_context(landscape=True).report_action(self, data=data)
+    
 
