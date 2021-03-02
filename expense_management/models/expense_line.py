@@ -13,7 +13,7 @@ PAYMENT_TYPE = [('cash', 'Espece'),
                ]
 
 REQUEST_STATE = [('draft', 'Draft'),
-        #('submit', 'Submitted'),
+        ('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
         ('post', 'Posted'),
@@ -78,8 +78,9 @@ class ExpenseLine(models.Model):
     
     def action_post(self):
         self.request_state = "post"
+        
     def do_cancel(self):
-        """Actions to perform when cancelling a purchase request line."""
+        """Actions to perform when cancelling a expense line."""
         self.write({"request_state": 'cancel'})
     
     def unlink(self):
