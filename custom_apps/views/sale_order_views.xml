@@ -1,6 +1,6 @@
 <odoo>
   <data>
-    <record model="ir.ui.view" id="sale_order_view_inherit">
+    <record model="ir.ui.view" id="sale_order_views_inherit">
         <field name="name">sale.order.inherit.view</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
@@ -21,6 +21,7 @@
             <field name="project_id"/>
             <field name="sale_order_type"/>
             <!--<field name="client_order_ref"/>-->
+            
           </xpath>
 
         </field>
