@@ -30,6 +30,7 @@
                   <field name="indemnite_licencement" string="Indemnité de Licencement"/>
                   <field name="indemnite_compensatrice" string="Indemnité Compensatrice préavis"/>
                   <field name="indemnite_conge" string="Indemnité de Congé"/>
+                  <field name="prelevement_assurance_mci"/>
                   <field name="autres_avantages" string="Autre Avantages"/>
                   <field name="avs" string="Avances et  Acomptes perçus"/>
               </group>

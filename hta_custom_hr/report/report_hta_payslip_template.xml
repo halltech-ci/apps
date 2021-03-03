@@ -406,6 +406,31 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
+                                
+                                <t t-if="lines.get('ASSMCI')[1] >=0">
+                                    <tr style="border: 1px solid black">
+                                        
+                                        <td class='text-left' colspan="3">Prelevement Assurance MCI</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-center"><span t-esc="lines.get('ASSMCI')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </t>
+                                <t t-if="lines.get('PRET')[1] > 0">
+                                    <tr style="border: 1px solid black">
+                                        
+                                        <td class='text-left' colspan="3">Prêt</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-center"><span t-esc="lines.get('PRET')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </t>
                                 <t t-if="lines.get('AVS')[1] >=0">
                                     <tr style="border: 1px solid black">
                                         
