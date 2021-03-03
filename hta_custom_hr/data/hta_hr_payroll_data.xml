@@ -763,6 +763,31 @@ result = RRE + IS + CN + IGR + CMUE
 result = SBI - TCOTEM
         </field>
     </record>
+    <!-- Regle de calcul Prelevement Assurance MCI  -->
+    <record id="hr_salary_rule_mci_ass" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Prelevement Assurance MCI</field>
+        <field name="code">ASSMCI</field>
+        <field name="sequence">7</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prelevement_assurance_mci
+        </field>
+    </record>
+        <record id="hr_salary_rule_pret_empl" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Prêt</field>
+        <field name="code">PRET</field>
+        <field name="sequence">7</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = employee.pret
+        </field>
+    </record>
     <!-- Regle de calcul avance percus -->
     <record id="hr_salary_rule_net_avs" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
@@ -786,7 +811,7 @@ result = contract.avs
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = SNET + IDTR - AVS
+result = SNET + IDTR - (ASSMCI + PRET + AVS)
         </field>
     </record>
 
