@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+
+from odoo import api, fields, models, _
+from odoo.tools.float_utils import float_compare
+from dateutil import relativedelta
+from odoo.exceptions import UserError
+
 
 REQUEST_STATES = [
     ("draft", "Draft"),
@@ -71,7 +76,7 @@ class ProductRequest(models.Model):
     )
     #Manage analytic
     project_task_id = fields.Many2one('project.task', string="Project Task")
-    project_id = fields.Many2one('project.project', string="Project")
+    project_id = fields.Many2one('project.project', string="Project", related='project_task_id.project_id')
     analytic_account_id = fields.Many2one("account.analytic.account",
         string="Analytic Account",
         track_visibility="onchange",
@@ -154,10 +159,19 @@ class ProductRequest(models.Model):
     
     def button_approve(self):
         #self.is_approver_check()
-        self._create_picking()
+        #self._create_picking()
         for line in self.line_ids:
             line.action_approve()
-        return self.write({"state": "open", 'date_approve': fields.Datetime.now()})
+        self.write({"state": "open", 'date_approve': fields.Datetime.now()})
+        return True
+    
+    def action_confirm(self):
+        if not self.button_approve():
+            raise ValidationError(_("You must approve this request before"))
+        if len(self.picking_ids) > 0:
+            raise ValidationError(_("You can not confirm request that is already confirm"))
+        self._create_picking()
+        return True
     
     def _action_done(self):
         for line in self.line_ids:
@@ -174,6 +188,41 @@ class ProductRequest(models.Model):
         res = super(ProductRequest, self).write(vals)
         return res
     
+    @api.model
+    def _prepare_picking(self):
+        return {
+            'picking_type_id': self.picking_type_id.id,
+            #'partner_id': self.partner_id.id,
+            'user_id': False,
+            'date': self.date_approve,
+            'origin': self.name,
+            'location_dest_id': self.location_dest_id.id,
+            'location_id': self.location_src_id.id,
+            'company_id': self.company_id.id,
+        }
+
+    def _create_picking(self):
+        StockPicking = self.env['stock.picking']
+        for request in self:
+            if any([ptype in ['product', 'consu'] for ptype in request.line_ids.mapped('product_id.type')]):
+                pickings = request.picking_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
+                if not pickings:
+                    res = request._prepare_picking()
+                    picking = StockPicking.create(res)
+                else:
+                    picking = pickings[0]
+                moves = request.line_ids._create_stock_moves(picking)
+                moves = moves.filtered(lambda x: x.state not in ('done', 'cancel'))._action_confirm()
+                seq = 0
+                for move in sorted(moves, key=lambda move: move.date_expected):
+                    seq += 5
+                    move.sequence = seq
+                moves._action_assign()
+                picking.message_post_with_view('mail.message_origin_link',
+                    values={'self': picking, 'origin': request},
+                    subtype_id=self.env.ref('mail.mt_note').id)
+        return True
+    """
     def _create_picking(self):
         for request in self:
             #prepare picking
@@ -214,6 +263,7 @@ class ProductRequest(models.Model):
                 move_value.append(moves)
             picking.write({'move_lines': move_value})
         return True
+        """
                 
             
     
