@@ -25,12 +25,6 @@
                     <field name="hiring_end"/>
                   </group>
               </group>
-              <group string="Prêt">
-                  <group>
-                    <field name="pret"/>
-                    
-                  </group>
-              </group>
           </xpath>
           <xpath expr="//sheet//notebook/page[@name='personal_information']/group/group[3]" position="inside">
                 <field name="nbre_part"/>

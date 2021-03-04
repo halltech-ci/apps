@@ -6,7 +6,7 @@ class HrEmployee(models.Model):
     _inherit="hr.employee"
     
     hiring_date = fields.Date(string='Hiring Start Date', related="contract_id.date_start")
-    pret = fields.Monetary(string="Prêt")
+    
     hiring_end = fields.Date(string='End Hiring Date', default=fields.Date.today())
     seniority = fields.Integer(string="Seniority", store=True, compute='_compute_seniority')
     nbre_part = fields.Float(string="Nombre de Part", default=1)

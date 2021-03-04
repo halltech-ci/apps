@@ -32,6 +32,7 @@
                   <field name="indemnite_conge" string="Indemnité de Congé"/>
                   <field name="prelevement_assurance_mci"/>
                   <field name="autres_avantages" string="Autre Avantages"/>
+                  <field name="pret"/>
                   <field name="avs" string="Avances et  Acomptes perçus"/>
               </group>
           </xpath>   
