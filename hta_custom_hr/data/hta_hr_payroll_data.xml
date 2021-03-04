@@ -785,7 +785,7 @@ result = contract.prelevement_assurance_mci
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = employee.pret
+result = contract.pret
         </field>
     </record>
     <!-- Regle de calcul avance percus -->
