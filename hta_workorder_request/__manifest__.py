@@ -34,7 +34,11 @@
         'views/workorder_request_menu.xml',
         'views/project_views.xml',
         #data
-        'data/workorder_ir_sequence.xml'
+        'data/workorder_ir_sequence.xml',
+        #report
+        'report/workorder_report.xml',
+        'report/workorder_request_report.xml',
+        
     ],
     # only loaded in demonstration mode
     'demo': [

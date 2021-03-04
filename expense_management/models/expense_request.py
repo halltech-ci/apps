@@ -20,7 +20,7 @@ class ExpenseRequest(models.Model):
     name = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
-        #('submit', 'Submitted'),
+        ('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
         ('post', 'Posted'),
@@ -52,10 +52,23 @@ class ExpenseRequest(models.Model):
             rec.to_approve_allowed = rec.state == "submit"
     
     """This method will check approver limit"""
-    def _compute_is_approver(self):
+    def _compute_is_expense_approver(self):
         for req in self:
-            req.is_expense_approver = False
-            
+            limit_1 = req.company_id.approve_limit_1
+            limit_2 = req.company_id.approve_limit_2
+            user = self.env.user
+            if user.has_group('expense_management.group_expense_approver_3'):
+                req.is_expense_approver = True
+            elif user.has_group('expense_management.group_expense_approver_2'):
+                if req.total_amount <= limit_2:
+                    req.is_expense_approver = True
+                else:
+                    req.is_expense_approver = False
+            elif user.has_group('expense_management.group_expense_approver_1'):
+                if req.total_amount <= limit_1:
+                    req.is_expense_approver = True
+            else:
+                req.is_expense_approver = False
     
     @api.onchange('company_id')
     def _onchange_expense_company_id(self):
@@ -138,7 +151,7 @@ class ExpenseRequest(models.Model):
                 raise UserError(
                     _(
                         "You can't request an approval for a expense request "
-                        "which is empty. (%s)"
+                        "which is not submited. (%s)"
                     )
                     % rec.name
                 )
