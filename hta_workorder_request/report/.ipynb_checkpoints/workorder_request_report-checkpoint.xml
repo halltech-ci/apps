@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="report_workorder_request">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <div class="oe_structure" />
+                        <h4>ORDRE DE TRAVAIL: <span t-field="o.name"/></h4>
+                        <div>
+                            <strong>Description:</strong>
+                            <span t-field="o.project_task_id.name"/>
+                        </div>
+                        <table class="table table-condensed table-bordered">
+                            <thead>
+                                <th>Date</th>
+                                <th>Demandeur</th>
+                                <th>Projet</th>
+                            </thead>
+                            <tbody>
+                                <td><span t-field="o.date"/></td>
+                                <td><span t-field="o.requested_by"/></td>
+                                <td><span t-field="o.project_task_id.project_id"/></td>
+                            </tbody>
+                        </table>
+                        <div class="row mt32 mb32">
+                            <div class="col-xs-8">
+                            </div>
+                        </div>
+                        <t t-if="o.line_ids">
+                            <h4>MATIERES PREMIERES</h4>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <strong>Code Article</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Article</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Qty</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Unit</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.line_ids" t-as="line">
+                                        <td>
+                                            <span t-field="line.product_id.default_code" />
+                                        </td>
+                                        <td>
+                                            <span t-field="line.product_id" />
+                                        </td>
+                                        <td>
+                                            <span t-field="line.product_uom_qty" />
+                                        </td>
+                                        <td>
+                                            <span t-field="line.product_uom_id" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        
+                        <t t-if="o.line_ids">
+                            <h4>RESSOURCES HUMAINES</h4>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <strong>Date</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Employee</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Description</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Temps de travail</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.timesheet_ids" t-as="timesheet">
+                                        <td>
+                                            <span t-field="timesheet.date" />
+                                        </td>
+                                        <td>
+                                            <span t-field="timesheet.employee_id" />
+                                        </td>
+                                        <td>
+                                            <span t-field="timesheet.name" />
+                                        </td>
+                                        <td>
+                                            <span t-field="timesheet.unit_amount" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

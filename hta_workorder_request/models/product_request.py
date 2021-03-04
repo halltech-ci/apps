@@ -101,6 +101,7 @@ class ProductRequest(models.Model):
     )
     location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
     location_dest_id = fields.Many2one('stock.location', 'Dest Location',)
+    timesheet_ids = fields.One2many(related="project_task_id.timesheet_ids")
     
     @api.model
     def _get_picking_type(self, company_id):

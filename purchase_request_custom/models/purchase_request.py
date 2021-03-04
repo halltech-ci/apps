@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 class PurchaseRequest(models.Model):
     _inherit = "purchase.request"
@@ -18,15 +19,7 @@ class PurchaseRequest(models.Model):
                     rec.has_manager = True
                 else:
                     rec.has_manager = False
-    '''
-    def _compute_is_project_approver(self):
-        for rec in self:
-            if self._compute_has_manager():
-                if (self.env['hr.employee'].search([('project_apporver', '=', True)])).exists():
-                    rec.is_project_apporver = True
-                else:
-                    rec.is_project_approver = False
-    '''
+                    
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project' ,related='sale_order.project_id', string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
@@ -35,21 +28,31 @@ class PurchaseRequest(models.Model):
     #is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
     
+    """
     def action_send_email(self):
-        self.ensure_one()
+        #self.ensure_one()
         template_id = self.env.ref('purchase_request.email_template_purchase_request').id
         template = self.env['mail.template'].browse(template_id)
         template.send_mail(self.id, force_send=True)
-    
+    """
     @api.model
     def create(self, vals):
         request = super(PurchaseRequest, self).create(vals)
         if vals.get("assigned_to"):
             partner_id = self._get_partner_id(request)
             request.message_subscribe(partner_ids=[partner_id])
-            self.action_send_email()
+            #self.action_send_email()
         return request
-
+    
+    def to_approve_check(self):
+        if not self.requested_by.has_group('purchase_request_custom.group_purchase_request_approver'):
+            raise UserError(
+                    _("You are not allow to approve this request.")
+                )
+    
+    def button_approved(self):
+        self.to_approve_check()
+        return self.write({"state": "approved"})
     
 class PurchaseRequestLine(models.Model):
     _inherit = "purchase.request.line"

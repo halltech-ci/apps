@@ -38,7 +38,7 @@
                                         <t t-if="cash">
                                         <t t-foreach="cash" t-as="lines">
                                             <span  style="font-size: 18px; font-weight: bold;">
-                                                <span>Montant Initial:</span> <t t-esc="lines.get('x_montant_init')" t-options='{"widget": "float", "precision": 0}'/>
+                                                <span>Montant Initial:</span> <t t-if="lines.get('x_montant_init')"> <t t-esc="lines.get('x_montant_init')" t-options='{"widget": "float", "precision": 0}'/> </t>
                                             </span>
                                         </t>
                                         </t>
@@ -88,10 +88,12 @@
                                         <t t-set="cash" t-value="line['get_amount_depense']"/>
                                         <t t-if="cash">
                                         <t t-foreach="cash" t-as="lines">
+                                            <t t-if="lines.get('x_amount_depense')">
                                             <tr class="table-danger">
                                                 <th class='text-center'>Total décaissements</th>
                                                 <th class="text-center"><span t-esc="lines.get('x_amount_depense')" t-options='{"widget": "float", "precision": 0}'/></th>
                                             </tr>
+                                            </t>
                                         </t>
                                         </t>
                                     </t>
@@ -99,10 +101,12 @@
                                         <t t-set="cash" t-value="line['get_amount_appro']"/>
                                         <t t-if="cash">
                                         <t t-foreach="cash" t-as="lines">
+                                            <t t-if="lines.get('x_amount_profil')">
                                             <tr class="table-danger">
                                                 <th class='text-center'>Total Approvisionnements</th>
                                                 <th class="text-center"><span t-esc="lines.get('x_amount_profil')" t-options='{"widget": "float", "precision": 0}'/></th>
                                             </tr>
+                                            </t>
                                         </t>
                                         </t>
                                     </t>
