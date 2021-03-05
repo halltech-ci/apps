@@ -1,0 +1,42 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record id="inherit_product_template_only_form_view" model="ir.ui.view">
+      <!--<field name="name">inherit purchase order form</field>-->
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view"/>
+      <field name="arch" type="xml">
+          <!-- Insert purchase order page on project-->
+          <!--
+          <xpath expr="//field[@name='barcode']" position="replace">
+            <field name="description" attrs="{'invisible': [('product_variant_count', '>', 1)]}"/>
+          </xpath>
+          -->
+          <!-- Make default_code mandatory -->
+          <xpath expr="//field[@name='default_code']"
+            position="replace">
+            <field name="default_code" attrs="{'invisible': [('product_variant_count', '>', 1)], 'required':[('type', 'in', ('product', 'consu'))]}"/>
+          </xpath>
+      </field>
+    </record>
+    
+    <record id="inherit_product_normal_form_view" model="ir.ui.view">
+      <!--<field name="name">inherit purchase order form</field>-->
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="product.product_normal_form_view"/>
+      <field name="arch" type="xml">
+          <!-- Insert purchase order page on project-->
+          <!--
+          <xpath expr="//field[@name='barcode']" position="replace">
+            <field name="description" attrs="{'invisible': [('product_variant_count', '>', 1)]}"/>
+          </xpath>
+          -->
+          <!-- Make default_code mandatory -->
+          <xpath expr="//field[@name='default_code']"
+            position="replace">
+            <field name="default_code" attrs="{'invisible': [('product_variant_count', '>', 1)], 'required':[('type', 'in', ('product', 'consu'))]}"/>
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>
