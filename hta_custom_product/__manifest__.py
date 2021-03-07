@@ -28,7 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         #views
-        'views/product_views.xml',
+        #'views/product_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
