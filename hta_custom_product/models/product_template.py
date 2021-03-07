@@ -12,3 +12,9 @@ class ProductTemplate(models.Model):
     type = fields.Selection(default='service')
     uom_so_id = fields.Many2one('uom.uom', 'Sale Unit of Measure', default=_get_sale_uom_id, 
         help="Default Unit of Measure used for sale orders. It must be in the same category than the default unit of measure.")
+    
+
+class ProductProduct(models.Model):
+    _inherit = "product.product"
+    
+    type = fields.Selection(default='service')
