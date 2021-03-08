@@ -11,6 +11,22 @@ class HrEmployee(models.Model):
     seniority = fields.Integer(string="Seniority", store=True, compute='_compute_seniority')
     nbre_part = fields.Float(string="Nombre de Part", default=1)
     partner_id = fields.Many2one('res.partner', string="Partner", ondelete="cascade")
+    certificate = fields.Selection([
+        ('CEPE', 'CEPE'),
+        ('BEPC', 'BEPC'),
+        ('BAC', 'BAC'),
+        ('BAC+1', 'BAC+1'),
+        ('BAC+2', 'BAC+2'),
+        ('Licence', 'Licence'),
+        ('BAC+4', 'BAC+4'),
+        ('Master', 'Master'),
+        ('Doctorat', 'Doctorat'),
+        ('autre', 'Autre'),
+    ], 'Niveau Etude', default='other', groups="hr.group_hr_user", tracking=True)
+    
+    qualification = fields.Char(string='Qualification')
+    categorie = fields.Char(string='Categorie')
+    
     rib = fields.Char(string="RIB")
     @api.depends('hiring_date')
     def _compute_seniority(self):
