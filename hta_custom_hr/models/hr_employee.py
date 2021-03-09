@@ -12,17 +12,17 @@ class HrEmployee(models.Model):
     nbre_part = fields.Float(string="Nombre de Part", default=1)
     partner_id = fields.Many2one('res.partner', string="Partner", ondelete="cascade")
     certificate = fields.Selection([
-        ('CEPE', 'CEPE'),
-        ('BEPC', 'BEPC'),
-        ('BAC', 'BAC'),
-        ('BAC+1', 'BAC+1'),
-        ('BAC+2', 'BAC+2'),
-        ('Licence', 'Licence'),
-        ('BAC+4', 'BAC+4'),
-        ('Master', 'Master'),
-        ('Doctorat', 'Doctorat'),
-        ('Autre', 'Autre'),
-    ], 'Niveau Etude', default='Autre', groups="hr.group_hr_user", tracking=True)
+        ('cepe', 'cepe'),
+        ('bepc', 'bepc'),
+        ('bac', 'bac'),
+        ('bac+1', 'bac+1'),
+        ('bac+2', 'bac+2'),
+        ('licence', 'licence'),
+        ('bac+4', 'bac+4'),
+        ('master', 'master'),
+        ('doctorat', 'doctorat'),
+        ('autre', 'autre'),
+    ], 'Niveau Etude', default='autre', groups="hr.group_hr_user")
     
     qualification = fields.Char(string='Qualification')
     categorie = fields.Char(string='Categorie')
