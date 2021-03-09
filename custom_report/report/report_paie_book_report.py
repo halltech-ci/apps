@@ -18,16 +18,15 @@ class ReportTimeSheetReportView(models.AbstractModel):
         
         params = [date_start,date_end,tuple(employee)]
         query = """
-            SELECT hpl.name AS x_hpl_name, SUM(hpl.total) AS x_hpl_total, hpl.employee_id AS x_employee
+            SELECT hpl.name AS x_hpl_name, hpl.code AS x_hpl_code, SUM(hpl.total) AS x_hpl_total, hpl.employee_id AS x_employee
             FROM hr_payslip AS hp
             INNER JOIN hr_contract AS x_hc ON hp.contract_id = x_hc.id
             INNER JOIN hr_payslip_line AS hpl ON hpl.slip_id = hp.id
             WHERE
-                (hp.date BETWEEN %s AND %s)
+                (hp.date_from BETWEEN %s AND %s)
                 AND (hpl.employee_id IN %s)
-            GROUP BY x_hpl_name, x_employee
+            GROUP BY x_hpl_name,x_hpl_code, x_employee
             """
-        
         self.env.cr.execute(query,params)
         return self.env.cr.dictfetchall()
       

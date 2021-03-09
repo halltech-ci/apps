@@ -21,8 +21,8 @@ class HrEmployee(models.Model):
         ('BAC+4', 'BAC+4'),
         ('Master', 'Master'),
         ('Doctorat', 'Doctorat'),
-        ('autre', 'Autre'),
-    ], 'Niveau Etude', default='other', groups="hr.group_hr_user", tracking=True)
+        ('Autre', 'Autre'),
+    ], 'Niveau Etude', default='Autre', groups="hr.group_hr_user", tracking=True)
     
     qualification = fields.Char(string='Qualification')
     categorie = fields.Char(string='Categorie')
