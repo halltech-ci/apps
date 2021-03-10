@@ -23,7 +23,7 @@
               </group>
               <group string="Information RH">
                   <group>
-                    <field name="qualification" readonly="True"/>
+                    <field name="qualification"/>
                     <field name="categorie"/>
                 </group>
               </group>
