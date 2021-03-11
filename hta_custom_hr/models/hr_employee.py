@@ -11,7 +11,8 @@ class HrEmployee(models.Model):
     seniority = fields.Integer(string="Seniority", store=True, compute='_compute_seniority')
     nbre_part = fields.Float(string="Nombre de Part", default=1)
     partner_id = fields.Many2one('res.partner', string="Partner", ondelete="cascade")
-    certificate = fields.Selection([
+    certificate = fields.Selection(
+        selection_add=[
         ('cepe', 'CEPE'),
         ('bepc', 'BEPC'),
         ('bac', 'BAC'),
@@ -22,7 +23,7 @@ class HrEmployee(models.Model):
         ('master', 'MASTER'),
         ('doctorat', 'DOCTORAT'),
         ('other', 'Autre'),
-    ], 'Niveau Etude', groups="hr.group_hr_user")
+    ], string='Niveau Etude', groups="hr.group_hr_user")
     
     qualification = fields.Char(string='Qualification')
     categorie = fields.Char(string='Categorie')
