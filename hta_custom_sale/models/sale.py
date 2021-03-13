@@ -25,6 +25,17 @@ class SaleOrder(models.Model):
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine", required=True, index=True, default='fm')
+    amount_total_no_tax = fields.Monetary(string='Total HT', store=True, readonly=True, compute='_amount_total_no_tax', tracking=4)
+    
+    @api.depends('order_line.line_subtotal')
+    def _amount_total_no_tax(self):
+        for order in self:
+            amount_no_tax = 0.0
+            for line in order.order_line:
+                amount_no_tax += line.line_subtotal
+            order.update({
+                'amount_total_no_tax': amount_no_tax
+            })
     
     @api.model
     def create(self, vals):
