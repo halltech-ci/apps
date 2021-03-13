@@ -55,3 +55,9 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     product_code = fields.Char(related='product_id.default_code', string="Code")
+    line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True)
+    
+    @api.depends('product_uom_qty', 'price_unit')
+    def _compute_line_subtotal(self):
+        for line in self:
+            line.line_subtotal = line.product_uom_qty * line.price_unit

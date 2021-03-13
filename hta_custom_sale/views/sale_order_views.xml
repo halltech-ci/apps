@@ -29,6 +29,14 @@
           <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="before">
             <field name="product_code"/>
           </xpath>
+        
+          <!-- Adding custom field line_subtotal in sale_order_line-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='price_subtotal']" position="before">
+            <field name="line_subtotal"/>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
+            <field name="line_subtotal"/>
+          </xpath>
 
         </field>
     </record>
