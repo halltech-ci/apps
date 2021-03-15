@@ -26,6 +26,7 @@ class SaleOrder(models.Model):
     sale_order_recipient = fields.Char("Destinataire")
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine", required=True, index=True, default='fm')
     amount_total_no_tax = fields.Monetary(string='Total HT', store=True, readonly=True, compute='_amount_total_no_tax', tracking=4)
+    remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
     
     @api.depends('order_line.line_subtotal')
     def _amount_total_no_tax(self):
@@ -36,6 +37,11 @@ class SaleOrder(models.Model):
             order.update({
                 'amount_total_no_tax': amount_no_tax
             })
+    
+    @api.depends('amount_total_no_tax')
+    def _amount_discount_no(self):
+        for order in self:
+            order.remise_total = order.amount_total_no_tax - order.amount_untaxed
     
     @api.model
     def create(self, vals):
