@@ -20,7 +20,7 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale_management',
+    'depends': ['sale_order_general_discount',
                'hta_custom_project',
                ],
 
