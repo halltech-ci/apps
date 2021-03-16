@@ -27,7 +27,8 @@ class ExpenseRequest(models.Model):
         ('done', 'Paid'),
         ('cancel', 'Refused')
     ], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
-    employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, check_company=True)
+    """employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, check_company=True)"""
+    
     line_ids = fields.One2many('expense.line', 'request_id', string='Expense Line')
     intermediary = fields.Many2one('hr.employee', string="Intermediaire")
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange',
