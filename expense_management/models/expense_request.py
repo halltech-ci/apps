@@ -61,10 +61,8 @@ class ExpenseRequest(models.Model):
             if user.has_group('expense_management.group_expense_approver_3'):
                 req.is_expense_approver = True
             elif user.has_group('expense_management.group_expense_approver_2'):
-                if req.total_amount <= limit_2:
+                if req.total_amount > limit_1 and req.total_amount <= limit_2:
                     req.is_expense_approver = True
-                else:
-                    req.is_expense_approver = False
             elif user.has_group('expense_management.group_expense_approver_1'):
                 if req.total_amount <= limit_1:
                     req.is_expense_approver = True

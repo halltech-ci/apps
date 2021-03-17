@@ -29,7 +29,7 @@ class HrEmployee(models.Model):
         user_group = self.env.ref("base.group_user") or False
         partner_res = self.env['res.partner']
         for record in self:
-            if not record.partner_id:
+            if not record.address_home_id:
                 partner_id = partner_res.create({
                     'name': record.name,
                     #'partner_id': record.partner_id.id,
@@ -39,7 +39,7 @@ class HrEmployee(models.Model):
                     #'customer': False,
                     'tz': self._context.get('tz'),
                 })
-                record.partner_id = partner_id
+                record.address_home_id = partner_id
 
     
     
