@@ -20,7 +20,8 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hta_custom_sale', 
+    'depends': ['hta_custom_sale',
+                'sale_order_secondary_unit',
                 ],
     # always loaded
     'data': [
