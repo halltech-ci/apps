@@ -40,7 +40,7 @@
                 <table class="table table-condensed table-bordered">
                     <thead>
                         <tr>
-                            <th class='text-center'></th>
+                            <th class='text-center'>Rubrique</th>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="name" t-value="line['name']"/>
                                     <t t-if="name">
@@ -61,7 +61,7 @@
                                 <t t-set="paie" t-value="line['get_lines']"/> 
                                     <t t-if="paie">
                                         <t t-foreach="paie" t-as="lines">
-                                             <td t-if="'Basic Salary' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
+                                             <td t-if="'Salaire de Base' in lines.get('x_hpl_name')"><span t-esc="lines.get('x_hpl_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                         </t>
                                     </t>
                             </t>
