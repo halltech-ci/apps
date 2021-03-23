@@ -40,7 +40,7 @@
                 <table class="table table-condensed table-bordered">
                     <thead>
                         <tr>
-                            <th class='text-center'></th>
+                            <th class='text-center'>Rubrique</th>
                             <t t-foreach="docs" t-as="line">
                                 <t t-set="name" t-value="line['name']"/>
                                     <t t-if="name">

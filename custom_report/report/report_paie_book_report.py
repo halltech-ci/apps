@@ -15,7 +15,6 @@ class ReportTimeSheetReportView(models.AbstractModel):
     _description = 'Report Paie Book'
     
     def get_lines(self, employee, date_start,date_end):
-        
         params = [employee,date_start,date_end]
         query = """
             SELECT hpl.name AS x_hpl_name, hpl.code AS x_hpl_code, SUM(hpl.total) AS x_hpl_total, hpl.employee_id AS x_employee
@@ -35,7 +34,6 @@ class ReportTimeSheetReportView(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
         
