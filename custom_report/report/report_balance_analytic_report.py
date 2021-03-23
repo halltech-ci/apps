@@ -17,7 +17,7 @@ class ReportBalanceReportView(models.AbstractModel):
     def get_lines(self, analytic_id, date_start,date_end):
         
         query = """
-                SELECT x_aa.code AS code_account, x_aa.name AS name_account, pp.key AS code_project, pp.name AS name_project, x_aat.name AS name_analytic, SUM(x_aml.debit) AS x_debit, SUM(x_aml.credit) AS x_credit, (SUM(x_aml.debit)-SUM(x_aml.credit)) AS solde_debit, (SUM(x_aml.credit)-SUM(x_aml.debit)) AS solde_credit
+                SELECT x_aa.code AS code_account, x_aa.name AS name_account, pp.code AS code_project, pp.name AS name_project, x_aat.name AS name_analytic, SUM(x_aml.debit) AS x_debit, SUM(x_aml.credit) AS x_credit, (SUM(x_aml.debit)-SUM(x_aml.credit)) AS solde_debit, (SUM(x_aml.credit)-SUM(x_aml.debit)) AS solde_credit
 
                 FROM account_move_line AS x_aml
                 LEFT JOIN account_account AS x_aa ON  x_aa.id = x_aml.account_id

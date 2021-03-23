@@ -22,7 +22,6 @@
     # any module necessary for this one to work correctly
     'depends': ['hta_custom_sale', 
                 ],
-
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',

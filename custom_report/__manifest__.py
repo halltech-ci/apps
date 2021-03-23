@@ -47,6 +47,7 @@
         'report/template_report_etat_tva_report.xml',
         'report/template_report_balance_analytic_report.xml',
         'report/template_report_cash_report.xml',
+        
         #wizard
         'wizard/wizard_project_project_views.xml',
         'wizard/wizard_account_analytic_views.xml',
