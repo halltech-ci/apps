@@ -39,9 +39,11 @@
         <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.user_id.name']" position="after">
             <div t-if="doc.sale_order_recipient" class="col-xs-3">
               <strong>Destinataire:</strong>
-              <span t-field="doc.sale_order_recipient"/>
+              <p class='m-0' t-field="doc.sale_order_recipient"/>
             </div>
         </xpath>
+        <!-- Delete expiration on header-->
+        
         <!-- hide sale person field-->
         <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.user_id.name']" position="replace">
             <div></div>
