@@ -15,31 +15,27 @@ class ReportTimeSheetReportView(models.AbstractModel):
     _description = 'Report Paie Book'
     
     def get_lines(self, employee, date_start,date_end):
-        
-        params = [date_start,date_end,tuple(employee)]
+        params = [employee,date_start,date_end]
         query = """
-            SELECT hpl.name AS x_hpl_name, SUM(hpl.total) AS x_hpl_total, hpl.employee_id AS x_employee
+            SELECT hpl.name AS x_hpl_name, hpl.code AS x_hpl_code, SUM(hpl.total) AS x_hpl_total, hpl.employee_id AS x_employee
             FROM hr_payslip AS hp
             INNER JOIN hr_contract AS x_hc ON hp.contract_id = x_hc.id
             INNER JOIN hr_payslip_line AS hpl ON hpl.slip_id = hp.id
-            WHERE
-                (hp.date BETWEEN %s AND %s)
-                AND (hpl.employee_id IN %s)
-            GROUP BY x_hpl_name, x_employee
+            WHERE(
+                (hpl.employee_id = %s)
+                AND
+                (hp.date_from BETWEEN %s AND %s)
+                )
+            GROUP BY x_hpl_name,x_hpl_code, x_employee
             """
-        
         self.env.cr.execute(query,params)
         return self.env.cr.dictfetchall()
       
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
-        
-        
-        
         
         if data['form']['id_employee']:
             employee = data['form']['id_employee'][0]

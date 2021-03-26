@@ -36,7 +36,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/purchase_order_report.xml',
-        'views/sale_order_report.xml',
+        #'views/sale_order_report.xml',
         'views/account_cash_form_view.xml',
         #'views/sale_order_views.xml',
         #report

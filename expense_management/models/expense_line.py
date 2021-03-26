@@ -51,8 +51,8 @@ class ExpenseLine(models.Model):
                                  default=lambda self: self.env.company
                                 )
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange', related='request_id.requested_by')
-    payment_mode = fields.Selection(selection=PAYMENT_MODE, string="Payment Mode", default='justify')
-    payed_by = fields.Selection(selection=PAYMENT_TYPE, string="Payer Par", default='cash')
+    #payment_mode = fields.Selection(selection=PAYMENT_MODE, string="Payment Mode", default='justify')
+    #payed_by = fields.Selection(selection=PAYMENT_TYPE, string="Payer Par", default='cash')
     analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account', domain=lambda self: self._get_analytic_domain())
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, 
                                   default=lambda self: self.env.company.currency_id

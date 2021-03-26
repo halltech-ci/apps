@@ -11,7 +11,24 @@ class HrEmployee(models.Model):
     seniority = fields.Integer(string="Seniority", store=True, compute='_compute_seniority')
     nbre_part = fields.Float(string="Nombre de Part", default=1)
     partner_id = fields.Many2one('res.partner', string="Partner", ondelete="cascade")
+    certificate = fields.Selection(
+        selection_add=[
+        ('cepe', 'CEPE'),
+        ('bepc', 'BEPC'),
+        ('bac', 'BAC'),
+        ('bac+1', 'BAC+1'),
+        ('bac+2', 'BAC+2'),
+        ('licence', 'LICENCE'),
+        ('bac+4', 'BAC+4'),
+        ('master', 'MASTER'),
+        ('doctorat', 'DOCTORAT'),
+        ('other', 'Autre'),
+    ], string='Niveau Etude', groups="hr.group_hr_user")
+    
+    qualification = fields.Char(string='Qualification')
+    categorie = fields.Char(string='Categorie')
     rib = fields.Char(string="RIB")
+    
     @api.depends('hiring_date')
     def _compute_seniority(self):
         today = fields.Date.today()
@@ -30,7 +47,7 @@ class HrEmployee(models.Model):
         user_group = self.env.ref("base.group_user") or False
         partner_res = self.env['res.partner']
         for record in self:
-            if not record.partner_id:
+            if not record.address_home_id:
                 partner_id = partner_res.create({
                     'name': record.name,
                     #'partner_id': record.partner_id.id,
@@ -40,7 +57,7 @@ class HrEmployee(models.Model):
                     #'customer': False,
                     'tz': self._context.get('tz'),
                 })
-                record.partner_id = partner_id
+                record.address_home_id = partner_id
 
     
     
