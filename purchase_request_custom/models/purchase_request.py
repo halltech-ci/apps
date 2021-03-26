@@ -24,8 +24,8 @@ class PurchaseRequest(models.Model):
     project = fields.Many2one('project.project' ,related='sale_order.project_id', string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
     purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Request Type")
-    has_manager = fields.Boolean(compute='_compute_has_manager')
-    #is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
+    #has_manager = fields.Boolean(compute='_compute_has_manager')
+    is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
     
     """
@@ -35,6 +35,15 @@ class PurchaseRequest(models.Model):
         template = self.env['mail.template'].browse(template_id)
         template.send_mail(self.id, force_send=True)
     """
+    @api.depends('')
+    def _compute_is_project_approver(self):
+        for req in self:
+            user = self.env.user
+            if user.has_group('project.group_project_manager'):
+                req.is_project_approver = True
+            else:
+                req.is_project_approver = False
+    
     @api.model
     def create(self, vals):
         request = super(PurchaseRequest, self).create(vals)
@@ -45,13 +54,18 @@ class PurchaseRequest(models.Model):
         return request
     
     def to_approve_check(self):
-        if not self.requested_by.has_group('purchase_request_custom.group_purchase_request_approver'):
+        user = self.env.user
+        if not user.has_group('purchase_request_custom.group_purchase_request_approver'):
             raise UserError(
                     _("You are not allow to approve this request.")
                 )
     
     def button_approved(self):
         self.to_approve_check()
+        if self.project and not self.is_project_approver:
+            raise UserError(
+                    _("You are not allow to approve this request.")
+                )
         return self.write({"state": "approved"})
     
 class PurchaseRequestLine(models.Model):
