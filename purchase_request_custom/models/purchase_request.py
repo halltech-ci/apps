@@ -35,7 +35,7 @@ class PurchaseRequest(models.Model):
         template = self.env['mail.template'].browse(template_id)
         template.send_mail(self.id, force_send=True)
     """
-    @api.depends('')
+    #@api.depends('')
     def _compute_is_project_approver(self):
         for req in self:
             user = self.env.user
