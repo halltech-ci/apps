@@ -46,6 +46,14 @@ class ExpenseRequest(models.Model):
     is_expense_approver = fields.Boolean(string="Is Approver",
         compute="_compute_is_expense_approver",
     )
+    expense_approver = fields.Many2one('res.users', string="Valideur")
+    
+    def send_validation_mail(self):
+        self.ensure_one()
+        template_id = self.env.ref('expense_management.expense_mail_template').id
+        lang = self.env.context.get('lang')
+        template = self.env['mail.template'].browse(template_id)
+        
     
     @api.depends("state")
     def _compute_to_approve_allowed(self):
