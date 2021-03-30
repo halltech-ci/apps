@@ -46,6 +46,14 @@ class ExpenseRequest(models.Model):
     is_expense_approver = fields.Boolean(string="Is Approver",
         compute="_compute_is_expense_approver",
     )
+    expense_approver = fields.Many2one('res.users', string="Valideur")
+    
+    def send_validation_mail(self):
+        self.ensure_one()
+        template_id = self.env.ref('expense_management.expense_mail_template').id
+        lang = self.env.context.get('lang')
+        template = self.env['mail.template'].browse(template_id)
+        
     
     @api.depends("state")
     def _compute_to_approve_allowed(self):
@@ -53,6 +61,7 @@ class ExpenseRequest(models.Model):
             rec.to_approve_allowed = rec.state == "submit"
     
     """This method will check approver limit"""
+    @api.depends('total_amount', 'company_id.approve_limit_1', 'company_id.approve_limit_2')
     def _compute_is_expense_approver(self):
         for req in self:
             limit_1 = req.company_id.approve_limit_1
@@ -63,9 +72,13 @@ class ExpenseRequest(models.Model):
             elif user.has_group('expense_management.group_expense_approver_2'):
                 if req.total_amount > limit_1 and req.total_amount <= limit_2:
                     req.is_expense_approver = True
+                else:
+                    req.is_expense_approver = False
             elif user.has_group('expense_management.group_expense_approver_1'):
                 if req.total_amount <= limit_1:
                     req.is_expense_approver = True
+                else:
+                    req.is_expense_approver = False
             else:
                 req.is_expense_approver = False
     
@@ -141,6 +154,7 @@ class ExpenseRequest(models.Model):
         return self.write({"state": "approve"})
     
     def button_rejected(self):
+        self.is_approver_check()
         self.mapped("line_ids").do_cancel()
         return self.write({"state": "cancel"})
     
