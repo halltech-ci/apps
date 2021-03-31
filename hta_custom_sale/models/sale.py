@@ -27,6 +27,7 @@ class SaleOrder(models.Model):
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine", required=True, index=True, default='fm')
     amount_total_no_tax = fields.Monetary(string='Total HT', store=True, readonly=True, compute='_amount_total_no_tax', tracking=4)
     remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
+    sale_margin = fields.Float(string='Coef. Majoration (%)', default=0.0)
     
     @api.depends('order_line.line_subtotal')
     def _amount_total_no_tax(self):
@@ -72,7 +73,9 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     product_code = fields.Char(related='product_id.default_code', string="Code")
+    product_cost = fields.Float(string="Cost", digits='Product Price',)
     line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True)
+    price_unit = fields.Float('Unit Price', required=True, digits='Product Price', default=0.0)
     
     @api.depends('product_uom_qty', 'price_unit')
     def _compute_line_subtotal(self):
