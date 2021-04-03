@@ -27,6 +27,7 @@ class SaleOrder(models.Model):
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine", required=True, index=True, default='fm')
     amount_total_no_tax = fields.Monetary(string='Total HT', store=True, readonly=True, compute='_amount_total_no_tax', tracking=4)
     remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
+    sale_margin = fields.Float(string='Coef. Majoration (%)', default=0.0)
     
     @api.depends('order_line.line_subtotal')
     def _amount_total_no_tax(self):
@@ -72,9 +73,38 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     product_code = fields.Char(related='product_id.default_code', string="Code")
+    product_cost = fields.Float(string="Cost", digits='Product Price',)
     line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True)
+    price_unit = fields.Float('Unit Price', required=True, digits='Product Price', default=0.0,
+        compute='_compute_price_unit',
+        store=True,
+    )
+    line_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
+    
+    @api.depends("order_id", "order_id.sale_margin")
+    def _compute_line_margin(self):
+        if hasattr(super(), "_compute_line_margin"):
+            super()._compute_line_margin()
+        for line in self:
+            line.line_margin = line.order_id.sale_margin
     
     @api.depends('product_uom_qty', 'price_unit')
     def _compute_line_subtotal(self):
         for line in self:
             line.line_subtotal = line.product_uom_qty * line.price_unit
+    
+    @api.depends('line_margin', 'product_cost')
+    def _compute_price_unit(self):
+        for line in self:
+            line.price_unit += line.product_cost * line.line_margin/100
+        
+    @api.model
+    def create(self, vals):
+        """Apply sale margin for sale order lines which are not created
+        from sale order form view.
+        """
+        if "price_unit" not in vals and "order_id" in vals:
+            sale_order = self.env["sale.order"].browse(vals["order_id"])
+            if sale_order.sale_margin:
+                vals["price_unit"] = sale_order.general_discount
+        return super().create(vals)
