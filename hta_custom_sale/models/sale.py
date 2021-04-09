@@ -80,14 +80,16 @@ class SaleOrderLine(models.Model):
         compute='_compute_price_unit',
         store=True,
     )
-    line_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
+    line_margin = fields.Float(compute="_compute_margin", store=True, readonly=False,)
+    line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
     
-    @api.depends("order_id", "order_id.sale_margin")
+    @api.depends("order_id", "order_id.sale_margin", "order_id.sale_discuss_margin")
     def _compute_line_margin(self):
         if hasattr(super(), "_compute_line_margin"):
             super()._compute_line_margin()
         for line in self:
             line.line_margin = line.order_id.sale_margin
+            line.line_discuss_margin = line.order_id.sale_discuss_margin
     
     @api.depends('product_uom_qty', 'price_unit')
     def _compute_line_subtotal(self):
