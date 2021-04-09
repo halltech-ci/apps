@@ -80,7 +80,7 @@ class SaleOrderLine(models.Model):
         compute='_compute_price_unit',
         store=True,
     )
-    line_margin = fields.Float(compute="_compute_margin", store=True, readonly=False,)
+    line_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
     line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
     
     @api.depends("order_id", "order_id.sale_margin", "order_id.sale_discuss_margin")
