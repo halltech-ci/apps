@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+import itertools
+import logging
+from collections import defaultdict
+
+from odoo import api, fields, models, tools, _, SUPERUSER_ID
+from odoo.exceptions import ValidationError, RedirectWarning, UserError
+from odoo.osv import expression
+
+_logger = logging.getLogger(__name__)
+
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
-    #type = fields.Selection(default='service')
-    type = fields.Selection([
-        ('consu', 'Consumable'),
-        ('service', 'Service')], string='Product Type', default='service', required=True,
-        help='A storable product is a product for which you manage stock. The Inventory app has to be installed.\n'
-             'A consumable product is a product for which stock is not managed.\n'
-             'A service is a non-material product you provide.')
+    type = fields.Selection(default='service')
+    #type = fields.Selection(default='service',)
