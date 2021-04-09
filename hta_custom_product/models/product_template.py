@@ -14,13 +14,7 @@ _logger = logging.getLogger(__name__)
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
-    #type = fields.Selection(default='service')
-    type = fields.Selection(selection_add=[
-        ('consu', 'Consumables'),
-        ('service', 'Services')], string='Product Type', default='service', required=True,
-        help='A storable product is a product for which you manage stock. The Inventory app has to be installed.\n'
-             'A consumable product is a product for which stock is not managed.\n'
-             'A service is a non-material product you provide.')
+    type = fields.Selection(default='service')
     
 
 class ProductProduct(models.Model):
