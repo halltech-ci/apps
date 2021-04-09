@@ -27,7 +27,8 @@ class SaleOrder(models.Model):
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine", required=True, index=True, default='fm')
     amount_total_no_tax = fields.Monetary(string='Total HT', store=True, readonly=True, compute='_amount_total_no_tax', tracking=4)
     remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
-    sale_margin = fields.Float(string='Coef. Majoration (%)', default=0.0)
+    sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
+    sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0)
     
     @api.depends('order_line.line_subtotal')
     def _amount_total_no_tax(self):
@@ -103,8 +104,8 @@ class SaleOrderLine(models.Model):
         """Apply sale margin for sale order lines which are not created
         from sale order form view.
         """
-        if "price_unit" not in vals and "order_id" in vals:
+        if "line_margin" not in vals and "order_id" in vals:
             sale_order = self.env["sale.order"].browse(vals["order_id"])
             if sale_order.sale_margin:
-                vals["price_unit"] = sale_order.general_discount
+                vals["line_margin"] = sale_order.sale_margin
         return super().create(vals)
