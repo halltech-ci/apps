@@ -25,6 +25,25 @@ class SaleOrder(models.Model):
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine", required=True, index=True, default='fm')
+    amount_total_no_tax = fields.Monetary(string='Total HT', store=True, readonly=True, compute='_amount_total_no_tax', tracking=4)
+    remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
+    sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
+    sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0)
+    
+    @api.depends('order_line.line_subtotal')
+    def _amount_total_no_tax(self):
+        for order in self:
+            amount_no_tax = 0.0
+            for line in order.order_line:
+                amount_no_tax += line.line_subtotal
+            order.update({
+                'amount_total_no_tax': amount_no_tax
+            })
+    
+    @api.depends('amount_total_no_tax')
+    def _amount_discount_no(self):
+        for order in self:
+            order.remise_total = order.amount_total_no_tax - order.amount_untaxed
     
     @api.model
     def create(self, vals):
@@ -55,3 +74,45 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     product_code = fields.Char(related='product_id.default_code', string="Code")
+    product_cost = fields.Float(string="Cost", digits='Product Price',)
+    line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True)
+    price_unit = fields.Float('Unit Price', required=True, digits='Product Price', default=0.0,
+        compute='_compute_price_unit',
+        store=True,
+    )
+    line_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
+    line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
+    
+    @api.depends("order_id", "order_id.sale_margin", "order_id.sale_discuss_margin")
+    def _compute_line_margin(self):
+        if hasattr(super(), "_compute_line_margin"):
+            super()._compute_line_margin()
+        for line in self:
+            #line_margin = line.order_id.sale_margin
+            #line_discuss_margin = line.order_id.sale_discuss_margin
+            line.update({
+                "line_margin" : line.order_id.sale_margin,
+                "line_discuss_margin" : line.order_id.sale_discuss_margin,
+            })
+    
+    @api.depends('product_uom_qty', 'price_unit')
+    def _compute_line_subtotal(self):
+        for line in self:
+            line.line_subtotal = line.product_uom_qty * line.price_unit
+    
+    @api.depends('line_margin', 'product_cost')
+    def _compute_price_unit(self):
+        for line in self:
+            if line.product_cost > 0 :
+                line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
+        
+    @api.model
+    def create(self, vals):
+        """Apply sale margin for sale order lines which are not created
+        from sale order form view.
+        """
+        if "line_margin" not in vals and "order_id" in vals:
+            sale_order = self.env["sale.order"].browse(vals["order_id"])
+            if sale_order.sale_margin:
+                vals["line_margin"] = sale_order.sale_margin
+        return super().create(vals)

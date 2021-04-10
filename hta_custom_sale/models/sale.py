@@ -88,8 +88,12 @@ class SaleOrderLine(models.Model):
         if hasattr(super(), "_compute_line_margin"):
             super()._compute_line_margin()
         for line in self:
-            line.line_margin = line.order_id.sale_margin
-            line.line_discuss_margin = line.order_id.sale_discuss_margin
+            #line_margin = line.order_id.sale_margin
+            #line_discuss_margin = line.order_id.sale_discuss_margin
+            line.update({
+                "line_margin" : line.order_id.sale_margin,
+                "line_discuss_margin" : line.order_id.sale_discuss_margin,
+            })
     
     @api.depends('product_uom_qty', 'price_unit')
     def _compute_line_subtotal(self):
@@ -99,7 +103,8 @@ class SaleOrderLine(models.Model):
     @api.depends('line_margin', 'product_cost')
     def _compute_price_unit(self):
         for line in self:
-            line.price_unit += line.product_cost * line.line_margin/100
+            if line.product_cost > 0 :
+                line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
         
     @api.model
     def create(self, vals):
