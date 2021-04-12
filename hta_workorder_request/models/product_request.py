@@ -18,6 +18,7 @@ REQUEST_STATES = [
 class ProductRequest(models.Model):
     _name ="product.request"
     _description = "Product request"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     
     @api.model
     def _default_picking_type(self):

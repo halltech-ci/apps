@@ -29,7 +29,25 @@
           <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="before">
             <field name="product_code"/>
           </xpath>
-
+        
+          <!-- Adding custom field line_subtotal in sale_order_line-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='price_unit']" position="after">
+            <field name="line_subtotal"/>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+            <field name="line_subtotal"/>
+          </xpath>
+          <!-- Adding product_cost in sale order-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/div[@name='ordered_qty']/field[@name='product_uom_qty']" position="after">
+            <field name="product_cost"/>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+            <field name="product_cost"/>
+          </xpath>
+          <!-- Adding custom field sale_margin in sale order-->
+          <xpath expr="//field[@name='amount_tax']" position="after">
+                <field name="sale_margin" />
+            </xpath>
         </field>
     </record>
   </data>
