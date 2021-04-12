@@ -114,7 +114,8 @@ class ExpenseRequest(models.Model):
                     "name": line.name,
                     "partner_id": line.employee_id.address_home_id.id,
                     'amount': amount,
-                    'project_id': line.project.id
+                    'project_id': line.project.id,
+                    'analytic_account_id': line.analytic_account.id,
                 })
                 value.append(lines)
             statement_id.write({'line_ids': value})
