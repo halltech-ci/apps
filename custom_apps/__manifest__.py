@@ -21,7 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['hta_custom_sale',
-                'sale_order_secondary_unit',
+                #'sale_order_secondary_unit',
                 ],
     # always loaded
     'data': [
