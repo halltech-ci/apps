@@ -42,6 +42,15 @@
             <field name="product_cost"/>
             <field name="line_margin"/>
           </xpath>
+          <!-- Remove create product in sale_order-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='product_id']" position="attributes">
+              <attribute name="options">{'no_create_edit': True}</attribute>
+          </xpath>
+          <!-- Remove create product in sale_order-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+              <attribute name="options">{'no_create_edit': True}</attribute>
+          </xpath>
+          <!-- Adding product_cost and line margin in sale_order_line-->
           <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
             <field name="product_cost"/>
             <field name="line_margin"/>
