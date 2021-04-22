@@ -27,9 +27,84 @@ class AccountBankStatementLine(models.Model):
         domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]", 
         relation='account_statement_model_analytic_tag_rel'
     )
+    debit = fields.Monetary(currency_field='journal_currency_id')
+    credit = fields.Monetary(currency_field='journal_currency_id')
+    amount = fields.Monetary(currency_field='journal_currency_id', compute="_compute_amount")
     
+    """@api.depends('credit', 'debit')
+    def _compute_amount(self):
+        for line in self:
+            line.amount = (line.debit if line.debit != 0 else line.credit)
+     """       
     def button_action_reconcile(self):
-        pass 
+        pass
+    
+    
+    #Method for reconcile expense line
+    """def create_move_values(self):
+        #res = super(ExpenseRequest, self).create_move_values()
+        for line in self:
+            move_value = {
+                'ref': self.name,
+                'date': self.date,
+                'journal_id': self.statement_id.journal_id.id,
+                'company_id': company.id,
+            }
+            date = self.date
+            name = self.name
+            analytic_account = self.analytic_account_id.id
+            analytic_tags = self.analytic_tag_ids.ids
+            partner = self.partner_id.id
+            amount = self.amount
+            account = self.account_id.id#La contrepartie
+            journal = self.journal_id
+            
+        for request in self:
+            ref = request.name
+            account_date = fields.Date.today()#self.date
+            journal = request.journal
+            company = request.company_id
+            analytic_account = request.analytic_account
+            move_value = {
+                'ref':ref,
+                'date': account_date,
+                'journal_id': journal.id,
+                'company_id': company.id,
+            }
+            expense_line_ids = []
+            lines = request.mapped('line_ids')
+            for line in lines:
+                if not (line.employee_id.address_home_id.property_account_payable_id):
+                    raise UserError(_('Pas de compte pour : "%s" !') % (line.employee_id))
+                partner_id = line.employee_id.address_home_id.id
+                debit_line = (0, 0, {
+                    'name': line.name,
+                    'account_id': line.debit_account,
+                    'debit': line.amount > 0.0 and line.amount or 0.0,
+                    'credit': line.amount < 0.0 and -line.amount or 0.0, 
+                    'partner_id': partner_id,
+                    'journal_id': journal.id,
+                    'date': account_date,
+                    'analytic_account_id': analytic_account.id,
+
+                })
+                expense_line_ids.append(debit_line)
+                credit_line = (0, 0, {
+                    'name': line.name,
+                    'account_id': line.employee_id.address_home_id.property_account_payable_id.id,
+                    'debit': line.amount < 0.0 and line.amount or 0.0,
+                    'credit': line.amount > 0.0 and -line.amount or 0.0, 
+                    'partner_id': partner_id,
+                    'journal_id': journal.id,
+                    'date': account_date,
+                    'analytic_account_id': analytic_account.id,
+
+                })
+                expense_line_ids.append(credit_line)
+            move_value['line_ids'] = expense_line_ids
+            move = self.env['account.move'].create(move_value)
+            request.write({'move_id': move.id})
+            move.post()"""
     
 
 
