@@ -18,6 +18,11 @@
             <field name="analytic_account_id"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
             <field name="analytic_tag_ids"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
           </xpath>
+          <!-- Adding debit/credit in bank statement line-->
+          <xpath expr="//sheet/notebook/page[@name='statement_line_ids']/field[@name='line_ids']/tree/field[@name='amount']" position="before">
+            <field name="debit"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+            <field name="credit"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+          </xpath>
         </field>
     </record>
     
