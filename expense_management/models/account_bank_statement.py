@@ -42,7 +42,13 @@ class AccountBankStatementLine(models.Model):
                 line.amount = line.credit
     """        
     def button_action_reconcile(self):
-        pass
+        for line in self:
+            move_value = {
+                'ref': self.name,
+                'date': self.date,
+                'journal_id': self.statement_id.journal_id.id,
+                'company_id': self.company_id.id,
+            }
     
     
     #Method for reconcile expense line

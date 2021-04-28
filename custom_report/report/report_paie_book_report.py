@@ -16,7 +16,25 @@ class ReportTimeSheetReportView(models.AbstractModel):
     
     def get_lines(self, employee, date_start,date_end):
         
+        """Nouvelle methode avec ORM
+        
+        payslip_line = self.env['hr.payslip.line'].search_read([('date_from', '>=', '2021-3-1'), ('date_to', '<=', '2021-3-31')])
+        for line in payslip_line:
+            print(line['name'], line['employee_id'], line['amount'])
+        ---------------------------------------------------------------
+        Exemple
+        
+        """
+        
         params = [date_start,date_end,tuple(employee)]
+        param = [date_start, date_end]
+        requete = """
+                SELECT * 
+                FROM hr_payslip_line AS p_line
+                WHERE
+                (line.date_from >= %s)
+                AND (line.date_to <= %)
+        """
         query = """
             SELECT hpl.name AS x_hpl_name, SUM(hpl.total) AS x_hpl_total, hpl.employee_id AS x_employee
             FROM hr_payslip AS hp
@@ -37,8 +55,6 @@ class ReportTimeSheetReportView(models.AbstractModel):
         
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
-        
-        
         
         
         if data['form']['id_employee']:
