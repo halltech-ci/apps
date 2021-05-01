@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DATE_FORMAT
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DATETIME_FORMAT
 
@@ -11,8 +11,29 @@ class ReportTimeSheetReportView(models.AbstractModel):
         _name = Use prefix `report.` along with `module_name.report_name`
     """
     _name = 'report.custom_report.book_report_view'
-    
     _description = 'Report Paie Book'
+    
+    def get_line(self, date_start, date_end, employee=None,):
+        params = [date_start, date_end]
+        query = """
+                SELECT * 
+                FROM hr_payslip_line AS p_line
+                WHERE
+                (line.date_from >= %s)
+                AND (line.date_to <= %)
+            """
+        if employee:
+            params.append([tuple(employee)])
+            employee_query =  ' AND (line.employee_id = %s)'
+            query = """
+                SELECT * 
+                FROM hr_payslip_line AS p_line
+                WHERE
+                (line.date_from >= %s)
+                AND (line.date_to <= %) """ + employee_query + """
+            """
+        self.env.cr.execute(query, params)
+        return self.env.cr.dictfetchall()
     
     def get_lines(self, employee, date_start,date_end):
         
@@ -55,7 +76,6 @@ class ReportTimeSheetReportView(models.AbstractModel):
         
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
-        
         
         if data['form']['id_employee']:
             employee = data['form']['id_employee'][0]
