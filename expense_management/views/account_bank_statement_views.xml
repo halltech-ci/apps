@@ -5,18 +5,23 @@
         <field name="model">account.bank.statement</field>
         <field name="inherit_id" ref="account.view_bank_statement_form"/>
         <field name="arch" type="xml">
-            <header>
+            <!--<header>
                 <button name="action_view_reconcile"
                     string="Lettrer"
                     type="object"
                     class="oe_highlight"
             />
-            </header>
+            </header>-->
             <!-- Insert account object-->
           <xpath expr="//sheet/notebook/page[@name='statement_line_ids']/field[@name='line_ids']/tree/field[@name='partner_id']" position="before">
             <field name="company_id" invisible='1'/>
             <field name="analytic_account_id"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
             <field name="analytic_tag_ids"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+          </xpath>
+          <!-- Adding debit/credit in bank statement line-->
+          <xpath expr="//sheet/notebook/page[@name='statement_line_ids']/field[@name='line_ids']/tree/field[@name='amount']" position="before">
+            <field name="debit"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+            <field name="credit"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
           </xpath>
         </field>
     </record>
