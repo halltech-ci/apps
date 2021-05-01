@@ -12,18 +12,20 @@
           </sheet>
           <xpath expr="//sheet//notebook/page[@name='hr_settings']/group" position="inside">
               <group string="Hiring Informations">
-                <group>
                     <!--<field name="matricule" />-->
+                    <group>
+                        <field name="hiring_date" readonly="True"/>
+                        <field name="seniority"/>
+                        <field name="hiring_end"/>
+                    </group>
                     
                     <field name="partner_id" invisible="1"/>
-                </group>
               </group>
-              <group string="">
+              <group string="Information RH">
                   <group>
-                    <field name="hiring_date" readonly="True"/>
-                    <field name="seniority"/>
-                    <field name="hiring_end"/>
-                  </group>
+                    <field name="qualification"/>
+                    <field name="categorie"/>
+                </group>
               </group>
           </xpath>
           <xpath expr="//sheet//notebook/page[@name='personal_information']/group/group[3]" position="inside">
