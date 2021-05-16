@@ -1,0 +1,43 @@
+<odoo>
+  <data>
+    <record id="paybook_report_wizard" model="ir.ui.view" >
+        <field name="name">PayBook Report</field>
+        <field name="model">paybook.report.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="PayBook Report">
+                <group>
+                    <group>
+                        <field name="id_employee"/>
+                    </group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="get_report" string="Get Report" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+      
+    <act_window 
+        id="action_paybook_report_wizard"
+        name="Livre de Paye"
+        res_model="paybook.report.wizard"
+        view_mode="form"
+        target="new"
+    />
+    <menuitem 
+        id="menu_paybook_report_wizard"
+        action="action_paybook_report_wizard"
+        name = "Livre de Paie "
+        sequence="13"
+        parent="account.account_reports_management_menu"
+        />
+  </data>
+</odoo>
