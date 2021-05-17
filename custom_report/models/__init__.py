@@ -2,4 +2,4 @@
 
 from . import models
 from . import account_bank_statement
-from . import hr_salary_rule
+#from . import hr_salary_rule
