@@ -24,7 +24,7 @@ class AccountBankStatementLine(models.Model):
     
     analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account', ondelete='set null')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags', 
-        domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]", 
+        #domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]", 
         relation='account_statement_model_analytic_tag_rel'
     )
     debit = fields.Monetary(currency_field='journal_currency_id')
