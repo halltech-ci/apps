@@ -9,35 +9,20 @@ class PaybookReport(models.AbstractModel):
     _name = 'report.hta_custom_hr.paybook_template'
     _description = 'Report Paie Book'
     
-    def get_lines(self, date_start, date_end, employee=None):
-        params = [date_start, date_end]
-        query = """
-                SELECT * 
-                FROM hr_payslip_line AS p_line
-                WHERE
-                p_line.date_from >= %s
-                AND p_line.date_to <= %s
-            """
+    def get_lines(self, date_start, date_end, rule_id, employee=None):
+        domain = [('date_from', '>=', date_start), ('date_to', '<=', date_end), ('appears_on_paybook', '=', True), ('salary_rule_id', '=', rule_id)]
+        
         if employee:
-            params.append(employee)
-            employee_query =  ' AND p_line.employee_id = %s'
-            query = """
-                SELECT * 
-                FROM hr_payslip_line AS p_line
-                WHERE
-                p_line.appears_on_paybook = True
-                AND p_line.date_from >= %s
-                AND p_line.date_to <= %s """ + employee_query + """
-            """
-        self.env.cr.execute(query, params)
-        return self.env.cr.dictfetchall()
+            domain.append(('employee_id', '=', employee))
+        lines = self.env['hr.payslip.line'].search(domain)
+        return lines
     
     @api.model
     def _get_report_values(self, docids, data=None):
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
         struct_id = data['form']['salary_structure'][0]
-        employee = self.env['hr.payslip.line'].search([('date_from', '>=', date_start), ('date_to', '<=', date_end)]).employee_id.ids
+        employee = self.env['hr.payslip.line'].search([('date_from', '>=', date_start), ('date_to', '<=', date_end)]).employee_id#.ids
         salary_rule = self.env['hr.salary.rule'].search([('struct_id', '=', struct_id) ,('appears_on_paybook', '=', True)])
         lines = self.get_lines
         docs = []

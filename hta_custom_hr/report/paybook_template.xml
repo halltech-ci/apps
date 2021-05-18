@@ -34,22 +34,27 @@
                         </div>
                         <div class="container"></div>
                         <table class="table table-sm table-condensed table-bordered">
+                            <tr>
+                                <td>
+                                    <p>TITRE</p>
+                                </td>
+                                <t t-foreach="employee_ids" t-as='employee'>
+                                    <td>
+                                        <span t-esc="employee.name"/>
+                                    </td>
+                                </t>
+                            </tr>
                             <t t-foreach='salary_rule' t-as='rule'>
                                 <tr>
-                                    <td>
-                                        <span t-esc='rule.name'/>
-                                    </td>
-                                    <t t-foreach="employee_ids" t-as='employee'>
-                                        <t t-set='line' t-value='lines(date_start, date_end, employee)'/>
-                                        <!--<t t-set='struct' t-value='line.get()'-->
-                                        <td>Quoi</td>
-                                    </t> 
-                                    
-                                </tr>
-                            </t>
+                                        <td>
+                                            <span t-esc='rule.name'/>
+                                        </td>
+                                        <t t-foreach="employee_ids" t-as='employee'>
+                                            <td><span t-esc='lines(date_start, date_end, rule.id, employee.id).amount'/></td>
+                                        </t> 
+                                    </tr>
+                                </t>
                         </table>
-                        <p> <span t-esc='employee_ids'/></p>
-                        <p> <span t-esc="lines(date_start, date_end)"/></p>
                     </div>
                 </t>
         </t>
