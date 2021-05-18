@@ -74,14 +74,24 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     product_code = fields.Char(related='product_id.default_code', string="Code")
-    product_cost = fields.Float(string="Cost", digits='Product Price',)
+    product_cost = fields.Float(string="Cost", digits='Product Price')
     line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True)
-    price_unit = fields.Float('Unit Price', required=True, digits='Product Price', default=0.0,
+    price_unit = fields.Float('Unit Price', required=True, digits='Product Price',
         compute='_compute_price_unit',
         store=True,
     )
     line_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
     line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
+    
+    @api.onchange('product_cost')
+    def _onchange_product_cost(self):
+        if self.product_cost > 0 :
+            self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
+    
+    @api.onchange('line_margin')
+    def _onchange_line_margin(self):
+        if self.product_cost > 0 :
+            self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
     
     @api.depends("order_id", "order_id.sale_margin", "order_id.sale_discuss_margin")
     def _compute_line_margin(self):
@@ -90,10 +100,10 @@ class SaleOrderLine(models.Model):
         for line in self:
             #line_margin = line.order_id.sale_margin
             #line_discuss_margin = line.order_id.sale_discuss_margin
-            line.update({
-                "line_margin" : line.order_id.sale_margin,
-                "line_discuss_margin" : line.order_id.sale_discuss_margin,
-            })
+            if not line.line_margin:
+                line.line_margin = line.order_id.sale_margin
+            if not line.line_discuss_margin:
+                line.line_discuss_margin = line.order_id.sale_discuss_margin
     
     @api.depends('product_uom_qty', 'price_unit')
     def _compute_line_subtotal(self):
