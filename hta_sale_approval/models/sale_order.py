@@ -22,12 +22,14 @@ class SaleOrder(models.Model):
     def action_approve(self):
         for rec in self:
             rec.state = 'approve'
-    """
+    
     def action_quotation_send(self):
-        super(SaleOrder,self).action_quotation_send()
-        for rec in self:
-            rec.state = 'sent'
-    """
+        res = super(SaleOrder,self).action_quotation_send()
+        if res:
+            for rec in self:
+                rec.state = 'sent'
+        return res
+    
     
  
 
