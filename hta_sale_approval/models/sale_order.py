@@ -5,15 +5,12 @@ from odoo.exceptions import UserError
 class SaleOrder(models.Model):
     _inherit = "sale.order"
      
-    state = fields.Selection([
-        ('draft', 'Quotation'),
+    state = fields.Selection(selection_add=[
         ('waiting_for_approval', 'Waiting For Approval'),
         ('approve', 'Approved'),
-        ('sent', 'Quotation Sent'),
-        ('sale', 'Sales Order'),
-        ('done', 'Locked'),
-        ('cancel', 'Cancelled'),
-        ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
+        ('sent',),
+        ]
+    )
     
     def ask_for_approval(self):
         for rec in self:
