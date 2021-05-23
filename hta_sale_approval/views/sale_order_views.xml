@@ -24,6 +24,7 @@
                         states="draft,sent" 
                         type="object"
                         string="Cancel"
+                        confirm='Voulez-vous vraiment valider annuler ce devis ?'
                         attrs="{'invisible': [('state', 'not in', ['done'])]}"
                 />
             </xpath>
@@ -40,6 +41,7 @@
                         type="object" 
                         class="oe_highlight"
                         string="Approve"
+                        confirm='Voulez-vous vraiment valider ce devis ?'
                 />
             </xpath>
         </field>
