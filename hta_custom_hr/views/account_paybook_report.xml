@@ -36,6 +36,7 @@
         name = "Livre de Paie "
         sequence="13"
         parent="account.account_reports_management_menu"
+        groups='hta_custom_hr.group_hr_paybook_report'
         />
   </data>
 </odoo>
