@@ -88,6 +88,12 @@ class SaleOrderLine(models.Model):
         if self.product_cost > 0 :
             self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
     
+    @api.onchange('product_uom_qty')
+    def _onchange_product_qty(self):
+        if self.product_cost > 0 :
+            self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
+            self.line_subtotal = self.product_uom_qty * self.price_unit
+    
     @api.onchange('line_margin')
     def _onchange_line_margin(self):
         if self.product_cost > 0 :

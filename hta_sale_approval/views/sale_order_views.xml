@@ -44,6 +44,9 @@
                         confirm='Voulez-vous vraiment valider ce devis ?'
                 />
             </xpath>
+            <xpath expr="//sheet/group/group" position="inside">
+                <field name="approver_id"/>
+            </xpath>
         </field>
     </record>
   </data>

@@ -20,7 +20,11 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base_setup', 'sale', 'sales_team'],
+    'depends': ['base_setup', 
+                'sale', 
+                'sales_team',
+               #'hta_custom_sale',
+               ],
 
     # always loaded
     'data': [
@@ -34,6 +38,8 @@
         'views/templates.xml',
         #wizard
         #'wizard/sale_approval_wizard.xml',
+        #data
+        'data/mail_template.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
