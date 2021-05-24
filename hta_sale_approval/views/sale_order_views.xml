@@ -42,6 +42,7 @@
                         class="oe_highlight"
                         string="Approve"
                         confirm='Voulez-vous vraiment valider ce devis ?'
+                        groups="hta_sale_approval.group_sale_order_approval"
                 />
             </xpath>
             <xpath expr="//sheet/group/group" position="inside">
