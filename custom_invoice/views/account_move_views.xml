@@ -7,12 +7,29 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
           <!-- Insert secondary unit in report-->
-          <header>
+        <!--  
+        <header>
             <button name="function_create_invoice"
                     string="Creer Facture"
                     type="object"
                     class="oe_highlight"/>
           </header>
+        -->
+          <!-- Insert BL number on sale invoice-->
+          <xpath expr="//sheet/group/group[2]/field[@name='company_id']" position="after">
+              <field name="delivery_slip"/>
+              <!--<field name='signataire_facture' string='Signataire'/> -->
+          </xpath>
+          <!-- Insert source document on sale invoice-->
+          <xpath expr="//sheet/group/group/field[@name='ref']" position="after">
+             <field name="source_document" string='N° de Devis:'/>
+             <field name='customer_reference'/>
+          </xpath>
+          <xpath expr="//sheet/notebook" position="before">
+              <group>
+                 <field name="invoice_object"/>
+              </group>
+          </xpath>
         </field>
     </record>
 
