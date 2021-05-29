@@ -105,5 +105,12 @@
                 </tr>
             </t>
         </xpath>
+        <xpath expr="//p[@t-field='doc.note']" position="before">
+            <div style="font-size:16px; padding-bottom:30px;">
+                <tr class="border-black">
+                    <td><span t-field="doc.amount_to_word"/></td>
+                </tr>
+            </div>
+        </xpath>
     </template>
 </odoo>
