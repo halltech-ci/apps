@@ -73,7 +73,20 @@
           <xpath expr="//field[@name='amount_tax']" position="after">
                 <field name="sale_margin" />
               <field name="sale_discuss_margin" />
+          </xpath>
+            <xpath expr="//sheet/notebook/page[@name='order_lines']/group[@name='note_group']/group[1]/field[@name='note']" position="replace">
             </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/group[@name='note_group']/group[@name='sale_total']" position="after">
+              <div class="oe_subtotal_footer_separator oe_inline o_td_label" style="font-size:15px;">
+                  <group attrs="{'invisible': [('amount_total', '&lt;=', 0)]}">
+                      <span><field name="amount_to_word" nolabel="1"/>
+                          FRANCS CFA</span>
+                  </group>
+              </div>
+              <group colspan="4">
+                    <field name="note" nolabel="1" placeholder="Terms and conditions..."/>
+              </group>
+          </xpath>  
         </field>
     </record>
   </data>

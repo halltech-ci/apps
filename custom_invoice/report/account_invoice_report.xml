@@ -15,11 +15,12 @@
        
        <xpath expr="//div[hasclass('page')]//div[hasclass('row', 'mt32', 'mb32')]" position="replace">
            <div id="informations" class="row mt32 mb32">
-               <div class="col-xs-6" t-if="o.invoice_date">
+               <div class="col-auto mw-100 mb-2" t-if="o.invoice_date">
                   <strong>Date de Facture:</strong>
-                  <span t-field="o.invoice_date"/>
+                  <p class="m-0" t-field="o.invoice_date"/>
                </div>
-               <div class="col-auto mw-100 mb-2" t-if="o.ref" name="reference">
+               <div class="col-auto mw-100 mb-2"></div>
+               <div class='col-auto mw-100 mb-2' t-if="o.ref" name="reference">
                     <strong>Reference:</strong>
                     <p class="m-0" t-field="o.ref"/>
                 </div>
@@ -95,6 +96,13 @@
             </div>
         </xpath>
         <xpath expr="//div[hasclass('page')]/p[1]" position="replace">
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/p[@name='comment']" position="before">
+            <div style="font-size:16px; padding-bottom:30px;">
+                <tr class="border-black">
+                    <td><span t-field="o.amount_to_word"/></td>
+                </tr>
+            </div>
         </xpath>
     </template>
   </data>
