@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from num2words import num2words
+from odoo.addons import decimal_precision as dp
+from odoo.exceptions import UserError, ValidationError
+
 
 
 _SALE_ORDER_DOMAINE = [('fm', 'FABRICATION MECANIQUE'),
@@ -19,6 +23,21 @@ _SALE_ORDER_DOMAINE = [('fm', 'FABRICATION MECANIQUE'),
 class SaleOrder(models.Model):
     _inherit = "sale.order"
     
+    #num2words convert number to word
+    def _num_to_words(self, num):
+        def _num2words(number, lang):
+            try:
+                return num2words(number, lang=lang).title()
+            except NotImplementedError:
+                return num2words(number, lang='en').title()
+        if num2words is None:
+            logging.getLogger(__name__).warning("The library 'num2words' is missing, cannot render textual amounts.")
+            return ""
+        lang_code = self.env.context.get('lang') or self.env.user.lang
+        lang = self.env['res.lang'].with_context(active_test=False).search([('code', '=', lang_code)])
+        num_to_word = _num2words(num, lang=lang.iso_code)
+        return num_to_word
+        
     project_id = fields.Many2one("project.project", "Project", ondelete= "cascade")
     project_code = fields.Char("Code Projet", related='project_id.code')
     description = fields.Text("Description : ")
@@ -29,6 +48,11 @@ class SaleOrder(models.Model):
     remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
     sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
     sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0)
+    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
+    
+    def _compute_amount_to_word(self):
+        for rec in self:
+            rec.amount_to_word = str(self._num_to_words(rec.amount_total)).upper()
     
     @api.depends('order_line.line_subtotal')
     def _amount_total_no_tax(self):
