@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 class PaybookReport(models.AbstractModel):
     """
@@ -9,8 +10,8 @@ class PaybookReport(models.AbstractModel):
     _name = 'report.hta_custom_hr.paybook_template'
     _description = 'Report Paie Book'
     
-    def get_lines(self, date_start, date_end, rule_id, employee=None):
-        domain = [('date_from', '>=', date_start), ('date_to', '<=', date_end), ('appears_on_paybook', '=', True), ('salary_rule_id', '=', rule_id)]
+    def get_lines(self, month, rule_id, employee=None):
+        domain = [('slip_month', '=', month), ('appears_on_paybook', '=', True), ('salary_rule_id', '=', rule_id)]
         
         if employee:
             domain.append(('employee_id', '=', employee))
@@ -19,10 +20,9 @@ class PaybookReport(models.AbstractModel):
     
     @api.model
     def _get_report_values(self, docids, data=None):
-        date_start = data['form']['date_start']
-        date_end = data['form']['date_end']
+        month = data['form']['slip_month'][0]
         struct_id = data['form']['salary_structure'][0]
-        employee = self.env['hr.payslip.line'].search([('date_from', '>=', date_start), ('date_to', '<=', date_end)]).employee_id#.ids
+        employee = self.env['hr.payslip.line'].search([('slip_month', '=', month)]).employee_id#.ids
         salary_rule = self.env['hr.salary.rule'].search([('struct_id', '=', struct_id) ,('appears_on_paybook', '=', True)])
         lines = self.get_lines
         docs = []
@@ -30,12 +30,12 @@ class PaybookReport(models.AbstractModel):
             'doc_ids': data['ids'],
             'docs': docs,
             'doc_model': data['model'],
-            'date_start': date_start,
-            'date_end': date_end,
+            #'date_start': date_start,
+            #'date_end': date_end,
+            'slip_month': month,
             'lines' : lines,
             'employee_ids': employee,
             'salary_rule': salary_rule,
-            #'employee': data['form']['employee'][0],
             
         }
         
