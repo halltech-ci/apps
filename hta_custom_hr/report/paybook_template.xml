@@ -36,7 +36,7 @@
                         <table class="table table-sm table-condensed table-bordered">
                             <tr>
                                 <td>
-                                    <p>TITRE</p>
+                                    <p>Rubriques</p>
                                 </td>
                                 <t t-foreach="employee_ids" t-as='employee'>
                                     <td>
@@ -50,10 +50,10 @@
                                             <span t-esc='rule.name'/>
                                         </td>
                                         <t t-foreach="employee_ids" t-as='employee'>
-                                            <td><span t-esc='lines(date_start, date_end, rule.id, employee.id).amount'/></td>
+                                            <td><span t-esc='lines(slip_month, rule.id, employee.id).amount'/></td>
                                         </t> 
-                                    </tr>
-                                </t>
+                                </tr>
+                             </t>
                         </table>
                     </div>
                 </t>

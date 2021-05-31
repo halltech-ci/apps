@@ -7,12 +7,8 @@
         <field name="arch" type="xml">
             <form string="PayBook Report">
                 <group col="4">
-                    <field name="date_start"/>
-                    <field name="date_end"/>
-                </group>
-                <group col="4">
-                    <field name="salary_structure"/>
-                    <field name="employee" invisible='1'/>
+                    <field name="slip_month"/>
+                    <field name="salary_structure" required='1'/>
                 </group>
                 
                 <footer>
