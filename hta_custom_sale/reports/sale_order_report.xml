@@ -112,5 +112,21 @@
                 </tr>
             </div>
         </xpath>
+        <!-- Delete display subtotal-->
+        
+        <xpath expr="//div/table[hasclass('table', 'table-sm')]/tbody[hasclass('sale_tbody')]/t[@t-foreach='doc.order_line']/t/tr[hasclass('is-subtotal', 'text-right')]" position="replace">
+            <t t-if="current_subtotal != 0">
+                <tr class="is-subtotal text-right">
+                    <td name="td_section_subtotal" colspan="99">
+                        <strong class="mr16">Subtotal</strong>
+                        <span
+                            t-esc="current_subtotal"
+                                t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
+                            />
+                    </td>
+                </tr>
+            </t>
+        </xpath>
+        
     </template>
 </odoo>
