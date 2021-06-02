@@ -46,14 +46,14 @@
                             </tr>
                             <t t-foreach='salary_rule' t-as='rule'>
                                 <tr>
-                                        <td>
-                                            <span t-esc='rule.name'/>
-                                        </td>
-                                        <t t-foreach="employee_ids" t-as='employee'>
-                                            <td><span t-esc='lines(slip_month, rule.id, employee.id).amount'/></td>
-                                        </t> 
+                                    <td>
+                                        <span t-esc='rule.name'/>
+                                    </td>
+                                    <t t-foreach="employee_ids" t-as='employee'>
+                                        <td><span t-esc='lines(slip_month, rule.id, employee.id).amount'/></td>
+                                    </t> 
                                 </tr>
-                             </t>
+                            </t>
                         </table>
                     </div>
                 </t>
