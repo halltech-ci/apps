@@ -51,8 +51,7 @@
                                     </td>
                                     <t t-foreach="employee_ids" t-as='employee'>
                                         <td><span t-esc='lines(slip_month, rule.id, employee.id).amount' t-options='{"widget": "float", "precision": 0}'/></td>
-                                    </t> 
-                                       
+                                    </t>  
                                 </tr>
                             </t>
                         </table>

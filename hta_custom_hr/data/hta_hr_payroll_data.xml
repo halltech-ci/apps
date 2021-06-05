@@ -2,21 +2,11 @@
 <odoo>
 
 <!-- HR SALARY RULE CATEGORIES-->
-    <!-- SALAIRE NET -->
-    <record id="hr_payroll_net_salary" model="hr.salary.rule.category">
-        <field name="name">Salaire Net</field>
-        <field name="code">NET</field>
-    </record>
     <!--SALAIRE BRUT -->
     <record id="hr_payroll_brut_salary" model="hr.salary.rule.category">
         <field name="name">Salaire Brut</field>
         <field name="code">BRUT</field>
     </record>
-    <!-- BASIC SALARY-->
-    <!--<record id="hr_payroll_basic_salary" model="hr.salary.rule.category">
-        <field name="name">BASE</field>
-        <field name="code">BASIC</field>
-    </record>-->
     
     <!-- CATEGORIE RETENUES-->
     
@@ -57,15 +47,26 @@
     
     <!-- Structure Type -->
     <record id="structure_type_work_days_conceptor" model="hr.payroll.structure.type">
-            <field name="name">Worker Conceptor</field>
+            <field name="name">Conceptor Employee</field>
+            <field name="country_id" eval="False"/>
+            <field name="wage_type">monthly</field>
+    </record>
+    <record id="structure_type_dayly_worker_conceptor" model="hr.payroll.structure.type">
+            <field name="name">Dayly Worker</field>
             <field name="country_id" eval="False"/>
             <field name="wage_type">hourly</field>
     </record>
     
     <!-- Structure salaire-->
     <record id="structure_days_work" model="hr.payroll.structure">
-            <field name="name">Conceptor</field>
+            <field name="name">Employee</field>
             <field name="type_id" ref="structure_type_work_days_conceptor"/>
+            <field name="regular_pay" eval="True"/>
+            <field name="country_id" eval="False"/>
+    </record>
+    <record id="structure_dayly_worker" model="hr.payroll.structure">
+            <field name="name">Dayly</field>
+            <field name="type_id" ref="structure_type_dayly_worker_conceptor"/>
             <field name="regular_pay" eval="True"/>
             <field name="country_id" eval="False"/>
     </record>
@@ -96,6 +97,33 @@ result = contract.salaire_base
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = contract.sursalaire
+        </field>
+    </record>
+    <!-- Display net salary ammount -->
+    <record id="hr_salary_net_salary_rule" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Net Salary</field>
+        <field name="code">NET</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="sequence">12</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SNET
+        </field>
+    </record>
+    <record id="hr_salary_rule_basic_salary" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Basic Salary</field>
+        <field name="code">BASIC</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="sequence">4</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = BASE
         </field>
     </record>
     <!-- Regle de calcul du salaire brut -->
@@ -150,7 +178,7 @@ result = SBRUT + PDA
         <field name="category_id" ref="hr_payroll_retenue_fiscale"/> 
         <field name="name">Impot sur salaire (I.S)</field>
         <field name="code">IS</field>
-        <field name="sequence">7</field>
+        <field name="sequence">6</field>
         <field name="appears_on_paybook">True</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="condition_select">none</field>
@@ -164,7 +192,7 @@ result = SBI*0.012
         <field name="category_id" ref="hr_payroll_retenue_fiscale"/> 
         <field name="name">Contribution Nationale</field>
         <field name="code">CN</field>
-        <field name="sequence">8</field>
+        <field name="sequence">7</field>
         <field name="appears_on_paybook">True</field>
         <field name="condition_select">none</field>
         <field name="struct_id" ref="structure_days_work"/>
@@ -187,7 +215,7 @@ else:
         <field name="name">Impot Général sur le Revenu</field>
         <field name="code">IGR</field>
         <field name="struct_id" ref="structure_days_work"/>
-        <field name="sequence">8</field>
+        <field name="sequence">9</field>
         <field name="appears_on_paybook">True</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
@@ -244,7 +272,7 @@ result = (1 + employee.children)*500
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
         <field name="name">TOTAL COTISATIONS EMPLOYE</field>
         <field name="code">TCOTEM</field>
-        <field name="sequence">8</field>
+        <field name="sequence">10</field>
         <field name="appears_on_paybook">True</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="condition_select">none</field>
@@ -355,7 +383,7 @@ result = contract.prime_transport
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = (BASE )/173.33
+result = (BASE)/173.33
         </field>
     </record>
     
@@ -552,7 +580,7 @@ result = contract.gratification
         <field name="category_id" ref="hr_payroll_variable_salary"/> 
         <field name="name">Base</field>
         <field name="code">RN</field>
-        <field name="sequence">7</field>
+        <field name="sequence">6</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
@@ -761,7 +789,7 @@ result = TSOCPA + FC + TAPP + CMUP + IS
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
         <field name="name">TOTAL DES RETENUES FISCALES</field>
         <field name="code">TFISC</field>
-        <field name="sequence">8</field>
+        <field name="sequence">10</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
@@ -775,7 +803,7 @@ result = IS + CN + IGR
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
         <field name="name">SALAIRE NET</field>
         <field name="code">SNET</field>
-        <field name="sequence">8</field>
+        <field name="sequence">11</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
@@ -826,7 +854,7 @@ result = contract.avs
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
         <field name="name">SALAIRE NET A PAYER</field>
         <field name="code">NETAP</field>
-        <field name="sequence">8</field>
+        <field name="sequence">12</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
