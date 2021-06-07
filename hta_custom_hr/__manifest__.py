@@ -35,7 +35,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/hr_contract_views.xml',
-        'views/hr_payslip_views.xml',
+        #'views/hr_payslip_views.xml',
         'views/hr_employee_views.xml',
         'views/account_paybook_report.xml',
         #Report

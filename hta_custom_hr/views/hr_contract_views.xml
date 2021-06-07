@@ -16,7 +16,7 @@
             </xpath>
             <xpath expr="//sheet/notebook/page[@name='information']/group[@name='main_info']" position="after">
                   <group name='prime_et_avantages'>
-                      <group string="Primes et Avantages">
+                      <group string="Primes et Indemnités">
                           <field name="prime_responsabilite"/>
                           <field name="prime_transport"/>
                           <field name="prime_rendement"/>
