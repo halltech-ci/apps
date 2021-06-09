@@ -7,6 +7,11 @@ import datetime
 class HrPayslip(models.Model):
     _inherit = "hr.payslip"
     
+    def _get_contract_wage(self):
+        self.ensure_one()
+        return self.contract_id.salaire_base
+    
+    
     @api.model
     def prepare_leave_days(self, employee, leaves, payslip, date_from, date_to):
         
