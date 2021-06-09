@@ -17,7 +17,7 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '13.0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['hr_holidays',
@@ -38,6 +38,7 @@
         #'views/hr_payslip_views.xml',
         'views/hr_employee_views.xml',
         'views/account_paybook_report.xml',
+        'views/hr_work_entry_type_views.xml',
         #Report
         'report/report_hta_payslip_template.xml',
         'report/bulletin_paye_report.xml',
