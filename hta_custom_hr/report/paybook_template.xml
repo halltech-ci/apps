@@ -45,9 +45,9 @@
                                 </t>
                             </tr>
                             <t t-foreach='salary_rule' t-as='rule'>
-                                <tr>
+                                <tr style="font-size: 12px;">
                                     <td>
-                                        <t t-if= "rule.code == 'TCOTEM'"> 
+                                        <t t-if= "rule.code in ['TCOTEM', 'SBI']"> 
                                             <strong><span t-esc='rule.name'/></strong>
                                         </t>
                                         <t t-else="">
@@ -56,7 +56,7 @@
                                     </td>
                                     <t t-foreach="employee_ids" t-as='employee'>
                                         <td>
-                                        <t t-if= "rule.code == 'TCOTEM'">
+                                        <t t-if= "rule.code in ['TCOTEM', 'SBI']">
                                             <strong>
                                                 <span t-esc='lines(slip_month, rule.id, employee.id).amount' t-options='{"widget": "float", "precision": 0}'/>
                                             </strong>

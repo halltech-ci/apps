@@ -414,11 +414,10 @@ if payslip.worked_days_line_ids:
     for line in payslip.worked_days_line_ids: 
         if line.name == 'HS 15%':
             result = line.number_of_hours * val * 0.15
-
         </field>
     </record>
     
-        <record id="hr_salary_rule_hs50" model="hr.salary.rule">
+    <record id="hr_salary_rule_hs50" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
         <field name="name">Heure Supplementaire 50%</field>
         <field name="code">HS50</field>
