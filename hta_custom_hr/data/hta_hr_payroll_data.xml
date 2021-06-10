@@ -34,6 +34,10 @@
         <field name="name">Cumul</field>
         <field name="code">CUMUL</field>
     </record>
+    <record id="hr_payroll_salary_indemnite" model="hr.salary.rule.category">
+        <field name="name">Indemnites</field>
+        <field name="code">IND</field>
+    </record>
     
     <record id="hr_payroll_prime_salary" model="hr.salary.rule.category">
         <field name="name">Primes</field>
@@ -71,6 +75,30 @@
             <field name="country_id" eval="False"/>
     </record>
     
+    <function model="hr.salary.rule" name="write">
+        <value model="hr.salary.rule" search="[
+            ('struct_id', '=', ref('hta_custom_hr.structure_days_work')),
+            ('code', '=', 'GROSS')]"/>
+        <value eval="{
+            'name': 'Salaire Brut',
+            'code': 'BRUT',
+            'sequence': 1000,
+            'category_id': ref('hta_custom_hr.hr_payroll_brut_salary'),
+            'amount_python_compute': 'result = SBRUT',
+            }"/>
+    </function>
+    <function model="hr.salary.rule" name="write">
+        <value model="hr.salary.rule" search="[
+            ('struct_id', '=', ref('hta_custom_hr.structure_days_work')),
+            ('code', '=', 'NET')]"/>
+        <value eval="{
+            'name': 'Salaire Net',
+            'sequence': 1000,
+            'category_id': ref('hr_payroll.NET'),
+            'amount_python_compute': 'result = SNET',
+            }"/>
+    </function>
+    
     <!-- Regle de calcul salaire de Base -->
     <record id="hr_salary_rule_employee_salary_base" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_brut_salary"/> 
@@ -101,20 +129,7 @@ result = contract.salaire_base
 result = contract.sursalaire
         </field>
     </record>
-    <!-- Display net salary ammount -->
-    <record id="hr_salary_net_salary_rule" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_brut_salary"/> 
-        <field name="name">Net Salary</field>
-        <field name="code">NET</field>
-        <field name="struct_id" ref="structure_days_work"/>
-        <field name="appears_on_payslip">False</field>
-        <field name="sequence">12</field>
-        <field name="condition_select">none</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">
-result = SNET
-        </field>
-    </record>
+    
     <record id="hr_salary_rule_basic_salary" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_brut_salary"/> 
         <field name="name">Basic Salary</field>
