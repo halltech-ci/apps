@@ -18,7 +18,7 @@
         </record>
 
         <report
-                id="report_report_hta_template"
+                id="action_report_hta"
                 model="report.hta"
                 string="Rapport"
                 report_type="qweb-pdf"

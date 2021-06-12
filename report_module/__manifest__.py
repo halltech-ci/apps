@@ -25,14 +25,15 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        #data
-        'data/mail_template.xml',
-        'data/reference.xml',
         #view
         'views/report.xml',
         #Report
         'report/report.xml',
         'report/report_hta_template.xml',
+        #data
+        'data/mail_template.xml',
+        'data/reference.xml',
+
     ],
     # only loaded in demonstration mode
     'demo': [
