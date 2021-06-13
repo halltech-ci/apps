@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!--Training Overtime -->
+    <record id="work_entry_type_training" model="hr.work.entry.type">
+        <field name="name">Training</field>
+        <field name="code">WORK500</field>
+        <field name="color">5</field>
+    </record>
+    <!-- Unjustify work entry type-->
+    <record id="work_entry_type_unjustified_reason" model="hr.work.entry.type">
+        <field name="name">Unjustified Reason</field>
+        <field name="code">LEAVE700</field>
+        <field name="is_leave">True</field>
+        <field name="leave_type_ids" eval="[(6,0,[ref('hr_holidays.holiday_status_unpaid')])]"/>
+    </record>
 
-<!-- HR SALARY RULE CATEGORIES-->
+
+    <!-- HR SALARY RULE CATEGORIES-->
     <!--SALAIRE BRUT -->
     <record id="hr_payroll_brut_salary" model="hr.salary.rule.category">
         <field name="name">Salaire Brut</field>
