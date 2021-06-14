@@ -38,7 +38,7 @@
         #'views/hr_payslip_views.xml',
         'views/hr_employee_views.xml',
         'views/account_paybook_report.xml',
-        'views/hr_work_entry_type_views.xml',
+        #'views/hr_work_entry_type_views.xml',
         #Report
         'report/report_hta_payslip_template.xml',
         'report/bulletin_paye_report.xml',
