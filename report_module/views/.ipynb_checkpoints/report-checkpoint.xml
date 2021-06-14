@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="report_module.list">
+      <field name="name">report_module list</field>
+      <field name="model">report.hta</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="date_edit"/>
+          <field name="user_id"/>
+          <field name="title" string="Titre"/>
+        </tree>
+      </field>
+    </record>
+    
+
+
+    <record id="report_form" model="ir.ui.view">
+        <field name="name">report.hta.form</field>
+        <field name="model">report.hta</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send_mail" type="object" string="Envoie de mail" class="oe_highlight"/>
+
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h2><field name="reference" readonly="1"/></h2>
+                    </div>
+                    <group>
+                        <field name="title" string="Titre"/>
+                        <field name="objet" string="Objet"/>
+                        <field name="date_edit"/>
+                    </group>
+                    <group>
+                        <field name="user_id"/>
+                        <field name="email_id"/>
+                        <field name="company_id"/>
+                    </group>
+                    <notebook>
+                        <page name="note" string="Rapport">
+                            <separator string="NOTE"/>
+                            <field name="note" string="Les Notes"/>
+                            <separator string="TAF"/>
+                            <field name="reste" string="Reste"/>
+                            <separator string="Contraintes"/>
+                            <field name="bloquant"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="report_action" model="ir.actions.act_window">
+        <field name="name">Rapport</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">report.hta</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Report
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="report_root"
+              name="Rapport"
+              sequence="10"/>
+    <menuitem id="report_root_create"
+              name="Rapport"
+              parent="report_root"
+              sequence="2"/>
+    <menuitem id="report_root_item"
+              name="Rapport"
+              parent="report_root_create"
+              action="report_action"
+              sequence="2"/>
+
+</odoo>

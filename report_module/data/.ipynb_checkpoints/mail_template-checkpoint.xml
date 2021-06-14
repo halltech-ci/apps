@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data noupdate="1">
+        <!--Email template -->
+        <record id="report_email_template" model="mail.template">
+            <field name="name">Report: Send by email</field>
+            <field name="model_id" ref="report_module.model_report_hta"/>
+            <field name="email_from">${(object.user_id.email_formatted) |safe}</field>
+            <field name="email_to">${object.email_id.id}</field>
+            <field name="subject">Report (${object.objet })</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        M./Mme/Mlle ${object.email_id.name }
+                        <br/>
+                        Veuillez reçevoir le mail de ${object.title}
+                        <br/>
+                        <br/>
+                        <strong>
+                            ${(object.user_id.name)}
+                        </strong>
+                    </p>
+                </div>
+            </field>
+            <field name="report_template" ref="action_report_hta"/>
+            <field name="report_name">
+                Report Report_${(object.objet)}
+            </field>
+        </record>
+    </data>
+</odoo>
