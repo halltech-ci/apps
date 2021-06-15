@@ -8,6 +8,7 @@
           <field name="date_edit"/>
           <field name="user_id"/>
           <field name="title" string="Titre"/>
+          <field name="client"/>
         </tree>
       </field>
     </record>
@@ -31,6 +32,12 @@
                         <field name="title" string="Titre"/>
                         <field name="objet" string="Objet"/>
                         <field name="date_edit"/>
+                    </group>
+                    <group>
+                        <field name="type"/>
+                        <field name="client"
+                               attrs="{'invisible': [('type', 'not in', ['outside',])]}"
+                               groups="hr.group_hr_user"/>
                     </group>
                     <group>
                         <field name="user_id"/>

@@ -41,8 +41,13 @@ class report_module(models.Model):
     title = fields.Char()
     reference = fields.Char(string="Reference", required=True, copy=False, readonly=True, index=True, default=lambda self:_('New'))
     objet = fields.Char()
+    type = fields.Selection([
+        ('internal', 'Interne'),
+        ('outside', 'Externe'),
+    ], string='Type de Rapport', groups="hr.group_hr_user", default='internal', tracking=True)
+    client = fields.Many2one('res.partner',string='Partner',tracking=True)
     email_id = fields.Many2one('res.partner',
-        string='Partner')
+        string='Responsable')
     date_edit = fields.Datetime(string="Date", required=True, readonly=True, index=True,copy=False, default=fields.Datetime.now())
     user_id = fields.Many2one(comodel_name='res.users', string="Utilisateur", readonly=True,
                               default=lambda self: self.env.uid)
