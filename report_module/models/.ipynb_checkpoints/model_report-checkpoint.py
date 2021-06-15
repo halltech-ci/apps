@@ -16,7 +16,7 @@ class report_module(models.Model):
         print("Template id ", template_id)
         template =  self.env['mail.template'].browse(template_id)
         print("Template ", template)
-        template.send_mail(self.id, force_send=True)
+        #template.send_mail(self.id, force_send=True)
         ctx = {
             'default_model': 'report.hta',
             'default_res_id': self.ids[0],
@@ -48,10 +48,13 @@ class report_module(models.Model):
     client = fields.Many2one('res.partner',string='Partner',tracking=True)
     email_id = fields.Many2one('res.partner',
         string='Responsable')
-    date_edit = fields.Datetime(string="Date", required=True, readonly=True, index=True,copy=False, default=fields.Datetime.now())
+    date_edit = fields.Date(string="Date", required=True, readonly=True,index=True,copy=False,
+                                default=fields.Date.today())
     user_id = fields.Many2one(comodel_name='res.users', string="Utilisateur", readonly=True,
                               default=lambda self: self.env.uid)
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    sale_id = fields.Many2one('sale.order', string='Devis')
+    project_id = fields.Many2one('project.project', string='Projet')
     note = fields.Html()
     reste = fields.Html()
     bloquant = fields.Html()
