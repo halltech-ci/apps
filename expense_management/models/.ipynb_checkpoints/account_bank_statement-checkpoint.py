@@ -40,7 +40,7 @@ class AccountBankStatementLine(models.Model):
     )
     debit = fields.Monetary(currency_field='journal_currency_id')
     credit = fields.Monetary(currency_field='journal_currency_id')
-    amount = fields.Monetary(compute="_compute_amount")
+    amount = fields.Monetary(compute="_compute_amount",currency_field='journal_currency_id')
 
     
     @api.depends('credit', 'debit')
@@ -58,10 +58,6 @@ class AccountBankStatementLine(models.Model):
                     line.amount = -line.debit
                 else:
                     line.amount = line.credit
-    
-
-            
-                    
                     
             
     def button_action_reconcile(self):
