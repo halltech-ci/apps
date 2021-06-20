@@ -2,4 +2,3 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_resource_calendar_overtime,access_resource_calendar_overtime,model_resource_calendar_overtime,base.group_user,1,1,1,1
 access_hr_overtimes,access_hr_overtimes,model_hr_overtimes,base.group_user,1,1,0,0
 access_hr_overtimes_type,access_hr_overtimes_type,model_hr_overtimes_type,base.group_user,1,1,1,0
-access_hr_overtime_manager,access_hr_overtimes_manager,model_hr_overtimes,hta_custom_overtime.group_hr_overtime_manager,1,1,1,1

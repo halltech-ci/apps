@@ -25,7 +25,7 @@ class HrOvertime(models.Model):
         "\nThe status is 'Approved', when overtime request is approved by manager.")
     payslip_status = fields.Boolean('Reported in last payslips', copy=False, 
                         help='Green this button when the overtime has been taken into account in the payslip.', )
-    report_note = fields.Text('HR Comments', copy=False, groups="hta_custom_overtime.group_hr_overtime_manager")
+    report_note = fields.Text('HR Comments', copy=False, groups="hr_holidays.group_hr_holidays_manager")
     """user_id = fields.Many2one('res.users', string='User', related='employee_id.user_id', related_sudo=True, compute_sudo=True, store=True, default=lambda self: self.env.uid, readonly=True)
     """
     manager_id = fields.Many2one('hr.employee')
