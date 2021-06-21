@@ -18,8 +18,9 @@ class SaleOrder(models.Model):
         for rec in self:
             if not rec.approver_id:
                 raise UserError(_('You must choose approver before.'))
-            rec.state = 'waiting_for_approval'
             self.send_mail_to_approver()
+            rec.state = 'waiting_for_approval'
+            
     
     def action_approve(self):
         for rec in self:
