@@ -45,15 +45,29 @@
                                 </t>
                             </tr>
                             <t t-foreach='salary_rule' t-as='rule'>
-                                <tr>
-                                        <td>
+                                <tr style="font-size: 12px;">
+                                    <td>
+                                        <t t-if= "rule.code in ['TCOTEM', 'SBI']"> 
+                                            <strong><span t-esc='rule.name'/></strong>
+                                        </t>
+                                        <t t-else="">
                                             <span t-esc='rule.name'/>
+                                        </t>
+                                    </td>
+                                    <t t-foreach="employee_ids" t-as='employee'>
+                                        <td>
+                                        <t t-if= "rule.code in ['TCOTEM', 'SBI']">
+                                            <strong>
+                                                <span t-esc='lines(slip_month, rule.id, employee.id).amount' t-options='{"widget": "float", "precision": 0}'/>
+                                            </strong>
+                                        </t>
+                                        <t t-else= "">
+                                            <span t-esc='lines(slip_month, rule.id, employee.id).amount' t-options='{"widget": "float", "precision": 0}'/>
+                                            </t>
                                         </td>
-                                        <t t-foreach="employee_ids" t-as='employee'>
-                                            <td><span t-esc='lines(slip_month, rule.id, employee.id).amount'/></td>
-                                        </t> 
+                                    </t>  
                                 </tr>
-                             </t>
+                            </t>
                         </table>
                     </div>
                 </t>

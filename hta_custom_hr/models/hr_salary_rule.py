@@ -7,7 +7,8 @@ from odoo.exceptions import UserError, ValidationError
 class HrSalaryRule(models.Model):
     _inherit ='hr.salary.rule'
     
-    appears_on_paybook = fields.Boolean(string="On Paybook", default=True)
+    appears_on_paybook = fields.Boolean(string="On Paybook", default=False)
+    rubrique = fields.Integer(default=5, help='Use to arrange calculation sequence')
     
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
@@ -30,5 +31,5 @@ class HrPayslip(models.Model):
 class HrPayslipLine(models.Model):
     _inherit = 'hr.payslip.line'
     
-    appears_on_paybook = fields.Boolean(related='salary_rule_id.appears_on_paybook', readonly=True)
+    appears_on_paybook = fields.Boolean(related='salary_rule_id.appears_on_paybook', readonly=False)
     slip_month = fields.Char(related="slip_id.slip_month", string='Slip Month')
