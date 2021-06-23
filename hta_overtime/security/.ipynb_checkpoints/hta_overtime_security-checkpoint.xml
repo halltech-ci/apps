@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018-2019 ForgeFlow, S.L.
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0) -->
+<odoo>
+    <record model="ir.module.category" id="base.module_category_human_resources_overtimes">
+        <field name="description">Helps you manage your overtimes.</field>
+        <field name="sequence">16</field>
+    </record>
+    
+    <record id="group_hr_overtime_responsible" model="res.groups">
+        <field name="name">Responsible</field>
+        <field name="category_id" ref="base.module_category_human_resources_overtimes"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>
