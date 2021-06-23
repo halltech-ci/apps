@@ -1,0 +1,20 @@
+<odoo>
+  <data>
+      <record id="hr_overtime_view_form" model="ir.ui.view">
+          <field name="name">hr_overtime.view.form</field>
+          <field name="model">hta.hr.overtime</field>
+          <field name="priority">32</field>
+          <field name="arch" type="xml">
+              <form string="Overtime Request">
+              </form>
+          </field>
+      </record>
+      
+      <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="hr_overtime_action_window">
+      <field name="name">Overtime Request</field>
+      <field name="res_model">hta.hr.overtime</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+  </data>
+</odoo>
