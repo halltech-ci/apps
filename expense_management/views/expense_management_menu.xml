@@ -11,6 +11,7 @@
                     type="object"
                     class="oe_highlight"
                     states="draft"
+                    groups="expense_management.group_expense_valider"
             />
             <button name="button_to_approve"
                     string="To Approve"
@@ -30,6 +31,7 @@
                     type="object"
                     class="oe_highlight"
                     states="approve"
+                    groups="account.group_account_user"
             />
             <button name="button_rejected"
                     string='Reject'
