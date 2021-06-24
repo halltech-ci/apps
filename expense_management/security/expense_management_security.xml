@@ -13,6 +13,12 @@
         <field name="implied_ids" eval="[(4, ref('hr.group_hr_user'))]"/>
         <field name="category_id" ref="module_category_expense_management"/>
     </record>
+    <!-- This group approve expense before this expense can be send to accounting-->
+    <record id="group_expense_valider" model="res.groups">
+        <field name="name">Expense Management Valideur</field>
+        <field name="implied_ids" eval="[(4, ref('expense_management.group_expense_user'))]"/>
+        <field name="category_id" ref="module_category_expense_management"/>
+    </record>
     
     <record id="group_expense_approver_1" model="res.groups">
         <field name="name">Expense Management Approver 1</field>
