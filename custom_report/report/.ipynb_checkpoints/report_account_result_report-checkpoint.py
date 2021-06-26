@@ -731,7 +731,7 @@ class ReportAccountAnalyticReportXlsxGenerate(models.AbstractModel):
     _name = 'report.custom_report.account_result_report_xlsx_generate'
     _inherit = 'report.report_xlsx.abstract'
     
-    _description = 'Report Account Result'
+    _description = 'Report Account Result XLM'
     
     def get_lines(self, analytic_id, date_start,date_end):
 
@@ -1405,6 +1405,21 @@ class ReportAccountAnalyticReportXlsxGenerate(models.AbstractModel):
         end_date = datetime.strptime(date_end, DATE_FORMAT)
 
         docs = []
+        mylist = ["Vente de Marchandise", "Achat de Marchandise", "Variation de stocks de Marchandise",
+                 "MARGE  COMMERCIALE", "Ventes de produits fabriqués", "Travaux, services vendus",
+                 "Produits accessoires", "CHIFFRE D'AFFAIRES", "Production stockée (ou déstockage)",
+                 "Production immobilisée", "Subventions d'exploitation", "Autres produits",
+                 "Transferts de charges d'exploitation", "Achats de matières premières et fournitures liées", "Variation de stocks de matières premières et fournitures liées",
+                 "Autres achats", "Variation de stocks d’autres approvisionnements", "Transports",
+                 "Services extérieurs", "Impôts et taxes", "Autres charges",
+                 "VALEUR AJOUTEE", "Charges de personnel", "EXCEDENT BRUT D'EXPLOITATION","Reprises d’amortissements, de provisions et dépréciations",
+                 "Dotations aux amortissements, aux provisions et dépréciations", "RESULTAT D'EXPLOITATION", "Revenus financiers et assimilés",
+                 "Reprises de provisions et dépréciations financières", "Transferts de charges financières", "Frais financiers et charges assimilés",
+                 "Dotations aux provisions et aux dépréciations financières", "RESULTAT  FINANCIER", "RESULTAT  DES ACTIVITES ORDINAIRES",
+                 "Produits des cessions d'immobilisations", "Autres Produits HAO", "Valeurs comptables des cessions d'immobilisations",
+                 "Autres Charges HAO", "RESULTAT HORS ACTIVITES ORDINAIRES", "Participation des travailleurs",
+                 "Impôts sur le résultat", "RESULTAT NET",]
+        
         if data.get('project'):
             project = data.get('project')
             lines = self.env['project.project'].search([('id','=',project)])
@@ -1424,7 +1439,9 @@ class ReportAccountAnalyticReportXlsxGenerate(models.AbstractModel):
         
         row = 2
         col = 0
+    
         # Header row
+        
         sheet.write(row, col, 'Projet/Line')
         
         nombre = 0
@@ -1435,12 +1452,14 @@ class ReportAccountAnalyticReportXlsxGenerate(models.AbstractModel):
         
         row +=1
         col = 0
-        for i in range(42):
-            sheet.write(row+i, col, 'Lines')
+        i = 0
+        for ligne in mylist:
             compte = 1
             for line in docs:
-                sheet.write(row+i, col+compte, i)
+                sheet.write(row+i, col, ligne)
+                sheet.write(row+i, col+compte, line['get_lines'][i][0])
                 compte = compte + 1
+            i +=1
                 
         #bold = workbook.add_format({'bold': True})
         #sheet.write(0, 0, obj.name, bold)
