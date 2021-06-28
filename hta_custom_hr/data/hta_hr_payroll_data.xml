@@ -175,7 +175,7 @@ result = BASE
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = BASE + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HS15 + HS50 + HS75 + HS100 + PREND + ICP + IL + ICG + PAMCI
+result = BASE + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HSUP + HS15 + HS50 + HS75 + HS100 + PREND + ICP + IL + ICG + PAMCI
         </field>
     </record>
     <!-- Regle de calcul Prime anciennete-->
@@ -434,6 +434,41 @@ result = (BASE)/173.33
     </record>
     
 <!-- Regle de calcul heure sup-->
+    <record id="hr_salary_rule_overtime" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Total Overtime</field>
+        <field name="code">HSUP</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids: 
+        if line.code == 'WORK700':
+            result = line.amount
+        </field>
+    </record>
+<!-- Regle de calcul heure sup-->
+    <record id="hr_salary_rule_work_hours" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Total Work Hours</field>
+        <field name="code">WORK</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids:
+        result += line.number_of_hours
+        </field>
+    </record>
+    
     <record id="hr_salary_rule_hs15" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
         <field name="name">Heure Supplementaire 15%</field>
