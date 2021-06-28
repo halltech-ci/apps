@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mail','portal', 'utm'],
+    'depends': ['sale_management','project','mail','portal', 'utm'],
 
     # always loaded
     'data': [
