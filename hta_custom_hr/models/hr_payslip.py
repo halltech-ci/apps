@@ -12,6 +12,12 @@ class HrPayslip(models.Model):
         return self.contract_id.salaire_base
     
     slip_month = fields.Char(string='Slip Month', store=True, compute='compute_slip_month')
+    worked_hours = fields.Float(string="Worked Hours", compute="_compute_worked_hours")
+    
+    @api.depends('date_from', 'date_to')
+    def _compute_worked_hours(self):
+        for slip in self:
+            slip.worked_hours = slip.contract_id._get_work_hours(slip.date_from, slip.date_to)[1]
     
     #check unique payslip for employee for a given date
     """@api.constrains('slip_month', 'employee_id')

@@ -463,9 +463,26 @@ if payslip.worked_days_line_ids:
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = 0
+unpaid = payslip.struct_id.unpaid_work_entry_type_ids
 if payslip.worked_days_line_ids:
     for line in payslip.worked_days_line_ids:
-        result += line.number_of_hours
+        if line.work_entry_type_id not in unpaid : 
+            result += line.number_of_hours
+        </field>
+    </record>
+    
+    <!-- Regle de calcul heure sup-->
+    <record id="hr_salary_rule_contract_work_hours" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Contract Work Hours</field>
+        <field name="code">CWORK</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.worked_hours
         </field>
     </record>
     

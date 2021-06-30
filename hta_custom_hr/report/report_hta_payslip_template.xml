@@ -473,7 +473,10 @@
                                 <tr style="border: 1px solid black">
                                     <td class='text-left' colspan='4'>Heures travaillées:</td>
                                     <td><span t-esc="duration" t-options='{"widget": "float", "precision": 0}'/></td>
-                                    <td class="text-center"><span t-esc="lines.get('WORK')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center">
+                                        <span t-esc="lines.get('WORK')[1]" t-options='{"widget": "float", "precision": 0}'/><span>/</span>
+                                        <span t-esc="lines.get('CWORK')[1]" t-options='{"widget": "float", "precision": 0}'/>
+                                    </td>
                                     <td colspan="2">Acquis N-1:</td>
                                     <td colspan="2" class="text-center"><span t-esc="lines.get('TCOTPA')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                 </tr>
