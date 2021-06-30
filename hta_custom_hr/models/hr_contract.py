@@ -3,20 +3,6 @@
 from odoo import models, fields, api
 
 
-# class hta_custom_hr(models.Model):
-#     _name = 'hta_custom_hr.hta_custom_hr'
-#     _description = 'hta_custom_hr.hta_custom_hr'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
-
 class HrContract(models.Model):
     _inherit = "hr.contract"
     
@@ -35,7 +21,6 @@ class HrContract(models.Model):
     prime_responsabilite = fields.Monetary(string="Responsabilité")
     prime_rendement = fields.Monetary(string="Prime de rendement")
     prime_salissure = fields.Monetary(string="Salissure")
-    #prime_anciennete = fields.Monetary(string="Ancienneté", compute='_compute_anciennete')
     gratification = fields.Monetary(string="Gratification")
     autres_avantages = fields.Monetary(string="Autres Avantages")
     conges_payes = fields.Monetary(string="Congés Payés")
@@ -43,5 +28,9 @@ class HrContract(models.Model):
     salaire_base = fields.Monetary(string="Salary Base")
     avs = fields.Monetary(string="Avances et  Acomptes perçus")
     partner_id = fields.Many2one('res.partner', string="Partner")
+    holidays = fields.Float(string='Paid Time Off',
+        help="Number of days of paid leaves the employee gets per year."
+    )
+    communication_flotte = fields.Monetary(string="Coût Communication Flotte")
+    #Traitement special AVS, pret
     
-   

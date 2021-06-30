@@ -1,0 +1,54 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="sale_order_view_inherit">
+        <field name="name">sale.order.inherit.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert sale order object-->
+          <xpath expr="//sheet/group" position="after">
+              <group>
+                  <field name="description"/>
+              </group>
+          </xpath>
+          <!-- Insert sale quotation recipient-->
+          <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
+            <field name="sale_order_recipient"/>
+            <field name='project_code'/>
+          </xpath>
+          
+          <xpath expr="//sheet/group/group" position="inside">
+            <field name="project_id"/>
+            <field name="sale_order_type"/>
+          </xpath>
+          <!-- Adding product_code-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='product_id']" position="before">
+            <field name="product_code"/>
+          </xpath>
+            
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="before">
+            <field name="product_code"/>
+          </xpath>
+        
+          <!-- Adding custom field line_subtotal in sale_order_line-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='price_unit']" position="after">
+            <field name="line_subtotal"/>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+            <field name="line_subtotal"/>
+          </xpath>
+          <!-- Adding product_cost in sale order-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/div[@name='ordered_qty']/field[@name='product_uom_qty']" position="after">
+            <field name="product_cost"/>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+            <field name="product_cost"/>
+          </xpath>
+          <!-- Adding custom field sale_margin in sale order-->
+          <xpath expr="//field[@name='amount_tax']" position="after">
+                <field name="sale_margin" />
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

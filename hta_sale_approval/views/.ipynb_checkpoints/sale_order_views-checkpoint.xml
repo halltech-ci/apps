@@ -1,0 +1,38 @@
+<odoo>
+  <data>
+    <record id="view_order_form_extends" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='action_confirm']" position="replace">
+                <button name="action_confirm" states="approve, sent" string="Confirm"
+                        class="btn-primary o_sale_confirm" type="object"/>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send'][1]" position="attributes">
+                <attribute name="states">approve</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="replace">
+                <button name="action_cancel" states="draft,sent" type="object"
+                        string="Cancel"/>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button name="ask_for_approval" 
+                        states="draft,waiting_for_approval" 
+                        type="object" 
+                        class="oe_highlight"
+                        string="Ask for approval"
+                />
+                <button name="action_approve" 
+                        states="waiting_for_approval" 
+                        type="object" 
+                        class="oe_highlight"
+                        string="Approve"
+                />
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

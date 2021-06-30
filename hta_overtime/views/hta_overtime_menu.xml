@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<odoo>
+    <menuitem
+        name="Overtimes"
+        id="menu_hr_overtime_root"
+        sequence="95"
+        groups="base.group_user"/>
+    
+    <menuitem
+        id="menu_hr_overtimes_my_overtimes"
+        name="My Overtimes"
+        parent="menu_hr_overtime_root"
+        action="hta_overtime.hr_overtime_action_window"
+        sequence="1"/>
+</odoo>

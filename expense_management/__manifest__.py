@@ -34,6 +34,11 @@
         #Menu
         'views/res_config_settings_views.xml',
         'views/expense_management_menu.xml',
+        #views
+        'views/account_bank_statement_views.xml',
+        'views/product_template_views.xml',
+        #data
+        'data/mail_template.xml',
         
     ],
     # only loaded in demonstration mode

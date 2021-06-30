@@ -37,8 +37,9 @@
         'views/views.xml',
         'views/templates.xml',
         'views/purchase_order_report.xml',
-        'views/sale_order_report.xml',
+        #'views/sale_order_report.xml',
         'views/account_cash_form_view.xml',
+        'views/hr_salary_rule_views.xml',
         #'views/sale_order_views.xml',
         #report
         'report/template_report_project_report.xml',

@@ -12,6 +12,7 @@
                     class="oe_highlight"
             />
             </header>
+            <field name='company_id' invisible='1'/>
         </field>
         <!-- <button name="%(custom_report.create_cash_report_wizard)d" string="Edit Report"type="action" class="oe_highlight"
             />-->

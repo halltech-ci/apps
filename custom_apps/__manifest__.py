@@ -17,14 +17,12 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale',
-                'hta_custom_project', 
-                'sale_order_secondary_unit',
+    'depends': ['hta_custom_sale',
+                #'sale_order_secondary_unit',
                 ],
-
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
@@ -35,8 +33,7 @@
         'views/account_move_views.xml',
         'views/account_account_views.xml',
         'views/project_views.xml',
-        'views/sale_order_views.xml',
-        'views/sale_order_line_views.xml',
+        #'views/sale_order_views.xml',
         #data sequence
         'data/sale_ir_sequence.xml',
         'data/purchase_ir_sequence.xml',
