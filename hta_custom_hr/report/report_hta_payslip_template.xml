@@ -484,7 +484,7 @@
                                     <td class='text-left' colspan='4'>Salaire Brut:</td>
                                     <td></td>
                                     <td class="text-center"><span t-esc="lines.get('SBRUT')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
-                                    <td colspan="2">Pris:</td>
+                                    <td colspan="2">Pris: <span t-esc="lines.get('CONGES')[1]" t-options='{"widget": "float", "precision": 0}'/> Jours</td>
                                     <td colspan="2" class='text-center'><strong>NET A PAYER</strong></td>
                                 </tr>
                                 <tr style="border: 1px solid black">

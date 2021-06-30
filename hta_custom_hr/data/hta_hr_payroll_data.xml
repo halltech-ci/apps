@@ -432,8 +432,27 @@ result = contract.prime_transport
 result = (BASE)/173.33
         </field>
     </record>
-    
-<!-- Regle de calcul heure sup-->
+<!-- Regle de calcul conge paye-->
+    <record id="hr_salary_rule_legal_leave" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Legal Leave</field>
+        <field name="code">CONGES</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids: 
+        if line.code == 'LEAVE120':
+            result = line.number_of_days
+        </field>
+    </record>
+
+
+    <!-- Regle de calcul heure sup-->
     <record id="hr_salary_rule_overtime" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
         <field name="name">Total Overtime</field>
@@ -482,7 +501,10 @@ if payslip.worked_days_line_ids:
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = payslip.worked_hours
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids:
+        result += line.number_of_hours
         </field>
     </record>
     
