@@ -117,6 +117,7 @@
     </record>
 
     <menuitem id="report_root"
+              web_icon="report_module,static/src/icon/odoo_icon.png"
               name="Rapport"
               sequence="10"/>
     <menuitem id="report_root_create"
