@@ -27,6 +27,7 @@
                'hr_payroll_account',
                'purchase_request_custom',
                'sale_management',
+                'report_xlsx',
                #'sale_order_secondary_unit',
                ],
 
@@ -48,6 +49,7 @@
         'report/template_report_etat_tva_report.xml',
         'report/template_report_balance_analytic_report.xml',
         'report/template_report_cash_report.xml',
+        'report/template_report_result_xlsx_report.xml',
         
         #wizard
         'wizard/wizard_project_project_views.xml',

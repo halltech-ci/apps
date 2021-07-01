@@ -6,8 +6,10 @@
       <field name="arch" type="xml">
         <tree>
           <field name="date_edit"/>
+          <field name="reference"/>
           <field name="user_id"/>
           <field name="title" string="Titre"/>
+          <field name="client"/>
         </tree>
       </field>
     </record>
@@ -33,6 +35,16 @@
                         <field name="date_edit"/>
                     </group>
                     <group>
+                        <field name="type"/>
+                        <field name="client"
+                               attrs="{'invisible': [('type', 'not in', ['outside',])]}"
+                               groups="hr.group_hr_user"/>
+                    </group>
+                    <group>
+                        <field name="sale_id"/>
+                        <field name="project_id"/>
+                    </group>
+                    <group>
                         <field name="user_id"/>
                         <field name="email_id"/>
                         <field name="company_id"/>
@@ -49,13 +61,48 @@
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
                 </div>
             </form>
         </field>
     </record>
+        <record id="view_report_filter" model="ir.ui.view">
+        <field name="name">report.list.select</field>
+        <field name="model">report.hta</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Report search">
+                <field name="title" string="Title Report"
+                       filter_domain="['|', '|', ('title', 'ilike', self), ('client', 'ilike', self), ('user_id', 'ilike', self)]"/>
+                <field name="client" operator="child_of"/>
+                <field name="user_id"/>
+                <filter string="Mes Rapport" domain="[('user_id', '=', uid)]" name="my_report_filter"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Report Person" name="reportperson" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter name="customer" string="Partner" domain="[]" context="{'group_by': 'client'}"/>
+                    <filter string="Report Date" name="report_month" domain="[]" context="{'group_by': 'date_edit'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="report_view_search_inherit_quotation" model="ir.ui.view">
+        <field name="name">report.search.inherit.list</field>
+        <field name="model">report.hta</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="report_module.view_report_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_report_filter']" position="replace">
+
+                <filter string="My Report" name="my_report" domain="[('user_id', '=', uid)]"/>
+                <separator/>
+                <filter string="Create Date" name="filter_create_date" date="create_date"/>
+            </xpath>
+        </field>
+    </record>
+
 
     <record id="report_action" model="ir.actions.act_window">
         <field name="name">Rapport</field>
@@ -70,6 +117,7 @@
     </record>
 
     <menuitem id="report_root"
+              web_icon="report_module,static/src/icon/odoo_icon.png"
               name="Rapport"
               sequence="10"/>
     <menuitem id="report_root_create"
