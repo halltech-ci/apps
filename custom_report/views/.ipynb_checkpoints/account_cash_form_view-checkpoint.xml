@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bank_statement_form_inherit" model="ir.ui.view">
+        <field name="name">bank_statement_views</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form" />
+        <field name="arch" type="xml">
+            <header>
+                <button name="button_cash_report"
+                    string="Rapport de Caisse"
+                    type="object"
+                    class="oe_highlight"
+            />
+            </header>
+            <field name='company_id' invisible='1'/>
+        </field>
+        <!-- <button name="%(custom_report.create_cash_report_wizard)d" string="Edit Report"type="action" class="oe_highlight"
+            />-->
+    </record>
+</odoo>

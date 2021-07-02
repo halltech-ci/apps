@@ -33,6 +33,14 @@
                                                 <t t-esc="doc.date_edit"/>
                                             </td>
                                         </tr>
+                                        <tr t-if="doc.client">
+                                            <th scope="row" class="text-center">
+                                                Client
+                                            </th>
+                                            <td colspan="2" class="text-center">
+                                                <t t-esc="doc.client.name"/>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <th scope="row" class="text-center">
                                                 Objet
