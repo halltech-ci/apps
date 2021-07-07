@@ -11,23 +11,33 @@
                     type="object"
                     class="oe_highlight"
                     states="draft"
+                    groups="expense_management.group_expense_user"
+            />
+            
+            <button name="to_validate"
+                    string="Valider"
+                    type="object"
+                    class="oe_highlight"
+                    states="submit"
                     groups="expense_management.group_expense_valider"
             />
             <button name="button_to_approve"
                     string="To Approve"
                     type="object"
                     class="oe_highlight"
-                    states="submit"
+                    states="to_validate"
+                    groups="expense_management.group_expense_valider"
             />
             <button name="button_approve"
-                    string="Approve"
+                    string="Approver"
                     type="object"
                     class="oe_highlight"
                     states="to_approve"
                     groups="expense_management.group_expense_approver_1"
             />
+            
             <button name="action_post"
-                    string="Post"
+                    string="Payer"
                     type="object"
                     class="oe_highlight"
                     states="approve"
@@ -42,7 +52,7 @@
             />
             <field name="state"
                  widget="statusbar"
-                 statusbar_visible="draft,to_approve,approved,post,cancel"
+                 statusbar_visible="draft,submit,validate,to_approve,approved,post,cancel"
                  statusbar_colors='{"approved":"blue"}'
              />
           </header>
@@ -134,7 +144,7 @@
          </field>
      </record>
     
-     <!-- Expense search view-->
+     <!-- Expense line search view-->
      <record id="view_expense_line_filter" model="ir.ui.view">
             <field name="name">expense.line.filter</field>
             <field name="model">expense.line</field>

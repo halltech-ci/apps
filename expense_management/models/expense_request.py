@@ -8,6 +8,7 @@ class ExpenseRequest(models.Model):
     _name = 'expense.request'
     _description = 'Custom expense request'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order = 'date_to desc'
     
     @api.model
     def _default_employee_id(self):
@@ -23,8 +24,9 @@ class ExpenseRequest(models.Model):
         ('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
-        ('post', 'Posted'),
-        ('done', 'Paid'),
+        ('to_validate', 'Validate'),
+        ('post', 'Paid'),
+        #('done', 'Paid'),
         ('cancel', 'Refused')
     ], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
     """employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, check_company=True)"""
@@ -36,12 +38,12 @@ class ExpenseRequest(models.Model):
     date = fields.Datetime(readonly=True, default=fields.Datetime.now, string="Date")
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env.company.currency_id)
-    total_amount = fields.Monetary('Total Amount', currency_field='currency_id', compute='_compute_amount', store=True)
+    total_amount = fields.Monetary('Total Amount', currency_field='currency_id', compute='_compute_amount', store=True, tracking=True)
     analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account')
     project_id = fields.Many2one('project.project', string='Projet')
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
     journal = fields.Many2one('account.journal', string='Journal', required=True, domain=[('type', 'in', ['cash', 'bank'])], default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
-    statement_id = fields.Many2one('account.bank.statement', string="Caisse")
+    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True)
     move_id = fields.Many2one('account.move', string='Account Move')
     is_expense_approver = fields.Boolean(string="Is Approver",
         compute="_compute_is_expense_approver",
@@ -154,10 +156,17 @@ class ExpenseRequest(models.Model):
             line.action_approve()
         return self.write({"state": "approve"})
     
+    def to_validate(self):
+        for line in self.line_ids:
+            line.action_validate()
+        return self.write({'state': 'validate'})
+    
     def button_rejected(self):
         self.is_approver_check()
+        if any(self.filtered(lambda expense: expense.state in ('approve', 'post'))):
+            raise UserError(_('You cannot reject expense which is approve or paid!'))
         self.mapped("line_ids").do_cancel()
-        return self.write({"state": "cancel"})
+        return self.write({"state": "draft"})
     
     def to_approve_allowed_check(self):
         for rec in self:
@@ -188,5 +197,10 @@ class ExpenseRequest(models.Model):
     def write(self, vals):
         res = super(ExpenseRequest, self).write(vals)
         return res
+    
+    def unlink(self):
+        if any(self.filtered(lambda expense: expense.state not in ('draft', 'cancel', 'submitted'))):
+            raise UserError(_('You cannot delete a expense which is not draft, cancelled or submitted!'))
+        return super(ExpenseRequest, self).unlink()
     
     
