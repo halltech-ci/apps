@@ -16,6 +16,7 @@ REQUEST_STATE = [('draft', 'Draft'),
         ('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
+        ('to_validate', 'Validate'),
         ('post', 'Posted'),
         ('done', 'Paid'),
         ('cancel', 'Refused')
@@ -24,6 +25,7 @@ REQUEST_STATE = [('draft', 'Draft'),
 class ExpenseLine(models.Model):
     _name = 'expense.line'
     _description = 'Custom expense line'
+    _order = 'date desc'
     
     @api.model
     def _default_employee_id(self):
@@ -77,17 +79,20 @@ class ExpenseLine(models.Model):
     def action_approve(self):
         self.request_state = "approve"  
     
+    def to_approve(self):
+        self.request_state = "validate"
+    
     def action_post(self):
         self.request_state = "post"
         
     def do_cancel(self):
         """Actions to perform when cancelling a expense line."""
-        self.write({"request_state": 'cancel'})
+        self.write({"request_state": 'draft'})
     
     def unlink(self):
         for expense in self:
-            if expense.request_state in ['done', 'approved']:
-                raise UserError(_('You cannot delete a posted or approved expense.'))
+            if expense.request_state in ['done', 'approved', 'post']:
+                raise UserError(_('You cannot delete expense line wich is posted, approved or done.'))
         return super(ExpenseLine, self).unlink()
 
     def write(self, vals):
