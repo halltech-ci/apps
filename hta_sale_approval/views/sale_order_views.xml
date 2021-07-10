@@ -16,6 +16,17 @@
                         attrs="{'invisible': [('state', 'not in', ['approve', 'sent'])]}"
                 />
             </xpath>
+            <xpath expr="//button[@name='action_confirm'][2]" position="replace">
+                <button name="action_confirm"  
+                        string="Confirm"
+                        class="btn-primary o_sale_confirm" 
+                        type="object"
+                        attrs="{'invisible': [('state', 'not in', ['approve', 'sent'])]}"
+                />
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'in', ['done', 'approve', 'sale'])]}</attribute>
+            </xpath>
             <xpath expr="//button[@name='action_quotation_send'][1]" position="attributes">
                 <attribute name="states">approve</attribute>
             </xpath>
