@@ -53,4 +53,6 @@ class SaleOrder(models.Model):
         #mail_template = self.env.ref('hta_sale_approval.email_template_sale_approval_mail')
         #mail_template.send_mail(self.id,force_send=True)
         return True
+    
+    
         
