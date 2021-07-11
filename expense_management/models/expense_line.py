@@ -37,6 +37,7 @@ class ExpenseLine(models.Model):
         res = [('address_home_id.property_account_payable_id', '!=', False), ('id', 'in', employee_ids)]
         
         return res
+
     @api.model
     def _get_analytic_domain(self):
         project_ids = self.env['project.project'].search([]).ids
@@ -51,6 +52,9 @@ class ExpenseLine(models.Model):
     amount = fields.Float("Montant", required=True, digits='Product Price')
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, 
                                  default=lambda self: self.env.company
+                                )
+    partner_id = fields.Many2one('res.partner', string="Fournisseur", 
+                                 #domain=lambda self: self._get_employee_id_domain()
                                 )
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange', related='request_id.requested_by')
     #payment_mode = fields.Selection(selection=PAYMENT_MODE, string="Payment Mode", default='justify')
