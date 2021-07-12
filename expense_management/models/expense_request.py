@@ -8,7 +8,7 @@ class ExpenseRequest(models.Model):
     _name = 'expense.request'
     _description = 'Custom expense request'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _order = 'date_to desc'
+    _order = 'date desc'
     
     @api.model
     def _default_employee_id(self):
