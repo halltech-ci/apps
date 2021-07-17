@@ -18,6 +18,12 @@ class PartnerXlsx(models.AbstractModel):
             order_format = workbook.add_format(
                 {'bg_color': 'white', 'align': 'left', 'font_size': 14,
                     'font_color': 'black', 'border': 1})
+            description_format = workbook.add_format(
+                {'bg_color': 'white', 'align': 'left', 'font_size': 14,
+                    'font_color': 'black', 'border': 1})
+            destination_format = workbook.add_format(
+                {'bg_color': 'white', 'align': 'left', 'font_size': 14,
+                    'font_color': 'black',})
             table_header_left = workbook.add_format(
                 {'bg_color': 'black', 'align': 'left', 'font_size': 12,
                     'font_color': 'white'})
@@ -32,12 +38,12 @@ class PartnerXlsx(models.AbstractModel):
                 'align': 'center', 'font_size': 13, 'bold': True, 'border': 1})
             customer_format = workbook.add_format({
                 'align': 'center', 'font_size': 13, 'border': 1})
+            reference_format = workbook.add_format({
+                'align': 'left', 'font_size': 12,})
             table_left = workbook.add_format(
                 {'align': 'left', 'bold': True, 'border': 1})
             table_right = workbook.add_format(
                 {'align': 'right', 'bold': True, 'border': 1})
-            
-            
             
             
             if obj.partner_id.name:
@@ -57,17 +63,135 @@ class PartnerXlsx(models.AbstractModel):
             worksheet = workbook.add_worksheet(obj.name)
             worksheet.set_column('A:A', 40)
             worksheet.merge_range('A1:F3', obj.company_id.name, company_format)
-            worksheet.merge_range('E4:F5', 'Customer', customer_header_format)
+            worksheet.merge_range('E4:F5', customer_data, customer_header_format)
             worksheet.merge_range('A6:F6', '')
-            worksheet.merge_range('A7:F8', 'Order :- ' + obj.name, order_format)
+            worksheet.merge_range('A7:F8', 'DEVIS/QUOTATION : ' + obj.name, order_format)
             worksheet.merge_range('A9:F9', '')
-            
+            worksheet.merge_range('A10:B10', 'Date : ' + str(obj.date_order.date()), destination_format)
+            worksheet.merge_range('C10:D10', 'Destinataire : ' + obj.sale_order_recipient, destination_format)
+            if obj.project_code:
+                worksheet.merge_range('E10:F10', 'Projet : ' + str(obj.project_code), destination_format)
+            worksheet.merge_range('A11:F11', '')
+            if obj.client_order_ref:
+                worksheet.merge_range(
+                    'A12:C12', 'Référence Client : ' +obj.client_order_ref, reference_format)
+                if obj.payment_term_id:
+                    worksheet.merge_range(
+                        'D12:F12', 'Payment Terms: ' +obj.payment_term_id.name, reference_format)
+            elif obj.payment_term_id:
+                worksheet.merge_range(
+                    'D12:F12', 'Payment Terms: ' +obj.payment_term_id.name, reference_format)
+            worksheet.merge_range('A13:I13', '')
+            worksheet.merge_range('A14:F14', 'Objet : ' + str(obj.description), description_format)
             worksheet.set_column('B:B', 15)
             worksheet.set_column('C:C', 15)
             worksheet.set_column('D:D', 15)
             worksheet.set_column('E:E', 15)
             worksheet.set_column('F:F', 15)
-            #worksheet.set_row('A1:B3', 40)
+            row = 14
+            group = self.env.user.has_group(
+                'product.group_discount_per_so_line')
+            display_discount = any([l.discount for l in obj.order_line])
+            display_tax = any([l.tax_id for l in obj.order_line])
+            worksheet.write(row, 0, 'Product', table_header_left)
+            worksheet.write(row, 1, 'Quantity', table_header_right)
+            worksheet.write(row, 2, 'Unit Price', table_header_right)
+            if display_discount and group:
+                worksheet.write(row, 3, 'Disc.%', table_header_right)
+                if display_tax:
+                    worksheet.write(row, 4, 'Taxes', table_header_right)
+                    worksheet.write(row, 5, 'Amount', table_header_right)
+                else:
+                    worksheet.write(row, 4, 'Amount', table_header_right)
+            elif display_tax:
+                worksheet.write(row, 3, 'Taxes', table_header_right)
+                worksheet.write(row, 4, 'Amount', table_header_right)
+            else:
+                worksheet.write(row, 3, 'Amount', table_header_right)
+            row += 1
+
+            for line in obj.order_line:
+                worksheet.write(row, 0, line.name, table_row_left)
+                worksheet.write(row, 1, line.product_uom_qty, table_row_right)
+                worksheet.write(row, 2, line.price_unit, table_row_right)
+                if display_discount and group:
+                    worksheet.write(row, 3, line.discount, table_row_right)
+                    if display_tax and line.tax_id:
+                        worksheet.write(
+                            row, 4, line.tax_id.name, table_row_right)
+                        worksheet.write(
+                            row, 5, line.price_subtotal, table_row_right)
+                        row += 1
+                    elif not line.tax_id and display_tax:
+                        worksheet.write(row, 4, '0', table_row_right)
+                        worksheet.write(
+                            row, 5, line.price_subtotal, table_row_right)
+                        row += 1
+                    else:
+                        worksheet.write(
+                            row, 4, line.price_subtotal, table_row_right)
+                        row += 1
+                elif display_tax:
+                    if display_tax and line.tax_id:
+                        worksheet.write(
+                            row, 3, line.tax_id.name, table_row_right)
+                        worksheet.write(
+                            row, 4, line.price_subtotal, table_row_right)
+                        row += 1
+                    elif not line.tax_id:
+                        worksheet.write(row, 3, '0', table_row_right)
+                        worksheet.write(
+                            row, 4, line.price_subtotal, table_row_right)
+                        row += 1
+                    else:
+                        worksheet.write(
+                            row, 3, line.price_subtotal, table_row_right)
+                        row += 1
+                else:
+                    worksheet.write(
+                        row, 3, line.price_subtotal, table_row_right)
+                    row += 1
+            if display_discount and group and display_tax:
+                worksheet.merge_range(row, 0, row, 5, '')
+                worksheet.write(row + 1, 4, 'Untaxed Amount', table_left)
+                worksheet.write(row + 1, 5, obj.amount_untaxed, table_right)
+                worksheet.write(row + 2, 4, 'Taxes', table_left)
+                worksheet.write(row + 2, 5, obj.amount_tax, table_right)
+                worksheet.write(row + 3, 4, 'Total', table_left)
+                worksheet.write(row + 3, 5, obj.amount_total, table_right)
+            elif not group and not display_tax and not display_discount:
+                worksheet.merge_range(row, 0, row, 3, '')
+                worksheet.write(row + 1, 2, 'Subtotal', table_left)
+                worksheet.write(row + 1, 3, obj.amount_untaxed, table_right)
+                worksheet.write(row + 2, 2, 'Total', table_left)
+                worksheet.write(row + 2, 3, obj.amount_total, table_right)
+            elif not group and not display_tax:
+                worksheet.merge_range(row, 0, row, 3, '')
+                worksheet.write(row + 1, 2, 'Subtotal', table_left)
+                worksheet.write(row + 1, 3, obj.amount_untaxed, table_right)
+                worksheet.write(row + 2, 2, 'Total', table_left)
+                worksheet.write(row + 2, 3, obj.amount_total, table_right)
+            elif not display_tax and not display_discount:
+                worksheet.merge_range(row, 0, row, 3, '')
+                worksheet.write(row + 1, 2, 'Subtotal', table_left)
+                worksheet.write(row + 1, 3, obj.amount_untaxed, table_right)
+                worksheet.write(row + 2, 2, 'Total', table_left)
+                worksheet.write(row + 2, 3, obj.amount_total, table_right)
+            elif group and display_discount:
+                worksheet.merge_range(row, 0, row, 4, '')
+                worksheet.write(row + 1, 3, 'Subtotal', table_left)
+                worksheet.write(row + 1, 4, obj.amount_untaxed, table_right)
+                worksheet.write(row + 2, 3, 'Total', table_left)
+                worksheet.write(row + 2, 4, obj.amount_total, table_right)
+            elif display_tax:
+                worksheet.merge_range(row, 0, row, 4, '')
+                worksheet.write(row + 1, 3, 'Subtotal', table_left)
+                worksheet.write(row + 1, 4, obj.amount_untaxed, table_right)
+                worksheet.write(row + 2, 3, 'Taxes', table_left)
+                worksheet.write(row + 2, 4, obj.amount_tax, table_right)
+                worksheet.write(row + 3, 3, 'Total', table_left)
+                worksheet.write(row + 3, 4, obj.amount_total, table_right)
+            
             """
             worksheet.merge_range('A2:F3', obj.company_id.name, company_format)
             worksheet.merge_range('A4:F4', '')
