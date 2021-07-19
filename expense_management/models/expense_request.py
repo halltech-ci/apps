@@ -24,7 +24,7 @@ class ExpenseRequest(models.Model):
         ('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
-        ('to_validate', 'Validate'),
+        ('validate', 'Validate'),
         ('post', 'Paid'),
         #('done', 'Paid'),
         ('cancel', 'Refused')
