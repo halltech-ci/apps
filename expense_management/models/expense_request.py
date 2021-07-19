@@ -22,9 +22,9 @@ class ExpenseRequest(models.Model):
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
         ('submit', 'Submitted'),
+        ('validate', 'Validate'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
-        ('validate', 'Validate'),
         ('post', 'Paid'),
         #('done', 'Paid'),
         ('cancel', 'Refused')
