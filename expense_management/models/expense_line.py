@@ -88,6 +88,9 @@ class ExpenseLine(models.Model):
     
     def action_post(self):
         self.request_state = "post"
+    
+    def action_validate(self):
+        self.request_state = "validate"
         
     def do_cancel(self):
         """Actions to perform when cancelling a expense line."""
