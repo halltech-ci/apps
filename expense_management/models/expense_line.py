@@ -16,7 +16,7 @@ REQUEST_STATE = [('draft', 'Draft'),
         ('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
-        ('to_validate', 'Validate'),
+        ('validate', 'Validate'),
         ('post', 'Posted'),
         ('done', 'Paid'),
         ('cancel', 'Refused')

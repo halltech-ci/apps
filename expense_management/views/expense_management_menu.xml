@@ -79,6 +79,7 @@
                       <field name="date" readonly='True'/>
                       <field name="requested_by" readonly='True'/>
                       <field name="total_amount" readonly='True'/>
+                      <field name="balance_amount" readonly='True' attrs="{'invisible': [('state','!=', 'to_approve')]}"/>
                   </group>
               </group>
               <notebook>
