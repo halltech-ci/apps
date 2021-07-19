@@ -49,6 +49,7 @@ class ExpenseRequest(models.Model):
         compute="_compute_is_expense_approver",
     )
     expense_approver = fields.Many2one('res.users', string="Valideur")
+    balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
     
     def send_validation_mail(self):
         self.ensure_one()
@@ -60,7 +61,7 @@ class ExpenseRequest(models.Model):
     @api.depends("state")
     def _compute_to_approve_allowed(self):
         for rec in self:
-            rec.to_approve_allowed = rec.state == "submit"
+            rec.to_approve_allowed = rec.state == "validate"
     
     """This method will check approver limit"""
     @api.depends('total_amount', 'company_id.approve_limit_1', 'company_id.approve_limit_2')
