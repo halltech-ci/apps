@@ -16,6 +16,7 @@ REQUEST_STATE = [('draft', 'Draft'),
         ('submit', 'Submitted'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
+        ('validate', 'Validate'),
         ('post', 'Posted'),
         ('done', 'Paid'),
         ('cancel', 'Refused')
@@ -24,6 +25,7 @@ REQUEST_STATE = [('draft', 'Draft'),
 class ExpenseLine(models.Model):
     _name = 'expense.line'
     _description = 'Custom expense line'
+    _order = 'date desc'
     
     @api.model
     def _default_employee_id(self):
@@ -35,6 +37,7 @@ class ExpenseLine(models.Model):
         res = [('address_home_id.property_account_payable_id', '!=', False), ('id', 'in', employee_ids)]
         
         return res
+
     @api.model
     def _get_analytic_domain(self):
         project_ids = self.env['project.project'].search([]).ids
@@ -49,6 +52,9 @@ class ExpenseLine(models.Model):
     amount = fields.Float("Montant", required=True, digits='Product Price')
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, 
                                  default=lambda self: self.env.company
+                                )
+    partner_id = fields.Many2one('res.partner', string="Fournisseur", 
+                                 #domain=lambda self: self._get_employee_id_domain()
                                 )
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange', related='request_id.requested_by')
     #payment_mode = fields.Selection(selection=PAYMENT_MODE, string="Payment Mode", default='justify')
@@ -77,17 +83,23 @@ class ExpenseLine(models.Model):
     def action_approve(self):
         self.request_state = "approve"  
     
+    def to_approve(self):
+        self.request_state = "validate"
+    
     def action_post(self):
         self.request_state = "post"
+    
+    def action_validate(self):
+        self.request_state = "validate"
         
     def do_cancel(self):
         """Actions to perform when cancelling a expense line."""
-        self.write({"request_state": 'cancel'})
+        self.write({"request_state": 'draft'})
     
     def unlink(self):
         for expense in self:
-            if expense.request_state in ['done', 'approved']:
-                raise UserError(_('You cannot delete a posted or approved expense.'))
+            if expense.request_state in ['done', 'approved', 'post']:
+                raise UserError(_('You cannot delete expense line wich is posted, approved or done.'))
         return super(ExpenseLine, self).unlink()
 
     def write(self, vals):
