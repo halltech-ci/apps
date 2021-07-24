@@ -32,9 +32,9 @@
         "views/purchase_request_form_views.xml",
     ],
     # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    #'demo': [
+    #    'demo/demo.xml',
+    #],
     "installable": True,
     "post_init_hook": "assign_product_template",
 }
