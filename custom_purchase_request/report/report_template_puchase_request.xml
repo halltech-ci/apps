@@ -4,11 +4,11 @@
 <odoo>
     <template id="report_purchase_request_inhirit" inherit_id="purchase_request.report_purchase_request">
         
-                <!-- Specifications -->
+        <!-- Specifications -->
         <xpath expr="//table/thead/tr/th[7]" position="replace">
         </xpath>
         
-        <xpath expr="//table/tbody/tr/td[7]" position="replace">
+        <xpath expr="//table/tbody/tr/td[6]" position="replace">
         </xpath>
         <!--Analytic Account  -->
         <xpath expr="//table/thead/tr/th[2]" position='replace'>
