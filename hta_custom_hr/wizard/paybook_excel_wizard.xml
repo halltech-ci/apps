@@ -1,0 +1,38 @@
+<odoo>
+  <data>
+    <record id="paybook_excel_report_wizard" model="ir.ui.view" >
+        <field name="name">PayBook Excel Report</field>
+        <field name="model">paybook.xlsx.report</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="PayBook Report">
+                <group col="4">
+                    <field name="slip_month"/>
+                    <field name="salary_structure" required='1'/>
+                </group>
+                
+                <footer>
+                    <button name="print_xlsx" string="Excel" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+      
+    <act_window 
+        id="action_paybook_excel_report"
+        name="Livre de Paye"
+        res_model="paybook.xlsx.report"
+        view_mode="form"
+        target="new"
+    />
+    <menuitem 
+        id="menu_paybook_excel_report"
+        action="action_paybook_excel_report"
+        name = "Livre de Paie Excel"
+        sequence="13"
+        parent="account.account_reports_management_menu"
+        groups='hta_custom_hr.group_hr_paybook_report'
+    />
+  </data>
+</odoo>

@@ -25,6 +25,7 @@
                'account',
                'hr_payroll_account',
                'project',
+               'report_xlsx',
                ],
 
     # always loaded
@@ -44,7 +45,8 @@
         'report/report_hta_payslip_template.xml',
         'report/bulletin_paye_report.xml',
         'report/paybook_template.xml',
-        
+        'report/paybook_xlsx_report.xml',
+        'wizard/paybook_excel_wizard.xml',
         
         #Data
         'data/hta_hr_payroll_data.xml',
