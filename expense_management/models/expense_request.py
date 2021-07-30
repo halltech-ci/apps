@@ -51,6 +51,7 @@ class ExpenseRequest(models.Model):
     expense_approver = fields.Many2one('res.users', string="Valideur")
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
     
+    
     def send_validation_mail(self):
         self.ensure_one()
         template_id = self.env.ref('expense_management.expense_mail_template').id
@@ -153,6 +154,7 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
+        self.is_approve_check()
         for line in self.line_ids:
             line.action_approve()
         return self.write({"state": "approve"})
@@ -188,6 +190,17 @@ class ExpenseRequest(models.Model):
                         ". (%s)"
                     )
                     % rec.name
+                )
+    
+    def is_approve_check(self):
+        for rec in self:
+            if rec.balance_amount < rec.total_amount:
+                raise UserError(
+                    _(
+                        "Solde en caisse insuffisant pour payer cette note de frais "
+                        ". (%s)"
+                    )
+                    % rec.balance_amount
                 )
     
     @api.model
