@@ -20,8 +20,8 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale_management',
-               'hta_custom_project',
+    'depends': ['sale_order_general_discount',
+               'hta_custom_project','sign',
                ],
 
     # always loaded
@@ -33,6 +33,8 @@
         'views/sale_order_views.xml',
         #data
         'data/sale_ir_sequence.xml',
+        #Reports
+        'reports/sale_order_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
