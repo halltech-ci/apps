@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <!-- Changin VAT ID to N°CC-->
+        <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="replace">
+            <strong>
+                <div t-field="doc.partner_id"
+                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                <p t-if="doc.partner_id.vat"><t t-esc="doc.company_id.country_id.vat_label or 'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
+            </strong>
+        </xpath>
+        
         <!-- Delete initial position of signature-->
         <xpath expr="//div[@name='signature']" position="replace"></xpath>
         <!-- -->
@@ -24,7 +33,7 @@
         </xpath>
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">
-            <h2>
+            <h4>
             <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
                     <span t-if="doc.state not in ['draft','sent']">COMMANDE/ORDER :</span>
                     <span t-if="doc.state in ['draft','sent']">DEVIS/QUOTATION : </span>
@@ -33,7 +42,7 @@
                     <span>Pro-Forma </span>
                 </t>
                 <span t-field="doc.name"/>
-            </h2>
+            </h4>
         </xpath>
         <!--Ajout de champ destinataire dans devis-->
         <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.user_id.name']" position="after">
@@ -134,6 +143,13 @@
         <!-- Adding table border-->
         <xpath expr="//div[hasclass('page')]/table" position="attributes">
             <attribute name="class">table table-sm o_main_table table-bordered</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table" position="attributes">
+            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+        </xpath>
+        
+        <xpath expr="//div[hasclass('page')]" position="attributes">
+            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
         </xpath>
     </template>
 </odoo>
