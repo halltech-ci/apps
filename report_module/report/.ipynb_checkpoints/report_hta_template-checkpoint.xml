@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_hta_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.internal_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">
+                                                <img src='/report_module/static/src/img/halltec.png'
+                                                     style="height:190px;width:200px;"/>
+                                            </th>
+                                            <th scope="col" class="text-center">
+                                                <t t-esc="doc.title"/>
+                                            </th>
+                                            <th class="text-center">
+                                                <img src='/report_module/static/src/img/halltec.png'
+                                                     style="height:190px;width:200px;"/>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="text-center">
+                                                Date
+                                            </th>
+                                            <td colspan="2" class="text-center">
+                                                <t t-esc="doc.date_edit"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.client">
+                                            <th scope="row" class="text-center">
+                                                Client
+                                            </th>
+                                            <td colspan="2" class="text-center">
+                                                <t t-esc="doc.client.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center">
+                                                Objet
+                                            </th>
+                                            <td colspan="2" class="text-center">
+                                                <t t-esc="doc.objet"/>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center">
+                                                Rédacteur
+                                            </th>
+                                            <td colspan="2" class="text-center">
+                                                <h5>
+                                                    <t t-esc="doc.user_id.partner_id.name"/>
+                                                </h5>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                                <br/>
+                            </div>
+                            <br/>
+                            <div id="informations">
+                                <center>
+                                    <div class="text-center">
+                                        <strong><h3>NOTE DE SERVICE</h3></strong>
+                                        <p>
+                                            <span t-field="doc.note"/>
+                                        </p>
+                                    </div>
+                                    <div class="text-center">
+                                        <strong><h3>TRAVAIL A FAIRE</h3></strong>
+                                        <p>
+                                            <span t-field="doc.reste"/>
+                                        </p>
+                                    </div>
+                                    <div class="text-center">
+                                        <strong><h3>TRAVAIL BLOQUANT</h3></strong>
+                                        <p>
+                                            <span t-field="doc.bloquant"/>
+                                        </p>
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -35,6 +35,7 @@
         'data/sale_ir_sequence.xml',
         #Reports
         'reports/sale_order_report.xml',
+        'reports/sale_report_inherit.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

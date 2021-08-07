@@ -63,7 +63,7 @@
               <strong>Objet:</strong>
                  <span t-field="doc.description"/>
             </div>
-            <br></br>
+            <br></br><br></br>
         </xpath>
         <!-- Separate qty and unit-->
         <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_quantity']" position="replace">
