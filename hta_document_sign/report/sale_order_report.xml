@@ -11,14 +11,10 @@
                 </strong>
                 <div t-if="doc.user_id.sign_signature" class="mt32 ml64 mr4" name="signature">
                     <div class="offset-8">
-                        <strong>Signature</strong>
-                    </div>
-                    <div class="offset-8">
-                        <img t-att-src="image_data_uri(doc.user_id.sign_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                        <img t-att-src="image_data_uri(doc.user_id.sign_signature)" style="max-height: 4cm; max-width: 15cm;"/>
                     </div>
                 </div>
             </div>
         </xpath>
-       
     </template>
 </odoo>
