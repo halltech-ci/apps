@@ -21,7 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base_setup', 
-                'sale', 
+                'hta_custom_sale', 
                 'sales_team',
                #'hta_custom_sale',
                ],
