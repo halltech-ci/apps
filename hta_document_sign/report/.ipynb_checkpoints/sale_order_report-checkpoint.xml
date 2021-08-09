@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="inherit_report_saleorder_document_sign" inherit_id="sale.report_saleorder_document">
+    <template id="inherit_report_sale_order_document_sign" inherit_id="sale.report_saleorder_document">
         <!-- Delete initial position of signature-->
+        <xpath expr="//div[@name='signature']" position="replace"></xpath>
         <!-- -->
         <xpath expr="//p[@t-field='doc.note']" position="after">
             <div class="text-right">

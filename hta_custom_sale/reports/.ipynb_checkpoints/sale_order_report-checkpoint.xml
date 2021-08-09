@@ -2,7 +2,6 @@
 <odoo>
     <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
         <!-- Delete initial position of signature-->
-        <xpath expr="//div[@name='signature']" position="replace"></xpath>
         <!-- -->
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">
