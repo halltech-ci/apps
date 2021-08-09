@@ -22,6 +22,7 @@
     # any module necessary for this one to work correctly
     'depends': ['sale_order_general_discount',
                'hta_custom_project',
+                'sign',
                ],
 
     # always loaded
@@ -35,6 +36,7 @@
         'data/sale_ir_sequence.xml',
         #Reports
         'reports/sale_order_report.xml',
+        #'reports/sale_report_inherit.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

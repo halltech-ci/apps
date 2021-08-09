@@ -1,26 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
-        <!-- Delete initial position of signature-->
-        <xpath expr="//div[@name='signature']" position="replace"></xpath>
-        <!-- -->
-        <xpath expr="//p[@t-field='doc.note']" position="after">
-            <div class="text-right">
-                <strong>
-                    <span t-field="doc.user_id"/>
-                </strong>
-                <div t-if="doc.signature" class="mt32 ml64 mr4" name="signature">
-                    <div class="offset-8">
-                        <strong>Signature</strong>
-                    </div>
-                    <div class="offset-8">
-                        <img t-att-src="image_data_uri(doc.signature)" style="max-height: 4cm; max-width: 8cm;"/>
-                    </div>
-                    <div class="offset-8 text-center">
-                        <p t-field="doc.signed_by"/>
-                    </div>
-                </div>
-            </div>
+        <!-- Changin VAT ID to N°CC-->
+        <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="replace">
+            <strong>
+                <div t-field="doc.partner_id"
+                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                <p t-if="doc.partner_id.vat"><t t-esc="doc.company_id.country_id.vat_label or 'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
+            </strong>
         </xpath>
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">
@@ -54,7 +41,7 @@
               <strong>Objet:</strong>
                  <span t-field="doc.description"/>
             </div>
-            <br></br>
+            <br></br><br></br>
         </xpath>
         <!-- Separate qty and unit-->
         <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_quantity']" position="replace">
@@ -108,7 +95,10 @@
         <xpath expr="//p[@t-field='doc.note']" position="before">
             <div style="font-size:16px; padding-bottom:30px;">
                 <tr class="border-black">
-                    <td><span t-field="doc.amount_to_word"/></td>
+                    <td>
+                        <span t-field="doc.amount_to_word"/>
+                        <span> FRANCS CFA</span>
+                    </td>
                 </tr>
             </div>
         </xpath>
@@ -118,7 +108,7 @@
             <t t-if="current_subtotal != 0">
                 <tr class="is-subtotal text-right">
                     <td name="td_section_subtotal" colspan="99">
-                        <strong class="mr16">Subtotal</strong>
+                        <strong class="mr16">Sous Total</strong>
                         <span
                             t-esc="current_subtotal"
                                 t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
@@ -128,5 +118,16 @@
             </t>
         </xpath>
         
+        <!-- Adding table border-->
+        <xpath expr="//div[hasclass('page')]/table" position="attributes">
+            <attribute name="class">table table-sm o_main_table table-bordered</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table" position="attributes">
+            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+        </xpath>
+        
+        <xpath expr="//div[hasclass('page')]" position="attributes">
+            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+        </xpath>
     </template>
 </odoo>

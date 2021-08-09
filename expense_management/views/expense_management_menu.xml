@@ -84,7 +84,7 @@
               </group>
               <notebook>
                   <page string='Expense lines'>
-                      <field name="line_ids"  attrs="{'readonly': [('state', 'not in', ['draft', 'submit'])]}">
+                      <field name="line_ids"  attrs="{'readonly': [('state', 'in', ['approve', 'post',])]}">
                           <tree>
                               <field name='name'/>
                               <field name='date'/>
