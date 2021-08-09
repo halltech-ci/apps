@@ -50,6 +50,11 @@ class SaleOrder(models.Model):
     sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0)
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
     
+    @api.onchange('sale_margin')
+    def onchange_sale_margine(self):
+        for line in self.order_line:
+            line.line_margin = self.sale_margin            
+            
     def _compute_amount_to_word(self):
         for rec in self:
             rec.amount_to_word = str(self._num_to_words(rec.amount_total)).upper()
