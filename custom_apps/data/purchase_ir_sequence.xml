@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence for CM order -->
+        <record id="seq_purchase_DA_sequence" model="ir.sequence">
+            <field name="name">purchase DA Sequence</field>
+            <field name="code">purchase.da.sequence</field>
+            <field name="prefix">DA%(y)s-</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        <!-- Sequence for CM order -->
+        <record id="seq_purchase_DC_sequence" model="ir.sequence">
+            <field name="name">purchase DC Sequence</field>
+            <field name="code">purchase.dc.sequence</field>
+            <field name="prefix">DC%(y)s-</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        <!-- Sequence for CM order -->
+        <record id="seq_purchase_BC_sequence" model="ir.sequence">
+            <field name="name">Purchase BC Sequence</field>
+            <field name="code">purchase.bc.sequence</field>
+            <field name="prefix">BC%(y)s-</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        <!-- Sequence HALLTECH AFRICA -->
+        <record id="seq_halltech_purchase_sequence" model="ir.sequence">
+            <field name="name">Purchase BDC Sequence</field>
+            <field name="code">purchase.bdc.sequence</field>
+            <field name="prefix">BC%(y)s-</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+    </data>
+</odoo>

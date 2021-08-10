@@ -1,0 +1,523 @@
+<odoo>
+    <report id="account_result_report"
+        model="account.result.report.wizard"
+        string="Account Result Report"
+        report_type="qweb-pdf"
+        name="custom_report.account_result_report_view"
+        
+        menu="False"/>
+    <report id="account_result_generate_xlsx_report"
+        model="account.result.report.wizard"
+        string="Account Result Report"
+        report_type="xlsx"
+        name="custom_report.account_result_report_xlsx_generate"
+        
+        />
+
+    <template id="account_result_report_view">
+        <t t-call="web.html_container">
+            <div class="header" style="border-bottom: 1px solid black;">
+                <h3 class="text-center">Account Result
+                    <span style="font-size: 14px;"><strong>From</strong>: <t t-esc="date_start"/> <strong>To</strong>: <t t-esc="date_end"/></span>
+                </h3>
+            </div>
+            <div class="article mt0 o_report_layout_standard">
+                <table class="table-x-string table-condensed table-bordered">
+                    <thead>
+                        <tr>
+                            <th class='text-center'>Projet/Ligne</th>
+                            <t t-foreach="docs" t-as="doc">
+                                <th class='text-center'><span t-esc="doc['name']"/></th>
+                            </t>
+                        </tr>    
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Vente de Marchandise</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[0][0]" />
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Achat de Marchandise</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[1][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Variation de stocks de Marchandise</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[2][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        
+                        <tr class="table-danger">
+                            <td>MARGE  COMMERCIALE </td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[3][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        
+                        <tr>
+                            <td>Ventes de produits fabriqués</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[4][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Travaux, services vendus</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[5][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Produits accessoires</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[6][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>CHIFFRE D'AFFAIRES</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[7][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Production stockée (ou déstockage)</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[8][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Production immobilisée</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[9][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Subventions d'exploitation</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[10][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Autres produits</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[11][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Transferts de charges d'exploitation</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[12][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Achats de matières premières et fournitures liées</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[13][0]" />
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Variation de stocks de matières premières et fournitures liées</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[14][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Autres achats</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[15][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Variation de stocks d’autres approvisionnements</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[16][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Transports</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[17][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Services extérieurs</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[18][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Impôts et taxes</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[19][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Autres charges</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[20][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>VALEUR AJOUTEE</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[21][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Charges de personnel</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[22][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>EXCEDENT BRUT D'EXPLOITATION</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[23][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Reprises d’amortissements, de provisions et dépréciations</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[24][0]" />
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Dotations aux amortissements, aux provisions et dépréciations</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[25][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT D'EXPLOITATION</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[26][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Revenus financiers et assimilés</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[27][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Reprises de provisions et dépréciations financières</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[28][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+         
+                                                <tr>
+                            <td>Transferts de charges financières</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[29][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Frais financiers et charges assimilés</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[30][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                                                <tr>
+                            <td>Dotations aux provisions et aux dépréciations financières</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[31][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT  FINANCIER</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[32][0]" />
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT  DES ACTIVITES ORDINAIRES</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[33][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Produits des cessions d'immobilisations</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[34][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Autres Produits HAO</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[35][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Valeurs comptables des cessions d'immobilisations</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[36][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Autres Charges HAO</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[37][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT HORS ACTIVITES ORDINAIRES</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[38][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Participation des travailleurs</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[39][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>Impôts sur le résultat</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[40][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>RESULTAT NET</td>
+                            <t t-foreach="docs" t-as="line">
+                                <t t-set="project" t-value="line['get_lines']"/> 
+                                    <t t-if="project">
+                                        <td>
+                                            <span t-esc="project[41][0]"/>
+                                        </td>
+                                    </t>
+                            </t>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="footer o_standard_footer" style="border-top: 1px solid black;">
+                <div class="row text-center">
+                    <div class="col col-12 text-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">Page:</li>
+                            <li class="list-inline-item">
+                                <span class="page"/>
+                            </li>
+                            <li class="list-inline-item">/</li>
+                            <li class="list-inline-item">
+                                <span class="topage"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

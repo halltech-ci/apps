@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inherit_report_purchasequotation_document" inherit_id="purchase.report_purchasequotation_document">
+        
+        <!-- Add custom sequence in purchase-->
+        <xpath expr="//div[hasclass('page')]/h2" position="replace">
+            <h4 class="text-center">DEMANDE DE COTATION/RFQ N°: <span t-field="o.name"/></h4>
+            <!-- Adding date and project in purchase request-->
+            <div id="informations" class="row mt32 mb32">
+                <div class="col-6 bm-2">
+                    <strong>DATE:</strong>
+                    <span t-field="o.date_order" class="m-0"/>
+                </div>
+                <div class="col-6 bm-2">
+                    <strong>PROJET:</strong>
+                    <span t-field="o.project_id" class="m-0"/>
+                </div>
+            </div>
+        </xpath>
+        <!-- Delete company header-->
+        <xpath expr="//t[@t-set='address']" position="replace"></xpath>
+        <!-- Adding shipping address at bottom-->
+        <xpath expr="//div[hasclass('page')]/p[@t-field='o.notes']" position="before">
+            <strong>Adresse de livraison:</strong>
+            <span t-field="o.dest_address_id" t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True,}'/>
+        </xpath>
+        <!-- Deleting shipping address on top-->
+        <xpath expr="//t[@t-call='web.external_layout']/t[3]" position="replace"></xpath>
+        <!-- Overriding purchase request table -->
+        <xpath expr="//table[hasclass('table', 'table-sm')]//thead/tr" position="replace">
+            <tr>
+                <th class="text-left"><strong>Description</strong></th>
+                <th class="text-center"><strong>Unit</strong></th>
+                <th class="text-center"><strong>Qty</strong></th>
+            </tr>
+        </xpath>
+        
+        <xpath expr="//table[hasclass('table', 'table-sm')]//tbody/t[1]" position="replace">
+            <t t-foreach="o.order_line" t-as="order_line">
+                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if order_line.display_type == 'line_section' else 'font-italic o_line_note' if order_line.display_type == 'line_note' else ''">
+                    <td class="text-left">
+                        <span t-field="order_line.name"/>
+                    </td>
+                    <td class="text-center">
+                        <span t-field="order_line.product_uom"/>
+                    </td>
+                    <td class="text-center">
+                        <span t-field="order_line.product_qty"/>
+                    </td>
+                </tr>
+            </t>
+        </xpath>
+    </template>
+    
+    <template id="inherit_report_purchaseorder_document" inherit_id="purchase.report_purchaseorder_document">
+        <!-- Add custom sequence in purchase-->
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace"></xpath>
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
+            <h4 class="text-center" t-if="o.state in ['sent', 'to approve']">BON DE COMMANDE/PO N°: <span t-field="o.name"/></h4>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
+            <h4 class="text-center" t-if="o.state in ['purchase', 'done']">BON DE COMMANDE/PO N°: <span t-field="o.name"/></h4>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
+            <h4 class="text-center" t-if="o.state == 'cancel'">(ANNULE) BON DE COMMANDE/PO N°: <span t-field="o.name"/></h4>
+        </xpath>
+        <!-- Adding shipping address at bottom-->
+        <xpath expr="//div[hasclass('page')]/p[@t-field='o.notes']" position="before">
+            <strong>Adresse de livraison:</strong>
+            <span t-field="o.dest_address_id" t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True,}'/>
+        </xpath>
+        <!-- Adding custom company header-->
+        <xpath expr="//t[@t-set='address']" position="replace">
+            <t t-set="address">
+                <div>
+                    <strong>FOURNISSEUR: </strong>
+                    <span t-field="o.partner_id"
+                       t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True,}'/>
+                </div>
+                <p t-if="o.partner_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="o.partner_id.vat"/></p>
+        </t>
+        </xpath>
+        <!-- Deleting shipping address on top-->
+        <xpath expr="//t[@t-call='web.external_layout']/t[3]" position="replace">
+            <t t-if="o.dest_address_id"><span/></t>
+        </xpath>
+    </template>
+</odoo>

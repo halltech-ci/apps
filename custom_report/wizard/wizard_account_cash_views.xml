@@ -1,0 +1,38 @@
+<odoo>
+    <record id="cash_report_wizard" model="ir.ui.view" >
+        <field name="name">Account Cash Report</field>
+        <field name="model">account.cash.report.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Account Cash Report">
+                <group>
+                    <group>
+                        <field name="cash_journal"/>
+                    </group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="get_report" string="Get Report" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+
+    
+    <act_window 
+        id="create_cash_report_wizard"
+        name="Account Cash Report"
+        res_model="account.cash.report.wizard"
+        view_mode="form"
+        target="new"
+        />
+
+
+</odoo>
