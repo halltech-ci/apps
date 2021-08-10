@@ -2,26 +2,7 @@
 <odoo>
     <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
         <!-- Delete initial position of signature-->
-        <xpath expr="//div[@name='signature']" position="replace"></xpath>
         <!-- -->
-        <xpath expr="//p[@t-field='doc.note']" position="after">
-            <div class="text-right">
-                <strong>
-                    <span t-field="doc.user_id"/>
-                </strong>
-                <div t-if="doc.signature" class="mt32 ml64 mr4" name="signature">
-                    <div class="offset-8">
-                        <strong>Signature</strong>
-                    </div>
-                    <div class="offset-8">
-                        <img t-att-src="image_data_uri(doc.signature)" style="max-height: 4cm; max-width: 8cm;"/>
-                    </div>
-                    <div class="offset-8 text-center">
-                        <p t-field="doc.signed_by"/>
-                    </div>
-                </div>
-            </div>
-        </xpath>
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">
             <h2>
@@ -39,9 +20,11 @@
         <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.user_id.name']" position="after">
             <div t-if="doc.sale_order_recipient" class="col-xs-3">
               <strong>Destinataire:</strong>
-              <span t-field="doc.sale_order_recipient"/>
+              <p class='m-0' t-field="doc.sale_order_recipient"/>
             </div>
         </xpath>
+        <!-- Delete expiration on header-->
+        
         <!-- hide sale person field-->
         <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.user_id.name']" position="replace">
             <div></div>
@@ -67,10 +50,10 @@
             <th name="th_unit" class="text-right">Unite</th>
         </xpath>
         <!-- Replacing price_subtotal by custom field line_subtotal-->
-        <xpath expr="//table[hasclass('table','table-sm','o_main_table')]/thead/tr/th[@name='th_subtotal']" position='before'>
+        <xpath expr="//table[hasclass('table','table-sm','o_main_table')]/thead/tr/th[@name='th_priceunit']" position='after'>
             <th name="th_line_subtotal" class="text-right">Prix Total</th>
         </xpath>
-        <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_subtotal']" position="before">
+        <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_priceunit']" position="after">
             <td name="td_line_subtotal" class="text-right o_price_total">
                 <span t-field="line.line_subtotal"/>
             </td>
@@ -94,14 +77,37 @@
                     <span t-field="doc.amount_total_no_tax"/>
                 </td>
             </tr>
-            <t t-if="doc.discount_total > 0">
+            <t t-if="doc.remise_total > 0">
                 <tr class="o_subtotal" style="">
-                    <td name="td_discount_total_label">Remise(<span t-field='doc.general_discount'/>%)</td>
-                    <td name="td_discount_total" class="text-right">
-                        <span t-field="doc.discount_total"/>
+                    <td name="td_general_discount_label">Remise(<span t-field='doc.general_discount'/>%)</td>
+                    <td name="td_remise_total" class="text-right">
+                        <span t-field="doc.remise_total"/>
                     </td>
                 </tr>
             </t>
         </xpath>
+        <xpath expr="//p[@t-field='doc.note']" position="before">
+            <div style="font-size:16px; padding-bottom:30px;">
+                <tr class="border-black">
+                    <td><span t-field="doc.amount_to_word"/></td>
+                </tr>
+            </div>
+        </xpath>
+        <!-- Delete display subtotal-->
+        
+        <xpath expr="//div/table[hasclass('table', 'table-sm')]/tbody[hasclass('sale_tbody')]/t[@t-foreach='doc.order_line']/t/tr[hasclass('is-subtotal', 'text-right')]" position="replace">
+            <t t-if="current_subtotal != 0">
+                <tr class="is-subtotal text-right">
+                    <td name="td_section_subtotal" colspan="99">
+                        <strong class="mr16">Subtotal</strong>
+                        <span
+                            t-esc="current_subtotal"
+                                t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
+                            />
+                    </td>
+                </tr>
+            </t>
+        </xpath>
+        
     </template>
 </odoo>

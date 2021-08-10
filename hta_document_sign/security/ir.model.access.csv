@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hta_document_sign_hta_document_sign,hta_document_sign.hta_document_sign,model_hta_document_sign_hta_document_sign,base.group_user,1,1,1,1
