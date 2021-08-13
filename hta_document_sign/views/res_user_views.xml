@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_users_view_form_document" model="ir.ui.view">
+        <field name="name">res.users.form.sign.document.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="priority">140</field>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook/page[2]/group[1]" position="after">
+                            <group name="hta_signature" position="after">
+                <group string="Signatures" name="hta_sign">
+                    <field name="hta_doc_signature" widget="signature" options="{'full_name': 'display_name', 'size': ['',200]}"/>
+                    <field name="hta_doc_initials" widget="signature" options="{'size': [200,'']}"/>
+                </group>
+            </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
