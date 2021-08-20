@@ -607,8 +607,8 @@ result = contract.prime_communication
     <!-- Regle de calcul Prime Assurance MCI-->
     <record id="hr_salary_rule_prime_assu_mci" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_prime_salary"/> 
-        <field name="name">Prime Assurance MCI</field>
-        <field name="code">PAMCI</field>
+        <field name="name">Part Assurance Employeur</field>
+        <field name="code">PAEMP</field>
         <field name="sequence">1</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="condition_select">none</field>
@@ -943,8 +943,8 @@ result = SBI - TCOTEM
     <!-- Regle de calcul Prelevement Assurance MCI  -->
     <record id="hr_salary_rule_mci_ass" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
-        <field name="name">Prelevement Assurance MCI</field>
-        <field name="code">ASSMCI</field>
+        <field name="name">Prelevement Assurance Employe</field>
+        <field name="code">ASSEMPL</field>
         <field name="sequence">7</field>
         <field name="struct_id" ref="structure_days_work"/>
         <field name="condition_select">none</field>
