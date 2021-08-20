@@ -34,3 +34,6 @@ class HrContract(models.Model):
     communication_flotte = fields.Monetary(string="Coût Communication Flotte")
     #Traitement special AVS, pret
     
+    
+    #line amount loan
+    hr_loan_employee_ids = fields.One2many("hr.loan.employee", "hr_contract_id", string="Loan of employee")

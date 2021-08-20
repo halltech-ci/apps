@@ -45,6 +45,21 @@
                   </group>
               </group>
           </xpath>
+          <xpath expr="//sheet/notebook/page[@name='information']" position="after">
+              <page name="loan_employe" string="Loan">
+                  <field name="hr_loan_employee_ids">
+                      <tree string="Loan" editable="bottom" class="custom_loan">
+                          <field name="name"/>
+                          <field name="amount_loan"/>
+                          <field name="start_date"/>
+                          <field name="end_date"/>
+                          <field name="amount_to_debited"/>
+                          <field name="status"/>
+                      </tree>
+                  </field>
+              </page>
+        
+          </xpath>
       </field>
     </record>
   </data>

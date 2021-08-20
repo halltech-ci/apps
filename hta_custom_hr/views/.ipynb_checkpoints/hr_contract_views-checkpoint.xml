@@ -4,29 +4,61 @@
       <field name="model">hr.contract</field>
       <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
       <field name="arch" type="xml">
-          <xpath expr="//sheet//group/group[1]/field[@name='department_id']" position="after">
+          <xpath expr="//sheet/notebook/page[@name='information']/group[@name='main_info']/group[@name='salary_and_advantages']/div[@name='wage']" position='after'>
+              <field name="salaire_base" string="Salaire de Base"/>
               <field name="sursalaire"/>
-              <!--<field name="prime_anciennete" string="Prime Ancienneté"/>-->
-              <!--<field name="hourly_rate"/>-->
-
           </xpath>
-          
-          <xpath expr="//sheet//group/group[2]" position="after"> 
-                <group string="Primes et gratification">
-                  <field name="prime_responsabilite"/>
-                  <field name="prime_transport"/>
-                  <field name="prime_rendement"/>
-                  <field name="prime_communication"/>
-                  <field name="gratification"/>
+            <xpath expr="//sheet/notebook/page[@name='information']/group[@name='main_info']" position="inside">
+                <group string="Employee Costs">
+                    <field name="communication_flotte"/>
+                    <field name="salaire_brut" string="Coût Annuel"/>
+                </group>
+            </xpath>
+            <xpath expr="//sheet/notebook/page[@name='information']/group[@name='main_info']" position="after">
+                  <group name='prime_et_avantages'>
+                      <group string="Primes et Indemnités">
+                          <field name="prime_responsabilite"/>
+                          <field name="prime_transport"/>
+                          <field name="prime_rendement"/>
+                          <field name="prime_communication"/>
+                          <field name="prime_assurance_mci"/> 
+                          <field name="prime_logement" string="indemnité de logement"/>
+                          <field name="indemnite_transport" string="Indemnité de Transport"/>
+                      </group>
+                  <group string="Traitements Annuels" name="avantage_annuel">
+                      <field name="indemnite_conge" string="Indemnité de Congé"/>
+                      <field name="autres_avantages" string="Autre Avantages"/>
+                      <field name="gratification"/>
+                  </group>
+                </group>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='information']/group[@name='prime_et_avantages']" position="after">
+              <group>
+                  <group string="Deduction" name="deduction">
+                      <field name="pret"/>
+                      <field name="avs" string="Avances et  Acomptes perçus"/>
+                      <field name="prelevement_assurance_mci"/>
+                  </group>
+                  <group string="Rupture de Contrat">
+                      <field name="indemnite_licencement" string="Indemnité de Licencement"/>
+                      <field name="indemnite_compensatrice" string="Indemnité Compensatrice préavis"/>
+                  </group>
               </group>
-              <group string="Employee Costs">
-                  <field name="salaire_brut" string="Slaire brut"/>
-              </group>
-              <group string="Indemnité forfaitaires" name="yearly_advantages">
-                  <field name="prime_logement" string="indemnité de logement"/>
-                  <field name="indemnite_transport" string="Indemnité de Transport"/>
-                  <field name="autres_avantages" string="Autre Avantages"/>
-              </group>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='information']" position="after">
+              <page name="loan_employe" string="Loan">
+                  <field name="hr_loan_employee_ids">
+                      <tree string="Loan" editable="bottom" class="custom_loan">
+                          <field name="name"/>
+                          <field name="amount_loan"/>
+                          <field name="start_date"/>
+                          <field name="end_date"/>
+                          <field name="amount_to_debited"/>
+                          <field name="status"/>
+                      </tree>
+                  </field>
+              </page>
+        
           </xpath>
       </field>
     </record>

@@ -41,6 +41,7 @@
         'views/account_paybook_report.xml',
         'views/hr_work_entry_type_views.xml',
         'views/hr_salary_rule_views.xml',
+        'views/template_css.xml',
         #Report
         'report/report_hta_payslip_template.xml',
         'report/bulletin_paye_report.xml',
@@ -52,6 +53,7 @@
         'data/hta_hr_payroll_data.xml',
         #'data/hta_hr_leave_type.xml',
     ],
+    'css': ['static/src/css/my_css.css'],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
