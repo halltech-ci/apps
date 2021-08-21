@@ -114,8 +114,9 @@
           <field name="arch" type="xml">
               <tree string="Expense Request" decoration-warning="state=='draft'" decoration-danger="state=='cancel'">
                     <field name="name" string="Expense Request"/>
-                    <field name="requested_by"/>
                     <field name="date"/>
+                    <field name="requested_by"/>
+                    <field name="expense_approver" string="Approbateur"/>
                     <field name="total_amount" sum="Total Amount"/>
                     <field name="project_id"/>
                     <field name="currency_id" invisible="1"/>
