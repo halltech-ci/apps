@@ -46,7 +46,7 @@ class ExpenseRequest(models.Model):
     statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True)
     move_id = fields.Many2one('account.move', string='Account Move')
     is_expense_approver = fields.Boolean(string="Is Approver",
-        compute="_compute_is_expense_approver", default=False,
+        compute="_compute_is_expense_approver",
     )
     expense_approver = fields.Many2one('res.users', string="Valideur")
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
@@ -76,9 +76,15 @@ class ExpenseRequest(models.Model):
             elif user.has_group('expense_management.group_expense_approver_2'):
                 if req.total_amount <= limit_2:
                     req.is_expense_approver = True
+                else:
+                    req.is_expense_approver = False
             elif user.has_group('expense_management.group_expense_approver_1'):
                 if req.total_amount <= limit_1:
                     req.is_expense_approver = True
+                else:
+                    req.is_expense_approver = False
+            else:
+                req.is_expense_approver = False
                 
     @api.onchange('company_id')
     def _onchange_expense_company_id(self):
