@@ -8,3 +8,5 @@ class ResCompany(models.Model):
     
     approve_limit_1 = fields.Monetary()
     approve_limit_2 = fields.Monetary()
+    daily_limit_1 = fields.Monetary()
+    daily_limit_2 = fields.Monetary()
