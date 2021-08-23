@@ -20,11 +20,11 @@
                                 <span class="o_form_label">Expense Approve level configuration</span>
                                 <div class="content-group">
                                     <div class="row mt16">
-                                        <label string="Level 1" for="approve_limit_1" class="col-lg-3 o_light_label"/>
+                                        <label string="Limit 1" for="approve_limit_1" class="col-lg-3 o_light_label"/>
                                         <field name="approve_limit_1"/>
                                     </div>
                                     <div class="row mt16">
-                                        <label string="Level 2" for="approve_limit_2" class="col-lg-3 o_light_label"/>
+                                        <label string="Limit 2" for="approve_limit_2" class="col-lg-3 o_light_label"/>
                                         <field name="approve_limit_2"/>
                                     </div>
                                 </div>

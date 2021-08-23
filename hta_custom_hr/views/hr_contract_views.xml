@@ -25,11 +25,11 @@
                           <field name="prime_logement" string="indemnité de logement"/>
                           <field name="indemnite_transport" string="Indemnité de Transport"/>
                       </group>
-                  <group string="Traitements Annuels" name="avantage_annuel">
-                      <field name="indemnite_conge" string="Indemnité de Congé"/>
-                      <field name="autres_avantages" string="Autre Avantages"/>
-                      <field name="gratification"/>
-                  </group>
+                      <group string="Traitements Annuels" name="avantage_annuel">
+                          <field name="indemnite_conge" string="Indemnité de Congé"/>
+                          <field name="autres_avantages" string="Autre Avantages"/>
+                          <field name="gratification"/>
+                      </group>
                 </group>
           </xpath>
           <xpath expr="//sheet/notebook/page[@name='information']/group[@name='prime_et_avantages']" position="after">

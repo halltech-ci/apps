@@ -25,7 +25,7 @@ REQUEST_STATE = [('draft', 'Draft'),
 class ExpenseLine(models.Model):
     _name = 'expense.line'
     _description = 'Custom expense line'
-    _order = 'date desc'
+    #_order = 'date desc'
     
     @api.model
     def _default_employee_id(self):
