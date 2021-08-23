@@ -55,6 +55,7 @@
                           <field name="end_date"/>
                           <field name="amount_to_debited"/>
                           <field name="status"/>
+                        
                       </tree>
                   </field>
               </page>
