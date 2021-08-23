@@ -963,12 +963,12 @@ result = contract.prelevement_assurance_mci
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-        vals = constract.hr_loan_employee_ids
-        result = 0
-        if vals:
-            for val in vals:
-                if val.end_date &gt;= paylip.date_from and val.end_date &lt;= paylip.date_to:
-                    result = val.amount_to_debited
+vals = contract.hr_loan_employee_ids
+result = 0
+if contract.hr_loan_employee_ids:
+    for val in contract.hr_loan_employee_ids:
+        if val.end_date &gt;= payslip.date_from and val.end_date &lt;= payslip.date_to:
+            result = val.amount_to_debited
         
         </field>
     </record>

@@ -33,6 +33,7 @@
         # 'security/ir.model.access.csv',
         #security
         'security/hr_payslip_security.xml',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         'views/hr_contract_views.xml',
