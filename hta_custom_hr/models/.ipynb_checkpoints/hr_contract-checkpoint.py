@@ -37,3 +37,7 @@ class HrContract(models.Model):
     
     #line amount loan
     hr_loan_employee_ids = fields.One2many("hr.loan.employee", "hr_contract_id", string="Loan of employee")
+    
+    # Account 
+    account_debit = fields.Many2one('account.account', 'Debit Account', company_dependent=True, domain=[('deprecated', '=', False)])
+    account_credit = fields.Many2one('account.account', 'Credit Account', company_dependent=True, domain=[('deprecated', '=', False)])
