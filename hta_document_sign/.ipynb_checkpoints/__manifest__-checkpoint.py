@@ -28,6 +28,7 @@
         'report/sale_order_report.xml',
         'views/views.xml',
         'views/templates.xml',
+        'views/res_user_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
