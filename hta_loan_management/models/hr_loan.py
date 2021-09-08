@@ -15,7 +15,7 @@ class LoanRequest(models.Model):
         ('cash', 'Cash'),
         ], string="Reimbursement Method"
     )
-    partner_id = fields.Many2One('res.partner')
+    partner_id = fields.Many2one('res.partner')
     loan_amount = fields.Monetary('Loan Amount', currency_field='currency_id', tracking=True)
     disburse_amount = fields.Monetary('Loan Amount', currency_field='currency_id', compute="_compute_disburse_amount")
     duration = fields.Integer(string="Duration")
