@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hta_account_amortization_hta_account_amortization,hta_account_amortization.hta_account_amortization,model_hta_account_amortization_hta_account_amortization,base.group_user,1,1,1,1
