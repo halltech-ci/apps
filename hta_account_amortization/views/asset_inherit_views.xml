@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="account_asset_form_inherits">
+      <field name="model">account.asset</field>
+      <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+      <field name="arch" type="xml">
+          <xpath expr="//sheet//div[3]" position="after">
+              <group name='type_asset'>
+                  <field name="type_asset_ids" string="Groupe" required="1" style="width:25%%" placeholder="Selectionnez la Categorie"/>
+              </group>
+              
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

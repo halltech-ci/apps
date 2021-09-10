@@ -1,0 +1,59 @@
+# -*- coding: utf-8 -*-
+
+from odoo import models, fields, api
+
+
+class hta_account_amortization(models.Model):
+    _name = 'hta.account_asset.type'
+    _description = 'Account Asset Type'
+
+    
+    def _default_currency_id(self):
+        company_id = self.env.context.get('force_company') or self.env.context.get('company_id') or self.env.company.id
+        return self.env['res.company'].browse(company_id).currency_id
+    
+    @api.depends('asset_ids')
+    def _amount_all(self):
+        for order in self:
+            amount_untaxed = amount_tax = 0.0
+            for line in order.asset_ids:
+                line._compute_amount()
+                total_valeur_acquisition += line.original_value
+                total_exercice += line.amount_total
+                total_total += line.asset_depreciated_value
+                total_valeur_residuelle += line.asset_remaining_value
+                
+            currency = order.currency_id or self.env.company.currency_id
+            order.update({
+                'total_valeur_acquisition': currency.round(total_valeur_acquisition),
+                'total_exercice': currency.round(total_exercice),
+                'total_total': currency.round(total_total),
+                'total_valeur_residuelle': currency.round(total_valeur_residuelle),
+            })
+    name = fields.Char()
+    number_percentage = fields.Integer()
+    asset_ids = fields.One2many('account.asset','type_asset_ids', string='Immobilisation')
+    company_id = fields.Many2one('res.company', 'Company', required=True, index=True, default=lambda self: self.env.company.id)
+    currency_id = fields.Many2one('res.currency', 'Currency', required=True,default=_default_currency_id)
+    total_valeur_acquisition = fields.Monetary(string='Valeur acquisition', store=True, readonly=True, compute='_amount_all')
+    total_exercice = fields.Monetary(string='Valeur Exercice', store=True, readonly=True, compute='_amount_all')
+    total_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all')
+    total_valeur_residuelle = fields.Monetary(string='Total Residuelle', store=True, readonly=True, compute='_amount_all')
+
+
+
+            
+class hta_account_amortization(models.Model):
+    _inherit = "account.asset"
+
+    type_asset_ids = fields.Many2one(comodel_name='hta.account_asset.type', index=True)
+    
+    method_number = fields.Integer(string='Number of Depreciations', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default=5, compute='_compute_method_number',help="The number of depreciations needed to depreciate your asset")
+    
+    @api.depends('type_asset_ids','type_asset_ids.number_percentage')
+    def _compute_method_number(self):
+        for record in self:
+            record.method_number = record.type_asset_ids.number_percentage
+
+
+

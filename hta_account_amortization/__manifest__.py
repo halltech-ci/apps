@@ -20,15 +20,21 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account_asset','account','report_xlsx'],
+    'depends': ['base','account_asset','account','report_xlsx']
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        # View 
+        #'views/asset_inherit_views.xml',
+        #'views/menuitem.xml',
+        #'views/asset_type_views.xml',
         # Wizard
         'wizard/wizard_amortization_views.xml',
+        # Report
+        'report/template_report_amortization_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

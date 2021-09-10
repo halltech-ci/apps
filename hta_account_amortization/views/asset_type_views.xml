@@ -1,0 +1,73 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="hta_account_asset_type_tree">
+      <field name="name">Categorie Asset</field>
+      <field name="model">hta.account_asset.type</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="number_percentage"/>
+          <field name="asset_ids"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="hta_account_asset_type_form">
+      <field name="name">Categorie Asset form</field>
+      <field name="model">hta.account_asset.type</field>
+      <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <div class="oe_title">
+                <label for="name" name="name_label" class="oe_edit_only"/>
+                <label for="name" name="model_name_label" string="Asset Model name" class="oe_edit_only"/>
+                <h1>
+                    <field name="name" placeholder="Batiments administratifs...." required="1"/>
+                </h1>
+            </div>
+            <group>
+                <group string="Method Number">
+                    <field name="number_percentage"/>   
+                </group>
+                
+            </group>
+            <group>
+                <group string="Accounting">
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                            
+                </group>
+                
+            </group>
+            <notebook colspan="4">
+                <page string="Asset" name="asset_ids">
+                    <field name="asset_ids" mode="tree" options="{'reload_whole_on_button': true}">
+                        <tree string="Asset" create="0" default_order="date asc, id asc" editable="top">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="name"/>
+                            <field name="original_value" widget="monetary" 
+                                   options="{'currency_field':'currency_id'}"/>
+                            <field name="method_number" />
+                            <field name="method_period"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+            </sheet>
+            
+        </form>
+      </field>
+    </record>
+      
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="action_asset_type_views">
+      <field name="name">Asset Type window</field>
+      <field name="res_model">hta.account_asset.type</field>
+      <field name="view_mode">tree,form</field>
+    
+    </record>
+
+  </data>
+</odoo>

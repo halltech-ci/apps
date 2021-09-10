@@ -29,4 +29,4 @@ class AccountAmortizationcReportWizard(models.TransientModel):
             'amortization': self.amortization.ids, 
         }
         # ref `module_name.report_id` as reference.
-        return self.env.ref('hta_account_amortization.account_result_generate_xlsx_report').report_action(self, data=data)
+        return self.env.ref('hta_account_amortization.account_amortization_generate_xlsx_report').report_action(self, data=data)
