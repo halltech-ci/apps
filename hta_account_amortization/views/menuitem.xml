@@ -1,9 +1,9 @@
 <odoo>
   <data>
-    <menuitem id="menu_action_account_asset_type_forms"
+    <menuitem id="menu_action_account_hta_asset_type"
               name="Asset Categorie"
               parent="account.menu_finance_entries_management" 
-              action="hta_account_amortization.action_asset_type_views"  
+              action="action_asset_type_views"  
               sequence="105"/>
   </data>
 </odoo>

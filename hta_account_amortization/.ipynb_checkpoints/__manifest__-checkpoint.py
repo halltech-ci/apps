@@ -29,7 +29,7 @@
         'views/templates.xml',
         # View 
         'views/asset_inherit_views.xml',
-        'views/menuitem.xml',
+        #'views/menuitem.xml',
         'views/asset_type_views.xml',
         # Wizard
         'wizard/wizard_amortization_views.xml',

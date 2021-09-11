@@ -16,7 +16,10 @@ class hta_account_amortization(models.Model):
     @api.depends('asset_ids')
     def _amount_all(self):
         for order in self:
-            amount_untaxed = amount_tax = 0.0
+            total_valeur_acquisition = total_valeur_acquisition = 0.0
+            total_exercice = total_exercice = 0.0
+            total_total = total_total = 0.0
+            total_valeur_residuelle = total_valeur_residuelle = 0.0
             for line in order.asset_ids:
                 line._compute_amount()
                 total_valeur_acquisition += line.original_value
