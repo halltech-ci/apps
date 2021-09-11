@@ -5,6 +5,7 @@ from odoo import models, fields, api
 
 class hta_account_amortization(models.Model):
     _name = 'hta.account_asset.type'
+    _inherit = ['mail.thread', 'mail.activity.mixin','utm.mixin','portal.mixin']
     _description = 'Account Asset Type'
 
     
