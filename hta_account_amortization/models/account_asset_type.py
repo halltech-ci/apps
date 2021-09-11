@@ -65,7 +65,7 @@ class hta_account_amortization(models.Model):
             currency = rec.currency_id or self.env.company.currency_id
             
             rec.update({
-                'amount_exercice': currency.round(total_exercice),
+                'amount_exercice': currency.round(amount_exercice),
                 'totals': currency.round(total_total),
                 'valeur_residuelle': currency.round(total_valeur_residuelle),
             })
