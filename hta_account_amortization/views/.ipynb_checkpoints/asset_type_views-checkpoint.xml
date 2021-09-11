@@ -42,24 +42,16 @@
             </group>
             <notebook colspan="4">
                 <page string="Asset" name="asset_ids">
-                    <field name="asset_ids" mode="tree" options="{'reload_whole_on_button': true}">
-                        <tree string="Asset" create="0" default_order="date asc, id asc" editable="top">
-                            <field name="currency_id" invisible="1"/>
-                            <field name="name"/>
-                            <field name="original_value" widget="monetary" 
-                                   options="{'currency_field':'currency_id'}"/>
-                            <field name="method_number" />
-                            <field name="method_period"/>
-                        </tree>
+                    <field name="asset_ids">
                     </field>
                     <group class="oe_subtotal_footer oe_right">
-                                <field name="total_valeur_acquisition" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                <field name="total_exercice" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                <field name="total_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="total_valeur_acquisition" widget="monetary"/>
+                                <field name="total_exercice" widget="monetary"/>
+                                <field name="total_total" widget="monetary"/>
                                 <div class="oe_subtotal_footer_separator oe_inline">
                                     <label for="total_valeur_residuelle"/>
                                 </div>
-                                <field name="total_valeur_residuelle" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="total_valeur_residuelle" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
                     </group>
                 </page>
             </notebook>
@@ -76,12 +68,12 @@
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="action_asset_type_views">
-      <field name="name">Asset Type window</field>
+      <field name="name">Categorie Asset</field>
       <field name="res_model">hta.account_asset.type</field>
       <field name="view_mode">tree,form</field>
       <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new Report
+                Create a new documents
             </p>
       </field>
     </record>
