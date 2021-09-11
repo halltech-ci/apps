@@ -23,9 +23,9 @@ class hta_account_amortization(models.Model):
             for line in order.asset_ids:
                 line._compute_amount()
                 total_valeur_acquisition += line.original_value
-                total_exercice += line.amount_total
-                total_total += line.asset_depreciated_value
-                total_valeur_residuelle += line.asset_remaining_value
+                total_exercice += line.amount_exercice
+                total_total += line.totals
+                total_valeur_residuelle += line.valeur_residuelle
                 
             currency = order.currency_id or self.env.company.currency_id
             order.update({
@@ -49,11 +49,35 @@ class hta_account_amortization(models.Model):
             
 class hta_account_amortization(models.Model):
     _inherit = "account.asset"
-
-    type_asset_ids = fields.Many2one(comodel_name='hta.account_asset.type', index=True)
     
+    @api.depends('depreciation_move_ids')
+    def _amount_for_asset(self):
+        for rec in self:
+            amount_exercice = amount_exercice = 0.0
+            totals = totals = 0.0
+            valeur_residuelle = valeur_residuelle = 0.0
+            for line in rec.depreciation_move_ids:
+                rec._compute_amount()
+                amount_exercice += rec.amount_total
+                totals += rec.asset_depreciated_value
+                valeur_residuelle += rec.asset_remaining_value
+                
+            currency = rec.currency_id or self.env.company.currency_id
+            
+            rec.update({
+                'amount_exercice': currency.round(total_exercice),
+                'totals': currency.round(total_total),
+                'valeur_residuelle': currency.round(total_valeur_residuelle),
+            })
+    
+    amount_exercice = fields.Monetary(string=' Total Valeur Exercice', store=True, readonly=True, compute='_amount_for_asset')
+    totals = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_for_asset')
+    valeur_residuelle = fields.Monetary(string='Total Residuelle', store=True, readonly=True, compute='_amount_for_asset')
+    
+    type_asset_ids = fields.Many2one(comodel_name='hta.account_asset.type', index=True)
     method_number = fields.Integer(string='Number of Depreciations', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default=5, compute='_compute_method_number',help="The number of depreciations needed to depreciate your asset")
     
+            
     @api.depends('type_asset_ids','type_asset_ids.number_percentage')
     def _compute_method_number(self):
         for record in self:
