@@ -66,8 +66,8 @@ class hta_account_amortization(models.Model):
             
             rec.update({
                 'amount_exercice': currency.round(amount_exercice),
-                'totals': currency.round(total_total),
-                'valeur_residuelle': currency.round(total_valeur_residuelle),
+                'totals': currency.round(totals),
+                'valeur_residuelle': currency.round(valeur_residuelle),
             })
     
     amount_exercice = fields.Monetary(string=' Total Valeur Exercice', store=True, readonly=True, compute='_amount_for_asset')
