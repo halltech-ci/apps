@@ -19,7 +19,7 @@ class LoanRequest(models.Model):
     loan_amount = fields.Monetary('Loan Amount', currency_field='currency_id', tracking=True)
     disburse_amount = fields.Monetary('Loan Amount', currency_field='currency_id', compute="_compute_disburse_amount")
     duration = fields.Integer(string="Duration")
-    end_amount = fields.Monetary('Loan Amount', currency_field='currency_id', tracking=True)
+    end_amount = fields.Monetary('End Amount', currency_field='currency_id', tracking=True)
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env.company.currency_id)
     
