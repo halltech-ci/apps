@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api
 
+from datetime import datetime
+import calendar
 
 class hta_account_amortization(models.Model):
     _name = 'hta.account_asset.type'
@@ -13,35 +15,12 @@ class hta_account_amortization(models.Model):
         company_id = self.env.context.get('force_company') or self.env.context.get('company_id') or self.env.company.id
         return self.env['res.company'].browse(company_id).currency_id
     
-    @api.depends('asset_ids')
-    def _amount_all_asset(self):
-        for order in self:
-            total_valeur_acquisition = total_valeur_acquisition = 0.0
-            total_exercice = total_exercice = 0.0
-            total_total = total_total = 0.0
-            total_valeur_residuelle = total_valeur_residuelle = 0.0
-            for line in order.asset_ids:
-                total_valeur_acquisition += line.original_value
-                total_exercice += line.amount_exercice
-                total_total += line.totals
-                total_valeur_residuelle += line.valeur_residuelle
-                
-            currency = order.currency_id or self.env.company.currency_id
-            
-            order.total_valeur_acquisition += currency.round(total_valeur_acquisition)
-            order.total_exercice += currency.round(total_exercice)
-            order.total_total += currency.round(total_total)
-            order.total_valeur_residuelle += currency.round(total_valeur_residuelle)
             
     name = fields.Char()
     number_percentage = fields.Integer()
     asset_ids = fields.One2many('account.asset','type_asset_ids', string='Immobilisation')
     company_id = fields.Many2one('res.company', 'Company', required=True, index=True, default=lambda self: self.env.company.id)
     currency_id = fields.Many2one('res.currency', 'Currency', required=True,default=_default_currency_id)
-    total_valeur_acquisition = fields.Monetary(string='Valeur acquisition', store=True, readonly=True, compute='_amount_all_asset')
-    total_exercice = fields.Monetary(string='Valeur Exercice', store=True, readonly=True, compute='_amount_all_asset')
-    total_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all_asset')
-    total_valeur_residuelle = fields.Monetary(string='Total Residuelle', store=True, readonly=True, compute='_amount_all_asset')
 
 
 
@@ -54,11 +33,23 @@ class hta_account_amortization(models.Model):
         for rec in self:
             amount_exercice = amount_exercice = 0.0
             totals = totals = 0.0
-            valeur_residuelle = valeur_residuelle = 0.0
-            for line in rec.depreciation_move_ids:
-                amount_exercice += line.amount_total
-                totals += line.asset_depreciated_value
-                valeur_residuelle += line.asset_remaining_value
+            valeur_residuelle = valeur_residuelle = 0.04
+            date_now = datetime.now().date()
+            ending_days_month = date_now.replace(day=calendar.monthrange(date_now.year, date_now.month)[1])
+            first_day_of_current_year = datetime.now().date().replace(month=1, day=1)
+            ending_day_of_current_year = datetime.now().date().replace(month=12, day=31)
+            if rec.method_period == "12":
+                for line in rec.depreciation_move_ids:
+                    if first_day_of_current_year <= line.date and line.date >= ending_day_of_current_year:
+                        amount_exercice = line.amount_total
+                        totals = line.asset_depreciated_value
+                        valeur_residuelle = line.asset_remaining_value
+            else:
+                for line in rec.depreciation_move_ids:
+                    if date_now <= line.date and line.date >= ending_days_month:
+                        amount_exercice = line.amount_total
+                        totals = line.asset_depreciated_value
+                        valeur_residuelle = line.asset_remaining_value
                 
             currency = rec.currency_id or self.env.company.currency_id
             

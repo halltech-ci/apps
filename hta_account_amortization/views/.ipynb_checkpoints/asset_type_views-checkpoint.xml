@@ -44,15 +44,6 @@
                 <page string="Asset" name="asset_ids">
                     <field name="asset_ids">
                     </field>
-                    <group class="oe_subtotal_footer oe_right">
-                                <field name="total_valeur_acquisition" widget="monetary"/>
-                                <field name="total_exercice" widget="monetary"/>
-                                <field name="total_total" widget="monetary"/>
-                                <div class="oe_subtotal_footer_separator oe_inline">
-                                    <label for="total_valeur_residuelle"/>
-                                </div>
-                                <field name="total_valeur_residuelle" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
-                    </group>
                 </page>
             </notebook>
             </sheet>
