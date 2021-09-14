@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <template id="inherit_account_invoice_report_document" inherit_id="account.report_invoice_document">
+      <!-- Insert BL number on sale invoice-->
+        
+       <xpath expr="//t[@t-set='address']/" position="replace">
+           <div class="row mt32 mb32" style="text-align: center;display: flex;">
+                   <div style="width:85px;">
+                       <p style="text-decoration: underline; font-weight: bold;">CLIENT:</p>
+                   </div>
+                   <div style="width:250px;border:1px solid #000;border-radius:10px;">
+                       <address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                    <div t-if="o.partner_id.vat" class="mt16">
+                        <t t-if="o.company_id.country_id.vat_label" t-esc="o.company_id.country_id.vat_label" id="inv_tax_id_label"/>
+                        <t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/></div>
+                    </div>
+               </div>
+       </xpath>
+    </template>
+  </data>
+</odoo>
