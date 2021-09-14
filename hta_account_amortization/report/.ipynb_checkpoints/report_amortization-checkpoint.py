@@ -20,15 +20,16 @@ class ReportAccountAmortizationReportView(models.AbstractModel):
         
         params = [tuple(amortization_id),date_start,date_end]
         query = """
-                SELECT aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_remaining_value)-SUM(am.asset_depreciated_value)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
+                SELECT haat.name AS group_designation,haat.number_percentage AS taux_group, aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_remaining_value)-SUM(am.asset_depreciated_value)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
                 FROM account_move AS am
                 INNER JOIN account_asset AS aas ON aas.id = am.asset_id
+                INNER JOIN hta_account_asset_type AS haat ON haat.id = aas.type_asset_ids
                 WHERE
                     (aas.id IN %s)
                     AND
                     (am.date BETWEEN %s AND %s)
 
-                GROUP BY designation, date_acquisition,date_exercice
+                GROUP BY group_designation,taux_group, designation, date_acquisition,date_exercice
         """
 
         self.env.cr.execute(query,params)
@@ -84,15 +85,16 @@ class ReportAccountAmortizationReportXlsxGenerate(models.AbstractModel):
         
         params = [tuple(amortization_id),date_start,date_end]
         query = """
-                SELECT aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_remaining_value)-SUM(am.asset_depreciated_value)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
+                SELECT haat.name AS group_designation,haat.number_percentage AS taux_group, aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_remaining_value)-SUM(am.asset_depreciated_value)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
                 FROM account_move AS am
                 INNER JOIN account_asset AS aas ON aas.id = am.asset_id
+                INNER JOIN hta_account_asset_type AS haat ON haat.id = aas.type_asset_ids
                 WHERE
                     (aas.id IN %s)
                     AND
                     (am.date BETWEEN %s AND %s)
 
-                GROUP BY designation, date_acquisition,date_exercice
+                GROUP BY group_designation,taux_group, designation, date_acquisition,date_exercice
         """
 
         self.env.cr.execute(query,params)

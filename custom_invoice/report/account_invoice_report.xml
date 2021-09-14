@@ -5,8 +5,13 @@
       <!-- Insert BL number on sale invoice-->
         
        <xpath expr="//t[@t-set='address']" position="replace">
+           <div class="row" style="text-align: center;display: flex;">
+                   <div style="width:85px;">
+                       <p></p>
+                   </div>
+               </div>
            <t t-set="address">   
-            <center><p t-field="o.invoice_date"/></center>
+                <center><p t-field="o.invoice_date"/></center>
                <div class="row mt32 mb32" style="text-align: center;display: flex;">
                    <div style="width:85px;">
                        <p style="text-decoration: underline; font-weight: bold;">CLIENT:</p>
@@ -25,9 +30,6 @@
              <strong>Objet :</strong>
              <span t-field ="o.invoice_object"/>
            </div>
-           <div class="row">
-             <p></p>
-           </div>
        </xpath>        
        
        <xpath expr="//div[hasclass('page')]//div[hasclass('row', 'mt32', 'mb32')]" position="replace">
@@ -38,9 +40,6 @@
                     <p class="m-0" t-field="o.ref"/>
                 </div>
            </div>
-        <div class="row">
-           <p></p>
-        </div>
         <table class="table table-sm" name="invoice_table">
             <tbody>
                 <tr>
