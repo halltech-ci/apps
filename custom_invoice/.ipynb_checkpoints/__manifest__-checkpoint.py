@@ -17,17 +17,21 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['account'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/account_move_views.xml'
+        #views
+        'views/account_move_views.xml',
+        #report
+        'report/account_invoice_report.xml',
+        'report/account_invoice_report_inherit.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

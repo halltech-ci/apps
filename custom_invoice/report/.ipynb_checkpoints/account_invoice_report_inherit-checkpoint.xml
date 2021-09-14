@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
-    <template id="inherit_account_invoice_report_document" inherit_id="account.report_invoice_document">
+    <template id="inherit_account_invoice_report_document_address" inherit_id="account.report_invoice_document">
       <!-- Insert BL number on sale invoice-->
-        
-       <xpath expr="//t[@t-set='address']/" position="replace">
+       <xpath expr="//t[@t-set='address']" position="replace">
+           <t t-set="address">
            <div class="row mt32 mb32" style="text-align: center;display: flex;">
                    <div style="width:85px;">
                        <p style="text-decoration: underline; font-weight: bold;">CLIENT:</p>
@@ -16,6 +16,7 @@
                         <t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/></div>
                     </div>
                </div>
+               </t>
        </xpath>
     </template>
   </data>
