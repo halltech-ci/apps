@@ -953,7 +953,8 @@ result = SBI - TCOTEM
 result = contract.prelevement_assurance_mci
         </field>
     </record>
-        <record id="hr_salary_rule_pret_empl" model="hr.salary.rule">
+        
+    <record id="hr_salary_rule_loan_empl" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
         <field name="name">Prêt</field>
         <field name="code">PRET</field>
@@ -962,9 +963,17 @@ result = contract.prelevement_assurance_mci
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = contract.pret
+vals = contract.hr_loan_employee_ids
+result = 0
+if contract.hr_loan_employee_ids:
+    for val in contract.hr_loan_employee_ids:
+        if val.end_date &gt;= payslip.date_from and val.end_date &lt;= payslip.date_to:
+            result = val.amount_to_debited
+        
         </field>
     </record>
+    
+    
     <!-- Regle de calcul avance percus -->
     <record id="hr_salary_rule_net_avs" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_cumul_salary"/> 
