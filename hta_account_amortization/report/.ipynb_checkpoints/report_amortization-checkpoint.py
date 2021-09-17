@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+import datetime,calendar
 
 from odoo import models, fields, api
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DATE_FORMAT
@@ -16,23 +16,26 @@ class ReportAccountAmortizationReportView(models.AbstractModel):
     
 
     
-    def get_lines(self, amortization_id, date_start,date_end):
+    def get_lines(self, amortization_type, amortization_id, date_start,date_end):
         
-        params = [tuple(amortization_id),date_start,date_end]
+        #params = [tuple(amortization_type),tuple(amortization_id),date_start,date_end]
         query = """
                 SELECT haat.name AS group_designation,haat.number_percentage AS taux_group, aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_remaining_value)-SUM(am.asset_depreciated_value)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
                 FROM account_move AS am
                 INNER JOIN account_asset AS aas ON aas.id = am.asset_id
                 INNER JOIN hta_account_asset_type AS haat ON haat.id = aas.type_asset_ids
                 WHERE
-                    (aas.id IN %s)
+                    (haat.id = """+ amortization_type+""")
                     AND
-                    (am.date BETWEEN %s AND %s)
+                    (aas.id = """+ amortization_id+""")
+                    AND
+                    
+                    (am.date BETWEEN '%s' AND '%s')
 
                 GROUP BY group_designation,taux_group, designation, date_acquisition,date_exercice
-        """
+        """%(date_start,date_end)
 
-        self.env.cr.execute(query,params)
+        self.env.cr.execute(query)
         return self.env.cr.dictfetchall()
       
     
@@ -41,30 +44,41 @@ class ReportAccountAmortizationReportView(models.AbstractModel):
         
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
-        start_date = datetime.strptime(date_start, DATE_FORMAT)
-        end_date = datetime.strptime(date_end, DATE_FORMAT)
+        
+        format_str = '%Y-%m-%d' # The format
+        start_date = datetime.datetime.strptime(date_start, format_str).date()
+        end_date = datetime.datetime.strptime(date_end, format_str).date()
 
         docs = []
+        if data['form']['amortization_type']:
+            amortization_type = data['form']['amortization_type'][0]
+            lines = self.env['hta.account_asset.type'].search([('id','=',amortization_type)])
+        else:
+            lines = self.env['hta.account_asset.type'].search([])
+        
         if data['form']['amortization']:
             amortization = data['form']['amortization'][0]
-            lines = self.env['account.asset'].search([('id','=',amortization)])
+            lines_amortization = self.env['account.asset'].search([('id','=',amortization)])
         else:
-            lines = self.env['account.asset'].search([])
+            lines_amortization = self.env['account.asset'].search([])
+            
         for line in lines:
-            account = line.id
-            id_aas = str(account)
+            type = line.id
+            id_type = str(type)
+            for line_am in lines_amortization:
+                amort = line_am.id
+                id_amort = str(amort)
             
-            get_lines = self.get_lines(id_aas,date_start,date_end)
-            name = line.name
+                get_lines = self.get_lines(id_type,id_amort,date_start,date_end)
+                name = line_am.name
             
-            docs.append ({
-                'name': name,
-                'get_lines':get_lines,
-            })
-            
+                docs.append ({
+                    'name': name,
+                    'get_lines':get_lines,
+                })
         
         return {
-            'doc_model': 'account.analytic.line',
+            'doc_model': 'account.amortization.report.wizard',
             'date_start': date_start,
             'date_end': date_end,
             'docs': docs,
@@ -81,15 +95,17 @@ class ReportAccountAmortizationReportXlsxGenerate(models.AbstractModel):
     
     _description = 'Report Account Amortization XLM'
     
-    def get_lines(self, amortization_id, date_start,date_end):
+    def get_lines(self, amortization_type, amortization_id, date_start,date_end):
         
-        params = [tuple(amortization_id),date_start,date_end]
+        params = [tuple(amortization_type),tuple(amortization_id),date_start,date_end]
         query = """
                 SELECT haat.name AS group_designation,haat.number_percentage AS taux_group, aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_remaining_value)-SUM(am.asset_depreciated_value)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
                 FROM account_move AS am
                 INNER JOIN account_asset AS aas ON aas.id = am.asset_id
                 INNER JOIN hta_account_asset_type AS haat ON haat.id = aas.type_asset_ids
                 WHERE
+                    (haat.id IN %s)
+                    AND
                     (aas.id IN %s)
                     AND
                     (am.date BETWEEN %s AND %s)

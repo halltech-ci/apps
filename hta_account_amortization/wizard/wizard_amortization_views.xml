@@ -7,6 +7,9 @@
             <form string="Account Amortization Report">
                 <group>
                     <group>
+                        <field name="amortization_type"/>
+                    </group>
+                    <group>
                         <field name="amortization"/>
                     </group>
                     <group>
