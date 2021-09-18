@@ -17,7 +17,7 @@
     <report id="account_amortization_report"
         model="account.amortization.report.wizard"
         string="Account Amortization Report"
-        report_type="qweb-pdf"
+        report_type="qweb-html"
         paperformat='paperformat_amortization_report'
         name="hta_account_amortization.amortization_report_view"
         
@@ -43,7 +43,7 @@
                                     TABLEAU D'AMORTISSEMENTS ET INVENTAIRE DES IMMOBILISATIONS 						
                                 </h5>
                                 <h5 class="text-center">
-                                EXERCICE CLOS <span style="font-size: 14px;"><strong>AU</strong> 31/12/2019</span>
+                                EXERCICE CLOS <span style="font-size: 14px;"><strong>AU</strong> <t t-esc="date_end"/></span>
                                 </h5>       
                             </div>
                         </div>
@@ -66,9 +66,8 @@
                         </thead>
                         <tbody>
                             <t t-foreach="docs" t-as="line"> 
-                                    <t t-set="analytic" t-value="line['get_lines']"/> 
-                                    <t t-if="analytic">
-                                        <t t-foreach="analytic" t-as="lines">
+                                    <t t-set="amortization" t-value="line['get_lines']"/> 
+                                        <t t-foreach="amortization" t-as="lines">
                                             <tr>
                                                 <th class='text-center'>
                                                     <span t-esc="lines.get('designation')"/> 
@@ -83,8 +82,6 @@
                                             </tr>   
                                         </t>
                                     </t>  
-                            </t>
-
                         </tbody>
                     </table>
                     <br/>
