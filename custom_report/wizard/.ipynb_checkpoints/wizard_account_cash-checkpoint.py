@@ -28,4 +28,14 @@ class AccountCashReportWizard(models.TransientModel):
         month = date.month
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month)
         return res
+    
+    
+    def get_generate_xlsx_report(self):
+        data = {
+            'date_start': self.date_start,
+            'date_end': self.date_end,
+            'cash_journal': self.cash_journal.ids, 
+        }
+        # ref `module_name.report_id` as reference.
+        return self.env.ref('custom_report.cash_generate_xlsx_report').report_action(self, data=data)
         
