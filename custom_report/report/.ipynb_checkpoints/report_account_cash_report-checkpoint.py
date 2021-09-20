@@ -381,10 +381,10 @@ class ReportAccountCashReportXlsxGenerate(models.AbstractModel):
         i = 0
         for line in docs:
             for cash in line['get_lines']:
-                sheet.merge_range(ligne+i, col,ligne+1, col, cash.get('x_date').strftime('%d/%m/%Y'),table_body_line)
-                sheet.merge_range(ligne+i, col+1,ligne+1, col+1, cash.get('x_libelle'),table_body_line)
-                sheet.merge_range(ligne+i, col+2,ligne+1, col+2, cash.get('x_project'),table_body_line)
-                sheet.merge_range(ligne+i, col+3,ligne+1, col+3, cash.get('x_reference'),table_body_line)
-                sheet.merge_range(ligne+i, col+4,ligne+1, col+4, cash.get('x_partner'),table_body_line)
-                sheet.merge_range(ligne+i, col+5,ligne+1, col+5, cash.get('x_amount'),table_body_line)
+                sheet.write(ligne+i, col, cash.get('x_date').strftime('%d/%m/%Y'))
+                sheet.write(ligne+i, col+1, cash.get('x_libelle'))
+                sheet.write(ligne+i, col+2, cash.get('x_project'))
+                sheet.write(ligne+i, col+3, cash.get('x_reference'))
+                sheet.write(ligne+i, col+4, cash.get('x_partner'))
+                sheet.write(ligne+i, col+5, cash.get('x_amount'))
                 i +=1
