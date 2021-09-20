@@ -68,18 +68,45 @@
                             <t t-foreach="docs" t-as="line"> 
                                     <t t-set="amortization" t-value="line['get_lines']"/> 
                                         <t t-foreach="amortization" t-as="lines">
+                                            
                                             <tr>
-                                                <th class='text-center'>
+                                                <th class='text-center' colspan="3">
+                                                    <span t-esc="lines.get('group_designation')"/> 
+                                                </th>
+                                                <td ><span t-esc="lines.get('taux_group')"/></td>
+                                                <td ></td>
+                                                <td class='text-center'></td>
+                                                <td class='text-center'></td>
+                                                <td class='text-center'></td>
+                                                <td class='text-center'></td>
+                                                <td class='text-center'></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <th class='text-center' colspan="3">
                                                     <span t-esc="lines.get('designation')"/> 
                                                 </th>
-                                                <td>x</td>
-                                                <td><span t-esc="lines.get('date_acquisition').strftime('%d/%m/%Y')" /> </td>
+                                                <td ></td>
+                                                <td ><span t-esc="lines.get('date_acquisition').strftime('%d/%m/%Y')" /> </td>
                                                 <td class='text-center'><span t-esc="lines.get('valeur_acquisition')" options='{"widget": "float", "precision": 0}'/> </td>
                                                 <td class='text-center'><span t-esc="lines.get('anterieur')" options='{"widget": "float", "precision": 0}'/> </td>
                                                 <td class='text-center'><span t-esc="lines.get('exercice')" t-options='{"widget": "float", "precision": 0}'/></td>
                                                 <td class='text-center'><span t-esc="lines.get('total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                                 <td class='text-center'><span t-esc="lines.get('valeur_residuelle')" t-options='{"widget": "float", "precision": 0}'/></td>
-                                            </tr>   
+                                            </tr>
+                                            <tr>
+                                                <th class='text-center' colspan="3">
+                                                    Total 
+                                                </th>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td class='text-center'></td>
+                                                <td class='text-center'></td>
+                                                <td class='text-center'></td>
+                                                <td class='text-center'></td>
+                                                <td class='text-center'></td>
+                                            </tr>
+                                            
                                         </t>
                                     </t>  
                         </tbody>

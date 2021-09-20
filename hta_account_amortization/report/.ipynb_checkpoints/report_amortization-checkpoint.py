@@ -13,14 +13,13 @@ class ReportAccountAmortizationReportView(models.AbstractModel):
     _name = 'report.hta_account_amortization.amortization_report_view'
     
     _description = 'Report Account Amortization'
-    
 
     
     def get_lines(self, amortization_type, amortization_id, date_start,date_end):
         
         #params = [tuple(amortization_type),tuple(amortization_id),date_start,date_end]
         query = """
-                SELECT haat.name AS group_designation,haat.number_percentage AS taux_group, aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_remaining_value)-SUM(am.asset_depreciated_value)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
+                SELECT haat.name AS group_designation,haat.number_percentage AS taux_group, aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_depreciated_value)-SUM(am.amount_total)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
                 FROM account_move AS am
                 INNER JOIN account_asset AS aas ON aas.id = am.asset_id
                 INNER JOIN hta_account_asset_type AS haat ON haat.id = aas.type_asset_ids
