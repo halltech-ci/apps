@@ -22,6 +22,15 @@
         name="custom_report.cash_report_view"
         
         menu="False"/>
+    
+    <report id="cash_generate_xlsx_report"
+        model="account.cash.report.wizard"
+        string="Account Cash Report"
+        report_type="xlsx"
+        name="custom_report.account_cash_xlsx_generate"
+        file="custom_report.account_cash_xlsx_generate"
+        
+        />
 
     <template id="cash_report_view">
         <t t-call="web.html_container">
