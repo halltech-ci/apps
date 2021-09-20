@@ -22,13 +22,19 @@
                     <br/>
                     <div class="container">
                         <div class="row justify-content-end">
-                            <div class="col-2" style="text-decoration: underline; font-weight: bold;margin-right:25px;"><p>CLIENT:</p></div>
-                            <div class="col-6" style="text-align: center;width: 400px; border:1px solid #000;border-radius:10px;">
+                            <div class="col-2" style="text-decoration: underline; font-weight: bold;margin-right:25px; top:70px;">
+    <p>CLIENT:</p>
+                        </div>
+                         <div class="col-6" style="text-align: center;width: 400px; border:1px solid #000;border-radius:10px;">
                             <p t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
                                <p t-field="o.partner_id.phone"/>
                             </div>
                         </div>
                     </div>
+                    <br/>
+                    <br/>
+            
+                    
                     
                     <!--<<h2>-->
                         <!--<span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')"></span>-->
@@ -40,14 +46,15 @@
                         <!-- <span t-field="o.number"/> -->
                     <!--</h2>-->
 
-                        <div id="informations" class="row mt32 mb32">
+                        <!--<div id="informations" class="row mt32 mb32">
                            <div class='col-auto mw-100 mb-2' t-if="o.ref" name="reference">
                                 <strong>Reference:</strong>
                                 <p class="m-0" t-field="o.ref"/>
                             </div>
-                       </div>
+                       </div>-->
                     
-        <table class="table table-sm" name="invoice_table">
+        <table class="table table-sm" name="invoice_table" style="padding:10px 40px; width:810px;resize:both;overflow:auto;">
+            
             <tbody>
                             <tr>
                                 <td>
@@ -95,7 +102,7 @@
 
                     <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
 
-                    <table class="table table-sm o_main_table" name="invoice_line_table">
+                    <table class="table table-sm o_main_table" name="invoice_line_table" style="padding:10px 40px; width:810px;resize:both;overflow:auto;">
                         <thead>
                             <tr>
                                 <!-- TODO: remove in master -->
@@ -103,16 +110,16 @@
                                 <th name="th_description" class="text-left"><span>Description</span></th>
                                 <!-- TODO: remove in master -->
                                 <th name="th_source" class="d-none text-left" t-if="0"><span>Source Document</span></th>
-                                <th name="th_quantity" class="text-right"><span>Quantity</span></th>
-                                <th name="th_priceunit" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Unit Price</span></th>
+                                <th name="th_quantity" class="text-right"><span>Quantité</span></th>
+                                <th name="th_priceunit" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Prix unitaire</span></th>
                                 <th name="th_price_unit" t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                                     <span>Disc.%</span>
                                     <!-- TODO: remove in master -->
                                     <t t-set="colspan" t-value="colspan+1"/>
                                 </th>
                                 <th name="th_subtotal" class="text-right">
-                                    <span groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
-                                    <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                                    <span groups="account.group_show_line_subtotals_tax_excluded">Montant</span>
+                                    <span groups="account.group_show_line_subtotals_tax_included">Prix Total</span>
                                 </th>
                             </tr>
                         </thead>
@@ -160,7 +167,7 @@
                                 <t t-if="current_section and (line_last or lines[line_index+1].display_type == 'line_section')">
                                     <tr class="is-subtotal text-right">
                                         <td colspan="99">
-                                            <strong class="mr16">Subtotal</strong>
+                                            <strong class="mr16">Sous-Tolal</strong>
                                             <span t-esc="current_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
                                         </td>
                                     </tr>
@@ -172,9 +179,9 @@
                     <div class="clearfix">
                         <div id="total" class="row">
                             <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto">
-                                <table class="table table-sm" style="page-break-inside: avoid;">
+                                <table class="table table-sm" style="page-break-inside: avoid; width:370px;">
                                     <tr class="border-black o_subtotal" style="">
-                                        <td><strong>Subtotal</strong></td>
+                                        <td><strong>Sous-Total</strong></td>
                                         <td class="text-right">
                                             <span t-field="o.amount_untaxed"/>
                                         </td>
@@ -210,15 +217,16 @@
                             </div>
                         </div>
                     </div>
-                    <p t-if="o.type in ('out_invoice', 'in_refund')">
+                    <!--<p t-if="o.type in ('out_invoice', 'in_refund')">
                         Please use the following communication for your payment : <b><span t-field="o.invoice_payment_ref"/></b>
-                    </p>
+                    </p>-->
+                    <br/>
                     <div class="container">
                         <div class="row justify-content-end" style="font-size:16px; padding-bottom:30px;">
-                            <div class="col-6" style="font-weight: bold;margin-right:25px;">
+                            <div class="col-6" style="font-weight: bold;">
                                 <p> Arrêt la présente facture à la somme de:</p>
                             </div>
-                            <div class="col-4" style="text-align: center; width: 300px; border:1px solid #000;" >
+                            <div class="col-4" style="text-align: center; width: 300px; border:1px solid #000; margin-right:30px;" >
                                 <span t-field="o.amount_to_word"/>
                             </div>
                         </div>
