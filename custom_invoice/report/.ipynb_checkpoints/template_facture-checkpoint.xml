@@ -29,7 +29,7 @@
                                                    margin-right:21px;">
                             <p t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
                                <p t-field="o.partner_id.phone"/>
-                               <p t-field="o.partner_id.vot"/>
+                               <p t-field="o.partner_id.vat"/>
                             </div>
                         </div>
                     </div>
