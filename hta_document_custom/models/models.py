@@ -15,7 +15,7 @@ class DocumentCustom(models.Model):
         value = [ x.name.lower() for x in document_ids ]
 	
         if self.name and self.name.lower() in value:
-            raise ValidationError(_("Le document existe"))
+            raise ValidationError(("Le document existe"))
 	
         return True
 
