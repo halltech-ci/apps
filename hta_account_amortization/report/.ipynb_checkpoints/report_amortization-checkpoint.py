@@ -15,7 +15,7 @@ class ReportAccountAmortizationReportView(models.AbstractModel):
     _description = 'Report Account Amortization'
 
     
-    def get_lines(self, amortization_type, amortization_id, date_start,date_end):
+    def get_lines(self, amortization_type, date_start,date_end):
         
         #params = [tuple(amortization_type),tuple(amortization_id),date_start,date_end]
         query = """
@@ -26,13 +26,12 @@ class ReportAccountAmortizationReportView(models.AbstractModel):
                 WHERE
                     (haat.id = """+ amortization_type+""")
                     AND
-                    (aas.id = """+ amortization_id+""")
-                    AND
                     
                     (am.date BETWEEN '%s' AND '%s')
 
                 GROUP BY group_designation,taux_group, designation, date_acquisition,date_exercice
         """%(date_start,date_end)
+        
 
         self.env.cr.execute(query)
         return self.env.cr.dictfetchall()
@@ -64,17 +63,18 @@ class ReportAccountAmortizationReportView(models.AbstractModel):
         for line in lines:
             type = line.id
             id_type = str(type)
-            for line_am in lines_amortization:
+            name = line.name
+            for line_am in lines_amortization.search([('type_asset_ids','=',type)]):
                 amort = line_am.id
                 id_amort = str(amort)
             
-                get_lines = self.get_lines(id_type,id_amort,date_start,date_end)
-                name = line_am.name
+                get_lines = self.get_lines(id_type,date_start,date_end)
             
-                docs.append ({
-                    'name': name,
-                    'get_lines':get_lines,
-                })
+            docs.append ({
+                'name': name,
+                'get_lines':get_lines,
+            })
+        
         
         return {
             'doc_model': 'account.amortization.report.wizard',
@@ -94,25 +94,23 @@ class ReportAccountAmortizationReportXlsxGenerate(models.AbstractModel):
     
     _description = 'Report Account Amortization XLM'
     
-    def get_lines(self, amortization_type, amortization_id, date_start,date_end):
+    def get_lines(self, amortization_type, date_start,date_end):
         
-        params = [tuple(amortization_type),tuple(amortization_id),date_start,date_end]
         query = """
-                SELECT haat.name AS group_designation,haat.number_percentage AS taux_group, aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_remaining_value)-SUM(am.asset_depreciated_value)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
+                SELECT haat.name AS group_designation,haat.number_percentage AS taux_group, aas.name AS designation, aas.acquisition_date AS date_acquisition, SUM(aas.original_value) AS valeur_acquisition, am.date AS date_exercice, (SUM(am.asset_depreciated_value)-SUM(am.amount_total)) AS anterieur, SUM(am.amount_total) AS exercice,SUM(am.asset_depreciated_value) AS total, SUM(am.asset_remaining_value) AS valeur_residuelle
                 FROM account_move AS am
                 INNER JOIN account_asset AS aas ON aas.id = am.asset_id
                 INNER JOIN hta_account_asset_type AS haat ON haat.id = aas.type_asset_ids
                 WHERE
-                    (haat.id IN %s)
+                    (haat.id = """+ amortization_type+""")
                     AND
-                    (aas.id IN %s)
-                    AND
-                    (am.date BETWEEN %s AND %s)
+                    
+                    (am.date BETWEEN '%s' AND '%s')
 
                 GROUP BY group_designation,taux_group, designation, date_acquisition,date_exercice
-        """
+        """%(date_start,date_end)
 
-        self.env.cr.execute(query,params)
+        self.env.cr.execute(query)
         return self.env.cr.dictfetchall()
     #Excel traitement
     def generate_xlsx_report(self, workbook, data, partners):
@@ -127,8 +125,8 @@ class ReportAccountAmortizationReportXlsxGenerate(models.AbstractModel):
                 {'bg_color': 'white', 'align': 'center', 'font_size': 21,
                     'font_color': 'black', 'bold': True, 'border': 1})
         table_header = workbook.add_format(
-                {'bg_color': '#8f8e8d', 'align': 'center', 'font_size': 14,
-                    'font_color': 'black'})
+                {'bg_color': '#8f8e8d', 'align': 'center', 'font_size': 11,
+                    'font_color': 'black','bold': True,})
         table_body_space = workbook.add_format(
                 {'align': 'left', 'font_size': 12, 'border': 1})
         table_body_line = workbook.add_format(
@@ -148,27 +146,39 @@ class ReportAccountAmortizationReportXlsxGenerate(models.AbstractModel):
         
         date_start = data.get('date_start')
         date_end = data.get('date_end')
-        start_date = datetime.strptime(date_start, DATE_FORMAT)
-        end_date = datetime.strptime(date_end, DATE_FORMAT)
         
         docs = []
-        if data.get('amortization'):
-            data.get('amortization')
-            lines = self.env['account.asset'].search([('id','=',amortization)])
+        
+        if data.get('amortization_type'):
+            amortization_type = data.get('amortization_type')
+            lines = self.env['hta.account_asset.type'].search([('id','=',amortization_type)])
         else:
-            lines = self.env['account.asset'].search([])
-        for line in lines:
-            account = line.id
-            id_aas = str(account)
+            lines = self.env['hta.account_asset.type'].search([])
+        
+        if data.get('amortization'):
+            amortization = data.get('amortization')
+            lines_amortization = self.env['account.asset'].search([('id','=',amortization)])
+        else:
+            lines_amortization = self.env['account.asset'].search([])
             
-            get_lines = self.get_lines(id_aas,date_start,date_end)
+        for line in lines:
+            type = line.id
+            id_type = str(type)
             name = line.name
+            taux = line.number_percentage
+            for line_am in lines_amortization.search([('type_asset_ids','=',type)]):
+                amort = line_am.id
+                id_amort = str(amort)
+            
+            get_lines = self.get_lines(id_type,date_start,date_end)
             
             docs.append ({
                 'name': name,
+                'taux':taux,
                 'get_lines':get_lines,
             })
-        row += 4
+        sheet.merge_range(row+3, col, row+3, col+7, 'EXERCICE CLOS AU '+ date_end , title)
+        row += 6
         col = 0
         sheet.set_column('B:B', 10)
         sheet.set_column('C:C', 20)
@@ -183,12 +193,37 @@ class ReportAccountAmortizationReportXlsxGenerate(models.AbstractModel):
         sheet.merge_range(row, col, row+1, col, 'DESIGNATION', table_header)
         sheet.merge_range(row, col+1, row+1, col+1, 'TAUX', table_header)
         sheet.merge_range(row, col+2, row+1, col+2, 'DATE ACQUISITION', table_header)
-        sheet.merge_range(row, col+3, row+1, col+3, 'VALEUR D ACQUISITION', table_header)
+        sheet.merge_range(row, col+3, row+1, col+3, 'VALEUR ACQUISITION', table_header)
         sheet.merge_range(row, 4, row, 6, 'AMORTISSEMENT', table_header)
         sheet.write(row+1, 4, 'ANTERIEUR', table_header)
         sheet.write(row+1, 5, 'EXERCICE', table_header)
         sheet.write(row+1, 6, 'TOTAL', table_header)
         sheet.merge_range(row, col+7, row+1, col+7, 'VALEUR RESIDUELLE', table_header)
         # Header row
+        
+        ligne = 12
+        j = 0
+        i = 1
+        for line in docs:
+            sheet.write(ligne+j, col, line['name'],table_header)
+            sheet.write(ligne+j, col+1, line['taux'],table_header)
+            sheet.write(ligne+j, col+2, '',table_header)
+            sheet.write(ligne+j, col+3, '',table_header)
+            sheet.write(ligne+j, col+4, '',table_header)
+            sheet.write(ligne+j, col+5, '',table_header)
+            sheet.write(ligne+j, col+6, '',table_header)
+            sheet.write(ligne+j, col+7, '',table_header)
+            for cash in line['get_lines']:
+                sheet.write(ligne+i, col, cash.get('designation'))
+                sheet.write(ligne+i, col+1, '')
+                sheet.write(ligne+i, col+2, cash.get('date_acquisition').strftime('%d/%m/%Y'))
+                sheet.write(ligne+i, col+3, cash.get('valeur_acquisition'))
+                sheet.write(ligne+i, col+4, cash.get('anterieur'))
+                sheet.write(ligne+i, col+5, cash.get('exercice'))
+                sheet.write(ligne+i, col+6, cash.get('total'))
+                sheet.write(ligne+i, col+7, cash.get('valeur_residuelle'))
+                i +=1
+            j += i+1
+            i = j+1 
         
         
