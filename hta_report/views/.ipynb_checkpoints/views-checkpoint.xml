@@ -48,7 +48,7 @@
                                 <separator string="Reste"/>
                                 <field name="reste_gerer" string="Reste à Gerer"/>
                                 <separator string="Contraintes"/>
-                                <field name="bloquante" string="Les elementrs Bloquants"/>
+                                <field name="bloquante" string="Les élémentrs Bloquants"/>
                                 <separator string="Date et Heure"/>
                                 <field name="date_now" string="La Date et Heure"/>
                             </page>
