@@ -25,10 +25,11 @@
                             <div class="col-2" style="text-decoration: underline; font-weight: bold;margin-right:25px; top:70px;">
     <p>CLIENT:</p>
                         </div>
-                         <div class="col-6" style="text-align: center;width: 400px; border:1px solid #000;border-radius:10px;
+                         <div class="col-6" style="text-align: center;width: 300px; border:1px solid #000;border-radius:10px;
                                                    margin-right:21px;">
-                            <p t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
-                               <p t-field="o.partner_id.phone"/>
+                            <p t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;,&quot;phone&quot;], &quot;no_marker&quot;: True}"/>
+                    
+                               <p t-field="o.partner_id.vat"/>
                             </div>
                         </div>
                     </div>
