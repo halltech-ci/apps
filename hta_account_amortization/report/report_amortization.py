@@ -13,9 +13,29 @@ class ReportAccountAmortizationReportView(models.AbstractModel):
     _name = 'report.hta_account_amortization.amortization_report_view'
     
     _description = 'Report Account Amortization'
+    
+    def get_total_amount(self, amortization_type,total_valeur_acquisition,date_start,date_end):
+        
+        #params = [balance_final,tuple(statement_id),date_start,date_end]
+        query = """
+                        SELECT ("""+str(total_valeur_acquisition)+""") AS total_valeur_acquisition,(SUM(am.asset_depreciated_value)-SUM(am.amount_total)) AS total_anterieur, SUM(am.amount_total) AS total_exercice,SUM(am.asset_depreciated_value) AS total_total, SUM(am.asset_remaining_value) AS total_valeur_residuelle
+                        FROM account_move AS am
+                        INNER JOIN account_asset AS aas ON aas.id = am.asset_id
+                        INNER JOIN hta_account_asset_type AS haat ON haat.id = aas.type_asset_ids
+                        WHERE
+                            (haat.id = """+ amortization_type+""")
+                            AND
+                            (am.date BETWEEN '%s' AND '%s')
+
+            """%(date_start,date_end)
+
+        self.env.cr.execute(query)
+        return self.env.cr.dictfetchall()
 
     
-    def get_lines(self, amortization_type, date_start,date_end):
+
+    def get_lines(self, amortization_type,date_start,date_end):
+
         
         #params = [tuple(amortization_type),tuple(amortization_id),date_start,date_end]
         query = """
@@ -64,15 +84,24 @@ class ReportAccountAmortizationReportView(models.AbstractModel):
             type = line.id
             id_type = str(type)
             name = line.name
+
+            taux = line.number_percentage
+            total_valeur_acquisition = 0
+
             for line_am in lines_amortization.search([('type_asset_ids','=',type)]):
                 amort = line_am.id
                 id_amort = str(amort)
-            
+                total_valeur_acquisition = line_am.original_value + total_valeur_acquisition
                 get_lines = self.get_lines(id_type,date_start,date_end)
+                get_total_amount = self.get_total_amount(id_type,total_valeur_acquisition,date_start,date_end)
             
+
             docs.append ({
                 'name': name,
+                'taux':taux,
                 'get_lines':get_lines,
+                'get_total_amount':get_total_amount,
+
             })
         
         
@@ -94,6 +123,26 @@ class ReportAccountAmortizationReportXlsxGenerate(models.AbstractModel):
     
     _description = 'Report Account Amortization XLM'
     
+
+    def get_total_amount(self, amortization_type,total_valeur_acquisition,date_start,date_end):
+        
+        #params = [balance_final,tuple(statement_id),date_start,date_end]
+        query = """
+                        SELECT ("""+str(total_valeur_acquisition)+""") AS total_valeur_acquisition,(SUM(am.asset_depreciated_value)-SUM(am.amount_total)) AS total_anterieur, SUM(am.amount_total) AS total_exercice,SUM(am.asset_depreciated_value) AS total_total, SUM(am.asset_remaining_value) AS total_valeur_residuelle
+                        FROM account_move AS am
+                        INNER JOIN account_asset AS aas ON aas.id = am.asset_id
+                        INNER JOIN hta_account_asset_type AS haat ON haat.id = aas.type_asset_ids
+                        WHERE
+                            (haat.id = """+ amortization_type+""")
+                            AND
+                            (am.date BETWEEN '%s' AND '%s')
+
+            """%(date_start,date_end)
+
+        self.env.cr.execute(query)
+        return self.env.cr.dictfetchall()
+    
+
     def get_lines(self, amortization_type, date_start,date_end):
         
         query = """
@@ -166,16 +215,21 @@ class ReportAccountAmortizationReportXlsxGenerate(models.AbstractModel):
             id_type = str(type)
             name = line.name
             taux = line.number_percentage
+
+            total_valeur_acquisition = 0
             for line_am in lines_amortization.search([('type_asset_ids','=',type)]):
                 amort = line_am.id
                 id_amort = str(amort)
-            
-            get_lines = self.get_lines(id_type,date_start,date_end)
+                total_valeur_acquisition = line_am.original_value + total_valeur_acquisition
+                get_lines = self.get_lines(id_type,date_start,date_end)
+                get_total_amount = self.get_total_amount(id_type,total_valeur_acquisition,date_start,date_end)
+
             
             docs.append ({
                 'name': name,
                 'taux':taux,
                 'get_lines':get_lines,
+                'get_total_amount':get_total_amount,
             })
         sheet.merge_range(row+3, col, row+3, col+7, 'EXERCICE CLOS AU '+ date_end , title)
         row += 6
@@ -223,7 +277,19 @@ class ReportAccountAmortizationReportXlsxGenerate(models.AbstractModel):
                 sheet.write(ligne+i, col+6, cash.get('total'))
                 sheet.write(ligne+i, col+7, cash.get('valeur_residuelle'))
                 i +=1
-            j += i+1
+
+            for cash in line['get_total_amount']:
+                sheet.write(ligne+i+1, col, 'SOUS TOTAL',table_header)
+                sheet.write(ligne+i+1, col+1, '',table_header)
+                sheet.write(ligne+i+1, col+2, '',table_header)
+                sheet.write(ligne+i+1, col+3, cash.get('total_valeur_acquisition'),table_header)
+                sheet.write(ligne+i+1, col+4, cash.get('total_anterieur'),table_header)
+                sheet.write(ligne+i+1, col+5, cash.get('total_exercice'),table_header)
+                sheet.write(ligne+i+1, col+6, cash.get('total_total'),table_header)
+                sheet.write(ligne+i+1, col+7, cash.get('total_valeur_residuelle'),table_header)
+                
+            j += i+3
+
             i = j+1 
         
         
