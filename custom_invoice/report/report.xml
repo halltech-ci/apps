@@ -22,4 +22,23 @@
         paperformat='report_invoice_paper'
         file="report_invoice"
     />
+    
+     <report
+        id="account_move_hta_report_xlsx"
+        model="account.move"
+        string="Facture Conceptor Excel"
+        report_type="xlsx"
+        name="custom_invoice.report_invoice_xlsx"
+        file="report_invoice_xlsx"
+        attachment_use="False"
+    />
+    <!--<report id="account_move_hta_report_xlsx"
+        model="account.move"
+        string="Facture Conceptor Excel"
+        report_type="xlsx"
+        name="custom_invoice.report_invoice_xlsx"
+        paperformat='report_invoice_paper'
+        file="custom_invoice.report_invoice_xlsx"
+    />-->
+    
 </odoo>
