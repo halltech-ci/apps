@@ -71,7 +71,9 @@
                                 <th class='text-center' colspan="3">
                                     <span t-esc="doc['name']"/>
                                 </th>
+
                                 <th class='text-center'><span t-esc="doc['taux']"/></th>
+
                                 <th class='text-center'></th>
                                 <th class='text-center'></th>
                                 <th class='text-center'></th>
@@ -104,6 +106,7 @@
                                         </td>
                                     </tr>
                                 </t>
+
                                 <t t-foreach="doc['get_total_amount']" t-as="total">
                                     <tr>
                                         <th class='text-center' colspan="3">
@@ -131,6 +134,7 @@
                                     </tr>
                                     
                                 </t>
+
                             </tr>
                             </t>  
                     </table>
