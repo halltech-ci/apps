@@ -97,7 +97,7 @@
                 <tr class="border-black">
                     <td>
                         <span t-field="doc.amount_to_word"/>
-                        <span> FRANCS CFA</span>
+                        
                     </td>
                 </tr>
             </div>
