@@ -1,0 +1,20 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+     <record model="ir.ui.view" id="expense_request_form_inherits">
+      <field name="model">expense.request</field>
+      <field name="inherit_id" ref="expense_management.expense_request_view"/>
+      <field name="arch" type="xml">
+          <xpath expr="//header/button[@name='action_post']" position='after'>
+              <button name="button_to_cancel"
+                    string="Annuler"
+                    type="object"
+                    class="oe_highlight"
+                    states="approve"
+                    groups="account.group_account_user"
+            />
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>
