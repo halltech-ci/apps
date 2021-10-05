@@ -97,7 +97,7 @@
                 <tr class="border-black">
                     <td>
                         <span t-field="doc.amount_to_word"/>
-                        <span> FRANCS CFA</span>
+                        
                     </td>
                 </tr>
             </div>
@@ -122,12 +122,13 @@
         <xpath expr="//div[hasclass('page')]/table" position="attributes">
             <attribute name="class">table table-sm o_main_table table-bordered</attribute>
         </xpath>
+        <!-- Cha,ging font size-->
         <xpath expr="//div[hasclass('page')]/table" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
         
         <xpath expr="//div[hasclass('page')]" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
     </template>
 </odoo>
