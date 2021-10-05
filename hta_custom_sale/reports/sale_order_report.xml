@@ -85,7 +85,7 @@
             </tr>
             <t t-if="doc.remise_total > 0">
                 <tr class="o_subtotal" style="">
-                    <td name="td_general_discount_label">Remise(<span t-field='doc.general_discount'/>%)</td>
+                    <td name="td_general_discount_label">Total Remise</td>
                     <td name="td_remise_total" class="text-right">
                         <span t-field="doc.remise_total"/>
                     </td>
