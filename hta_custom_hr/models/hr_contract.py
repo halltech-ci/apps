@@ -33,3 +33,6 @@ class HrContract(models.Model):
     )
     communication_flotte = fields.Monetary(string="Coût Communication Flotte")
     
+    loan_account = fields.Many2one('account.account', 'Loan Account', company_dependent=True, domain=[('deprecated', '=', False)])
+    advance_account = fields.Many2one('account.account', 'Advance Account', company_dependent=True, domain=[('deprecated', '=', False)])
+    
