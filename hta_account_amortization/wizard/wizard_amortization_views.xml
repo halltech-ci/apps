@@ -10,9 +10,6 @@
                         <field name="amortization_type"/>
                     </group>
                     <group>
-                        <field name="amortization"/>
-                    </group>
-                    <group>
                         <field name="date_start"/>
                     </group>
                     <group>
