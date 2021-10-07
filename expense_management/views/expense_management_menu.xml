@@ -61,7 +61,7 @@
                  <label for="name" class="oe_inline" />
               </div>
               <h1>
-                    <field name="name" class="oe_inline"/>
+                    <field name="name" class="oe_inline" />
               </h1>
                
               <group>
