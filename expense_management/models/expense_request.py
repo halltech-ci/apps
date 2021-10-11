@@ -154,7 +154,7 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
-        self.is_approve_check()
+        #self.is_approve_check()
         for line in self.line_ids:
             line.action_approve()
         return self.write({"state": "approve"})
