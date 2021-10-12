@@ -14,6 +14,36 @@
                     groups="account.group_account_user"
             />
           </xpath>
+          <xpath expr="//sheet/h1" position='replace'>
+              <h1>
+                    <field name="name" class="oe_inline" attrs="{'readonly': [('state', 'in', ['to_cancel'])]}"/>
+              </h1>
+          </xpath>
+          <xpath expr="//sheet/group/group[1]" position='replace'>
+              <group>
+                      <field name="expense_approver" options="{'no_create': True}" required='True' 
+                             attrs="{'readonly': [('state', 'in', ['post', 'approve','to_cancel'])]}"
+                      />
+                      <field name='journal' options="{'no_create': True}" attrs="{'readonly': [('state', 'in', ['post','to_cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"/>
+                      <field name="statement_id" string="Journal Caisse" options="{'no_create': True}"
+                             attrs="{'readonly': [('state', 'in', ['post','to_cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"
+                      />
+             </group>
+          </xpath>
+          <xpath expr="//sheet/notebook/page/field[@name='line_ids']" position='replace'>
+              <field name="line_ids"  attrs="{'readonly': [('state', 'in', ['approve', 'post','to_cancel',])]}">
+                          <tree>
+                              <field name='name'/>
+                              <field name='date'/>
+                              <field name='employee_id'/>
+                              <field name="expense_product" options="{'no_create_edit': True}"/>
+                              <field name='amount'/>
+                              <!--<field name='payment_mode'/>-->
+                              <field name='analytic_account'/>
+                              <field name='request_state'/>
+                          </tree>
+                      </field>
+          </xpath>
       </field>
     </record>
   </data>
