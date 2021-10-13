@@ -63,13 +63,16 @@ class ReportPaieBookExcel(models.AbstractModel):
                 {'bg_color': 'white', 'align': 'left', 'font_size': 14,
                     'font_color': 'black','bold': True,})
         title = workbook.add_format(
-                {'bg_color': 'white', 'align': 'center', 'font_size': 21,
+                {'bg_color': 'white', 'align': 'center', 'font_size': 30,
                     'font_color': 'black', 'bold': True, 'border': 1})
         table_header = workbook.add_format(
-                {'bg_color': '#8f8e8d', 'align': 'center', 'font_size': 11,
-                    'font_color': 'black','bold': True,})
+                {'bg_color': 'white', 'align': 'center', 'font_size': 20,
+                    'font_color': 'black','bold': True, 'border': 1})
+        table = workbook.add_format(
+                {'bg_color': 'white', 'align': 'left', 'font_size': 14,
+                    'font_color': 'black','bold': True, 'border': 1})
         table_body_space = workbook.add_format(
-                {'align': 'left', 'font_size': 12, 'border': 1})
+                {'align': 'left', 'font_size': 16, 'border': 1, 'bg_color':'white', 'bold': True ,'font_color': 'black'})
         table_body_line = workbook.add_format(
                 {'bg_color': 'black', 'align': 'right', 'font_size': 12,
                     'font_color': 'white', 'border': 1})
@@ -114,19 +117,105 @@ class ReportPaieBookExcel(models.AbstractModel):
         col = 0
         
         # Header row
-        sheet.merge_range(row, col, row+1, col, 'Name', table_header)
-        sheet.merge_range(row, col+1, row+1, col+1, 'Code', table_header)
-        sheet.merge_range(row, col+2, row+1, col+2, 'Total', table_header)
-        sheet.merge_range(row, col+3, row+1, col+3, 'Employé', table_header)
+        sheet.merge_range(row, col, row, col+3, 'Rubrique', table_header)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Salaire de base', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Sursalaire', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Indemnité de congés', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Gratification/Départ', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Prime de responsabilité', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Prime de communication', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Prime de transport', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Prime de logement', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Prime Assurance MCI', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Autres avantages', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'SALAIRE BRUT', table_body_space)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Prime ancienneté', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'SALAIRE BRUT IMPOSABLE', table_body_space)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Regime de Retraite Employe', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Regime de Retraite Patronal', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Prestations Familiales', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'ASSURANCE MALADIE CMU', table_body_space)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Accident de Travail', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'TOTAL DES RETENUES SOCIALES', table_body_space)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Impots Sur Salaire (IS)', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Contribution Nationale (CN)', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Impot General Sur le Revenu (IGR)', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'TOTAL DES RETENUES FISCALES', table_body_space)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Formation Continue', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Taxe Apprentissage', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'TOTAL DES COTISATIONS', table_body_space)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'SALAIRE NET', table_body_space)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Indemnité de transport', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Prelevement Assurance MCI', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Prêt', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'Avances et Acompte perçus', table)
+        row += 1
+        col = 0
+        sheet.merge_range(row, col, row, col+3, 'NET A PAYER', table_body_space)
+       
+
+       
         
-        ligne = 5
-        j = 0
-        i = 1
-        for line in docs:
-            for id_employee in line['get_lines']:
-                sheet.write(ligne+i, col, analytic.get('x_hpl_name'))
-                sheet.write(ligne+i, col+1, analytic.get('x_hpl_code'))
-                sheet.write(ligne+i, col+2, analytic.get('x_hpl_total'))
-                sheet.write(ligne+i, col+2, analytic.get('x_employee'))
-                i +=1
-        
+       
