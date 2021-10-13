@@ -1,0 +1,9 @@
+<odoo>
+    <report id="account_analytic_report_xlsx"
+        model="account.analytic.report.wizard"
+        string="Account Analytic Report Excel"
+        report_type="xlsx"
+        name="custom_report_excel.analytic_report_excel"
+        file="custom_report_excel.analytic_report_excel"
+        attachment_use="False"/>
+</odoo>
