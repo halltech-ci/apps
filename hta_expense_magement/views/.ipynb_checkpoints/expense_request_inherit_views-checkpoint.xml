@@ -20,7 +20,7 @@
               </h1>
           </xpath>
           <xpath expr="//sheet/group/group[2]/field[@name='balance_amount']" position='replace'>
-              <field name="balance_amount" readonly='True' attrs="{'invisible': [('state','!=', 'to_approve'),('requested_by','=', 'expense_approver')]}"/>
+              <field name="balance_amount" readonly='True' attrs="{'invisible': [('state','!=', 'to_approve'),('requested_by','!=', 'expense_approver')]}"/>
           </xpath>
           <xpath expr="//sheet/group/group[1]" position='replace'>
               <group>
