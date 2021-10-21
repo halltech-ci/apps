@@ -7,9 +7,9 @@ class CodeCategorie(models.Model):
     code = fields.Char()
     _sql_constraints = [('code_unique', 'unique (code)', "This code already exists!")]
     
-    l_name = fields.Char(string="Name",compute='_compute_l_name')
+    l_name = fields.Char(compute='_compute_l_name')
     #code_reference = fields.Char()
-    code_reference = fields.Char(string="Code",compute='_compute_code_reference')
+    code_reference = fields.Char(compute='_compute_code_reference')
     is_virtual_product = fields.Boolean()
     
     
