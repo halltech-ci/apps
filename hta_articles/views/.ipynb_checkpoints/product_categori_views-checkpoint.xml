@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_product_category_form" model="ir.ui.view">
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view" />
+        <field name="arch" type="xml">
+             
+                <xpath 
+                    expr="//sheet/group[@name='first']/field[@name='parent_id']" position="after">
+                    <field name="code" string="Code Catégorie" style="width:15%%" placeholder="31"/>
+                    <field name="l_name" string="Name" style="width:50%%" placeholder="31"/>
+                    <field name="code_reference" string="Code Catégorie" style="width:50%%" placeholder="31"/>
+                    <field name="is_virtual_product" string="Product Support" style="width:50%%" placeholder="31"/>
+                 </xpath> 
+        </field>
+    </record>
+</odoo>
