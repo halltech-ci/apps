@@ -29,7 +29,7 @@
         'views/templates.xml',
         'views/hta_article_views.xml',
         'views/product_categori_views.xml',
-        #'views/config_setting_view.xml',
+        'views/config_setting_view.xml',
         
     
     ],
