@@ -8,10 +8,10 @@
                 <xpath 
                     expr="//sheet/group[@name='first']/field[@name='parent_id']" position="after">
                     <field name="code" string="Code Catégorie" style="width:15%%" placeholder="31"/>
-                    <field name="recovery_name" string="Name" style="width:50%%" placeholder="31"/>
+                    <field name="recovery_name" string="Name" style="width:50%%" placeholder="31" invisible="1"/>
                     <field name="is_virtual_product" string="Product Support"/>
-                    <field name="code_reference" string="Code Catégorie" style="width:50%%" placeholder="31"/>
-                    <field name="code_reference2" string="Code Catégorie2" style="width:50%%" placeholder="code"/>
+                    <field name="code_reference" string="Code Catégorie" style="width:50%%" placeholder="31" invisible="1"/>
+                    <field name="code_reference2" string="Code Catégorie2" style="width:50%%" placeholder="code" invisible="1"/>
                  </xpath> 
         </field>
     </record>

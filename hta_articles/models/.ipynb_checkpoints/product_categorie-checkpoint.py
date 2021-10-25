@@ -10,7 +10,7 @@ class CodeCategorie(models.Model):
     recovery_name = fields.Char(compute='_compute_recovery_name')
     #code_reference = fields.Char()
     code_reference = fields.Char(compute='_compute_code_reference')
-    code_reference2 = fields.Char()
+    code_reference2 = fields.Char(compute='_compute_code_reference2')
     is_virtual_product = fields.Boolean()
     
     
@@ -33,4 +33,24 @@ class CodeCategorie(models.Model):
                 rec.recovery_name = str(rec.parent_id.recovery_name) +' '+ str(rec.name)            
             else:
                 rec.recovery_name = rec.name
+                
+                
+    def fonctionTranche(self,liste, tranche):
+        res = ""
+        cpt = 0
+        for l in range(0,len(liste)):
+            res = res + liste[l]
+            cpt = cpt + 1
+            if cpt == 3:
+                res = res + "-"
+                cpt = 0
+        return res
+    
+    @api.onchange("code_reference")
+    def _compute_code_reference2(self):
+        for rec in self:
+            #rec.tranche = str(rec.code_reference.charge)
+            rec.resultat = rec.fonctionTranche(str(rec.code_reference), rec.tranche)
+            rec.code_reference2 = rec.resultat
+           
                 
