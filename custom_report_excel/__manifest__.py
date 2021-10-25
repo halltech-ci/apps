@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "hta_expense_magement",
+    'name': "custom_report_excel",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,15 +20,17 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','expense_management'],
+    'depends': ['custom_report','report_xlsx'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/expense_request_inherit_views.xml',
-        'views/expense_line_views.xml',
+        # Wizard
+        'wizard/report_analytic_views.xml',
+        # Report
+        'report/report_analytic_xlsx.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

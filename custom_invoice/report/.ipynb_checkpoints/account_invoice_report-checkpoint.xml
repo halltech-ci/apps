@@ -100,7 +100,7 @@
         <xpath expr="//div[hasclass('page')]/p[@name='comment']" position="before">
             <div style="font-size:16px; padding-bottom:30px;">
                 <tr class="border-black">
-                    <td><span t-field="o.amount_to_word"/></td>
+                    <td><span t-field="o.amount_to_word"/> FCFA</td>
                 </tr>
             </div>
         </xpath>

@@ -229,9 +229,7 @@
                                 <p> Arrêt la présente facture à la somme de:</p>
                             </div>
                             <div class="col-4" style="text-align: center; width: 300px; border:1px solid #000; margin-right:30px;" >
-                                <span t-field="o.amount_to_word"/>
-                                
-                                <span t-field="o.currency_id.symbol"/>
+                                <span t-field="o.amount_to_word"/> FCFA
                             </div>
                         </div>
                     </div>
