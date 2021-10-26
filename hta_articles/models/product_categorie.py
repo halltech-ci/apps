@@ -50,7 +50,7 @@ class CodeCategorie(models.Model):
     def _compute_code_reference2(self):
         for rec in self:
             #rec.tranche = str(rec.code_reference.charge)
-            rec.resultat = rec.fonctionTranche(str(rec.code_reference), rec.tranche)
+            rec.resultat = rec.fonctionTranche(str(rec.code_reference),3)
             rec.code_reference2 = rec.resultat
            
                 
