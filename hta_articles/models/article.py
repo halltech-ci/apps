@@ -8,9 +8,9 @@ from odoo import _, api, fields, models
 class ProductTemplate(models.Model):
     _inherit = "product.template"
     
-    name = fields.Char('Name', index=True, required=True, translate=True, compute='_compute_name')
-    code_prefix = fields.Char(help="Add prefix to product variant reference (default code)")
-    #code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)",)
+    name = fields.Char('Name', index=True, required=True, translate=True,compute='_compute_name')
+    #code_prefix = fields.Char(help="Add prefix to product variant reference (default code)")
+    code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)",)
     
     code_mesure = fields.Char()
     
@@ -18,17 +18,20 @@ class ProductTemplate(models.Model):
                                    default=lambda self: _('New'))
     
     
-    
-    @api.depends("categ_id")
+    # affichage du name
+    @api.onchange("categ_id")
     def _compute_name(self):
         for rec in self:
             if rec.categ_id:
-                if rec.code_mesure is False:
-                    rec.name = rec.categ_id.recovery_name 
-                else:
-                    rec.name = rec.categ_id.recovery_name +' '+ str(rec.code_mesure) 
+                rec.name = rec.categ_id.recovery_name +' '+ str(rec.code_mesure) 
+                
+                
+                #if rec.code_mesure is False:
+                    #rec.name = rec.categ_id.recovery_name 
+                #else:
+                    
     
-    
+    #code article reference
     @api.model
     def create(self, vals):
         if vals.get('artricle_reference', _('New')) == _('New'):
@@ -36,17 +39,32 @@ class ProductTemplate(models.Model):
         result = super(ProductTemplate, self).create(vals)
         return result
         
-    
-                   
-    
+    #code article(default_code)
     @api.onchange("categ_id")
-    @api.depends("categ_id")
     def _onchange_default_code(self):
         for rec in self:
             if rec.categ_id:
-                rec.code_prefix =rec.categ_id.code_reference2 + rec.artricle_reference
+                rec.default_code =rec.categ_id.code_reference2 + rec.code_prefix
+     
+    
+    @api.depends("categ_id")
+    def _compute_code_prefix(self):
+        for rec in self:
+            rec.code_prefix = rec.artricle_reference
+            
     
     
+    
+    
+    
+    
+    
+    
+    #@api.onchange("categ_id")
+    #def _onchange_default_code(self):
+        #for rec in self:
+            #if rec.categ_id:
+                #rec.default_code =rec.categ_id.code_reference2 + rec.code_prefix      
     
     #def fonctionIcrementation(self, n):
         #for i in range(1, n+1):
