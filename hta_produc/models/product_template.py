@@ -9,18 +9,14 @@ from odoo.exceptions import ValidationError
 class ProductTemplate(models.Model):
     _inherit = "product.template"
     
-    @api.constrains('name')
-    def _check_unique_document_name(self):
-	
-        article_ids = self.search([]) - self
-	
-        value = [ x.name.lower() for x in article_ids ]
-	
-        if self.name and self.name.lower() in value:
-            raise ValidationError(_('Name article already exists!'))
-	
-        return True
     
+    @api.constrains('name')
+    def _check_name(self):
+        for rec in self:
+            if rec.name > str(0):
+                raise ValidationError(_('Name article already exists!'))
+    
+   
     code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)")
     code_mesure = fields.Char()
     
