@@ -29,7 +29,7 @@
         'views/templates.xml',
         'views/product_category_views.xml',
         'views/product_config_views.xml',
-        'views/product_ref_views.xml',
+        #'views/product_ref_views.xml',
         'views/product_template_views.xml',
     ],
     # only loaded in demonstration mode
