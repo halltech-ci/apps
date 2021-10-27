@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 from string import Template
 from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 
@@ -9,11 +10,16 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
     
     @api.constrains('name')
-    def _check_mobile_unique(self):
-        name_counts = self.search_count([('name', '=', self.name), ('id', '!=', self.id)])
-        print(name_counts)
-        if name_counts > 0:
-            raise ValidationError("Name article already exists!")
+    def _check_unique_document_name(self):
+	
+        article_ids = self.search([]) - self
+	
+        value = [ x.name.lower() for x in article_ids ]
+	
+        if self.name and self.name.lower() in value:
+            raise ValidationError(("Name article already exists!"))
+	
+        return True
     
     code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)")
     code_mesure = fields.Char()
