@@ -17,7 +17,7 @@ class ProductTemplate(models.Model):
         value = [ x.name.lower() for x in article_ids ]
 	
         if self.name and self.name.lower() in value:
-            raise ValidationError("Name article already exists!")
+            raise ValidationError(_('Name article already exists!'))
 	
         return True
     
