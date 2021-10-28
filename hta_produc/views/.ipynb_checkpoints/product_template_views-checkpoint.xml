@@ -23,6 +23,8 @@
                 <field name="barcode" position="after">
                     <field name="code_mesure" string="Mesure" style="width:50%%" placeholder="2000X1000"/>
                     <field name="code_ref" string="Reference Code"/>
+                    <!--<field name="code_referen" string="Reference Code2"/>-->
+                    <!--<field name="code_reference3" string="Reference Code3"/>-->
                 </field>
             </field>
         </record>
