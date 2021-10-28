@@ -3,8 +3,8 @@
     <data noupdate="1">
 
         <!-- Reference Document -->
-        <record id="hta_product_reference_view" model="ir.sequence">
-            <field name="name">Product</field>
+        <record id="hta_article_reference_view" model="ir.sequence">
+            <field name="name">Article</field>
             <field name="code">product_reference.code</field>
             <field name="prefix"></field>
             <field name="padding">4</field>
