@@ -9,6 +9,18 @@ from odoo.exceptions import ValidationError
 class ProductTemplate(models.Model):
     _inherit = "product.template"
     
+    
+    @api.constrains('code_ref')
+    def _check_unique_code_ref(self):
+	
+        article_ids = self.search([]) - self
+	
+        value = [ x.code_ref.lower() for x in article_ids ]
+	
+        if self.code_ref and self.code_ref.lower() in value:
+            raise ValidationError(_('Name article already exists!'))
+	
+        return True
    
     #code_prefix = fields.Char()
     code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)")

@@ -5,7 +5,7 @@ class CodeCategorie(models.Model):
     _inherit = 'product.category'
 
     code = fields.Char()
-    _sql_constraints = [('code_unique', 'unique (code)', "This code already exists!")]
+   
     
     recovery_name = fields.Char(compute='_compute_recovery_name')
     #code_reference = fields.Char()
