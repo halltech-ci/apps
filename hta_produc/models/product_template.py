@@ -10,17 +10,7 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
     
     
-#     @api.constrains('code_ref')
-#     def _check_unique_code_ref(self):
-	
-#         article_ids = self.search([]) - self
-	
-#         value = [ x.code_ref.lower() for x in article_ids ]
-	
-#         if self.code_ref and self.code_ref.lower() in value:
-#             raise ValidationError(_('Name article already exists!'))
-	
-#         return True
+
 
 #     @api.constrains('code_ref')
 #     def _check_code_ref(self):
@@ -29,7 +19,7 @@ class ProductTemplate(models.Model):
 #                 raise ValidationError("The Code Product already exists !")
 
 
-    #_sql_constraints = [('code_ref_unique', 'unique (code_ref)', "This code already exists!")]
+    #_sql_constraints = [('code_mesure_unique', 'unique (code_mesure)', "This code already exists!")]
     
     #code_prefix = fields.Char()
     code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)")
@@ -42,7 +32,15 @@ class ProductTemplate(models.Model):
     groupement = fields.Integer(default=3)
     
     
-    
+    @api.constrains('name')
+    def _check_unique_code_mesure(self):
+        names = self.search([]) - self
+        values = [ x.name.lower() for x in names ]
+        
+        if self.name and self.name.lower() in values:
+            raise ValidationError(_('Name article already exists!'))
+	
+        return True
     
     #code article reference
     @api.model
@@ -59,10 +57,15 @@ class ProductTemplate(models.Model):
             rec.code_prefix = rec.product_reference
             
             
-     # affichage du name
+    #affichage du name
     @api.onchange("categ_id","code_mesure")
     def _onchange_name_(self):
         self.name = str(self.categ_id.recovery_name) +' '+ str(self.code_mesure) 
+        
+        
+#         if self.name is True:
+#             raise ValidationError(_('Name product already exists!'))
+            
         
         
         
