@@ -10,18 +10,27 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
     
     
-    @api.constrains('code_ref')
-    def _check_unique_code_ref(self):
+#     @api.constrains('code_ref')
+#     def _check_unique_code_ref(self):
 	
-        article_ids = self.search([]) - self
+#         article_ids = self.search([]) - self
 	
-        value = [ x.code_ref.lower() for x in article_ids ]
+#         value = [ x.code_ref.lower() for x in article_ids ]
 	
-        if self.code_ref and self.code_ref.lower() in value:
-            raise ValidationError(_('Name article already exists!'))
+#         if self.code_ref and self.code_ref.lower() in value:
+#             raise ValidationError(_('Name article already exists!'))
 	
-        return True
-   
+#         return True
+
+#     @api.constrains('code_ref')
+#     def _check_code_ref(self):
+#         for rec in self:
+#             if rec.code_ref is True:
+#                 raise ValidationError("The Code Product already exists !")
+
+
+    _sql_constraints = [('code_ref_unique', 'unique (code_ref)', "This code already exists!")]
+    
     #code_prefix = fields.Char()
     code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)")
     code_mesure = fields.Char()
