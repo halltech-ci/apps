@@ -29,7 +29,7 @@ class ProductTemplate(models.Model):
 #                 raise ValidationError("The Code Product already exists !")
 
 
-    _sql_constraints = [('code_ref_unique', 'unique (code_ref)', "This code already exists!")]
+    #_sql_constraints = [('code_ref_unique', 'unique (code_ref)', "This code already exists!")]
     
     #code_prefix = fields.Char()
     code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)")
