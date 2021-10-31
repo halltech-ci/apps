@@ -32,10 +32,12 @@ class ProductTemplate(models.Model):
     groupement = fields.Integer(default=3)
     
     
-    _sql_constraints = [
-        ('name_unique', 'UNIQUE  (name)', "This code already exists!")
-    ]
-    
+    @api.constrains('name')
+    def _check_name(self):
+        for rec in self:
+            article = self.env['product.template'].search([('name','=',rec.name), ('id','!=',rec.id)])
+            if article:
+                raise ValidationError(_("Le nom du Produit existe déjà !" % rec.name))
     
 #     @api.constrains('name')
 #     def _check_unique_code_mesure(self):
