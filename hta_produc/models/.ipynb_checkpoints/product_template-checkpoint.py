@@ -37,7 +37,7 @@ class ProductTemplate(models.Model):
         for rec in self:
             article = self.env['product.template'].search([('name','=',rec.name), ('id','!=',rec.id)])
             if article:
-                raise ValidationError(_("Le nom du Produit existe déjà !" % rec.name))
+                raise ValidationError(_("Name %s Already Exists" % rec.name))
     
 #     @api.constrains('name')
 #     def _check_unique_code_mesure(self):
