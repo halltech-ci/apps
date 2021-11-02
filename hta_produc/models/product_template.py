@@ -32,22 +32,22 @@ class ProductTemplate(models.Model):
     groupement = fields.Integer(default=3)
     
     
-    @api.constrains('name')
-    def _check_name(self):
-        for rec in self:
-            article = self.env['product.template'].search([('name','=',rec.name), ('id','!=',rec.id)])
-            if article:
-                raise ValidationError(_("Name %s existe déjà" % rec.name))
-    
 #     @api.constrains('name')
-#     def _check_unique_code_mesure(self):
-#         names = self.search([]) - self
-#         values = [ x.name.lower() for x in names ]
+#     def _check_name(self):
+#         for rec in self:
+#             article = self.env['product.template'].search([('name','=',rec.name), ('id','!=',rec.id)])
+#             if article:
+#                 raise ValidationError(_("Name %s existe déjà" % rec.name))
+    
+    @api.constrains('name')
+    def _check_unique_code_mesure(self):
+        names = self.search([]) - self
+        values = [ x.name.lower() for x in names ]
         
-#         if self.name and self.name.lower() in values:
-#             raise ValidationError(_('Name article already exists!'))
+        if self.name and self.name.lower() in values:
+            raise ValidationError(_('article already exists!'))
 	
-#         return True
+        return True
 
 
     
