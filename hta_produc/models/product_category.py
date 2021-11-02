@@ -1,29 +1,50 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 
 class CodeCategorie(models.Model):
     _inherit = 'product.category'
 
-    code = fields.Char()
-   
-    
+    category_code = fields.Char()
+    code_reference = fields.Char(compute='_compute_code_reference')    
     recovery_name = fields.Char(compute='_compute_recovery_name')
-    #code_reference = fields.Char()
-    code_reference = fields.Char(compute='_compute_code_reference')
-    #code_reference2 = fields.Char(compute='_compute_code_reference2')
+    #code_references = fields.Char(readonly=True)
     is_virtual_product = fields.Boolean()
     groupement = fields.Integer(default=3)
     
     
+    @api.constrains('code_reference')
+    def _check_code_reference(self):
+        for rec in self:
+            article = self.env['product.category'].search([('code_reference','=',rec.code_reference), ('id','!=',rec.id)])
+            if article:
+                raise ValidationError(_("Code %s existe déjà" % rec.code_reference))
     
-    @api.onchange("code","parent_id")
+    
+    @api.depends("category_code", "parent_id.code_reference")
     def _compute_code_reference(self):
         for rec in self:
             if rec.parent_id: 
-                rec.code_reference = str(rec.parent_id.code_reference) + str(rec.code)
+                rec.code_reference = '%s-%s' % (rec.parent_id.code_reference, rec.category_code)
             else:
-                rec.code_reference = rec.code
+                rec.code_reference = '%s' % (rec.category_code)
+    
+    @api.onchange("parent_id")
+    def _onchange_code_reference(self):
+        for rec in self:
+            if rec.parent_id: 
+                rec.code_reference = str(rec.parent_id.code_reference) + str(rec.category_code)
+            else:
+                rec.code_reference = rec.category_code
                 
+    @api.onchange("category_code")
+    def _onchange_code_reference(self):
+        for rec in self:
+            if rec.parent_id: 
+                rec.code_reference = str(rec.parent_id.code_reference) + str(rec.category_code)
+            else:
+                rec.code_reference = rec.category_code
+    
     
     @api.depends("name", "parent_id")
     def _compute_recovery_name(self):
@@ -48,8 +69,8 @@ class CodeCategorie(models.Model):
 #         return res
     
 #     @api.onchange("code_reference")
-#     def _compute_code_reference2(self):
+#     def _onchange_code_references(self):
 #         for rec in self:
 #             rec.resultat = rec.fonctionTranche(str(rec.code_reference),rec.groupement)
-#             rec.code_reference2 = rec.resultat
+#             rec.code_references = rec.resultat
     

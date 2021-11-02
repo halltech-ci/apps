@@ -2,7 +2,6 @@ import re
 from collections import defaultdict
 from string import Template
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
 
 
 
@@ -10,26 +9,13 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
     
     
-
-
-#     @api.constrains('code_ref')
-#     def _check_code_ref(self):
-#         for rec in self:
-#             if rec.code_ref is True:
-#                 raise ValidationError("The Code Product already exists !")
-
-
-    #_sql_constraints = [('code_mesure_unique', 'unique (code_mesure)', "This code already exists!")]
-    
-    #code_prefix = fields.Char()
     code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)")
-    code_mesure = fields.Char()
+    caracteristique = fields.Char()
     code_ref = fields.Char(compute='_compute_code_ref')
     #code_referen = fields.Char(compute='_compute_code_referen')
     #code_reference3 = fields.Char(compute='_compute_code_reference3')
     product_reference = fields.Char(string='Article', required=True, copy=False, readonly=True, index=True,
                                    default=lambda self: _('New'))
-    groupement = fields.Integer(default=3)
     
     
 #     @api.constrains('name')
@@ -39,15 +25,15 @@ class ProductTemplate(models.Model):
 #             if article:
 #                 raise ValidationError(_("Name %s existe déjà" % rec.name))
     
-    @api.constrains('name')
-    def _check_unique_code_mesure(self):
-        names = self.search([]) - self
-        values = [ x.name.lower() for x in names ]
+#     @api.constrains('name')
+#     def _check_unique_code_mesure(self):
+#         names = self.search([]) - self
+#         values = [ x.name.lower() for x in names ]
         
-        if self.name and self.name.lower() in values:
-            raise ValidationError(_('article already exists!'))
+#         if self.name and self.name.lower() in values:
+#             raise ValidationError(_('article already exists!'))
 	
-        return True
+#         return True
 
 
     
@@ -67,9 +53,9 @@ class ProductTemplate(models.Model):
             
             
     #affichage du name
-    @api.onchange("categ_id","code_mesure")
+    @api.onchange("categ_id","caracteristique")
     def _onchange_name_(self):
-        self.name = str(self.categ_id.recovery_name) +' '+ str(self.code_mesure) 
+        self.name = str(self.categ_id.recovery_name) +' '+ str(self.caracteristique) 
         
         
 #         if self.name is True:
@@ -77,27 +63,16 @@ class ProductTemplate(models.Model):
             
         
         
-        
-    def fonctionTranche(self,liste, groupement):
-        res = ""
-        cpt = 0
-        for l in range(0,len(liste)):
-            res = res + liste[l]
-            cpt = cpt + 1
-            if cpt == groupement:
-                res = res + "-"
-                cpt = 0
-        return res
 
     @api.depends("code_prefix","categ_id")
     def _compute_code_ref(self):
         for rec in self:
             if rec.code_prefix == "New":
-                rec.code_ref =  rec.fonctionTranche(str(rec.categ_id.code_reference),rec.groupement)
+                rec.code_ref =  rec.fonctionTranche(rec.categ_id.code_reference)
             else:
-                concat = str(rec.categ_id.code_reference) + str(rec.code_prefix)
-                resultat = rec.fonctionTranche(str(concat),rec.groupement)
-                rec.code_ref = str(resultat)
+                concat = str(rec.categ_id.code_reference) +'-'+ str(rec.code_prefix)
+                #resultat = rec.fonctionTranche(concat)
+                rec.code_ref = str(concat)
 
     
 #     @api.depends("categ_id","code_prefix")
