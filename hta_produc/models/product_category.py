@@ -4,9 +4,12 @@ from odoo.exceptions import ValidationError
 
 class CodeCategorie(models.Model):
     _inherit = 'product.category'
+    
+    def _get_default_category_code(self):
+        return self.env["ir.sequence"].next_by_code("product.category.code")
 
     category_code = fields.Char()
-    code_reference = fields.Char(compute='_compute_code_reference')    
+    code_reference = fields.Char(index=True, default=_get_default_category_code)    
     recovery_name = fields.Char(compute='_compute_recovery_name')
     #code_references = fields.Char(readonly=True)
     is_virtual_product = fields.Boolean()
@@ -21,8 +24,8 @@ class CodeCategorie(models.Model):
                 raise ValidationError(_("Code %s existe déjà" % rec.code_reference))
     
     
-    @api.depends("category_code", "parent_id.code_reference")
-    def _compute_code_reference(self):
+    @api.onchange("category_code", "parent_id.code_reference")
+    def _onchange_code_reference(self):
         for rec in self:
             if rec.parent_id: 
                 rec.code_reference = '%s-%s' % (rec.parent_id.code_reference, rec.category_code)
