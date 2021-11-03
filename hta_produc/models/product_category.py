@@ -5,23 +5,26 @@ from odoo.exceptions import ValidationError
 class CodeCategorie(models.Model):
     _inherit = 'product.category'
     
-    def _get_default_category_code(self):
-        return self.env["ir.sequence"].next_by_code("product.category.code")
 
     category_code = fields.Char()
-    code_reference = fields.Char(index=True, default=_get_default_category_code)    
+    code_reference = fields.Char()    
     recovery_name = fields.Char(compute='_compute_recovery_name')
     #code_references = fields.Char(readonly=True)
     is_virtual_product = fields.Boolean()
     groupement = fields.Integer(default=3)
     
     
-    @api.constrains('code_reference')
-    def _check_code_reference(self):
-        for rec in self:
-            article = self.env['product.category'].search([('code_reference','=',rec.code_reference), ('id','!=',rec.id)])
-            if article:
-                raise ValidationError(_("Code %s existe déjà" % rec.code_reference))
+#     @api.constrains('code_reference')
+#     def _check_code_reference(self):
+#         for rec in self:
+#             article = self.env['product.category'].search([('code_reference','=',rec.code_reference), ('id','!=',rec.id)])
+#             if article:
+#                 raise ValidationError(_("Code %s existe déjà" % rec.code_reference))
+
+    
+    _sql_constraints = [
+        ('code_reference_uniq', 'unique(code_reference)', "Related_code must be unique !"),
+    ]
     
     
     @api.onchange("category_code", "parent_id.code_reference")
