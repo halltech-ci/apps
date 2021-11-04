@@ -9,13 +9,65 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
     
     
-    code_prefix = fields.Char(compute='_compute_code_prefix', help="Add prefix to product variant reference (default code)")
+    def _get_default_code_prefix(self):
+        last_id = self.env['product.template'].search([('id', '!=', False)], limit=1, order='id desc').ids[0]
+        converts = str(last_id + 1)
+        increment = converts
+        if len(increment) == 1:
+            increment = '00' + str(increment)
+        elif len(increment) == 2:
+            increment ='0' + str(increment)
+        else:
+            incremrent = converts
+        return increment
+        
+
+    
+    code_prefix = fields.Char(index=True, default=_get_default_code_prefix)
     caracteristique = fields.Char()
-    code_ref = fields.Char(compute='_compute_code_ref')
+    code_ref = fields.Char(compute='_compute_code_ref', required=True)
     #code_referen = fields.Char(compute='_compute_code_referen')
     #code_reference3 = fields.Char(compute='_compute_code_reference3')
     product_reference = fields.Char(string='Article', required=True, copy=False, readonly=True, index=True,
                                    default=lambda self: _('New'))
+            
+            
+    #affichage du name
+    @api.onchange("categ_id","caracteristique")
+    def _onchange_name_(self):
+        self.name = str(self.categ_id.recovery_name) +' '+ str(self.caracteristique) 
+        
+        
+    @api.depends('code_prefix', 'categ_id')
+    def _compute_code_ref(self):
+        for rec in self:
+            if rec.code_prefix:
+                rec.code_ref = str(rec.categ_id.code_references) + str(rec.code_prefix)
+            else:
+                rec.code_ref = '%s' %(rec.code_prefix)
+    
+    @api.onchange('code_prefix')
+    def onchange_code_prefix(self):
+        for rec in self:
+            if rec.code_prefix:
+                rec.code_ref = str(rec.categ_id.code_references) + str(rec.code_prefix)
+            else:
+                rec.code_ref = '%s' %(rec.code_prefix)
+        
+    @api.onchange('categ_id')
+    def onchange_code_prefix(self):
+        for rec in self:
+            if rec.categ_id:
+                rec.code_ref = str(rec.categ_id.code_references) + str(rec.code_prefix)
+            else:
+                rec.code_ref = '%s' %(rec.code_prefix)
+                
+                
+                
+    def _search_prefix_field(self, operator, value):
+        return [('code_prefix', operator, value)]
+    
+    
     
     
 #     @api.constrains('name')
@@ -36,43 +88,37 @@ class ProductTemplate(models.Model):
 #         return True
 
 
+
+#    @api.depends("categ_id")
+#    def _compute_code_prefix(self):
+#         req = self.env['product.template'].search([('categ_id','=',self.categ_id.id)])
+#         increment = len(req) + 1
+#         converts = str(increment)
+#         if len(converts) == 1:
+#             converts = '00' + str(converts)
+#         if len(converts) == 2:
+#             converts = '0' + str(converts)
+#         if self.categ_id:
+#             self.code_prefix = self.categ_id.code_reference2 + converts
+#         else:
+#             self.code_prefix = converts
+    
+
     
     #code article reference
-    @api.model
-    def create(self, vals):
-        if vals.get('product_reference', _('New')) == _('New'):
-            vals['product_reference'] = self.env['ir.sequence'].next_by_code('product_reference.code') or _('New')
-        result = super(ProductTemplate, self).create(vals)
-        return result
+#     @api.model
+#     def create(self, vals):
+#         if vals.get('product_reference', _('New')) == _('New'):
+#             vals['product_reference'] = self.env['ir.sequence'].next_by_code('product_reference.code') or _('New')
+#         result = super(ProductTemplate, self).create(vals)
+#         return result
     
     
-    @api.depends("product_reference")
-    def _compute_code_prefix(self):
-        for rec in self:
-            rec.code_prefix = rec.product_reference
-            
-            
-    #affichage du name
-    @api.onchange("categ_id","caracteristique")
-    def _onchange_name_(self):
-        self.name = str(self.categ_id.recovery_name) +' '+ str(self.caracteristique) 
-        
-        
-#         if self.name is True:
-#             raise ValidationError(_('Name product already exists!'))
-            
-        
-        
-
-    @api.depends("code_prefix","categ_id")
-    def _compute_code_ref(self):
-        for rec in self:
-            if rec.code_prefix == "New":
-                rec.code_ref =  rec.fonctionTranche(rec.categ_id.code_reference)
-            else:
-                concat = str(rec.categ_id.code_reference) +'-'+ str(rec.code_prefix)
-                #resultat = rec.fonctionTranche(concat)
-                rec.code_ref = str(concat)
+#     @api.depends("product_reference")
+#     def _compute_code_prefix(self):
+#         for rec in self:
+#             rec.code_prefix = rec.product_reference
+    
 
     
 #     @api.depends("categ_id","code_prefix")
