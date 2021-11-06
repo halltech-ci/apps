@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+
 
 
 class CodeCategorie(models.Model):
@@ -12,19 +12,9 @@ class CodeCategorie(models.Model):
     code_references = fields.Char(compute='_compute_code_references')
     is_virtual_product = fields.Boolean()
     groupement = fields.Integer(default=3)
-    
-    
-#     @api.constrains('code_reference')
-#     def _check_code_reference(self):
-#         for rec in self:
-#             article = self.env['product.category'].search([('code_reference','=',rec.code_reference), ('id','!=',rec.id)])
-#             if article:
-#                 raise ValidationError(_("Code %s existe déjà" % rec.code_reference))
-
-    
-    _sql_constraints = [
-        ('code_reference_uniq', 'unique(code_reference)', "Related_code must be unique !"),
-    ]
+    code_range = fields.Selection([('1', '1 Chiffre'),
+                                  ('2', '2 Chiffres'),
+                                  ('3', '3 Chiffres')], default='3')
     
     
     @api.onchange("category_code", "parent_id.code_reference")

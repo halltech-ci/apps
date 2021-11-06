@@ -11,6 +11,7 @@
                     <field name="category_code" string="Categorie Code" style="width:20%%" placeholder="31"/>
                     <field name="is_virtual_product" string="Product Support"/>
                     <field name="code_reference" string="Code Catégorie" style="width:50%%" placeholder="31" invisible="1"/>
+                    <field name="code_range" class="oe_inline"/>
                     <field name="code_references" string="Code Catégorie" style="width:50%%" placeholder="relation code"/>
                  </xpath> 
         </field>

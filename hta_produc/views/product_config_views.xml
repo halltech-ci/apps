@@ -3,7 +3,7 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('settings')]" position="inside" >
+            <xpath expr="//div[hasclass('settings')]" position="inside">
                 <h2>Articles</h2>
                 <div class="row mt16 o_settings_container">
                     <div class="col-xs-12 col-md-6 o_setting_box">
@@ -11,7 +11,7 @@
                             <field name="charge" />
                         </div>
                         <div class="o_setting_right_pane">
-                            <label for="charge" />
+                            <label for="charge" invisible="1"/>
                             <div class="text-muted">
                                 Définir le decoupage du codage!
                             </div>

@@ -1,11 +1,11 @@
 from odoo import SUPERUSER_ID, api
 
-def pre_init_product_category_code(cr):
+def pre_init_product_code_ref(cr):
     """
-    This post-init-hook will update all existing category assigning them the
-    corresponding default category_code.
+    This post-init-hook will update all existing template assigning them the
+    corresponding default code_ref.
     """
     
-    cr.execute("ALTER TABLE product_category " "ADD COLUMN category_code character varying;")
-    cr.execute("UPDATE product_category " "SET category_code = id;")
+    cr.execute("ALTER TABLE product_template " "ADD COLUMN code_ref character varying;")
+    cr.execute("UPDATE product_template " "SET code_ref = id;")
     

@@ -18,12 +18,12 @@
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
                 <field name="default_code" position="after">
-                    <field name="code_prefix"/>
+                    <field name="code_prefix" invisible="1"/>
                 </field>
                 <field name="barcode" position="after">
+                    <field name="code_referen" string="Reference Code2" invisible ="1"/>
                     <field name="caracteristique" string="Caracteristiques" placeholder="2000X1000"/>
                     <field name="code_ref" string="Reference Code"/>
-                    <!--<field name="code_referen" string="Reference Code2"/>-->
                     <!--<field name="code_reference3" string="Reference Code3"/>-->
                 </field>
             </field>
