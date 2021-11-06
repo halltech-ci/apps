@@ -12,13 +12,18 @@ class ProductTemplate(models.Model):
     code_prefix = fields.Integer()
     caracteristique = fields.Char()
     code_ref = fields.Char()
+    groupement = fields.Integer(default=3)
     code_referen = fields.Char()
-    #code_reference3 = fields.Char(compute='_compute_code_reference3')
+    code_concartel = fields.Char()
     product_reference = fields.Char(string='Article', required=True, copy=False, readonly=True, index=True,
                                    default=lambda self: _('New'))
     
     _sql_constraints = [
         ('code_ref_uniq', 'unique(code_ref)', "Cette page ne peut pas être Dupliquée, Le Code Existe déjâ !"),
+    ]
+    
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', "Cette page ne peut pas être Dupliquée, Le Nom Existe déjâ !"),
     ]
      
     
@@ -60,13 +65,42 @@ class ProductTemplate(models.Model):
             self.name = str(self.categ_id.recovery_name) +' '+ str(self.caracteristique)
         else:
             self.name = self.categ_id.recovery_name
+            
+            
+    @api.onchange("categ_id","code_referen")
+    def _onchange_code_concartel(self):
+        if self.categ_id:
+            self.code_concartel = str(self.categ_id.code_reference)+ str(self.code_referen)
+        else:
+            self.code_concartel = self.code_referen
         
     
-    @api.onchange('categ_id','code_referen')
-    @api.depends('code_referen', 'categ_id')
+#     @api.onchange('categ_id','code_referen')
+#     @api.depends('code_referen', 'categ_id')
+#     def _onchange_code_ref(self):
+#         for rec in self:
+#             if rec.code_referen:
+#                 rec.code_ref = str(rec.categ_id.code_references) +'-'+ str(rec.code_referen)
+#             else:
+#                 rec.code_ref = rec.code_referen
+                           
+                
+    def fonctionTranche(self,liste, groupement):
+        res = ""
+        cpt = 0
+        for l in range(0,len(liste)):
+            res = res + liste[l]
+            cpt = cpt + 1
+            if cpt == groupement:
+                res = res + "-"
+                cpt = 0
+        return res    
+    @api.onchange('code_concartel','code_referen')
+    @api.depends("categ_id")
     def _onchange_code_ref(self):
         for rec in self:
-            if rec.code_referen:
-                rec.code_ref = str(rec.categ_id.code_references) + str(rec.code_referen)
+            if rec.code_concartel:
+                rec.resultat = rec.fonctionTranche(str(rec.code_concartel),int(rec.categ_id.code_range))
+                rec.code_ref = rec.resultat
             else:
-                rec.code_ref = '%s' %(rec.code_referen)
+                rec.code_ref = rec.rec.code_referen

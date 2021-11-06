@@ -9,7 +9,7 @@ class CodeCategorie(models.Model):
     category_code = fields.Char()
     code_reference = fields.Char()    
     recovery_name = fields.Char(compute='_compute_recovery_name')
-    code_references = fields.Char(compute='_compute_code_references')
+    #code_references = fields.Char(compute='_compute_code_references')
     is_virtual_product = fields.Boolean()
     groupement = fields.Integer(default=3)
     code_range = fields.Selection([('1', '1 Chiffre'),
@@ -53,20 +53,22 @@ class CodeCategorie(models.Model):
                 rec.recovery_name = rec.name
                 
                 
-    def fonctionTranche(self,liste, groupement):
-        res = ""
-        cpt = 0
-        for l in range(0,len(liste)):
-            res = res + liste[l]
-            cpt = cpt + 1
-            if cpt == groupement:
-                res = res + "-"
-                cpt = 0
-        return res
+#     def fonctionTranche(self,liste, groupement):
+#         res = ""
+#         cpt = 0
+#         for l in range(0,len(liste)):
+#             res = res + liste[l]
+#             cpt = cpt + 1
+#             if cpt == groupement:
+#                 res = res + "-"
+#                 cpt = 0
+#         return res
     
-    @api.depends("code_reference")
-    def _compute_code_references(self):
-        for rec in self:
-            rec.resultat = rec.fonctionTranche(str(rec.code_reference),rec.groupement)
-            rec.code_references = rec.resultat
-    
+#     @api.depends("code_reference","category_code")
+#     def _compute_code_references(self):
+#         for rec in self:
+#             if rec.category_code:
+#                 rec.resultat = rec.fonctionTranche(str(rec.code_reference),rec.groupement)
+#                 rec.code_references = rec.resultat
+#             else:
+#                 rec.code_references = rec.category_code
