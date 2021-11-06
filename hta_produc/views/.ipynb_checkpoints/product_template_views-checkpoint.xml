@@ -18,7 +18,7 @@
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
                 <field name="default_code" position="after">
-                    <field name="code_prefix" invisible="1"/>
+                    <field name="code_prefix" invisible ="1"/>
                 </field>
                 <field name="barcode" position="after">
                     <field name="code_referen" string="Reference Code2" invisible ="1"/>
