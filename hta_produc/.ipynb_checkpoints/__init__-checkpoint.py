@@ -2,4 +2,4 @@
 
 from . import controllers
 from . import models
-#from .hooks import pre_init_product_categ_id
+from .hooks import pre_init_product_categ_id
