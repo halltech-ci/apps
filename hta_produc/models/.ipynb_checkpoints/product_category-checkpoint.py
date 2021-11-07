@@ -9,7 +9,6 @@ class CodeCategorie(models.Model):
     category_code = fields.Char()
     code_reference = fields.Char()    
     recovery_name = fields.Char(compute='_compute_recovery_name')
-    #code_references = fields.Char(compute='_compute_code_references')
     is_virtual_product = fields.Boolean()
     groupement = fields.Integer(default=3)
     code_range = fields.Selection([('1', '1 Chiffre'),

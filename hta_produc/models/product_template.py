@@ -73,17 +73,7 @@ class ProductTemplate(models.Model):
             self.code_concartel = str(self.categ_id.code_reference)+ str(self.code_referen)
         else:
             self.code_concartel = self.code_referen
-        
     
-#     @api.onchange('categ_id','code_referen')
-#     @api.depends('code_referen', 'categ_id')
-#     def _onchange_code_ref(self):
-#         for rec in self:
-#             if rec.code_referen:
-#                 rec.code_ref = str(rec.categ_id.code_references) +'-'+ str(rec.code_referen)
-#             else:
-#                 rec.code_ref = rec.code_referen
-                           
                 
     def fonctionTranche(self,liste, groupement):
         res = ""
