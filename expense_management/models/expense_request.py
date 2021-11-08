@@ -18,7 +18,11 @@ class ExpenseRequest(models.Model):
     def _get_default_requested_by(self):
         return self.env['res.users'].browse(self.env.uid)
     
-    name = fields.Char('Description', required=True)
+    def _get_default_name(self):
+        return self.env['ir.sequence'].next_by_code("expense.request.code")
+
+    name = fields.Char(default=_get_default_name)
+    description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
         ('submit', 'Submitted'),
@@ -98,7 +102,7 @@ class ExpenseRequest(models.Model):
     """This create account_bank_statetment_line in bank_statement given in expense request"""
     def create_bank_statement(self):
         for request in self:
-            ref = request.name
+            ref = request.description
             statement_id = request.statement_id
             journal_id = request.journal.id
             company = request.company_id.id
