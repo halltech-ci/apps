@@ -91,8 +91,10 @@ class ProductTemplate(models.Model):
         for rec in self:
             if rec.code_concartel:
                 rec.resultat = rec.fonctionTranche(str(rec.code_concartel),int(rec.categ_id.code_range))
-                #rec.code = rec.resultat.rstrip(rec.resultat[-1])
-                #rec.code_ref = rec.code
-                rec.code_ref = rec.resultat
+            if rec.resultat[-1] == '-':
+                rec.code = rec.resultat.rstrip(rec.resultat[-1])
+                rec.code_ref = rec.code
+                #rec.code_ref = rec.resultat    
+                #rec.code_ref = rec.resultat
             else:
                 rec.code_ref = rec.code_referen
