@@ -69,7 +69,7 @@ class ProductTemplate(models.Model):
             
     @api.onchange("categ_id","code_referen")
     def _onchange_code_concartel(self):
-        if self.categ_id:
+        if self.categ_id.code_reference:
             self.code_concartel = str(self.categ_id.code_reference)+ str(self.code_referen)
         else:
             self.code_concartel = self.code_referen
@@ -96,9 +96,4 @@ class ProductTemplate(models.Model):
                     rec.code_ref = rec.code_ref.rstrip(rec.code_ref[-1])
             else:
                 rec.code_ref = rec.code_referen
-                    
-#                     #rec.code_ref = rec.code
-#                 #rec.code_ref = rec.resultat    
-#                 #rec.code_ref = rec.resultat
-#             else:
-#                 rec.code_ref = rec.code_referen
+        

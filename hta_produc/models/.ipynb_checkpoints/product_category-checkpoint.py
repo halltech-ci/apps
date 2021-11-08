@@ -21,24 +21,31 @@ class CodeCategorie(models.Model):
         for rec in self:
             if rec.parent_id: 
                 rec.code_reference = '%s-%s' % (rec.parent_id.code_reference, rec.category_code)
-            else:
+            if rec.category_code:
                 rec.code_reference = '%s' % (rec.category_code)
+            else:
+                rec.code_reference = rec.code_reference
     
     @api.onchange("parent_id")
     def _onchange_code_reference(self):
         for rec in self:
             if rec.parent_id: 
                 rec.code_reference = str(rec.parent_id.code_reference) + str(rec.category_code)
+            if rec.category_code:
+                rec.code_reference = '%s' % (rec.category_code)
             else:
-                rec.code_reference = rec.category_code
+                rec.code_reference = rec.code_reference
+
                 
     @api.onchange("category_code")
     def _onchange_code_reference(self):
         for rec in self:
             if rec.parent_id: 
                 rec.code_reference = str(rec.parent_id.code_reference) + str(rec.category_code)
+            if rec.category_code:
+                rec.code_reference = '%s' % (rec.category_code)
             else:
-                rec.code_reference = rec.category_code
+                rec.code_reference = rec.code_reference
     
     
     @api.depends("name", "parent_id")
@@ -51,23 +58,3 @@ class CodeCategorie(models.Model):
             else:
                 rec.recovery_name = rec.name
                 
-                
-#     def fonctionTranche(self,liste, groupement):
-#         res = ""
-#         cpt = 0
-#         for l in range(0,len(liste)):
-#             res = res + liste[l]
-#             cpt = cpt + 1
-#             if cpt == groupement:
-#                 res = res + "-"
-#                 cpt = 0
-#         return res
-    
-#     @api.depends("code_reference","category_code")
-#     def _compute_code_references(self):
-#         for rec in self:
-#             if rec.category_code:
-#                 rec.resultat = rec.fonctionTranche(str(rec.code_reference),rec.groupement)
-#                 rec.code_references = rec.resultat
-#             else:
-#                 rec.code_references = rec.category_code
