@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+
+<odoo>
+    <record id="expense_request_line_tree_hta" model="ir.ui.view">
+        <field name="name">expense.line.tree</field>
+        <field name="model">expense.line</field>
+        <field name="arch" type="xml">
+            <tree
+                string="Expense Request Line"
+                create="false"
+                
+            >
+                <field name="request_id" />
+                
+                <field name="project" />
+                
+                
+            </tree>
+        </field>
+    </record>
+   
+     <record id="view_expense_line_filter_hta" model="ir.ui.view">
+            <field name="name">expense.line.filter</field>
+            <field name="model">expense.line</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Expense line">
+                  
+                    <group expand="0" string="Group By">
+                        <filter name="projetsgroup" string="Projet" domain="[]" context="{'group_by': 'project'}"/>
+                        
+                    </group>
+               </search>
+            </field>
+    </record>
+    
+    <record id="expense_request_line_form_action" model="ir.actions.act_window">
+        <field name="name">Expense Request Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">expense.line</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_expense_line_filter_hta" />
+    </record>
+    <record
+        id="expense_request_line_form_action_tree"
+        model="ir.actions.act_window.view"
+    >
+        <field eval="1" name="sequence" />
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="expense_request_line_tree_hta" />
+        <field name="act_window_id" ref="expense_request_line_form_action" />
+    </record>
+    
+   
+    <menuitem
+        action="expense_request_line_form_action"
+        sequence="03"      
+        id="menu_expense_request_line"
+        parent="expense_management.expense"
+    />
+    <menuitem
+        id="menu_expense_request_line_act"
+        sequence="05"
+        parent="menu_expense_request_line"
+        action="expense_request_line_form_action"
+    />
+</odoo>

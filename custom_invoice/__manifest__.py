@@ -31,6 +31,9 @@
         'views/account_move_views.xml',
         #report
         'report/account_invoice_report.xml',
+        'report/account_invoice_report_inherit.xml',
+        'report/report.xml',
+        'report/template_facture.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

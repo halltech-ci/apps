@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="group_hr_paybook_report" model="res.groups">
+            <field name="name">Paybook Report View</field>
+            <field name="comment">the user will have access to view paybook report.</field>
+        </record>
+    </data>
+</odoo>

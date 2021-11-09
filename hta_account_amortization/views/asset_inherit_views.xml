@@ -1,0 +1,19 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="account_asset_form_inherits">
+      <field name="model">account.asset</field>
+      <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+      <field name="arch" type="xml">
+          <xpath expr="//sheet//div[3]" position="after">
+              <div class="oe_group">
+                <label for="type_asset_ids" name="type_asset_ids_label" class="oe_edit_only"/>
+                <label for="type_asset_ids" name="model_type_asset_ids_label" string="Asset Grouo" class="oe_edit_only"/>
+                <h1>
+                    <field name="type_asset_ids" placeholder="Batiments administratifs...." required="1"/>
+                </h1>
+              </div>
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

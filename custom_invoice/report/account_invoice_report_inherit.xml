@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <template id="inherit_account_invoice_report_document_address" inherit_id="account.report_invoice_document">
+      <!-- Insert BL number on sale invoice-->
+       <xpath expr="//t[@t-set='address']" position="after">
+           <div class="address" style="float:right;margin-right:100px;">
+                   <div style="display:inline-block;text-decoration: underline; font-weight: bold; text-align:center;margin-right:25px;">
+                       <p>CLIENT:</p>
+                   </div>
+                   <div style="display:inline-block;text-align:center; width: 270px;height: 160px; border:1px solid #000;border-radius:10px;">
+                       <p t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                       <p t-field="o.partner_id.phone"/>
+                    </div>
+            </div>
+       </xpath>
+    </template>
+  </data>
+</odoo>
