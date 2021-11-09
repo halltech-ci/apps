@@ -45,6 +45,19 @@
                   </group>
               </group>
           </xpath>
+          <!-- Adding accounting information in contract-->
+          <xpath expr="//sheet/notebook/page[@name='information']" position="after">
+              <page string="Accounting Information" name="accounting">
+                  <group name="account_info" string="Account Info">
+                        <group>
+                            <field name="loan_account" string="Loan Account"/>
+                        </group>
+                        <group>
+                            <field name="advance_account" string="Advance Account"/>
+                        </group>
+                    </group>
+              </page>
+          </xpath>
           <xpath expr="//sheet/notebook/page[@name='information']" position="after">
               <page name="loan_employe" string="Loan">
                   <field name="hr_loan_employee_ids">
