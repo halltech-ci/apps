@@ -20,7 +20,7 @@ class hta_expense_magement(models.Model):
     expense_approver = fields.Many2one('res.users', string="Valideur",states=READONLY_STATES)
     journal = fields.Many2one('account.journal', string='Journal', required=True, domain=[('type', 'in', ['cash', 'bank'])], states=READONLY_STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
     statement_id = fields.Many2one('account.bank.statement', string="Caisse",states=READONLY_STATES, tracking=True,default=lambda self: self.get_default_cash_journal())
-    state = fields.Selection(selection_add=[('to_cancel', 'Annuler')], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', help='Expense Report State')
+    state = fields.Selection(selection_add=[('to_cancel', 'Annuler'),('authorize','Autoriser')], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', help='Expense Report State')
 
     line_ids = fields.One2many('expense.line', 'request_id', string='Expense Line',states={'to_cancel': [('readonly', True)]})
     

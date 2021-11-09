@@ -21,23 +21,22 @@ class ProductTemplate(models.Model):
         else:
             self.name = self.categ_id.recovery_name
     
-    @api.onchange("categ_id")
     def _get_list_row(self):
-        compte = 0
-        if self.categ_id.code_range == 2:
-            compte = 99
-        elif self.categ_id.code_range == 3:
-            compte = 999
-        elif self.categ_id.code_range == 4:
-            compte = 9999
-        elif self.categ_id.code_range == 5:
-            compte = 99999
-        elif self.categ_id.code_range == 6:
-            compte = 999999
-        else:
-            pass
+#         compte = 0
+#         if self.categ_id.code_range == 2:
+#             compte = 99
+#         elif self.categ_id.code_range == 3:
+#             compte = 999
+#         elif self.categ_id.code_range == 4:
+#             compte = 9999
+#         elif self.categ_id.code_range == 5:
+#             compte = 99999
+#         elif self.categ_id.code_range == 6:
+#             compte = 999999
+#         else:
+#             pass
         res = []
-        for i in range(1, compte+1):
+        for i in range(1, 999+1):
             converts = str(i)
             if len(converts) == 1:
                 converts = '00' + str(converts)
