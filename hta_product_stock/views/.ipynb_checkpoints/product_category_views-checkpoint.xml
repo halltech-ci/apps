@@ -1,0 +1,19 @@
+<odoo>
+  <data>
+    <record id="view_product_category_inherit" model="ir.ui.view">
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view" />
+        <field name="arch" type="xml">
+                <xpath 
+                    expr="//sheet/group[@name='first']/field[@name='parent_id']" position="after">
+                    <field name="recovery_name" string="Name" style="width:50%%" placeholder="31" invisible="1"/>
+                    <field name="category_code" string="Categorie Code" style="width:20%%" placeholder="31"/>
+                    <field name="code_concate" string="Concate Code" />
+                    <field name="is_virtual_product" string="Product Support"/>
+                    <field name="code_range" class="oe_inline" attrs="{'invisible':[('is_virtual_product','=',False)]}"/>
+                 </xpath> 
+        </field>
+    </record>
+
+  </data>
+</odoo>
