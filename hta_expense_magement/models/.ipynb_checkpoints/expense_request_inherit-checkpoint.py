@@ -16,7 +16,7 @@ class hta_expense_magement(models.Model):
     READONLY_STATES = {
         'to_cancel': [('readonly', True)],
         }
-    name = fields.Char('Description', required=True)
+    name = fields.Char('Descriptions', required=True)
     expense_approver = fields.Many2one('res.users', string="Valideur",states=READONLY_STATES)
     journal = fields.Many2one('account.journal', string='Journal', required=True, domain=[('type', 'in', ['cash', 'bank'])], states=READONLY_STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
     statement_id = fields.Many2one('account.bank.statement', string="Caisse",states=READONLY_STATES, tracking=True,default=lambda self: self.get_default_cash_journal())

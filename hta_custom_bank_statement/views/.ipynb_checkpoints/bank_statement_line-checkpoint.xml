@@ -12,6 +12,9 @@
                                     <field name="journal_entry_ids" invisible="1"/>
                                     <field name="date" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
                                     <field name="name" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="project_id"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="analytic_account_id"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="analytic_tag_ids"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
                                     <field name="partner_id" domain="['|',('parent_id','=',False),('is_company','=',True)]" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
                                     <field name="ref" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }" groups="base.group_no_one"/>
                                     <field name="transaction_type" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }" optional="hidden"/>
