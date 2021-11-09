@@ -10,7 +10,7 @@
                 <field name="barcode" position="after">
                     <field name="caracteristique" string="Caracteristiques" placeholder="2000X1000"/>
                     <field name="code_reference" string="Reference Code"/>
-                    <field name="code_concate" string="Concate Code" />
+                    <field name="code_concate" string="Concate Code" invisible="1"/>
                 </field>
             </field>
         </record>

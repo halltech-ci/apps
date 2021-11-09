@@ -30,6 +30,6 @@ class HtaCategory(models.Model):
     @api.onchange("parent_id")
     def _compute_code_concate(self):
         if self.parent_id: 
-            self.code_concate = str(self.parent_id.category_code) + str(self.category_code)
+            self.code_concate = str(self.parent_id.code_concate) + str(self.category_code)
         else:
             self.code_concate = self.category_code

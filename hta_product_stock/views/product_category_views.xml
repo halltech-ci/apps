@@ -8,12 +8,22 @@
                     expr="//sheet/group[@name='first']/field[@name='parent_id']" position="after">
                     <field name="recovery_name" string="Name" style="width:50%%" placeholder="31" invisible="1"/>
                     <field name="category_code" string="Categorie Code" style="width:20%%" placeholder="31"/>
-                    <field name="code_concate" string="Concate Code" />
+                    <field name="code_concate" string="Concate Code" invisible="1"/>
                     <field name="is_virtual_product" string="Product Support"/>
                     <field name="code_range" class="oe_inline" attrs="{'invisible':[('is_virtual_product','=',False)]}"/>
                  </xpath> 
         </field>
     </record>
+      <record id="product_category_list_view_inherit" model="ir.ui.view">
+        <field name="name">product.category.list (product_category_code)</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_list_view" />
+        <field name="arch" type="xml">
+          <field name="display_name" position="after">
+            <field name="category_code" />
+          </field>
+        </field>
+      </record>
 
   </data>
 </odoo>
