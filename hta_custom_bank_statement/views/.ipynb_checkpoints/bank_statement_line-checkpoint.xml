@@ -1,0 +1,37 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="bank_statement_line_inherit">
+        <field name="name">bank.statement.line.inherit.view</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert sale order object-->
+          <xpath expr="//sheet/notebook/page/field[@name='line_ids']/tree" position="replace">
+              <tree editable="bottom" string="Statement lines" decoration-muted="journal_entry_ids" limit="500" delete="false">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="journal_entry_ids" invisible="1"/>
+                                    <field name="date" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="name" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="project_id"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="analytic_account_id"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="analytic_tag_ids"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="partner_id" domain="['|',('parent_id','=',False),('is_company','=',True)]" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="ref" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }" groups="base.group_no_one"/>
+                                    <field name="transaction_type" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }" optional="hidden"/>
+                                    <field name="note" optional="hidden"/>
+                                    <field name="amount" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+                                    <field name="journal_currency_id" invisible="1"/>
+                                    <field name="bank_account_id" invisible="1"/>
+                                    <field name="account_number" optional="hidden"/>
+                                    <field name="amount_currency" optional="hidden"/>
+                                    <field name="currency_id" optional="hidden"/>
+                                    <field name="state" invisible="1"/>
+                                    <button name="button_cancel_reconciliation" attrs="{'invisible': ['|',('journal_entry_ids', '=', []), ('state', '=', 'confirm')]}" string="Revert reconciliation" type="object" icon="fa-undo"/>
+                                </tree>
+          </xpath>
+          <!-- Insert sale quotation recipient-->
+        
+        </field>
+    </record>
+  </data>
+</odoo>

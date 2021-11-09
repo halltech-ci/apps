@@ -39,6 +39,7 @@
         'views/product_template_views.xml',
         #data
         'data/mail_template.xml',
+        'data/expense_request_seq.xml',
         
     ],
     # only loaded in demonstration mode

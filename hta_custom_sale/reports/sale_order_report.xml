@@ -85,7 +85,7 @@
             </tr>
             <t t-if="doc.remise_total > 0">
                 <tr class="o_subtotal" style="">
-                    <td name="td_general_discount_label">Remise(<span t-field='doc.general_discount'/>%)</td>
+                    <td name="td_general_discount_label">Total Remise</td>
                     <td name="td_remise_total" class="text-right">
                         <span t-field="doc.remise_total"/>
                     </td>
@@ -96,7 +96,7 @@
             <div style="font-size:16px; padding-bottom:30px;">
                 <tr class="border-black">
                     <td>
-                        <span t-field="doc.amount_to_word"/>
+                        <span t-field="doc.amount_to_word"/> <span t-field="doc.currency_id.currency_unit_label"/> <span t-field="doc.currency_id.symbol"/>
                         
                     </td>
                 </tr>
@@ -122,12 +122,13 @@
         <xpath expr="//div[hasclass('page')]/table" position="attributes">
             <attribute name="class">table table-sm o_main_table table-bordered</attribute>
         </xpath>
+        <!-- Cha,ging font size-->
         <xpath expr="//div[hasclass('page')]/table" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
         
         <xpath expr="//div[hasclass('page')]" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
     </template>
 </odoo>

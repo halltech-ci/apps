@@ -57,11 +57,17 @@
              />
           </header>
           <sheet>
+              <div class="oe_title">
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+              </div>
+
               <div class="oe_edit_only">
-                 <label for="name" class="oe_inline" />
+                 <label for="descriptions" class="oe_inline" />
               </div>
               <h1>
-                    <field name="name" class="oe_inline" />
+                    <field name="description" class="oe_inline"/>
               </h1>
                
               <group>
@@ -257,6 +263,12 @@
       
     <menuitem name="Reports" id="expense_management.report" parent="expense_management.menu_root"
               action="expense_line_action_window"/>
+    <menuitem
+        action="expense_management_action_window"      
+        id="menu_expense_request_request_expense"
+        sequence="01"      
+        parent="expense_management.expense"
+    />
     
     <menuitem id="menu_expense_management_config" name="Settings" parent="expense_management.menu_root"
         sequence="999"

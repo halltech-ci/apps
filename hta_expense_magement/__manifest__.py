@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/expense_request_inherit_views.xml',
+        'views/expense_line_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
