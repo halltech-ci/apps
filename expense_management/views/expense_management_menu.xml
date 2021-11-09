@@ -155,7 +155,7 @@
          <field name="model">expense.line</field>
          <field name="arch" type="xml">
              <tree>
-                 <field name="name" string="Description" readonly="1"/>
+                 <field name="name" string="Description Name" readonly="1"/>
                  <field name="date"/>
                  <field name="expense_product"/>
                  <field name="requested_by"/>
