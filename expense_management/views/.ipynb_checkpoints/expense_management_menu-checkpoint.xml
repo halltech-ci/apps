@@ -64,7 +64,7 @@
               </div>
 
               <div class="oe_edit_only">
-                 <label for="descriptions" class="oe_inline" />
+                 <label for="description" class="oe_inline" />
               </div>
               <h1>
                     <field name="description" class="oe_inline"/>
