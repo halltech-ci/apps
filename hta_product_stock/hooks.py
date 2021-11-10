@@ -1,4 +1,4 @@
-from odoo import SUPERUSER_ID, api
+#from odoo import SUPERUSER_ID, api
 
 def pre_init_product_name(cr):
     
