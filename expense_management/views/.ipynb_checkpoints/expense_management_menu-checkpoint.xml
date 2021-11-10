@@ -39,7 +39,7 @@
                     string="Autoriser"
                     type="object"
                     class="oe_highlight"
-                    states="authorize"
+                    states="approve"
                     groups="account.group_account_user"
             />
             <button name="button_to_cancel"
@@ -47,14 +47,14 @@
                     type="object"
                     class="oe_highlight"
                     states="authorize"
-                    groups="account.group_account_user"
+                    groups="expense_management.group_expense_payer"
             />
             
             <button name="action_post"
                     string="Payer"
                     type="object"
                     class="oe_highlight"
-                    states="approve"
+                    states="authorize"
                     groups="expense_management.group_expense_payer"
             />
             <button name="button_rejected"
@@ -132,6 +132,7 @@
           <field name="arch" type="xml">
               <tree string="Expense Request" decoration-warning="state=='draft'" decoration-danger="state=='cancel'">
                     <field name="name" string="Expense Request"/>
+                      <field name="description" string="Description" />
                     <field name="date"/>
                     <field name="requested_by"/>
                     <field name="expense_approver" string="Approbateur"/>
