@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import models
-from . import product_category
-from . import product_template
-from . import product_config
+#from . import models
+#from . import product_category
+#from . import product_template
+#from . import product_config

@@ -25,12 +25,12 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
-        'views/product_category_views.xml',
-        'views/product_config_views.xml',
-        'views/product_template_views.xml',
-        'views/incrementation_code_article_views.xml',
+        #'views/views.xml',
+        #'views/templates.xml',
+        #'views/product_category_views.xml',
+        #'views/product_config_views.xml',
+        #'views/product_template_views.xml',
+        #'views/incrementation_code_article_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

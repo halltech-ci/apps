@@ -19,7 +19,7 @@ class ProductTemplate(models.Model):
     ]
     
 #     _sql_constraints = [
-#         ('name_uniq', 'unique(name)', "Cette page ne peut pas être Dupliquée, Le Nom Existe déjâ !"),
+#         ('name_uniq', 'unique(name)', "Cette page ne peut pas être Dupliquée, Le Nom de l'Article Existe déjâ !"),
 #     ]
     
     

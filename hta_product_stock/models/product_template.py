@@ -18,9 +18,9 @@ class ProductTemplate(models.Model):
         ('code_reference_uniq', 'unique(code_reference)', "Cette page ne peut pas être Dupliquée, Le Code Existe déjâ !"),
     ]
     
-#     _sql_constraints = [
-#         ('name_uniq', 'unique(name)', "Cette page ne peut pas être Dupliquée, Le Nom Existe déjâ !"),
-#     ]
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', "Cette page ne peut pas être Dupliquée, Le Nom de l'Article Existe déjâ !"),
+    ]
     
     
     @api.onchange("categ_id","caracteristique")
