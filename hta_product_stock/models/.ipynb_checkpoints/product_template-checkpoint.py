@@ -14,6 +14,15 @@ class ProductTemplate(models.Model):
     code_reference = fields.Char()
     code_concate = fields.Char() # Concate all code
     
+    _sql_constraints = [
+        ('code_reference_uniq', 'unique(code_reference)', "Cette page ne peut pas être Dupliquée, Le Code Existe déjâ !"),
+    ]
+    
+#     _sql_constraints = [
+#         ('name_uniq', 'unique(name)', "Cette page ne peut pas être Dupliquée, Le Nom Existe déjâ !"),
+#     ]
+    
+    
     @api.onchange("categ_id","caracteristique")
     def _onchange_name_(self):
         if self.caracteristique:
@@ -21,23 +30,24 @@ class ProductTemplate(models.Model):
         else:
             self.name = self.categ_id.recovery_name
     
-    @api.onchange("categ_id")
+#    @api.onchange("categ_id")
     def _get_list_row(self):
-        compte = 0
-        if self.categ_id.code_range == 2:
-            compte = 99
-        elif self.categ_id.code_range == 3:
-            compte = 999
-        elif self.categ_id.code_range == 4:
-            compte = 9999
-        elif self.categ_id.code_range == 5:
-            compte = 99999
-        elif self.categ_id.code_range == 6:
-            compte = 999999
-        else:
-            pass
+#         compte = 0
+#         if self.categ_id.code_range == 2:
+#             compte = 99
+#         elif self.categ_id.code_range == 3:
+#             compte = 999
+#         elif self.categ_id.code_range == 4:
+#             compte = 9999
+#         elif self.categ_id.code_range == 5:
+#             compte = 99999
+#         elif self.categ_id.code_range == 6:
+#             compte = 999999
+#         else:
+#             compte = 999
+                   
         res = []
-        for i in range(1, compte+1):
+        for i in range(1, 999+1):
             converts = str(i)
             if len(converts) == 1:
                 converts = '00' + str(converts)
@@ -84,7 +94,7 @@ class ProductTemplate(models.Model):
     
     @api.onchange('code_concate')
     @api.depends("categ_id")
-    def _onchange_code_ref(self):
+    def _onchange_code_reference(self):
         for rec in self:
             if rec.code_concate:
                 result = rec.fonctionTranche(str(rec.code_concate),int(rec.categ_id.code_range))
