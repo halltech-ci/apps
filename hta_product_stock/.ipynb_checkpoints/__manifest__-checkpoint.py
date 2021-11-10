@@ -34,4 +34,9 @@
     'demo': [
         'demo/demo.xml',
     ],
+    
+    'license': 'LGPL-3',
+    
+    "installable": True,
+    "pre_init_hook": "pre_init_product_name",
 }

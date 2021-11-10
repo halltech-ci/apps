@@ -15,12 +15,21 @@ class ProductTemplate(models.Model):
     code_concate = fields.Char() # Concate all code
     
     _sql_constraints = [
-        ('code_reference_uniq', 'unique(code_reference)', "Cette page ne peut pas être Dupliquée, Le Code Existe déjâ !"),
+        ('code_reference_uniq', 'unique(code_reference)', "Cette page ne peut pas être Dupliquée, Le Code de l'Article Existe déjâ !"),
     ]
     
 #     _sql_constraints = [
 #         ('name_uniq', 'unique(name)', "Cette page ne peut pas être Dupliquée, Le Nom de l'Article Existe déjâ !"),
 #     ]
+
+    @api.constrains('name')
+    def _check_name(self):
+        for rec in self:
+            article = self.env['product.template'].search([('name','=',rec.name), ('id','!=',rec.id)])
+            if article:
+                raise ValidationError(_("Name %s existe déjà" % rec.name))
+
+
     
     
     @api.onchange("categ_id","caracteristique")
