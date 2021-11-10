@@ -22,21 +22,25 @@ class ProductTemplate(models.Model):
             self.name = self.categ_id.recovery_name
     
     def _get_list_row(self):
-#         compte = 0
-#         if self.categ_id.code_range == 2:
-#             compte = 99
-#         elif self.categ_id.code_range == 3:
-#             compte = 999
-#         elif self.categ_id.code_range == 4:
-#             compte = 9999
-#         elif self.categ_id.code_range == 5:
-#             compte = 99999
-#         elif self.categ_id.code_range == 6:
-#             compte = 999999
-#         else:
-#             pass
+        code_category = str(self.categ_id.code_concate)
+        compte = 999
+        tranche = 3
+        if len(code_category) <= 12:
+            tranche = 12 - len(code_category)
+        if tranche == 2:
+            compte = 99
+        elif tranche == 3:
+            compte = 999
+        elif tranche == 4:
+                compte = 9999
+        elif tranche == 5:
+                compte = 99999
+        elif tranche == 6:
+            compte = 999999
+        else:
+            compte = 999999
         res = []
-        for i in range(1, 999+1):
+        for i in range(1, compte+1):
             converts = str(i)
             if len(converts) == 1:
                 converts = '00' + str(converts)

@@ -51,7 +51,6 @@
         <field name="act_window_id" ref="expense_request_line_form_action" />
     </record>
     
-   
     <menuitem
         action="expense_request_line_form_action"
         sequence="03"      
