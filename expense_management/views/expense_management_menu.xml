@@ -35,13 +35,27 @@
                     states="to_approve"
                     groups="expense_management.group_expense_approver_1"
             />
+            <button name="button_authorize"
+                    string="Autoriser"
+                    type="object"
+                    class="oe_highlight"
+                    states="authorize"
+                    groups="account.group_account_user"
+            />
+            <button name="button_to_cancel"
+                    string="Annuler"
+                    type="object"
+                    class="oe_highlight"
+                    states="authorize"
+                    groups="account.group_account_user"
+            />
             
             <button name="action_post"
                     string="Payer"
                     type="object"
                     class="oe_highlight"
                     states="approve"
-                    groups="account.group_account_user"
+                    groups="expense_management.group_expense_payer"
             />
             <button name="button_rejected"
                     string='Reject'
@@ -52,45 +66,43 @@
             />
             <field name="state"
                  widget="statusbar"
-                 statusbar_visible="draft,submit,validate,to_approve,approved,post,cancel"
+                 statusbar_visible="draft,submit,validate,to_approve,approved,authorize,post,cancel"
                  statusbar_colors='{"approved":"blue"}'
              />
           </header>
           <sheet>
               <div class="oe_title">
                     <h1>
-                        <field name="name" readonly="1"/>
+                        <field name="name" readonly="1" attrs="{'readonly': [('state', 'in',['to_cancel'])]}"/>
                     </h1>
               </div>
 
               <div class="oe_edit_only">
                  <label for="description" class="oe_inline" />
               </div>
-              <h1>
-                    <field name="description" class="oe_inline"/>
-              </h1>
-               
+               <h1>
+                    <field name="description" class="oe_inline" attrs="{'readonly': [('state', 'in',['to_cancel'])]}"/>
+                </h1>
               <group>
                   <group>
                       <field name="expense_approver" options="{'no_create': True}" required='True' 
-                             attrs="{'readonly': [('state', 'in', ['post', 'approve'])]}"
+                             attrs="{'readonly': [('state', 'in', ['post', 'approve','to_cancel'])]}"
                       />
-                      <field name='journal' options="{'no_create': True}" attrs="{'readonly': [('state', 'in', ['post', 'approve'])]}"/>
+                      <field name='journal' options="{'no_create': True}" attrs="{'readonly': [('state', 'in', ['post','to_cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"/>
                       <field name="statement_id" string="Journal Caisse" options="{'no_create': True}"
-                             required='True'
-                             attrs="{'readonly': [('state', 'in', ['post', 'approve'])]}"
+                             attrs="{'readonly': [('state', 'in', ['post','to_cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"
                       />
-                  </group>
+                 </group>
                   <group>
                       <field name="date" readonly='True'/>
                       <field name="requested_by" readonly='True'/>
                       <field name="total_amount" readonly='True'/>
-                      <field name="balance_amount" readonly='True' attrs="{'invisible': [('state','!=', 'to_approve')]}"/>
+                      <field name="balance_amount" readonly='True' attrs="{'invisible': [('state','!=', 'to_approve'),('requested_by','!=', 'expense_approver')]}"/>
                   </group>
               </group>
               <notebook>
                   <page string='Expense lines'>
-                      <field name="line_ids"  attrs="{'readonly': [('state', 'in', ['approve', 'post',])]}">
+                      <field name="line_ids"  attrs="{'readonly': [('state', 'in', ['approve', 'post','to_cancel',])]}">
                           <tree>
                               <field name='name'/>
                               <field name='date'/>

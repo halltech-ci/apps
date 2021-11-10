@@ -29,7 +29,8 @@ class HtaCategory(models.Model):
     
     @api.onchange("parent_id")
     def _compute_code_concate(self):
-        if self.parent_id: 
-            self.code_concate = str(self.parent_id.code_concate) + str(self.category_code)
-        else:
-            self.code_concate = self.category_code
+        for rec in self:
+            if rec.parent_id: 
+                rec.code_concate = str(rec.parent_id.code_concate) + str(rec.category_code)
+            else:
+                rec.code_concate = rec.category_code
