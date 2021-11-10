@@ -5,20 +5,31 @@
       <field name="model">expense.request</field>
       <field name="inherit_id" ref="expense_management.expense_request_view"/>
       <field name="arch" type="xml">
-          <xpath expr="//header/button[@name='action_post']" position='after'>
+          
+          <xpath expr="//header/button[@name='button_approve']" position='after'>
+              <button name="button_authorize"
+                    string="Autoriser"
+                    type="object"
+                    class="oe_highlight"
+                    states="authorize"
+                    groups="account.group_account_user"
+            />
               <button name="button_to_cancel"
                     string="Annuler"
                     type="object"
                     class="oe_highlight"
-                    states="approve"
+                    states="authorize"
                     groups="account.group_account_user"
             />
           </xpath>
-          <xpath expr="//sheet/h1" position='replace'>
-              <h1>
-                    <field name="name" class="oe_inline" attrs="{'readonly': [('state', 'in', ['to_cancel'])]}"/>
-              </h1>
+          <xpath expr="//header/field[@name='state']" position='replace'>
+              <field name="state"
+                 widget="statusbar"
+                 statusbar_visible="draft,submit,validate,to_approve,approved,authorize,post,cancel"
+                 statusbar_colors='{"approved":"blue"}'
+             />
           </xpath>
+          
           <xpath expr="//sheet/group/group[2]/field[@name='balance_amount']" position='replace'>
               <field name="balance_amount" readonly='True' attrs="{'invisible': [('state','!=', 'to_approve'),('requested_by','!=', 'expense_approver')]}"/>
           </xpath>
