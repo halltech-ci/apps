@@ -21,7 +21,7 @@ class ExpenseRequest(models.Model):
     def _get_default_name(self):
         return self.env['ir.sequence'].next_by_code("expense.request.code")
 
-    name = fields.Char(default=_get_default_name)
+    name = fields.Char( default=_get_default_name)
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
@@ -124,6 +124,7 @@ class ExpenseRequest(models.Model):
                     'amount': amount,
                     'project_id': line.project.id,
                     'analytic_account_id': line.analytic_account.id,
+                    'expense_id': line.request_id,
                 })
                 value.append(lines)
             statement_id.write({'line_ids': value})
