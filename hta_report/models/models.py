@@ -15,8 +15,7 @@ class hta_report(models.Model):
     note = fields.Html("Note", required=True)
     reste_gerer = fields.Html("Reste à Gérer", required=True)
     bloquante = fields.Html("Les elements Bloquants", required=True)
-    report_reference = fields.Char(string='Rapport Reference', required=True, copy=False, readonly=True, index=True,
-                                       default=lambda self: _('New'))
+    report_reference = fields.Char(string='Rapport Reference', required=True, copy=False, readonly=True, index=True,default=lambda self: _('New'))
     date_now = fields.Datetime(default=fields.Datetime.now())
     objet = fields.Text()
     commande = fields.Binary()

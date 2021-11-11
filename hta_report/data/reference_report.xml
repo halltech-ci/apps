@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-
         <!-- Sequences for sale.order -->
         <record id="rapport_reference_view" model="ir.sequence">
             <field name="name">Reference rapport</field>

@@ -28,7 +28,7 @@ class ExpenseRequest(models.Model):
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month)
         return res
     
-    name = fields.Char( default=_get_default_name)
+    name = fields.Char(string='Note',required=True, copy=False, readonly=True, index=True,default=_get_default_name)
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
@@ -63,6 +63,14 @@ class ExpenseRequest(models.Model):
     )
     expense_approver = fields.Many2one('res.users', string="Valideur")
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
+    
+    
+#     @api.model
+#     def create(self, vals):
+#         if vals.get('name', _('New')) == _('New'):
+#             vals['name'] = self.env['ir.sequence'].next_by_code('expense.request.code') or _('Error')
+#         result = super(ExpenseRequest, self).create(vals)
+#         return result
     
     
     def send_validation_mail(self):
