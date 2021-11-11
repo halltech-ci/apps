@@ -29,6 +29,7 @@ class AccountBankStatementLine(models.Model):
     )
     debit = fields.Monetary(currency_field='journal_currency_id')
     credit = fields.Monetary(currency_field='journal_currency_id')
+    expense_id = fields.Many2one('expense.request',"Expense",store=True)
     #amount = fields.Monetary(compute="_compute_amount")
     
     """
