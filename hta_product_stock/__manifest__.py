@@ -24,7 +24,7 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         'views/product_category_views.xml',
@@ -34,9 +34,4 @@
     'demo': [
         'demo/demo.xml',
     ],
-    
-    #'license': 'LGPL-3',
-    
-    #"installable": True,
-    #"pre_init_hook": "pre_init_product_name",
 }
