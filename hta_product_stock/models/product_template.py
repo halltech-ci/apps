@@ -39,11 +39,15 @@ class ProductTemplate(models.Model):
     @api.onchange("categ_id","caracteristique","type_id")
     def _onchange_name_(self):
         if self.categ_id:
-            self.name = str(self.categ_id.recovery_name) + ' '+ str(self.caracteristique) 
+            self.name = str(self.categ_id.recovery_name) + ' '+ str(self.caracteristique)
         if self.type_id:
-            self.name = str(self.categ_id.recovery_name) + ' ' + str(self.type_id.name) +' '+ str(self.caracteristique)
+            self.name = str(self.categ_id.recovery_name) + ' ' + str(self.type_id.name) +' '+ str(self.caracteristique)    
         if self.caracteristique:
             self.name = str(self.categ_id.recovery_name) + ' ' + str(self.type_id.name) +' '+ str(self.caracteristique)
+        else:
+            self.name = str(self.categ_id.recovery_name)
+            
+            
         
     
     def _get_list_row(self):
