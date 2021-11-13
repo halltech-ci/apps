@@ -50,9 +50,9 @@ class ProductTemplate(models.Model):
         elif tranche == 3:
             compte = 999
         elif tranche == 4:
-                compte = 9999
+            compte = 9999
         elif tranche == 5:
-                compte = 99999
+            compte = 99999
         elif tranche == 6:
             compte = 999999
         else:

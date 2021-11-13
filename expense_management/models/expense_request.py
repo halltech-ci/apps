@@ -174,7 +174,7 @@ class ExpenseRequest(models.Model):
         return self.write({'state': 'to_cancel'})
     
     def button_authorize(self):
-        self.is_approver_check()
+        #self.is_approver_check()
         #self.is_approve_check()
         for line in self.line_ids:
             line.action_approve()

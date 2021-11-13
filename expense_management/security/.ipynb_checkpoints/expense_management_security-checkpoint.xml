@@ -51,9 +51,14 @@
         <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_approver_3'))]"/>
         <field name="category_id" ref="base.module_category_human_resources_depenses"/>
     </record>
+    <record id="group_expense_authorize" model="res.groups">
+        <field name="name">Expense Management Authorize</field>
+        <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_management_manager'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_depenses"/>
+    </record>    
     <record id="group_expense_payer" model="res.groups">
         <field name="name">Expense Management Payer</field>
-        
+        <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_authorize'))]"/>
         <field name="category_id" ref="base.module_category_human_resources_depenses"/>
     </record> 
     </data>
