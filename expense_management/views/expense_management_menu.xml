@@ -40,21 +40,21 @@
                     type="object"
                     class="oe_highlight"
                     states="approve"
-                    groups="account.group_account_user"
+                    groups="expense_management.group_expense_authorize"
             />
             <button name="action_post"
                     string="Payer"
                     type="object"
                     class="oe_highlight"
                     states="authorize"
-                    groups="expense_management.group_expense_payer"
+                    groups="expense_management.group_expense_group_payer"
             />  
             <button name="button_to_cancel"
                     string="Annuler"
                     type="object"
                     class="oe_highlight"
                     states="authorize"
-                    groups="expense_management.group_expense_payer"
+                    groups="expense_management.group_expense_group_payer"
             />
             
             <button name="button_rejected"
