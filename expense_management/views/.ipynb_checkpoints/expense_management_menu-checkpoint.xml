@@ -40,7 +40,7 @@
                     type="object"
                     class="oe_highlight"
                     states="approve"
-                    groups="account.group_account_user"
+                    groups="expense_management.group_expense_authorize"
             />
             <button name="action_post"
                     string="Payer"
