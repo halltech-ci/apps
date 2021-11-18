@@ -24,7 +24,7 @@ class ProductTemplate(models.Model):
     ]
     
     _sql_constraints = [
-        ('caracteristique_uniq', 'unique(caracteristique,categ_id)', "Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"),
+        ('caracteristique_uniq', 'unique(caracteristique,categ_id,type_id)', "Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"),
     ]
 
 
