@@ -20,19 +20,19 @@ class ProductTemplate(models.Model):
     
     
     _sql_constraints = [
-        ('code_reference_uniq', 'unique(code_reference)', "Cette page ne peut pas être Dupliquée, Le Code de l'Article Existe déjâ !"),
+        ('code_reference_uniq', 'unique(code_reference,categ_id)', "Cette page ne peut pas être Dupliquée, Le Code de l'Article Existe déjâ !"),
     ]
     
-#     _sql_constraints = [
-#         ('caracteristique_uniq', 'unique(caracteristique)', "Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"),
-#     ]
+    _sql_constraints = [
+        ('caracteristique_uniq', 'unique(caracteristique,categ_id)', "Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"),
+    ]
 
 
-    @api.constrains('categ_id', 'caracteristique')
-    def check_categ_not_in_caracteristique(self):
-        for rec in self:
-            if str(rec.caracteristique) and str(rec.caracteristique) in str(rec.categ_id):
-                raise ValidationError(_("Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"))
+#     @api.constrains('categ_id', 'caracteristique')
+#     def check_categ_not_in_caracteristique(self):
+#         for rec in self:
+#             if str(rec.caracteristique) and str(rec.caracteristique) in str(rec.categ_id):
+#                 raise ValidationError("Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !")
                 
     
     @api.onchange("categ_id")
