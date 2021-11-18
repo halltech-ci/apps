@@ -2,7 +2,7 @@ import re
 from odoo.exceptions import ValidationError
 from collections import defaultdict
 from string import Template
-from odoo import models, fields, api
+from odoo import models, fields, api,_
 
 
 class ProductTemplate(models.Model):
@@ -23,9 +23,17 @@ class ProductTemplate(models.Model):
         ('code_reference_uniq', 'unique(code_reference)', "Cette page ne peut pas être Dupliquée, Le Code de l'Article Existe déjâ !"),
     ]
     
-    _sql_constraints = [
-        ('caracteristique_uniq', 'unique(caracteristique)', "Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"),
-    ]
+#     _sql_constraints = [
+#         ('caracteristique_uniq', 'unique(caracteristique)', "Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"),
+#     ]
+
+
+    @api.constrains('categ_id', 'caracteristique')
+    def check_categ_not_in_caracteristique(self):
+        for rec in self:
+            if str(rec.caracteristique) and str(rec.caracteristique) in str(rec.categ_id):
+                raise ValidationError(_("Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"))
+                
     
     @api.onchange("categ_id")
     def _onchange_type_product_id(self):
@@ -103,6 +111,10 @@ class ProductTemplate(models.Model):
             self.code_concate = str(self.categ_id.code_concate) + str(self.code)
         if self.type_id:
             self.code_concate = str(self.categ_id.code_concate) + str(self.type_id.code) + str(self.code)
+            if len(str(self.code_concate)) <= 12:
+                self.code_concate = str(self.categ_id.code_concate) + str(self.type_id.code) + str(self.code)
+            else:
+               raise ValidationError(_("Le Code de ce Article dépasse les 12 Caractères, veuillez revoir la codification!"))
         else:
             self.code_concate = self.code
     

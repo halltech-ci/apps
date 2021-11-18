@@ -11,8 +11,8 @@ class HtaCategory(models.Model):
     code_concate = fields.Char(compute='_compute_code_concate') # Concate all code
     template_code = fields.One2many('product.template', 'categ_id', 'Code Template')
     recovery_name = fields.Char(compute='_compute_recovery_name')
-    is_virtual_product = fields.Boolean()
     type_category_ids = fields.Many2many('product.category.type')
+    is_virtual_product = fields.Boolean()
     code_range = fields.Selection([('1', '1 Chiffre'),
                                   ('2', '2 Chiffres'),
                                   ('3', '3 Chiffres')], default='3')
@@ -30,16 +30,17 @@ class HtaCategory(models.Model):
     
     @api.onchange("parent_id")
     def _compute_code_concate(self):
-        if self.parent_id: 
-            self.code_concate = str(self.parent_id.code_concate) + str(self.category_code)
-        else:
-            self.code_concate = self.category_code
-            
-            
+        for rec in self:
+            if rec.parent_id: 
+                rec.code_concate = str(rec.parent_id.code_concate) + str(rec.category_code)
+            else:
+                rec.code_concate = rec.category_code
+
+
 class ProductCategoryType(models.Model):
     _name = 'product.category.type'
     _description = 'Product Type Category'
-    _inherit = ['mail.thread','mail.activity.mixin']
+    #_inherit = ['mail.thread','mail.activity.mixin']
     
     name = fields.Char(string="Name")
     code = fields.Char(string="Code")
