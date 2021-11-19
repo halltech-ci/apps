@@ -1,0 +1,9 @@
+<odoo>
+    <report id="etat_tva_analytic_report_xlsx"
+        model="etat.tva.report.wizard"
+        string="Etat Tva Report Excel"
+        report_type="xlsx"
+        name="custom_report_excel.report_etat_tva_report_excel"
+        file="custom_report_excel.report_etat_tva_report_excel"
+        attachment_use="False"/>
+</odoo>

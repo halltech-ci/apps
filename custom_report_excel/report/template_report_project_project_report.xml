@@ -1,0 +1,9 @@
+<odoo>
+    <report id="report_project_report_xlsx"
+        model="project.project.report.wizard"
+        string="Report Project Excel"
+        report_type="xlsx"
+        name="custom_report_excel.report_project_report_excel"
+        file="custom_report_excel.report_project_report_excel"
+        attachment_use="False"/>
+</odoo>

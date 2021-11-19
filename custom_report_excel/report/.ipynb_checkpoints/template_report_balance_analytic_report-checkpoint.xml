@@ -1,0 +1,9 @@
+<odoo>
+    <report id="account_balance_analytic_report_xlsx"
+        model="balance.analytic.report.wizard"
+        string="Balance Analytic Report Excel"
+        report_type="xlsx"
+        name="custom_report_excel.balance_analytic_report_excel"
+        file="custom_report_excel.balance_analytic_report_excel"
+        attachment_use="False"/>
+</odoo>

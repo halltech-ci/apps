@@ -40,7 +40,7 @@ class HtaCategory(models.Model):
 class ProductCategoryType(models.Model):
     _name = 'product.category.type'
     _description = 'Product Type Category'
-    _inherit = ['mail.thread','mail.activity.mixin']
+    #_inherit = ['mail.thread','mail.activity.mixin']
     
     name = fields.Char(string="Name")
     code = fields.Char(string="Code")
