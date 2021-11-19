@@ -29,8 +29,16 @@
         'views/templates.xml',
         # Wizard
         'wizard/report_analytic_views.xml',
+        'wizard/wizard_balance_analytic_report.xml',
+        'wizard/wizard_etat_tva_report.xml',
+        'wizard/wizard_paie_report_views.xml',
+        'wizard/wizard_project_project_views.xml',
         # Report
         'report/report_analytic_xlsx.xml',
+        'report/template_report_balance_analytic_report.xml',
+        'report/template_report_etat_tva_report.xml',
+        'report/template_report_paie_book_report.xml',
+        'report/template_report_project_project_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

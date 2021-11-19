@@ -1,0 +1,9 @@
+<odoo>
+    <report id="report_paie_book_report_xlsx"
+        model="paie.book.report.wizard"
+        string="Report Paie Book Excel"
+        report_type="xlsx"
+        name="custom_report_excel.report_paie_book_excel"
+        file="custom_report_excel.report_paie_book_excel"
+        attachment_use="False"/>
+</odoo>
