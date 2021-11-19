@@ -18,6 +18,7 @@ class ProductTemplate(models.Model):
     code_concate = fields.Char() # Concate all code
     type_id = fields.Many2one("product.category.type")
     
+
     
     _sql_constraints = [
         ('code_reference_uniq', 'unique(code_reference,categ_id)', "Cette page ne peut pas être Dupliquée, Le Code de l'Article Existe déjâ !"),
@@ -56,6 +57,7 @@ class ProductTemplate(models.Model):
             self.name = str(self.categ_id.recovery_name)
             
             
+
         
     
     def _get_list_row(self):
@@ -71,9 +73,11 @@ class ProductTemplate(models.Model):
         elif tranche == 3:
             compte = 999
         elif tranche == 4:
+
                 compte = 9999
         elif tranche == 5:
                 compte = 99999
+
         elif tranche == 6:
             compte = 999999
         else:
@@ -111,10 +115,12 @@ class ProductTemplate(models.Model):
             self.code_concate = str(self.categ_id.code_concate) + str(self.code)
         if self.type_id:
             self.code_concate = str(self.categ_id.code_concate) + str(self.type_id.code) + str(self.code)
+            
             if len(str(self.code_concate)) <= 12:
                 self.code_concate = str(self.categ_id.code_concate) + str(self.type_id.code) + str(self.code)
             else:
                raise ValidationError(_("Le Code de ce Article dépasse les 12 Caractères, veuillez revoir la codification!"))
+
         else:
             self.code_concate = self.code
     
