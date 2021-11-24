@@ -17,6 +17,10 @@ class custom_purchase_request(models.Model):
         if num2words is None:
             logging.getLogger(__name__).warning("The library 'num2words' is missing, cannot render textual amounts.")
             return ""
+        lang_code = self.env.context.get('lang') or self.env.user.lang
+        lang = self.env['res.lang'].with_context(active_test=False).search([('code', '=', lang_code)])
+        num_to_word = _num2words(num, lang=lang.iso_code)
+        return num_to_word
 
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
     

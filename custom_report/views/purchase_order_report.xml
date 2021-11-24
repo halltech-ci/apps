@@ -58,12 +58,12 @@
         <!-- Add custom sequence in purchase-->
         <xpath expr="//div[hasclass('page')]/h2[1]" position="replace"></xpath>
         <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
-            <h4 class="text-center" t-if="o.state in ['sent', 'to approve']">BON DE COMMANDE N°BC: <span t-field="o.name"/></h4>
+            <h4 class="text-center" t-if="o.state in ['sent', 'to approve']" style="color: #cb2020;">BON DE COMMANDE N°BC: <span t-field="o.name"/></h4>
         </xpath>
         <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
-            <h4 class="text-center" t-if="o.state in ['purchase', 'done']">BON DE COMMANDE N°BC: <span t-field="o.name"/></h4>
+            <h4 class="text-center" t-if="o.state in ['purchase', 'done']" style="color: #cb2020;">BON DE COMMANDE N°BC: <span t-field="o.name"/></h4>
         </xpath>
-        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace" style="color: #cb2020;">
             <h4 class="text-center" t-if="o.state == 'cancel'">(ANNULE) BON DE COMMANDE N°BC: <span t-field="o.name"/></h4>
         </xpath>
         <!-- Adding shipping address at bottom-->
@@ -73,7 +73,7 @@
             <div id="informations" class="d-flex">
                 <div class="mr-auto p-2">
                     <div t-if="o.date_order" class="col-auto mw-100 mb-2">
-                        <p> <strong>Date:</strong> <span t-field="o.date_order"/></p>
+                        <p> <strong style="text-decoration: underline;">Date:</strong> <span t-field="o.date_order"/></p>
                         <p  style="font-size: 12px;">REF PROJET: <span t-field="o.project_id"/></p>
                     </div>
                         
@@ -85,25 +85,22 @@
                         </div>
                         <div class="col-6" style="font-size: 12px;">    
                             <p>
-                                N° PRO FORMA/ <span />
+                                N° PRO FORMA / <span />
                             </p>
                         </div>
                     </div>    
                 </div>
-                <div class="p-2" style="font-size: 17px;margin-left: 8%;">
+                <div class="p-2" style="font-size: 17px;margin-left: 25%;">
                     <div class="row">
                         <div class="col-6">
-                            <p>FOURNISSEUR:</p>
-                            <p></p> 
-                            <p></p> 
-                            
+                            <p style="text-decoration: underline;">FOURNISSEUR:</p>
+                            <br/>
+                            <p style="font-size: 15px;text-decoration: underline;">N°DEVIS:</p>
                          </div>   
                         <div class="col-6">
                             <p style="font-weight: bold; text-transform: uppercase;" t-field="o.partner_id.name"/>
+                            <br/>
                             <p></p>
-                            <p></p>
-                            <p></p>
-                            <p style="font-size: 12px;">N°DEVIS:</p>
                         </div>
                     </div>
                     
@@ -137,12 +134,12 @@
                         <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
                         <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
                           <td></td>
-                          <td></td>
+                          <td id="project"><span t-field="o.project_id"/></td>
                           <td id="product" width="30%">
                                 <span t-field="line.name"/>
                             </td>
                             <td class="text-center">
-                                
+                                <span t-field="line.product_uom"/>
                             </td>
                             <td class="text-center">
                                 <span t-field="line.product_qty"/>
@@ -165,24 +162,24 @@
             </table>
         </xpath>
         <xpath expr="//div[hasclass('page')]/p[@t-field='o.notes']" position="before">
-            <div class="row justify-content-end" style="font-size:16px; padding-bottom:30px;">
-                <div class="col-4" style="font-weight: bold;">
+            <div class="row justify-content-center" style="font-size:16px; padding-bottom:30px;">
+                <div class="col-6" style="font-weight: bold; font-size: 15px;">
                     <p> Arrêt la présente facture à la somme de:</p>
                 </div>
-                <div class="col-4" style="text-align: center; width: 300px;" >
+                <div class="col-6" >
                                     <span t-field="o.amount_to_word"/> <span t-field="o.currency_id.currency_unit_label"/> <span t-field="o.currency_id.symbol"/>
                 </div>
             </div>
             <table class="table table-bordered">
                 <tr>
-                  <th scope="col" rowspan="2" width="40%">
-                      <p>Adresse de livraison :</p>
-                      <p>Nom et contact livraison:</p>
-                      <p>Modalité de livraison:</p>
-                      <p>Modalité e règlement:</p>
-                      <p>Date de livraison souhaité:</p>
+                  <th scope="col" rowspan="2" width="40%" style="font-size: 14px;">
+                      <p>Adresse de livraison : <span t-field="o.dest_address_id"/></p>
+                      <p>Nom et contact livraison: <span t-field="o.dest_address_id"/></p>
+                      <p>Modalité de livraison: DDP</p>
+                      <p>Modalité e règlement: CONDITION HAITUELLE</p>
+                      <p>Date de livraison souhaité: <span t-field="o.date_order"/></p>
                   </th>
-                  <th scope="col" width="15%">
+                  <th scope="col" width="15%" style="color: #b3b3b3">
                   </th>
                   <th scope="col" style="font-size: 9px;" width="20%">SIGNATURE ET CACHET DAF</th>
                   <th scope="col" style="font-size: 9px;" width="25%">SIGNANTURE ET CACHET DG</th>
