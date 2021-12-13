@@ -19,12 +19,12 @@ class PurchaseRequest(models.Model):
                     rec.has_manager = True
                 else:
                     rec.has_manager = False
-                    
+               
     sale_order = fields.Many2one('sale.order', string='Sale Order')
-    project = fields.Many2one('project.project' ,related='sale_order.project_id', string="Project", readonly=True)
+    project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
-    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Request Type")
-    #has_manager = fields.Boolean(compute='_compute_has_manager')
+    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Type Achat")
+    #purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Type Achat")
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
     
