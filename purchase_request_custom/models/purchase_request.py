@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 class PurchaseRequest(models.Model):
     _inherit = "purchase.request"
@@ -31,7 +31,7 @@ class PurchaseRequest(models.Model):
     """
     def action_send_email(self):
         #self.ensure_one()
-        template_id = self.env.ref('purchase_request.email_template_purchase_request').id
+        template_id = self.env.ref('purchase_request_custom.email_template_purchase_request').id
         template = self.env['mail.template'].browse(template_id)
         template.send_mail(self.id, force_send=True)
     """
@@ -73,3 +73,17 @@ class PurchaseRequestLine(models.Model):
     
     project = fields.Many2one(related="request_id.project", string="Project", readonly=True)
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
+    
+    @api.constrains('product_id', 'product_uom_id')
+    def _compare_product_uom(self):
+        #for line
+        if self.product_id:
+            if self.product_id.categ_id != self.product_uom_id.category_id:
+                raise ValidationError("Les unite de mesure de %s ne sont pas dans la meme categorie" % (self.product_id.name))
+    """
+    @api.onchange('product_uom_id')
+    def _onchange_product_uom(self):
+        if self.product_id.categ_id and self.product_qty != 0:
+            if self.product_id.categ_id != self.product_uom_id.category_id:
+                raise ValidationError("Les unite de mesure de %s ne sont pas dans la meme categorie" % (self.product_id.name))
+    """
