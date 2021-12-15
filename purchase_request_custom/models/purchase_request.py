@@ -19,15 +19,29 @@ class PurchaseRequest(models.Model):
                     rec.has_manager = True
                 else:
                     rec.has_manager = False
+    
+    @api.model
+    def _default_picking_type(self):
+        type_obj = self.env["stock.picking.type"]
+        company_id = self.env.context.get("company_id") or self.env.company.id
+        types = type_obj.search(
+            [("code", "=", "incoming"), ("warehouse_id.company_id", "=", company_id)]
+        )
+        if not types:
+            types = type_obj.search(
+                [("code", "=", "incoming"), ("warehouse_id", "=", False)]
+            )
+        return types[:1]
                
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
-    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Type Achat")
+    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('travaux', 'Travaux'), ('Appro', 'Appro Magasin'), ('autres', 'Autres')], string="Type Achat")
     #purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Type Achat")
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
-    
+    picking_type_id = fields.Many2one(required=False)
+        
     """
     def action_send_email(self):
         #self.ensure_one()
