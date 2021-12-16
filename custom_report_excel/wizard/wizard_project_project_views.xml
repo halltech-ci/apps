@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+     <record model="ir.ui.view" id="wizard_report_project_inherits">
+      <field name="model">project.project.report.wizard</field>
+      <field name="inherit_id" ref="custom_report.project_report_wizard"/>
+      <field name="arch" type="xml">
+          <xpath expr="//footer/button[@name='get_report']" position='after'>
+              <button name="get_excel" string="Report Excel" type="object" class="oe_highlight"/>
+          </xpath>
+          
+      </field>
+    </record>
+  </data>
+</odoo>

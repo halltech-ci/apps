@@ -83,3 +83,5 @@ class ReportTimeSheetReportView(models.AbstractModel):
             'docs': docs,
             'get_lines':self.get_lines,
         }
+    
+    

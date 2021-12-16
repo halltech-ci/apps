@@ -21,7 +21,10 @@ class ExpenseRequest(models.Model):
     def _get_default_name(self):
         return self.env['ir.sequence'].next_by_code("expense.request.code")
 
+
     def get_default_cash_journal(self):
+
+
         import datetime
         date = datetime.date.today()
         month = date.month
@@ -29,6 +32,7 @@ class ExpenseRequest(models.Model):
         return res
     
     name = fields.Char( default=_get_default_name)
+
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
@@ -56,13 +60,23 @@ class ExpenseRequest(models.Model):
     project_id = fields.Many2one('project.project', string='Projet')
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
     journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
+
     statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True,default=lambda self: self.get_default_cash_journal())
+
     move_id = fields.Many2one('account.move', string='Account Move')
     is_expense_approver = fields.Boolean(string="Is Approver",
         compute="_compute_is_expense_approver",
     )
     expense_approver = fields.Many2one('res.users', string="Valideur")
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
+    
+    
+#     @api.model
+#     def create(self, vals):
+#         if vals.get('name', _('New')) == _('New'):
+#             vals['name'] = self.env['ir.sequence'].next_by_code('expense.request.code') or _('Error')
+#         result = super(ExpenseRequest, self).create(vals)
+#         return result
     
     
     def send_validation_mail(self):
@@ -133,7 +147,9 @@ class ExpenseRequest(models.Model):
                     'amount': amount,
                     'project_id': line.project.id,
                     'analytic_account_id': line.analytic_account.id,
-                    'expense_id': line.request_id,
+
+                    'expense_id': line.request_id.id,
+
                 })
                 value.append(lines)
             statement_id.write({'line_ids': value})
@@ -166,7 +182,9 @@ class ExpenseRequest(models.Model):
         return self.write({'state': 'to_cancel'})
     
     def button_authorize(self):
-        self.is_approver_check()
+
+        #self.is_approver_check()
+
         #self.is_approve_check()
         for line in self.line_ids:
             line.action_approve()
@@ -247,5 +265,4 @@ class ExpenseRequest(models.Model):
                 raise UserError(_('In order to delete a expense request, you must cancel it first.'))
                 
         return super(ExpenseRequest, self).unlink()
-    
     

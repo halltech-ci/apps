@@ -11,6 +11,13 @@
                     <field name="code_concate" string="Concate Code" invisible="1"/>
                     <field name="is_virtual_product" string="Product Support"/>
                     <field name="code_range" class="oe_inline" attrs="{'invisible':[('is_virtual_product','=',False)]}"/>
+                    <field name="type_category_ids" string="Type Product" class="oe_inline" attrs="{'invisible':[('is_virtual_product','=',False)]}">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="code"/>
+                        </tree>
+                    </field>
+
                  </xpath> 
         </field>
     </record>

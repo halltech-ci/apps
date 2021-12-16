@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
+
 <odoo noupdate="1">
+
     <record id="expense_request_code_seq" model="ir.sequence">
         <field name="name">Expense Request Code</field>
         <field name="code">expense.request.code</field>
@@ -13,4 +15,6 @@
         <field name="company_id" eval="True" />
         <field name='implementation'>standard</field>
     </record>
+
+
 </odoo>
