@@ -38,8 +38,8 @@ class SaleOrder(models.Model):
         num_to_word = _num2words(num, lang=lang.iso_code)
         return num_to_word
         
-    project_id = fields.Many2one("project.project", "Project", ondelete= "cascade")
-    project_code = fields.Char("Code Projet", related='project_id.code')
+    #project_id = fields.Many2one("project.project", "Project", ondelete= "cascade")
+    #project_code = fields.Char("Code Projet", related='project_id.code')
     description = fields.Text("Description : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")

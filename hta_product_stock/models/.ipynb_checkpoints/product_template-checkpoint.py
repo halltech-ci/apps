@@ -2,12 +2,15 @@ import re
 from odoo.exceptions import ValidationError
 from collections import defaultdict
 from string import Template
+
 from odoo import models, fields, api,_
+
 
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"
     
+
     def _get_product_type_row(self):
         type_product = self.categ_id.type_category_ids
         return type_product
@@ -16,6 +19,7 @@ class ProductTemplate(models.Model):
     caracteristique = fields.Char()
     code_reference = fields.Char()
     code_concate = fields.Char() # Concate all code
+
     type_id = fields.Many2one("product.category.type")
     
 
@@ -68,16 +72,15 @@ class ProductTemplate(models.Model):
         tranche = 3
         if len(code_concate_category) <= 12:
             tranche = 12 - len(code_concate_category)
+
         if tranche == 2:
             compte = 99
         elif tranche == 3:
             compte = 999
         elif tranche == 4:
-
-                compte = 9999
+            compte = 9999
         elif tranche == 5:
-                compte = 99999
-
+            compte = 99999
         elif tranche == 6:
             compte = 999999
         else:
@@ -109,6 +112,7 @@ class ProductTemplate(models.Model):
                 break
             res.clear()
     
+
     @api.onchange("categ_id",'type_id','code')
     def _onchange_code_concartel(self):
         if self.categ_id:
@@ -120,6 +124,7 @@ class ProductTemplate(models.Model):
                 self.code_concate = str(self.categ_id.code_concate) + str(self.type_id.code) + str(self.code)
             else:
                raise ValidationError(_("Le Code de ce Article dépasse les 12 Caractères, veuillez revoir la codification!"))
+
 
         else:
             self.code_concate = self.code

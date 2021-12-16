@@ -28,6 +28,9 @@
                    position="before">
                 <field name="product_code" readonly="True" string="Code"/>
             </xpath>
+            <field name="picking_type_id" position="attributes">
+                <attribute name="attrs">{'required':[('purchase_type', 'not in', ['travaux'])]}</attribute>
+            </field>
         </field>
     </record>
     <!--Adding project_id in purchase_order-->

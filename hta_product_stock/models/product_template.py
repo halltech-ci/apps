@@ -2,20 +2,23 @@ import re
 from odoo.exceptions import ValidationError
 from collections import defaultdict
 from string import Template
+
 from odoo import models, fields, api,_
+
 
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"
     
+
     def _get_product_type_row(self):
         type_product = self.categ_id.type_category_ids
         return type_product
-
     code = fields.Char()
     caracteristique = fields.Char()
     code_reference = fields.Char()
     code_concate = fields.Char() # Concate all code
+
     type_id = fields.Many2one("product.category.type")
     
 
@@ -70,11 +73,9 @@ class ProductTemplate(models.Model):
         elif tranche == 3:
             compte = 999
         elif tranche == 4:
-
-                compte = 9999
+             compte = 9999
         elif tranche == 5:
-                compte = 99999
-
+              compte = 99999
         elif tranche == 6:
             compte = 999999
         else:
