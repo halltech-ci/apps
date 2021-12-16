@@ -15,11 +15,11 @@
           <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
             <field name="sale_order_recipient"/>
             <field name="client_order_ref"/>  
-            <field name='project_code'/>
+            <!--<field name='project_code'/>-->
           </xpath>
           
           <xpath expr="//sheet/group/group" position="inside">
-            <field name="project_id"/>
+            <!--<field name="project_id"/>-->
             <field name="sale_order_type"/>
           </xpath>
           <!-- Adding product_code-->

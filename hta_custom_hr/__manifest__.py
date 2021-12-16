@@ -43,6 +43,7 @@
         'views/hr_work_entry_type_views.xml',
         'views/hr_salary_rule_views.xml',
         'views/template_css.xml',
+        'views/hr_payslip_book.xml',
         #Report
         'report/report_hta_payslip_template.xml',
         'report/bulletin_paye_report.xml',

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 class PurchaseRequest(models.Model):
     _inherit = "purchase.request"
@@ -19,19 +19,33 @@ class PurchaseRequest(models.Model):
                     rec.has_manager = True
                 else:
                     rec.has_manager = False
-                    
+    
+    @api.model
+    def _default_picking_type(self):
+        type_obj = self.env["stock.picking.type"]
+        company_id = self.env.context.get("company_id") or self.env.company.id
+        types = type_obj.search(
+            [("code", "=", "incoming"), ("warehouse_id.company_id", "=", company_id)]
+        )
+        if not types:
+            types = type_obj.search(
+                [("code", "=", "incoming"), ("warehouse_id", "=", False)]
+            )
+        return types[:1]
+               
     sale_order = fields.Many2one('sale.order', string='Sale Order')
-    project = fields.Many2one('project.project' ,related='sale_order.project_id', string="Project", readonly=True)
+    project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
-    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Request Type")
-    #has_manager = fields.Boolean(compute='_compute_has_manager')
+    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('travaux', 'Travaux'), ('Appro', 'Appro Magasin'), ('autres', 'Autres')], string="Type Achat")
+    #purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Type Achat")
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
-    
+    picking_type_id = fields.Many2one(required=False)
+        
     """
     def action_send_email(self):
         #self.ensure_one()
-        template_id = self.env.ref('purchase_request.email_template_purchase_request').id
+        template_id = self.env.ref('purchase_request_custom.email_template_purchase_request').id
         template = self.env['mail.template'].browse(template_id)
         template.send_mail(self.id, force_send=True)
     """
@@ -73,3 +87,17 @@ class PurchaseRequestLine(models.Model):
     
     project = fields.Many2one(related="request_id.project", string="Project", readonly=True)
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
+    
+    @api.constrains('product_id', 'product_uom_id')
+    def _compare_product_uom(self):
+        #for line
+        if self.product_id:
+            if self.product_id.categ_id != self.product_uom_id.category_id:
+                raise ValidationError("Les unite de mesure de %s ne sont pas dans la meme categorie" % (self.product_id.name))
+    """
+    @api.onchange('product_uom_id')
+    def _onchange_product_uom(self):
+        if self.product_id.categ_id and self.product_qty != 0:
+            if self.product_id.categ_id != self.product_uom_id.category_id:
+                raise ValidationError("Les unite de mesure de %s ne sont pas dans la meme categorie" % (self.product_id.name))
+    """
