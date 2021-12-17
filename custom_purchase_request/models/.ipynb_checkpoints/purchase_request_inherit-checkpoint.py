@@ -7,6 +7,8 @@ from odoo.exceptions import UserError
 class PurchaseRequestInheritHta(models.TransientModel):
     _inherit = "purchase.request.line.make.purchase.order"
     
+    name_code = fields.Char()
+    
     @api.model
     def _prepare_item(self, line):
         return {
@@ -102,8 +104,7 @@ class PurchaseRequestInheritHta(models.TransientModel):
                 self.create_allocation(po_line, line, all_qty, alloc_uom)
             else:
                 po_line_data = self._prepare_purchase_order_line(purchase, item)
-                if item.keep_description:
-                    po_line_data["name"] = "bbbbbbbbbbbbbbbbbbbbbbbb"
+                po_line_data["name"] = item.name
                 po_line = po_line_obj.create(po_line_data)
                 po_line_product_uom_qty = po_line.product_uom._compute_quantity(
                     po_line.product_uom_qty, alloc_uom
@@ -136,3 +137,5 @@ class PurchaseRequestInheritHta(models.TransientModel):
             "context": False,
             "type": "ir.actions.act_window",
         }
+    
+    
