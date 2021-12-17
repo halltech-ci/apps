@@ -23,7 +23,7 @@ class PaybookReport(models.AbstractModel):
         month = data['form']['slip_month'][0]
         struct_id = data['form']['salary_structure'][0]
         employee = self.env['hr.payslip.line'].search([('slip_month', '=', month)]).employee_id#.ids
-        salary_rule = selef.nv['hr.salary.rule'].search([('struct_id', '=', struct_id) ,('appears_on_paybook', '=', True)], order = 'rubrique asc')
+        salary_rule = self.env['hr.salary.rule'].search([('struct_id', '=', struct_id) ,('appears_on_paybook', '=', True)], order = 'rubrique asc')
         lines = self.get_lines
         docs = []
         return {
