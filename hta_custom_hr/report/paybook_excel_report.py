@@ -64,6 +64,13 @@ class PaybookReport(models.AbstractModel):
                 col += 1
             row += 1
         worksheet.write_string(row, 0, "TOTAL", cel_row_style_bg)
+        for employee in employees:
+            lines = [self.get_lines(month, rule.id, employee.id) for rule in rules]
+            col = 1
+            for line in lines:
+                worksheet.write_number(row, col, sum(line.amount), cel_row_style)
+                col += 1
+            
             
         """row_2 = row + 1
         for rule in rules:
