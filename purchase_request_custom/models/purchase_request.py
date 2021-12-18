@@ -5,11 +5,11 @@ from odoo.exceptions import UserError, ValidationError
 
 class PurchaseRequest(models.Model):
     _inherit = "purchase.request"
-    
+    """
     @api.model
     def _get_default_name(self):
         return self.env["ir.sequence"].next_by_code("purchase.da.sequence")
-    
+    """
     @api.depends('requested_by')
     def _compute_has_manager(self):
         for rec in self:
@@ -34,12 +34,11 @@ class PurchaseRequest(models.Model):
         return types[:1]
                
     name = fields.Char(string="Request Reference", required=True, default=lambda self: _('New'), index=True)
-    request_date = fields.Datetime(string="Creation date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange",)
+    request_date = fields.Datetime(string="Request date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange",)
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
     purchase_type = fields.Selection(selection=[('project', 'Projet'), ('travaux', 'Travaux'), ('Appro', 'Appro Magasin'), ('autres', 'Autres')], string="Type Achat")
-    #purchase_type = fields.Selection(selection=[('project', 'Projet'), ('autres', 'Autres')], string="Type Achat")
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
     picking_type_id = fields.Many2one(required=False)
