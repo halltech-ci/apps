@@ -33,6 +33,8 @@ class PurchaseRequest(models.Model):
             )
         return types[:1]
                
+    name = fields.Char(string="Request Reference", required=True, default=lambda self: _('New'), index=True)
+    request_date = fields.Datetime(string="Creation date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange",)
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
@@ -41,15 +43,7 @@ class PurchaseRequest(models.Model):
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
     picking_type_id = fields.Many2one(required=False)
-        
-    """
-    def action_send_email(self):
-        #self.ensure_one()
-        template_id = self.env.ref('purchase_request_custom.email_template_purchase_request').id
-        template = self.env['mail.template'].browse(template_id)
-        template.send_mail(self.id, force_send=True)
-    """
-    #@api.depends('')
+    
     def _compute_is_project_approver(self):
         for req in self:
             user = self.env.user
@@ -61,10 +55,17 @@ class PurchaseRequest(models.Model):
     @api.model
     def create(self, vals):
         request = super(PurchaseRequest, self).create(vals)
-        if vals.get("assigned_to"):
-            partner_id = self._get_partner_id(request)
-            request.message_subscribe(partner_ids=[partner_id])
-            #self.action_send_email()
+        if vals.get('name', _('New')) == _('New'):
+            seq_date = None
+            if vals.get("assigned_to"):
+                partner_id = self._get_partner_id(request)
+                request.message_subscribe(partner_ids=[partner_id])
+            if 'request_date' in vals:
+                seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['request_date']))
+            if 'company_id' in vals:
+                vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code('purchase.request.sequence', sequence_date=seq_date) or _('New')
+            else:
+                vals['name'] = self.env['ir.sequence'].next_by_code('purchase.request.sequence', sequence_date=seq_date) or _('New')
         return request
     
     def to_approve_check(self):
@@ -88,12 +89,14 @@ class PurchaseRequestLine(models.Model):
     project = fields.Many2one(related="request_id.project", string="Project", readonly=True)
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
     
+    """
     @api.constrains('product_id', 'product_uom_id')
     def _compare_product_uom(self):
         #for line
         if self.product_id:
             if self.product_id.categ_id != self.product_uom_id.category_id:
                 raise ValidationError("Les unite de mesure de %s ne sont pas dans la meme categorie" % (self.product_id.name))
+    """
     """
     @api.onchange('product_uom_id')
     def _onchange_product_uom(self):
