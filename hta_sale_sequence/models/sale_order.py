@@ -31,7 +31,7 @@ class SaleOrder(models.Model):
 
     def write(self, line_values):
         res = super(SaleOrder, self).write(line_values)
-        self._reset_sequence()
+        #self._reset_sequence()
         return res
 
     """def copy(self, default=None):

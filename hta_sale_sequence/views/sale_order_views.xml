@@ -12,7 +12,10 @@
                     <attribute name="context">{'default_sequence': max_line_sequence}</attribute>
                 </field>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
-                    <field name="number"/>
+                    <field name="number" readonly="0"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="default_order">number asc</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="before">
                     <field name="sequence" invisible="1"/>
