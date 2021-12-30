@@ -102,7 +102,7 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
-    product_code = fields.Char(related='product_id.default_code', string="Code")
+    #product_code = fields.Char(related='product_id.default_code', string="Code")
     product_cost = fields.Float(string="Cost", digits='Product Price')
     line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True)
     price_unit = fields.Float('Unit Price', required=True, digits='Product Price',
