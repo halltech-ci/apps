@@ -12,7 +12,7 @@
                                 <field name="value_ids" widget='many2many'>
                                     <tree editable="bottom">
                                         <field name="name"/>
-                                        <field name="code"/>
+                                        <!--<field name="code"/>-->
                                     </tree>    
                                 </field>
                         </tree>
