@@ -3,9 +3,9 @@
 # from odoo import models, fields, api
 
 
-# class purchase_request_variant_configurator(models.Model):
-#     _name = 'purchase_request_variant_configurator.purchase_request_variant_configurator'
-#     _description = 'purchase_request_variant_configurator.purchase_request_variant_configurator'
+# class hta_product_code(models.Model):
+#     _name = 'hta_product_code.hta_product_code'
+#     _description = 'hta_product_code.hta_product_code'
 
 #     name = fields.Char()
 #     value = fields.Integer()
