@@ -129,11 +129,11 @@
             </div>
         </xpath>
         
-        <!--xpath expr="//tr[@class='border-black']" position="after">
+        <xpath expr="//tr[@class='border-black']" position="after">
             <div class="descrript_info">
-                <h1>NON COMPRIS: Toutes les charges non décrites dans cette offre</h1>
+                <h3>NON COMPRIS: Toutes les charges non décrites dans cette offre</h3>
             </div>
-        </xpath-->
+        </xpath>
         
         
         <!-- Delete display subtotal-->

@@ -10,4 +10,4 @@ class SaleOrder(models.Model):
     descriptions = fields.Text("A l’attention de : ")
     payment_term_id = fields.Many2one(
         'account.payment.term', string='Payment Terms', check_company=True,  # Unrequired company
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", required=True)
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
