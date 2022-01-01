@@ -123,7 +123,7 @@
                     </td>
                 </tr>
             </div>
-        </xpath>
+        </xpath>    
         <!-- Delete display subtotal-->
         
         <xpath expr="//div/table[hasclass('table', 'table-sm')]/tbody[hasclass('sale_tbody')]/t[@t-foreach='doc.order_line']/t/tr[hasclass('is-subtotal', 'text-right')]" position="replace">

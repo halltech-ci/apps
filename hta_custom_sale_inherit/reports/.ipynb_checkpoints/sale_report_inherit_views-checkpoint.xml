@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+    <template id="inherit_report_saleorder_views_document" inherit_id="sale.report_saleorder_document">
         <!-- Changin VAT ID to N°CC-->
         <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="replace">
             <strong>
@@ -17,6 +17,10 @@
                         <strong>Date:</strong>
                         <p class="m-0" t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
                     </div>
+                    <div t-if="doc.date_order and doc.state not in ['draft','sent']" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Date de bon commande:</strong>
+                    <p class="m-0" t-field="doc.date_order"/>
+                </div>
                 </div>
             </div>    
             <div class="d-flex">
@@ -123,7 +127,15 @@
                     </td>
                 </tr>
             </div>
-        </xpath>    
+        </xpath>
+        
+        <!--xpath expr="//tr[@class='border-black']" position="after">
+            <div class="descrript_info">
+                <h1>NON COMPRIS: Toutes les charges non décrites dans cette offre</h1>
+            </div>
+        </xpath-->
+        
+        
         <!-- Delete display subtotal-->
         
         <xpath expr="//div/table[hasclass('table', 'table-sm')]/tbody[hasclass('sale_tbody')]/t[@t-foreach='doc.order_line']/t/tr[hasclass('is-subtotal', 'text-right')]" position="replace">
