@@ -8,9 +8,12 @@ class ProductCategory(models.Model):
     def _get_default_category_code(self):
         return self.env["ir.sequence"].next_by_code("product.category.code")
 
-    category_code = fields.Char(index=True,)
+    category_code = fields.Char(index=True, compute="_compute_category_code")
     related_code = fields.Char(string='Related Code', compute = '_compute_related_code', recursive=True, store=True, search='_search_related_field',)
 
+    def _compute_category_code(self):
+        
+    
     @api.depends('parent_id.related_code', 'category_code')
     def _compute_related_code(self):
         for category in self:
@@ -38,9 +41,9 @@ class ProductCategory(models.Model):
     def _search_related_field(self, operator, value):
         return [('related_code', operator, value)]
     
-    
+    """
     _sql_constraints = [
         ('related_code_uniq', 'unique(related_code)', "Related_code must be unique !"),
     ]
-    
+    """
     
