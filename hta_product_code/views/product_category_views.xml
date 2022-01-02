@@ -1,0 +1,39 @@
+<odoo>
+  <data>
+    <record id="product_category_form_view_inherit" model="ir.ui.view">
+        <field name="name">prodcut.category.form.view</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group[@name='first']/field[@name='parent_id']" position="after">
+                <field name="category_code" class="oe_inline"/>
+                <field name="related_code" class="oe_inline"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_category_search_view_inherit">
+        <field name="name">product.category.search (product_category_code)</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_search_view" />
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="category_code" />
+                <field name="related_code" />
+            </field>
+        </field>
+    </record>
+
+    <record id="product_category_list_view_inherit" model="ir.ui.view">
+        <field name="name">product.category.list (product_category_code)</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_list_view" />
+        <field name="arch" type="xml">
+          <field name="display_name" position="after">
+            <field name="category_code" />
+            <field name="related_code" />
+          </field>
+        </field>
+      </record>
+  </data>
+</odoo>
