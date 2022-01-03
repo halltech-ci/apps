@@ -79,9 +79,7 @@ class SaleOrder(models.Model):
             seq_date = None
             next_code = "sale.order"
             domaine_code = vals.get('sale_order_type')
-            if domaine_code == 'fm':
-                raise UserError(_("Veuillez choisir un domaine valide."))
-            else:
+            if domaine_code != "fm":
                 next_code = '{0}.{1}.{2}'.format('sale', domaine_code, 'sequence')
             if 'date_order' in vals:
                 seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
