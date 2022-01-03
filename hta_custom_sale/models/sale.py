@@ -37,8 +37,12 @@ class SaleOrder(models.Model):
         lang = self.env['res.lang'].with_context(active_test=False).search([('code', '=', lang_code)])
         num_to_word = _num2words(num, lang=lang.iso_code)
         return num_to_word
+    
+    @api.model
+    def _default_type_id(self):
+        return self.env["sale.order.type"].search([], limit=1)
         
-    sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True,)
+    sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), compute="_compute_sale_type_id")
     description = fields.Text("Description : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")
@@ -77,14 +81,15 @@ class SaleOrder(models.Model):
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
             seq_date = None
-            sequence_id = vals.get('sequence_id')
-            sequence = self.env['sale.order.type'].search([('id', '=', sequence_id)]).sequence_id
-            next_code = sequence.code
+            sale_type = self.env['sale.order.type'].browse(vals["type_id"])
+            next_code = "sale.order"
+            if sale_type.sequence_id:
+                next_code = sale_type.sequence_id.code
             if 'date_order' in vals:
                 seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
             if 'company_id' in vals:
                 #if self.company_id.name == 'CONCEPTOR INDUSTRY':
-                vals['name'] = sequence.with_context(force_company=vals['company_id']).next_by_code(
+                vals['name'] = sale_type.sequence_id.with_context(force_company=vals['company_id']).next_by_code(
                     next_code, sequence_date=seq_date) or _('New')
             else:
                 vals['name'] = sequence.next_by_code(next_code, sequence_date=seq_date) or _('New')
