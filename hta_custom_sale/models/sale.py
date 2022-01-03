@@ -7,12 +7,11 @@ from odoo.exceptions import UserError, ValidationError
 
 
 
-_SALE_ORDER_DOMAINE = [('fm', 'FABRICATION MECANIQUE'),
-                          ('cm', 'CONSTRUCTION METALLIQUE'),
-                          ('gcb', 'GENIE CIVILE ET BATIMENT'),
-                          ('fe', 'FOURNITURE EQUIPEMENTS'),
-                          ('mi', 'MAINTENANCE INDUSTRIELLE'),
-                          ('ec', 'ETUDE ET CONSULTANCE'),
+_SALE_ORDER_DOMAINE = [('fm', ''),
+                          ('cmgc', 'CONSTRUCTION METALLIQUE ET GENIE CIVIL'),
+                          ('fmfe', "FABRICATION MECANIQUE ET FOURNITURE D'EQUIPEMENTS"),
+                          ('mips', 'MAINTENANCE INDUSTRIELLE ET PRESTATION DE SERVICES'),
+                          ('bec', "BUREAU D'ETUDE ET CONSULTANCE"),
                           ('', '-------------------------'),
                           ('erp', 'ERP'),
                           ('rit', 'RESEAUX, INFORMATIQUE ET TELECOMS'),
@@ -78,8 +77,16 @@ class SaleOrder(models.Model):
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
             seq_date = None
+            next_code = "sale.order"
             domaine_code = vals.get('sale_order_type')
-            next_code = '{0}.{1}.{2}'.format('sale', domaine_code, 'sequence')
+            if domaine_code == 'fm':
+                raise ValidationError(
+                    _(
+                        "Veuillez choisir un domaine valide!"
+                    )
+                )
+            if domaine_code != 'fm':
+                next_code = '{0}.{1}.{2}'.format('sale', domaine_code, 'sequence')
             if 'date_order' in vals:
                 seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
             if 'company_id' in vals:
