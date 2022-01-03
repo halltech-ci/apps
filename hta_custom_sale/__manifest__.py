@@ -27,12 +27,11 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
+        #'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         #views
         'views/sale_order_views.xml',
-        'views/sale_order_type_views.xml',
         #data
         'data/sale_ir_sequence.xml',
         #Reports

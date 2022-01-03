@@ -8,11 +8,10 @@ from odoo.exceptions import UserError, ValidationError
 
 
 _SALE_ORDER_DOMAINE = [('fm', 'FABRICATION MECANIQUE'),
-                          ('cm', 'CONSTRUCTION METALLIQUE'),
-                          ('gcb', 'GENIE CIVILE ET BATIMENT'),
-                          ('fe', 'FOURNITURE EQUIPEMENTS'),
-                          ('mi', 'MAINTENANCE INDUSTRIELLE'),
-                          ('ec', 'ETUDE ET CONSULTANCE'),
+                          ('cmgc', 'CONSTRUCTION METALLIQUE ET GENIE CIVIL'),
+                          ('fmfe', 'FABRICATION MECANIQUE ET FOURNITURE D\'EQUIPEMENTS'),
+                          ('mips', 'MAINTENANCE INDUSTRIELLE ET PRESTATION DE SERVICES'),
+                          ('bec', 'BUREAU D\ETUDE ET CONSULTANCE'),
                           ('', '-------------------------'),
                           ('erp', 'ERP'),
                           ('rit', 'RESEAUX, INFORMATIQUE ET TELECOMS'),
@@ -37,12 +36,8 @@ class SaleOrder(models.Model):
         lang = self.env['res.lang'].with_context(active_test=False).search([('code', '=', lang_code)])
         num_to_word = _num2words(num, lang=lang.iso_code)
         return num_to_word
-    
-    @api.model
-    def _default_type_id(self):
-        return self.env["sale.order.type"].search([], limit=1)
         
-    sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), )
+    #sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), )
     description = fields.Text("Description : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")
@@ -82,18 +77,16 @@ class SaleOrder(models.Model):
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
             seq_date = None
-            sale_type = self.env['sale.order.type'].browse(vals["sequence_id"])
-            next_code = "sale.order"
-            if sale_type.sequence_id:
-                next_code = sale_type.sequence_id.code
+            domaine_code = vals.get('sale_order_type')
+            next_code = '{0}.{1}.{2}'.format('sale', domaine_code, 'sequence')
             if 'date_order' in vals:
                 seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
             if 'company_id' in vals:
                 #if self.company_id.name == 'CONCEPTOR INDUSTRY':
-                vals['name'] = sale_type.sequence_id.with_context(force_company=vals['company_id']).next_by_code(
+                vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code(
                     next_code, sequence_date=seq_date) or _('New')
             else:
-                vals['name'] = sequence.next_by_code(next_code, sequence_date=seq_date) or _('New')
+                vals['name'] = self.env['ir.sequence'].next_by_code(next_code, sequence_date=seq_date) or _('New')
 
         # Makes sure partner_invoice_id', 'partner_shipping_id' and 'pricelist_id' are defined
         if any(f not in vals for f in ['partner_invoice_id', 'partner_shipping_id', 'pricelist_id']):
@@ -104,6 +97,7 @@ class SaleOrder(models.Model):
             vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
         result = super(SaleOrder, self).create(vals)
         return result
+
     
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
