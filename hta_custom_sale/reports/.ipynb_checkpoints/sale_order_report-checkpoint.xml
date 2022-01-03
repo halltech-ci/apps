@@ -4,8 +4,8 @@
         <!-- Changin VAT ID to N°CC-->
         <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="replace">
             <strong>
-                <div t-field="doc.partner_id"
-                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+            <h style="margin-left: -90px; topmargin:10px;">CLIENT: </h>
+                <div t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}" style="margin-top:-28px;"/>
                 <p t-if="doc.partner_id.vat"><t t-esc="doc.company_id.country_id.vat_label or 'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
             </strong>
         </xpath>
@@ -85,7 +85,7 @@
             </tr>
             <t t-if="doc.remise_total > 0">
                 <tr class="o_subtotal" style="">
-                    <td name="td_general_discount_label">Remise(<span t-field='doc.general_discount'/>%)</td>
+                    <td name="td_general_discount_label">Total Remise</td>
                     <td name="td_remise_total" class="text-right">
                         <span t-field="doc.remise_total"/>
                     </td>
@@ -100,6 +100,12 @@
                         
                     </td>
                 </tr>
+            </div>
+        </xpath>
+        
+         <xpath expr="//p[@t-field='doc.note']" position="after">
+            <div class="descrript_info" style="color: red;">
+                <b><h>NON COMPRIS: Toutes les charges non décrites dans cette offre</h></b>
             </div>
         </xpath>
         <!-- Delete display subtotal-->
@@ -122,12 +128,13 @@
         <xpath expr="//div[hasclass('page')]/table" position="attributes">
             <attribute name="class">table table-sm o_main_table table-bordered</attribute>
         </xpath>
+        <!-- Cha,ging font size-->
         <xpath expr="//div[hasclass('page')]/table" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
         
         <xpath expr="//div[hasclass('page')]" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
     </template>
 </odoo>

@@ -13,6 +13,10 @@
               </group>
           <!--/xpath-->
             </field>
+            <field name="payment_term_id" position="replace">
+                  <field name="payment_term_ids" Strong='Conditions de paiement'/>
+          <!--/xpath-->
+            </field>
         </field>
     </record>
   </data>

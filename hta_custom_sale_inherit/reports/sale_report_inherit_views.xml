@@ -1,73 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="inherit_report_saleorder_views_document" inherit_id="sale.report_saleorder_document">
-        <!-- Changin VAT ID to N°CC-->
-        <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="replace">
+    <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+       <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="replace">
             <strong>
-                <div t-field="doc.partner_id"
-                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+            <h style="margin-left: -90px; topmargin:10px;">CLIENT: </h>
+                <div t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}" style="margin-top:-28px;"/>
                 <p t-if="doc.partner_id.vat"><t t-esc="doc.company_id.country_id.vat_label or 'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
             </strong>
         </xpath>
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">
-            <div class="d-flex">
-                <div class="mr-auto p-2" style="font-size: 17px;">
-                    <div t-if="doc.date_order and doc.state not in ['draft','sent']" class="col-auto mw-100 mb-2" >
-                        <strong>Date:</strong>
-                        <p class="m-0" t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
-                    </div>
-                    <div t-if="doc.date_order and doc.state not in ['draft','sent']" class="col-auto col-3 mw-100 mb-2">
-                    <strong>Date de bon commande:</strong>
-                    <p class="m-0" t-field="doc.date_order"/>
-                </div>
-                </div>
-            </div>    
-            <div class="d-flex">
-                <div class="mr-auto p-2">
-                    <h2>
-                    <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
-                            <span t-if="doc.state not in ['draft','sent']">COMMANDE/ORDER :</span>
-                            <span t-if="doc.state in ['draft','sent']">DEVIS/QUOTATION : </span>
-                        </t>
-                        <span t-field="doc.name"/>
-                    </h2>
-                    <h3>
-                        Ref: <span t-field="doc.client_order_ref"/>
-                    </h3>
-                </div>
-                <div class="p-2" style="font-size: 17px;margin-left: 8%;">
-                    <div class="row">
-                        <div class="col-6">
-                            <p>CLIENT:</p>
-                            <p t-if="doc.sale_order_recipient">ATT: Mrs/Mlle</p> 
-                            <p >TEL: <span t-field="doc.partner_id.phone"/></p>
-                         </div>   
-                        <div class="col-6">
-                            <p style="font-weight: bold; text-transform: uppercase;" t-field="doc.partner_id.name"/>
-                            <p t-if="doc.sale_order_recipient" t-field="doc.sale_order_recipient"/>
-                            <p>Fax: <span t-field="doc.partner_id.phone"/></p>  
-                        </div>
-                    </div>
-                    
-                </div>   
-            </div>
+            <h2>
+            <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                    <span t-if="doc.state not in ['draft','sent']">COMMANDE/ORDER :</span>
+                    <span t-if="doc.state in ['draft','sent']">DEVIS/QUOTATION : </span>
+                </t>
+                <t t-if="env.context.get('proforma', False) or is_pro_forma">
+                    <span>Pro-Forma </span>
+                </t>
+                <span t-field="doc.name"/>
+            </h2>
         </xpath>
         <!--Ajout de champ destinataire dans devis-->
-        
+        <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.user_id.name']" position="after">
+            <div t-if="doc.sale_order_recipient" class="col-xs-3">
+              <strong>Destinataire:</strong>
+              <p class='m-0' t-field="doc.sale_order_recipient"/>
+            </div>
+        </xpath>
         <!-- Delete expiration on header-->
         
         <!-- hide sale person field-->
-        <xpath expr="//div[hasclass('page')]/div[@id='informations']" position="replace">
+        <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.user_id.name']" position="replace">
             <div></div>
         </xpath>
         <!-- -->
-        <xpath expr="//table/thead/tr" position="before">
-            <tr>
-                <td class="text-center" colspan="6">
-                    <p style="font-size: 22px; text-transform: uppercase; font-weight: bold;" t-field="doc.description"/>
-                </td> 
-            </tr>
+        <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]" position="after">
+            <div>
+              <strong>Objet:</strong>
+                 <span t-field="doc.description"/>
+            </div>
+            <br></br><br></br>
         </xpath>
         <!-- Separate qty and unit-->
         <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_quantity']" position="replace">
@@ -111,7 +84,7 @@
             </tr>
             <t t-if="doc.remise_total > 0">
                 <tr class="o_subtotal" style="">
-                    <td name="td_general_discount_label">Remise(<span t-field='doc.general_discount'/>%)</td>
+                    <td name="td_general_discount_label">Total Remise</td>
                     <td name="td_remise_total" class="text-right">
                         <span t-field="doc.remise_total"/>
                     </td>
@@ -129,13 +102,11 @@
             </div>
         </xpath>
         
-        <xpath expr="//tr[@class='border-black']" position="after">
-            <div class="descrript_info">
-                <h3>NON COMPRIS: Toutes les charges non décrites dans cette offre</h3>
+         <xpath expr="//p[@t-field='doc.note']" position="after">
+            <div class="descrript_info" style="color: red;">
+                <b><h>NON COMPRIS: Toutes les charges non décrites dans cette offre</h></b>
             </div>
         </xpath>
-        
-        
         <!-- Delete display subtotal-->
         
         <xpath expr="//div/table[hasclass('table', 'table-sm')]/tbody[hasclass('sale_tbody')]/t[@t-foreach='doc.order_line']/t/tr[hasclass('is-subtotal', 'text-right')]" position="replace">
@@ -156,12 +127,15 @@
         <xpath expr="//div[hasclass('page')]/table" position="attributes">
             <attribute name="class">table table-sm o_main_table table-bordered</attribute>
         </xpath>
+        <!-- Cha,ging font size-->
         <xpath expr="//div[hasclass('page')]/table" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
         
         <xpath expr="//div[hasclass('page')]" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
+        
+        
     </template>
 </odoo>
