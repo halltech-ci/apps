@@ -7,14 +7,12 @@
         <field name="arch" type="xml">
             <!-- Insert sale order object-->
           <!--xpath expr="//sheet/group" position="after"-->
-            <field name="description" position="replace">
-              <group>
-                  <field name="descriptions"/>
-              </group>
+            <field name="sale_order_recipient" position="replace">
+                  <field name="sale_order_recipients"/>
           <!--/xpath-->
             </field>
             <field name="payment_term_id" position="replace">
-                  <field name="payment_term_ids" Strong='Conditions de paiement'/>
+                  <field name="payment_term_ids" Strong='Conditions de paiement' required="True"/>
           <!--/xpath-->
             </field>
         </field>
