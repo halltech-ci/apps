@@ -9,7 +9,7 @@
                     <field name="attribute_ids" string="Caracteristique" class="oe_inline" attrs="{'invisible':[('is_virtual_product','=',False)]}">
                         <tree editable="bottom">
                             <field name="name"/>
-                                <field name="value_ids" widget='many2many'>
+                                <field name="value_ids" widget='one2many'>
                                     <tree editable="bottom">
                                         <field name="name"/>
                                         <!--<field name="code"/>-->
