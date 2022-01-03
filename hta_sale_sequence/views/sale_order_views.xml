@@ -1,0 +1,26 @@
+<odoo>
+  <data>
+    <record id="hta_sale_sequence_view_form" model="ir.ui.view">
+            <field name="name">hta.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <field name="order_line" position="before">
+                    <field name="max_line_sequence" invisible="1"/>
+                </field>
+                <field name="order_line" position="attributes">
+                    <attribute name="context">{'default_sequence': max_line_sequence}</attribute>
+                </field>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="number" readonly="0"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="default_order">number asc</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="before">
+                    <field name="sequence" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>

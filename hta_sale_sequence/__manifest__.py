@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "hta_custom_sale",
+    'name': "hta_sale_sequence",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,26 +20,20 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale_order_general_discount',
-               'hta_custom_project',
-                'sign',
-               ],
+    'depends': ['sale'],
 
     # always loaded
     'data': [
-        #'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         #views
         'views/sale_order_views.xml',
-        #data
-        'data/sale_ir_sequence.xml',
-        #Reports
-        #'reports/sale_order_report.xml',
-        'reports/inherit_sale_order_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+    'post_init_hook': 'post_init_hook',
+    "installable": True,
 }

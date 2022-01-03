@@ -88,18 +88,18 @@ class PurchaseRequestLine(models.Model):
     project = fields.Many2one(related="request_id.project", string="Project", readonly=True)
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
     
-    """
+    
     @api.constrains('product_id', 'product_uom_id')
     def _compare_product_uom(self):
         #for line
         if self.product_id:
-            if self.product_id.categ_id != self.product_uom_id.category_id:
+            if self.product_id.uom_id.category_id != self.product_uom_id.category_id:
                 raise ValidationError("Les unite de mesure de %s ne sont pas dans la meme categorie" % (self.product_id.name))
-    """
-    """
+    
+    
     @api.onchange('product_uom_id')
     def _onchange_product_uom(self):
-        if self.product_id.categ_id and self.product_qty != 0:
-            if self.product_id.categ_id != self.product_uom_id.category_id:
+        if self.product_id:
+            if self.product_id.uom_id.category_id != self.product_uom_id.category_id:
                 raise ValidationError("Les unite de mesure de %s ne sont pas dans la meme categorie" % (self.product_id.name))
-    """
+    
