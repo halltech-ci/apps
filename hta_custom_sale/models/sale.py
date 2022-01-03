@@ -42,7 +42,7 @@ class SaleOrder(models.Model):
     def _default_type_id(self):
         return self.env["sale.order.type"].search([], limit=1)
         
-    sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), compute="_compute_sale_type_id")
+    sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), )
     description = fields.Text("Description : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")
@@ -51,7 +51,8 @@ class SaleOrder(models.Model):
     remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
     sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
     sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0)
-    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
+    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
+    
     
     @api.onchange('sale_margin')
     def onchange_sale_margine(self):
@@ -81,7 +82,7 @@ class SaleOrder(models.Model):
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
             seq_date = None
-            sale_type = self.env['sale.order.type'].browse(vals["type_id"])
+            sale_type = self.env['sale.order.type'].browse(vals["sequence_id"])
             next_code = "sale.order"
             if sale_type.sequence_id:
                 next_code = sale_type.sequence_id.code
