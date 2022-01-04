@@ -1,0 +1,40 @@
+<odoo>
+  <data>
+    <record id="payslip_line_tree_views" model="ir.ui.view">
+        <field name="name">payslip.line.tree</field>
+        <field name="model">hr.payslip.line</field>
+        <field eval="100" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Paybook Tree" create="false" edit="false">
+                <field name="employee_id"/>
+                
+            </tree>
+        </field>
+    </record>
+    <record id="payslip_line_pivot_views" model="ir.ui.view">
+        <field name="name">paylip.book</field>
+        <field name="model">hr.payslip.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Livre de paie">
+                <field name="employee_id" type="col"/>
+                <field name="name" type="row"/>
+                <field name="amount" type="mesure"/>
+            </pivot>
+        </field>
+    </record>
+      
+      <record id="action_payslip_line_pivot" model="ir.actions.act_window">
+          <field name="name">Livre de Paie</field>
+          <field name="res_model">hr.payslip.line</field>
+          <field name="view_mode">pivot</field>
+      </record>
+    <menuitem 
+        id="menu_paylip_book"
+        action="action_payslip_line_pivot"
+        name = "Livre de Paie "
+        sequence="13"
+        parent="account.account_reports_management_menu"
+        groups='hta_custom_hr.group_hr_paybook_report'
+        />
+  </data>
+</odoo>

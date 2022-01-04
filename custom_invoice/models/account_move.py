@@ -33,6 +33,12 @@ class AccountMove(models.Model):
     def _compute_amount_to_word(self):
         for rec in self:
             rec.amount_to_word = str(self._num_to_words(rec.amount_total)).upper()
-    
-    
-    
+            
+            
+            
+
+           
+            
+            
+            
+   

@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="sale_order_inherit_views">
+        <field name="name">sale.order.views_inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+          <!-- Insert secondary unit in report-->
+          <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
+            <field name='unite_de_mesure' required="True"/>
+          </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
