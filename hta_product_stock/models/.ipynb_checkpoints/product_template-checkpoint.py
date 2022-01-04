@@ -2,12 +2,15 @@ import re
 from odoo.exceptions import ValidationError
 from collections import defaultdict
 from string import Template
-from odoo import models, fields, api
+
+from odoo import models, fields, api,_
+
 
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"
     
+
     def _get_product_type_row(self):
         type_product = self.categ_id.type_category_ids
         return type_product
@@ -16,7 +19,26 @@ class ProductTemplate(models.Model):
     caracteristique = fields.Char()
     code_reference = fields.Char()
     code_concate = fields.Char() # Concate all code
+
     type_id = fields.Many2one("product.category.type")
+    
+
+    
+    _sql_constraints = [
+        ('code_reference_uniq', 'unique(code_reference,categ_id)', "Cette page ne peut pas être Dupliquée, Le Code de l'Article Existe déjâ !"),
+    ]
+    
+    _sql_constraints = [
+        ('caracteristique_uniq', 'unique(caracteristique,categ_id,type_id)', "Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"),
+    ]
+
+
+#     @api.constrains('categ_id', 'caracteristique')
+#     def check_categ_not_in_caracteristique(self):
+#         for rec in self:
+#             if str(rec.caracteristique) and str(rec.caracteristique) in str(rec.categ_id):
+#                 raise ValidationError("Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !")
+                
     
     @api.onchange("categ_id")
     def _onchange_type_product_id(self):
@@ -30,11 +52,16 @@ class ProductTemplate(models.Model):
     @api.onchange("categ_id","caracteristique","type_id")
     def _onchange_name_(self):
         if self.categ_id:
-            self.name = str(self.categ_id.recovery_name) + ' '+ str(self.caracteristique) 
+            self.name = str(self.categ_id.recovery_name) + ' '+ str(self.caracteristique)
         if self.type_id:
-            self.name = str(self.categ_id.recovery_name) + ' ' + str(self.type_id.name) +' '+ str(self.caracteristique)
+            self.name = str(self.categ_id.recovery_name) + ' ' + str(self.type_id.name) +' '+ str(self.caracteristique)    
         if self.caracteristique:
             self.name = str(self.categ_id.recovery_name) + ' ' + str(self.type_id.name) +' '+ str(self.caracteristique)
+        else:
+            self.name = str(self.categ_id.recovery_name)
+            
+            
+
         
     
     def _get_list_row(self):
@@ -45,6 +72,7 @@ class ProductTemplate(models.Model):
         tranche = 3
         if len(code_concate_category) <= 12:
             tranche = 12 - len(code_concate_category)
+
         if tranche == 2:
             compte = 99
         elif tranche == 3:
@@ -84,12 +112,20 @@ class ProductTemplate(models.Model):
                 break
             res.clear()
     
+
     @api.onchange("categ_id",'type_id','code')
     def _onchange_code_concartel(self):
         if self.categ_id:
             self.code_concate = str(self.categ_id.code_concate) + str(self.code)
         if self.type_id:
             self.code_concate = str(self.categ_id.code_concate) + str(self.type_id.code) + str(self.code)
+            
+            if len(str(self.code_concate)) <= 12:
+                self.code_concate = str(self.categ_id.code_concate) + str(self.type_id.code) + str(self.code)
+            else:
+               raise ValidationError(_("Le Code de ce Article dépasse les 12 Caractères, veuillez revoir la codification!"))
+
+
         else:
             self.code_concate = self.code
     

@@ -21,14 +21,18 @@ class ExpenseRequest(models.Model):
     def _get_default_name(self):
         return self.env['ir.sequence'].next_by_code("expense.request.code")
 
-    def _get_default_cash_journal(self):
+
+    def get_default_cash_journal(self):
+
+
         import datetime
         date = datetime.date.today()
         month = date.month
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month)
         return res
     
-    name = fields.Char(string='Note',required=True, copy=False, readonly=True, index=True,default=_get_default_name)
+    name = fields.Char( default=_get_default_name)
+
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
@@ -56,7 +60,9 @@ class ExpenseRequest(models.Model):
     project_id = fields.Many2one('project.project', string='Projet')
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
     journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
-    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True,default=_get_default_cash_journal)
+
+    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True,default=lambda self: self.get_default_cash_journal())
+
     move_id = fields.Many2one('account.move', string='Account Move')
     is_expense_approver = fields.Boolean(string="Is Approver",
         compute="_compute_is_expense_approver",
@@ -141,7 +147,9 @@ class ExpenseRequest(models.Model):
                     'amount': amount,
                     'project_id': line.project.id,
                     'analytic_account_id': line.analytic_account.id,
+
                     'expense_id': line.request_id.id,
+
                 })
                 value.append(lines)
             statement_id.write({'line_ids': value})
@@ -174,7 +182,9 @@ class ExpenseRequest(models.Model):
         return self.write({'state': 'to_cancel'})
     
     def button_authorize(self):
+
         #self.is_approver_check()
+
         #self.is_approve_check()
         for line in self.line_ids:
             line.action_approve()
@@ -255,5 +265,4 @@ class ExpenseRequest(models.Model):
                 raise UserError(_('In order to delete a expense request, you must cancel it first.'))
                 
         return super(ExpenseRequest, self).unlink()
-    
     

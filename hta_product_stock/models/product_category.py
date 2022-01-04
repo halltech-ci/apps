@@ -1,46 +1,148 @@
-# -*- coding: utf-8 -*-
+import re
+from odoo.exceptions import ValidationError
+from collections import defaultdict
+from string import Template
 
-from odoo import models, fields, api
+from odoo import models, fields, api,_
 
 
-class HtaCategory(models.Model):
-    _inherit = 'product.category'
+
+class ProductTemplate(models.Model):
+    _inherit = "product.template"
     
 
-    category_code = fields.Char() # Code Category
-    code_concate = fields.Char(compute='_compute_code_concate') # Concate all code
-    template_code = fields.One2many('product.template', 'categ_id', 'Code Template')
-    recovery_name = fields.Char(compute='_compute_recovery_name')
-    type_category_ids = fields.Many2many('product.category.type')
-    is_virtual_product = fields.Boolean()
-    code_range = fields.Selection([('1', '1 Chiffre'),
-                                  ('2', '2 Chiffres'),
-                                  ('3', '3 Chiffres')], default='3')
+    def _get_product_type_row(self):
+        type_product = self.categ_id.type_category_ids
+        return type_product
+    code = fields.Char()
+    caracteristique = fields.Char()
+    code_reference = fields.Char()
+    code_concate = fields.Char() # Concate all code
+
+    type_id = fields.Many2one("product.category.type")
+    
+
+    _sql_constraints = [
+        ('code_reference_uniq', 'unique(code_reference,categ_id)', "Cette page ne peut pas être Dupliquée, Le Code de l'Article Existe déjâ !"),
+    ]
+    
+    _sql_constraints = [
+        ('caracteristique_uniq', 'unique(caracteristique,categ_id,type_id)', "Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !"),
+    ]
+
+
+#     @api.constrains('categ_id', 'caracteristique')
+#     def check_categ_not_in_caracteristique(self):
+#         for rec in self:
+#             if str(rec.caracteristique) and str(rec.caracteristique) in str(rec.categ_id):
+#                 raise ValidationError("Cette page ne peut pas être Dupliquée, Ces Caractreristiques Existe déjâ !")
+                
+    
+    @api.onchange("categ_id")
+    def _onchange_type_product_id(self):
+        if self.categ_id:
+            type_products = self.categ_id.type_category_ids.ids
+            if type_products: 
+                domain = [('id','in',type_products)]
+                return  {'domain':{'type_id':domain}}
+        return  {'domain':{'type_id':[('id', 'in', [])]}}
+    
+    @api.onchange("categ_id","caracteristique","type_id")
+    def _onchange_name_(self):
+        if self.categ_id:
+            self.name = str(self.categ_id.recovery_name) + ' '+ str(self.caracteristique)
+        if self.type_id:
+            self.name = str(self.categ_id.recovery_name) + ' ' + str(self.type_id.name) +' '+ str(self.caracteristique)    
+        if self.caracteristique:
+            self.name = str(self.categ_id.recovery_name) + ' ' + str(self.type_id.name) +' '+ str(self.caracteristique)
+        else:
+            self.name = str(self.categ_id.recovery_name)
+            
+        
+    
+    def _get_list_row(self):
+        code_category = str(self.categ_id.code_concate)
+        code_type = str(self.type_id.code)
+        code_concate_category = code_category + code_type
+        compte = 999
+        tranche = 3
+        if len(code_concate_category) <= 12:
+            tranche = 12 - len(code_concate_category)
+        if tranche == 2:
+            compte = 99
+        elif tranche == 3:
+            compte = 999
+        elif tranche == 4:
+             compte = 9999
+        elif tranche == 5:
+              compte = 99999
+        elif tranche == 6:
+            compte = 999999
+        else:
+            compte = 999999
+        res = []
+        for i in range(1, compte+1):
+            converts = str(i)
+            if len(converts) == 1:
+                converts = '00' + str(converts)
+            if len(converts) == 2:
+                converts = '0' + str(converts)
+            res.append(converts)
+        
+        return res
     
     
-    @api.depends("name", "parent_id")
-    def _compute_recovery_name(self):
-        for rec in self:
-            if rec.parent_id.is_virtual_product is True:
-                rec.is_virtual_product = rec.parent_id.is_virtual_product
-            if rec.is_virtual_product is True:
-                rec.recovery_name = str(rec.parent_id.recovery_name) +' '+ str(rec.name)            
+    @api.onchange("categ_id")
+    @api.depends('categ_id')
+    def _get_list_category(self):
+        results = self._get_list_row() 
+        res = []
+        for rs in results:
+            for rq in self.categ_id.template_code:
+                requests = self.env['product.template'].search_read([('id','=',rq.id)])
+                for rs_code in requests:
+                    res.append(rs_code.get('code'))
+            if rs not in res:
+                self.code = rs
+                break
+            res.clear()
+    
+    @api.onchange("categ_id",'type_id','code')
+    def _onchange_code_concartel(self):
+        if self.categ_id:
+            self.code_concate = str(self.categ_id.code_concate) + str(self.code)
+        if self.type_id:
+            self.code_concate = str(self.categ_id.code_concate) + str(self.type_id.code) + str(self.code)
+
+            if len(str(self.code_concate)) <= 12:
+                self.code_concate = str(self.categ_id.code_concate) + str(self.type_id.code) + str(self.code)
             else:
-                rec.recovery_name = rec.name
+               raise ValidationError(_("Le Code de ce Article dépasse les 12 Caractères, veuillez revoir la codification!"))
+
+        else:
+            self.code_concate = self.code
     
-    @api.onchange("parent_id")
-    def _compute_code_concate(self):
+                
+    def fonctionTranche(self,liste, groupement):
+        res = ""
+        cpt = 0
+        for l in range(0,len(liste)):
+            res = res + liste[l]
+            cpt = cpt + 1
+            if cpt == groupement:
+                res = res + "-"
+                cpt = 0
+        return res
+    
+    @api.onchange('code_concate')
+    @api.depends("categ_id")
+    def _onchange_code_ref(self):
         for rec in self:
-            if rec.parent_id: 
-                rec.code_concate = str(rec.parent_id.code_concate) + str(rec.category_code)
+            if rec.code_concate:
+                result = rec.fonctionTranche(str(rec.code_concate),int(rec.categ_id.code_range))
+                rec.code_reference = result
+                if rec.code_reference[-1] == '-':
+                    rec.code_reference = rec.code_reference.rstrip(rec.code_reference[-1])
             else:
-                rec.code_concate = rec.category_code
-
-
-class ProductCategoryType(models.Model):
-    _name = 'product.category.type'
-    _description = 'Product Type Category'
-    _inherit = ['mail.thread','mail.activity.mixin']
-    
-    name = fields.Char(string="Name")
-    code = fields.Char(string="Code")
+                rec.code_reference = rec.code
+            

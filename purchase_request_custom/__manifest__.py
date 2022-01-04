@@ -20,8 +20,10 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['purchase_request',
-                'custom_apps'
+    'depends': ['uom', 'purchase_request',
+                'custom_apps',
+                'mail',
+                'contacts',
                ],
 
     # always loaded
@@ -32,7 +34,9 @@
         'views/templates.xml',
         'views/purchase_request_views.xml',
         'views/purchase_request_line_views.xml',
-        'data/mail_template_data.xml'
+        #'data/mail_template_data.xml'
+        #data
+        'data/purchase_request_sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
