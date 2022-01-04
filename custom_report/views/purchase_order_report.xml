@@ -206,7 +206,7 @@
         <!-- Adding shipping address at bottom-->
         
         <!-- Adding custom company header-->
-        <xpath expr="//div[hasclass('page')]/div[@class='row mt32 mb32']" position="replace">
+        <xpath expr="//div[hasclass('page')]/div[hasclass('row','mt32','mb32')]" position="replace">
             <div id="informations" class="d-flex">
                 <div class="mr-auto p-2">
                     <div style="margin-left: 0px;">
