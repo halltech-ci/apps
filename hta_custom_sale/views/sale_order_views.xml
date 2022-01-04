@@ -20,7 +20,7 @@
           
           <xpath expr="//sheet/group/group" position="inside">
             <!--<field name="project_id"/>-->
-            <field name="sale_order_type"/>
+            <field name="sale_order_type" required="1"/>
           </xpath>
           <!-- Adding product_code-->
           <!--

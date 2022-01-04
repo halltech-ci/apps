@@ -5,8 +5,6 @@ from num2words import num2words
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError, ValidationError
 
-
-
 _SALE_ORDER_DOMAINE = [('fm', ''),
                           ('cmgc', 'CONSTRUCTION METALLIQUE ET GENIE CIVIL'),
                           ('fmfe', "FABRICATION MECANIQUE ET FOURNITURE D'EQUIPEMENTS"),
@@ -37,8 +35,7 @@ class SaleOrder(models.Model):
         num_to_word = _num2words(num, lang=lang.iso_code)
         return num_to_word
         
-    #project_id = fields.Many2one("project.project", "Project", ondelete= "cascade")
-    #project_code = fields.Char("Code Projet", related='project_id.code')
+    #sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), )
     description = fields.Text("Description : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")
@@ -47,7 +44,8 @@ class SaleOrder(models.Model):
     remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
     sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
     sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0)
-    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
+    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
+    
     
     @api.onchange('sale_margin')
     def onchange_sale_margine(self):
@@ -99,6 +97,7 @@ class SaleOrder(models.Model):
             vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
         result = super(SaleOrder, self).create(vals)
         return result
+
     
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
