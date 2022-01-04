@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hta_product_default_code_hta_product_default_code,hta_product_default_code.hta_product_default_code,model_hta_product_default_code_hta_product_default_code,base.group_user,1,1,1,1

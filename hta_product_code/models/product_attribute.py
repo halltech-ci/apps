@@ -12,16 +12,23 @@ class ProductAttribute(models.Model):
     code_type = fields.Selection(selection=([('number', 'numerique'), ('char', 'Alphanumerique')]), string="Type Code")
     code_length = fields.Integer(default=2, string="Nombre de caractere")
     is_automatic_code = fields.Boolean(default=True, string="Automatique/Manuel")
-    code_compute_parameter = fields.Text(string="Parametre")
+    code_compute_parameter = fields.Char(string="Parametre")
     
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
     
-    code = fields.Char(compute="_compute_value_code", string="Code")
+    @api.onchange('name')
+    def _onchange_name(self):
+        if self.name:
+            self.code = self.name[0:2]
+    
+    code = fields.Char(compute="_compute_value_code", default=_onchange_name, string="Code", store=True)
     
     
-    #@api.depends('is_automatic_code')
+    @api.depends('attribute_id.code_compute_parameter', 'name')
     def _compute_value_code(self):
-        pass
+        if self.name:
+            parameter = self.attribute_id.code_compute_parameter
+            self.code = self.name[0:2]
     
     
