@@ -6,14 +6,25 @@ from odoo.exceptions import UserError, ValidationError
 class hta_product_attribute_value(models.Model):
     _inherit = "product.attribute.value"
     
-    @api.depends("attribute_id")
-    def _onchange_attribute_code(self):
-        if self.attribute_id:
-            self.code = self.attribute_id.name[0:2]
-        else:
-            self.code = "011"
+#     @api.onchange("name")
+#     def _onchange_attribute_code(self):
+#         if self.attribute_id:
+#             convert = "1"
+#             attribute_id = self.attribute_id.id
+#             req = self.env['product.attribute.value'].search([('attribute_id','=',attribute_id)],order='create_date desc', limit=1)
+#             if req:
+#                 for code in req:
+#                     if "natur" in code.attribute_id.name.lower():
+#                         convert = code.code
+#                 try:
+#                     convert = int(convert)+1
+#                 except:
+#                     convert = int(convert)+1
+#                 self.code = str(convert)
+#             else:
+#                 self.code = str(convert)
             
-    code = fields.Char("Code",default=_onchange_attribute_code,)
+    code = fields.Char("Code Variante")
     #code_integer = fields.Integer(string="Code Integer")
     
 """    @api.model
