@@ -10,6 +10,7 @@ class ProductCategory(models.Model):
 
     category_code = fields.Char(index=True,)
     related_code = fields.Char(string='Related Code', compute = '_compute_related_code', recursive=True, store=True, search='_search_related_field',)
+    attribute_lines = fields.One2many('product.attribute', 'category_id')
 
     #def _compute_category_code(self):
         
