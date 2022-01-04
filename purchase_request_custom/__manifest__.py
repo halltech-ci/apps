@@ -35,6 +35,8 @@
         'views/purchase_request_views.xml',
         'views/purchase_request_line_views.xml',
         #'data/mail_template_data.xml'
+        #data
+        'data/purchase_request_sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
