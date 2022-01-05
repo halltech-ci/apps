@@ -44,7 +44,8 @@ class SaleOrder(models.Model):
     remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
     sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
     sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0)
-    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
+    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
+    proforma = fields.Boolean(default=False)
     
     
     @api.onchange('sale_margin')

@@ -21,6 +21,7 @@
           <xpath expr="//sheet/group/group" position="inside">
             <!--<field name="project_id"/>-->
             <field name="sale_order_type" required="1"/>
+            <ield name="proforma"/>
           </xpath>
           <field name="payment_term_id" position="replace">
                 <field name="payment_term_id" Strong='Conditions de paiement' required="True"/>

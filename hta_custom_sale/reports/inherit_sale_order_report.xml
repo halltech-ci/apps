@@ -23,14 +23,14 @@
             <div class="d-flex">
                 <div class="mr-auto p-2">
                     <h2>
-                    <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                        <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
                             <span t-if="doc.state not in ['draft','sent']">COMMANDE/ORDER :</span>
                             <span t-if="doc.state in ['draft','sent']">DEVIS/QUOTATION : </span>
                         </t>
-                        <t t-if="env.context.get('proforma', False) or is_pro_forma">
-                            <span>PROFORMA </span>
+                        <t t-if="doc.proforma">
+                            <span>PROFORMA :</span>
                         </t>
-                        <span t-field="doc.name"/>
+                            <span t-field="doc.name"/>
                     </h2>
                     
                 </div>
