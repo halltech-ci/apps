@@ -27,8 +27,10 @@ class ProductAttributeValue(models.Model):
     
     @api.depends('attribute_id.code_compute_parameter', 'name')
     def _compute_value_code(self):
-        if self.name:
-            parameter = self.attribute_id.code_compute_parameter
-            self.code = self.name[0:2]
+        for val in self:
+            parameter = val.attribute_id.code_compute_parameter
+            if val.name:
+                parameter = val.attribute_id.code_compute_parameter
+                val.code = val.name[0:2]
     
     
