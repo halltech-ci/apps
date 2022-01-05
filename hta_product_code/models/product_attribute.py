@@ -42,6 +42,12 @@ class ProductAttributeValue(models.Model):
                 if 'incr' in param:
                     self.increment(param.get('incr'))
                     self.code = self.increment(param.get('incr'))
+                if 'tronc' in param:
+                    val = param.get('tronc')
+                    self.code = self.name[0:val]
+                if 'pre' in param:
+                    val = param.get('tronc')
+                    self.code = "{0}{1}".format(val, self.name)
     
     
 #     @api.onchange('name')
