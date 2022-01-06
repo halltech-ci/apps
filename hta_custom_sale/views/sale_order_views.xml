@@ -25,8 +25,8 @@
           <xpath expr="//sheet/group/group" position="inside">
             <!--<field name="project_id"/>-->
             <field name="sale_order_type" required="1"/>
-          </xpath>
-           
+            <ield name="proforma"/>
+          </xpath>           
           <!-- Adding product_code-->
           <!--
           <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/field[@name='sequence']" position="attributes">

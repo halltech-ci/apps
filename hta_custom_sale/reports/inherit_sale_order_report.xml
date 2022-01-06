@@ -3,7 +3,6 @@
     <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
         <!-- Changin VAT ID to N°CC-->
         <xpath expr="//t[@t-set='address']" position="replace">
-            
                     <div class="container">
                         <div class="row justify-content-end">
                             <div class="col-2" style="text-decoration: underline; font-weight: bold;margin-right:25px; top:70px;">
@@ -17,7 +16,6 @@
                         </div>
                     </div>
                     <br/>
-        
         </xpath>
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">    
@@ -31,8 +29,7 @@
                         <t t-if="doc.is_proforma">
                             <span>PROFORMA N°:</span>
                         </t>
-                        <span t-field="doc.name"/>
-                    </h2>
+                        <span t-field="doc.name"/>                    </h2>
                     
                 </div>
             </div>
