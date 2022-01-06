@@ -20,6 +20,9 @@ _SALE_ORDER_DOMAINE = [('fm', ''),
 class SaleOrder(models.Model):
     _inherit = "sale.order"
     
+    @api.model
+    def _default_note(self):
+        return self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.env.company.invoice_terms or ''
     #num2words convert number to word
     def _num_to_words(self, num):
         def _num2words(number, lang):
@@ -36,6 +39,8 @@ class SaleOrder(models.Model):
         return num_to_word
         
     #sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), )
+    
+    is_proforma = fields.Boolean('Proformat')
     description = fields.Text("Description : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")
@@ -44,10 +49,12 @@ class SaleOrder(models.Model):
     remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
     sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
     sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0)
+    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
     proforma = fields.Boolean(default=False)
-    
-    
+    #is_proforma = fields.Boolean('Proformat', default=True) 
+    note = fields.Text('Termes et conditions', default=_default_note, required=True)
+
     @api.onchange('sale_margin')
     def onchange_sale_margine(self):
         for line in self.order_line:

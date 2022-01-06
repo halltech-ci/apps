@@ -2,36 +2,34 @@
 <odoo>
     <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
         <!-- Changin VAT ID to N°CC-->
-        <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="replace">
-            <div style="font-size: 17px;margin-left: 8%;">
-                    <div class="row">
-                        <div class="col-6">
-                            <p>CLIENT:</p>
-                            <p t-if="doc.sale_order_recipient">ATT: Mrs/Mlle</p> 
-                            <p >TEL: <span t-field="doc.partner_id.phone"/></p>
-                         </div>   
-                        <div class="col-6">
-                            <p style="font-weight: bold; text-transform: uppercase;" t-field="doc.partner_id.name"/>
-                            <p t-if="doc.sale_order_recipient" t-field="doc.sale_order_recipient"/>
-                            <p>Fax: <span t-field="doc.partner_id.phone"/></p>  
+        <xpath expr="//t[@t-set='address']" position="replace">
+                    <div class="container">
+                        <div class="row justify-content-end">
+                            <div class="col-2" style="text-decoration: underline; font-weight: bold;margin-right:25px; top:70px;">
+    <p>CLIENT:</p>
+                        </div>
+                         <div class="col-6" style="text-align: center;width: 300px; border:1px solid #000;border-radius:10px;margin-right:21px;">
+                            <p t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;,&quot;phone&quot;], &quot;no_marker&quot;: True}"/>
+                    
+                                   <p t-if="doc.partner_id.vat"><t t-esc="'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <br/>
         </xpath>
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">    
             <div class="d-flex">
                 <div class="mr-auto p-2">
                     <h2>
-                        <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                    <t t-if="not (env.context.get('proforma', False) or is_pro_forma or doc.is_proforma)">
                             <span t-if="doc.state not in ['draft','sent']">COMMANDE/ORDER :</span>
                             <span t-if="doc.state in ['draft','sent']">DEVIS/QUOTATION : </span>
                         </t>
-                        <t t-if="doc.proforma">
-                            <span>PROFORMA :</span>
+                        <t t-if="doc.is_proforma">
+                            <span>PROFORMA N°:</span>
                         </t>
-                            <span t-field="doc.name"/>
-                    </h2>
+                        <span t-field="doc.name"/>                    </h2>
                     
                 </div>
             </div>
