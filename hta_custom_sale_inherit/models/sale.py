@@ -12,6 +12,7 @@ class SaleOrder(models.Model):
     def _default_note(self):
         return self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.env.company.invoice_terms or ''
     
+    #is_proforma = fields.Boolean('Proformat', default=True) 
     sale_order_recipients = fields.Char("A l’attention de")
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
     payment_term_id = fields.Many2one(

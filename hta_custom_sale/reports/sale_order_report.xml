@@ -2,12 +2,22 @@
 <odoo>
     <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
         <!-- Changin VAT ID to N°CC-->
-        <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="replace">
-            <strong>
-            <h style="margin-left: -90px; topmargin:10px;">CLIENT: </h>
-                <div t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}" style="margin-top:-28px;"/>
-                <p t-if="doc.partner_id.vat"><t t-esc="doc.company_id.country_id.vat_label or 'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
-            </strong>
+        <xpath expr="//t[@t-set='address']" position="replace">
+            
+                    <div class="container">
+                        <div class="row justify-content-end">
+                            <div class="col-2" style="text-decoration: underline; font-weight: bold;margin-right:25px; top:70px;">
+    <p>CLIENT:</p>
+                        </div>
+                         <div class="col-6" style="text-align: center;width: 300px; border:1px solid #000;border-radius:10px;margin-right:21px;">
+                            <p t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;,&quot;phone&quot;], &quot;no_marker&quot;: True}"/>
+                    
+                                   <p t-if="doc.partner_id.vat"><t t-esc="'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+        
         </xpath>
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">
@@ -17,32 +27,55 @@
                     <span t-if="doc.state in ['draft','sent']">DEVIS/QUOTATION : </span>
                 </t>
                 <t t-if="env.context.get('proforma', False) or is_pro_forma">
-                    <span>Pro-Forma </span>
+                    <span>PROFORMA </span>
                 </t>
                 <span t-field="doc.name"/>
             </h2>
         </xpath>
         <!--Ajout de champ destinataire dans devis-->
-        <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.user_id.name']" position="after">
-            <div t-if="doc.sale_order_recipient" class="col-xs-3">
-              <strong>Destinataire:</strong>
-              <p class='m-0' t-field="doc.sale_order_recipient"/>
+        <!--xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.client_order_ref']" position="replace">
+            <div></div>
+        </xpath-->
+        <xpath expr="//div[hasclass('row', 'mt32', 'mb32')]" position="replace">
+             <table class="table-borderless">
+                <thead>
+                    <tr>
+                      <strong>
+                        <th name="th_your_reference" class="text-left">Your Reference</th>
+                        <th name="th_order_date" class="text-left">Order Date</th>
+                        <th name="th_description" class="text-left">A l’attention de</th>
+                      </strong>
+                    </tr>
+                </thead>
+                
+                 <tbody class="sale_tbody">
+                    <td name="td_client_order_ref" class="text-left">
+                    <span t-esc="doc.client_order_ref"/>
+                    </td>
+                        <td name="td_order_date" class="text-left">
+                            <span t-esc="doc.date_order"/>
+                        </td>
+                        <td name="td_description" class="text-left">
+                            <span t-esc="doc.sale_order_recipients"/>
+                        </td>
+                 </tbody>       
+            </table>
+            <div>
+              <strong>Objet:</strong>
+                 <span t-field="doc.description"/>
             </div>
         </xpath>
         <!-- Delete expiration on header-->
         
         <!-- hide sale person field-->
-        <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]/div[@t-if='doc.user_id.name']" position="replace">
-            <div></div>
-        </xpath>
+        <!--xpath expr="//div[hasclass('page')]/div[hasclass('table2 table-sm o_main_table o_price_total']" position="replace">
+           
+        </xpath-->
         <!-- -->
-        <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]" position="after">
-            <div>
-              <strong>Objet:</strong>
-                 <span t-field="doc.description"/>
-            </div>
+        <!--xpath expr="//table[@class='header table-sm']" position="after">
+            
             <br></br><br></br>
-        </xpath>
+        </xpath-->
         <!-- Separate qty and unit-->
         <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_quantity']" position="replace">
             <td name='td_quantity' class="text-right">

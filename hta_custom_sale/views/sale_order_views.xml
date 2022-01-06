@@ -6,6 +6,10 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <!-- Insert sale order object-->
+            
+          <field name="sale_order_template_id" position="after">
+                <field name="is_proforma"/>
+            </field>  
           <xpath expr="//sheet/group" position="after">
               <group>
                   <field name="description"/>

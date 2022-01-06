@@ -37,7 +37,9 @@ class SaleOrder(models.Model):
         lang = self.env['res.lang'].with_context(active_test=False).search([('code', '=', lang_code)])
         num_to_word = _num2words(num, lang=lang.iso_code)
         return num_to_word
+      
         
+    is_proforma = fields.Boolean('Proformat', default=True)
     project_id = fields.Many2one("project.project", "Project", ondelete= "cascade")
     project_code = fields.Char("Code Projet", related='project_id.code')
     description = fields.Text("Description : ")

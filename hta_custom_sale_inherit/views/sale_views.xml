@@ -9,11 +9,10 @@
           <!--xpath expr="//sheet/group" position="after"-->
             <field name="sale_order_recipient" position="replace">
                   <field name="sale_order_recipients"/>
-          <!--/xpath-->
+         
             </field>
             <field name="payment_term_id" position="replace">
-                  <field name="payment_term_ids" Strong='Conditions de paiement' required="True"/>
-          <!--/xpath-->
+                <field name="payment_term_ids" Strong='Conditions de paiement' required="True"/>
             </field>
         </field>
     </record>
