@@ -26,13 +26,13 @@ class ProductAttributeValue(models.Model):
     
     def increment(self, val):
         #domaine = [()]
-        last_code = self.env['product.attribute.value'].search([('attribute_id', '=', self.attribute_id.id)], order="code desc",limit=1)
+        last_code = self.env['product.attribute'].search([('id', '=', self.attribute_id.id)]).mapped('value_ids.code').sort(reverse=True)
         code ="0"
         if last_code:
-            code = int(last_code.code) + int(val)
+            code = last_code[0] + val
         else:
-            code = last_code
-        return str(code)
+            code = 1
+        return code
     
     @api.onchange('name')
     def _onchange_name(self):
@@ -40,8 +40,9 @@ class ProductAttributeValue(models.Model):
             param = self.attribute_id._recuperate_compute_parameter()
             if param:
                 if 'incr' in param:
-                    self.increment(param.get('incr'))
-                    self.code = self.increment(param.get('incr'))
+                    val = param.get('incr')
+                    #self.increment(param.get('incr'))
+                    self.code = self.increment(val)
                 if 'tronc' in param:
                     val = param.get('tronc')
                     self.code = self.name[0:val]
