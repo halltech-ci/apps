@@ -37,7 +37,14 @@
                     </h3>
                 </div>
             </div>
-             <table class="table-borderless">
+        </xpath>
+        <xpath expr="//table[hasclass('table', 'table-sm', 'o_main_table')]" position="before">
+            <br/>
+            <p style="font-size: 20px; text-transform: uppercase; font-weight: bold; text-align: left;" t-field="doc.description"/>
+            <br/>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/div[hasclass('d-flex')]" position="after">
+             <table class="table table-bordeless table-sm">
                 <thead>
                     <tr>
                       <strong>
@@ -46,7 +53,6 @@
                       </strong>
                     </tr>
                 </thead>
-                
                  <tbody class="sale_tbody">
                     <td name="td_client_order_ref" class="text-left">
                     <span t-esc="doc.client_order_ref"/>
@@ -56,9 +62,6 @@
                         </td>
                  </tbody>       
             </table>
-            <div>
-                <p style="font-size: 20px; text-transform: uppercase; font-weight: bold; text-align: left;" t-field="doc.description"/>
-            </div>
         </xpath>
         <!--Ajout de champ destinataire dans devis-->
         
@@ -68,15 +71,7 @@
         <xpath expr="//div[hasclass('page')]/div[@id='informations']" position="replace">
             <div></div>
         </xpath>
-        <!-- 
-        <xpath expr="//table/thead/tr" position="before">
-            <tr>
-                <td class="text-center" colspan="6">
-                    <p style="font-size: 20px; text-transform: uppercase; font-weight: bold; text-align: left;" t-field="doc.description"/>
-                </td> 
-            </tr>
-        </xpath>
-        -->
+        
         <!-- Separate qty and unit-->
         <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_quantity']" position="replace">
             <td name='td_quantity' class="text-right">
@@ -154,21 +149,21 @@
         <xpath expr="//p[@t-field='doc.note']" position="after">
             <div class="descrript_info">
                 <p><b><h style="color: red;">NON COMPRIS:</h> Toutes les charges non décrites dans cette offre</b></p>
-                <p><b><h style="color: red;">A VOTRE CHARGE:</h> La fourniture de l'électricité pendant la durée du chantier</b></p>
+                <!--<p><b><h style="color: red;">A VOTRE CHARGE:</h> La fourniture de l'électricité pendant la durée du chantier</b></p>-->
                 <p><b><h style="color: red;">NB:</h> Prix valabre sous réserve de variation de prix sur le marché international et national.</b></p>
             </div>
         </xpath>
         
         <!-- Adding table border-->
-        <xpath expr="//div[hasclass('page')]/table" position="attributes">
+        <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]" position="attributes">
             <attribute name="class">table table-sm o_main_table table-bordered</attribute>
         </xpath>
-        <xpath expr="//div[hasclass('page')]/table" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+        <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table', 'table-bordered')]" position="attributes">
+            <attribute name="style">font:15px lucida-console,sans-serif</attribute>
         </xpath>
         
         <xpath expr="//div[hasclass('page')]" position="attributes">
-            <attribute name="style">font:12px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
     </template>
 </odoo>
