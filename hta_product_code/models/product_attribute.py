@@ -16,39 +16,40 @@ class ProductAttribute(models.Model):
     
     def _recuperate_compute_parameter(self):
         if self.code_compute_parameter:
-            convertedDict = dict((x.strip(), int(y.strip()))
+            convertedDict = dict((x.strip(), (y.strip()))
                      for x, y in (element.split(':')
-                                  for element in self.code_compute_parameter.split(', ')))
+                                  for element in self.code_compute_parameter.split(',')))
             return convertedDict
     
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
     
-    def increment(self, val):
+    def increment(self, val, attribute_id):
         #domaine = [()]
-        last_code = self.env['product.attribute'].search([('id', '=', self.attribute_id.id)]).mapped('value_ids.code').sort(reverse=True)
+        last_code = self.env['product.attribute'].search([('id', '=', attribute_id)]).mapped('value_ids.code').sort(reverse=True)
         code ="0"
-        if last_code:
+        if last_code :
             code = last_code[0] + val
         else:
-            code = 1
+            code = last_code
         return code
     
     @api.onchange('name')
     def _onchange_name(self):
         if self.name:
             param = self.attribute_id._recuperate_compute_parameter()
+            attribute_id = self.attribute_id._origin.id
             if param:
                 if 'incr' in param:
                     val = param.get('incr')
                     #self.increment(param.get('incr'))
-                    self.code = self.increment(val)
+                    self.code = self._origin.id#self.increment(val, attribute_id)
                 if 'tronc' in param:
                     val = param.get('tronc')
                     self.code = self.name[0:val]
                 if 'pre' in param:
-                    val = param.get('tronc')
-                    self.code = "{0}{1}".format(val, self.name)
+                    val = param.get('pre')
+                    self.code = val + self.name
     
     
 #     @api.onchange('name')
@@ -57,14 +58,4 @@ class ProductAttributeValue(models.Model):
 #             self.code = self.name[0:2]
     
     code = fields.Char(default=_onchange_name, string="Code", store=True)
-    
-    
-#     @api.depends('attribute_id.code_compute_parameter', 'name')
-#     def _compute_value_code(self):
-#         for val in self:
-#             parameter = val.attribute_id.code_compute_parameter
-#             if val.name:
-#                 parameter = val.attribute_id.code_compute_parameter
-#                 val.code = val.name[0:2]
-    
     
