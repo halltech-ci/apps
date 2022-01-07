@@ -71,7 +71,6 @@
         <xpath expr="//div[hasclass('page')]/div[@id='informations']" position="replace">
             <div></div>
         </xpath>
-        
         <!-- Separate qty and unit-->
         <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_quantity']" position="replace">
             <td name='td_quantity' class="text-right">
@@ -149,7 +148,6 @@
         <xpath expr="//p[@t-field='doc.note']" position="after">
             <div class="descrript_info">
                 <p><b><h style="color: red;">NON COMPRIS:</h> Toutes les charges non décrites dans cette offre</b></p>
-                <!--<p><b><h style="color: red;">A VOTRE CHARGE:</h> La fourniture de l'électricité pendant la durée du chantier</b></p>-->
                 <p><b><h style="color: red;">NB:</h> Prix valabre sous réserve de variation de prix sur le marché international et national.</b></p>
             </div>
         </xpath>
