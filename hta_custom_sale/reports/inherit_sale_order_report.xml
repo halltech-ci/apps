@@ -35,15 +35,14 @@
                         </t>
                         <span t-field="doc.name"/> 
                     </h3>
-                    
                 </div>
             </div>
              <table class="table-borderless">
                 <thead>
                     <tr>
                       <strong>
-                        <th name="th_your_reference" class="text-left">Reference</th>
-                        <th name="th_description" class="text-left">A l’attention de</th>
+                        <th name="th_your_reference" class="text-left">Reference :</th>
+                        <th name="th_description" class="text-left">A l’attention de :</th>
                       </strong>
                     </tr>
                 </thead>
@@ -57,6 +56,9 @@
                         </td>
                  </tbody>       
             </table>
+            <div>
+                <p style="font-size: 20px; text-transform: uppercase; font-weight: bold; text-align: left;" t-field="doc.description"/>
+            </div>
         </xpath>
         <!--Ajout de champ destinataire dans devis-->
         
@@ -66,7 +68,7 @@
         <xpath expr="//div[hasclass('page')]/div[@id='informations']" position="replace">
             <div></div>
         </xpath>
-        <!-- -->
+        <!-- 
         <xpath expr="//table/thead/tr" position="before">
             <tr>
                 <td class="text-center" colspan="6">
@@ -74,6 +76,7 @@
                 </td> 
             </tr>
         </xpath>
+        -->
         <!-- Separate qty and unit-->
         <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_quantity']" position="replace">
             <td name='td_quantity' class="text-right">

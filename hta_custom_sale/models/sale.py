@@ -48,9 +48,8 @@ class SaleOrder(models.Model):
     amount_total_no_tax = fields.Monetary(string='Total HT', store=True, readonly=True, compute='_amount_total_no_tax', tracking=4)
     remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
     sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
-    sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0)
+    sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0, copy=True)
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
-    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
     proforma = fields.Boolean(default=False)
     #is_proforma = fields.Boolean('Proformat', default=True) 
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
@@ -111,19 +110,26 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     #product_code = fields.Char(related='product_id.default_code', string="Code")
-    product_cost = fields.Float(string="Cost", digits='Product Price')
-    line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True)
+    product_cost = fields.Float(string="Cost", digits='Product Price', copy=True)
+    line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True, copy=True)
     price_unit = fields.Float('Unit Price', required=True, digits='Product Price',
         compute='_compute_price_unit',
         store=True,
+        copy=True
     )
-    line_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
-    line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False,)
+    line_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
+    line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
     
-    @api.onchange('product_cost', 'product_uom_qty')
+    @api.onchange('product_cost')
     def _onchange_product_cost(self):
         self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
         self.line_subtotal = self.product_uom_qty * self.price_unit
+        
+    @api.onchange('product_uom_qty')
+    def _onchange_product_cost(self):
+        self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
+        self.line_subtotal = self.product_uom_qty * self.price_unit
+
     
     """@api.onchange('product_uom_qty')
     def _onchange_product_qty(self):
@@ -135,6 +141,7 @@ class SaleOrderLine(models.Model):
     def _onchange_line_margin(self):
         if self.product_cost > 0 :
             self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
+            self.line_subtotal = self.product_uom_qty * self.price_unit
     
     @api.depends("order_id", "order_id.sale_margin", "order_id.sale_discuss_margin")
     def _compute_line_margin(self):
