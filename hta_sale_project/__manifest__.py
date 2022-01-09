@@ -31,6 +31,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/sale_order_views.xml',
+        #"views/"
     ],
     # only loaded in demonstration mode
     'demo': [
