@@ -29,14 +29,28 @@ class ProductAttribute(models.Model):
         
     def _compute_code(self):
         for rec in self:
-            parametre = rec._recuperate_compute_parameter()
-            val = 1
-            if "incr" in parametre:
-                val = int(parametre.get('incr'))
-                code = val
-                for line in rec.value_ids:
-                    line.code = code 
-                    code += val
+            if rec.code_compute_parameter:
+                param = rec._recuperate_compute_parameter()
+                val = 1
+                if "incr" in param:
+                    val = int(param.get('incr'))
+                    code = val
+                    for line in rec.value_ids:
+                        if line.code:
+                            pass
+                        else:
+                            line.code = code
+                            code += val
+                if "pre" in param:
+                    val = param.get('pre')
+                    for line in rec.value_ids:
+                        if not line.code:
+                            line.code = "{0}{1}".format(val, line.name)
+                if "tronc" in param:
+                    val = int(param.get('tronc'))
+                    for line in rec.value_ids:
+                        if not line.code:
+                            line.code = line.name[0:val]
     
     def write(self, line_values):
         res = super(ProductAttribute, self).write(line_values)
@@ -46,5 +60,9 @@ class ProductAttribute(models.Model):
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
     
-    code = fields.Char(string="Code", store=True)
+    code = fields.Char(string="Code", store=True,)
+    
+    
+    
+    
     
