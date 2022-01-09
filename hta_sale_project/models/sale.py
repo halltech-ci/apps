@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
     
-    create_project = fields.Selection(selection=([('create_project', "Create Project"), ('add_to_project', "Use project")]), default='add_to_project')
+    create_project = fields.Selection(selection=[('add_to_project', "Use project"), ('create_project', "Create Project"),], default='add_to_project')
     project_id = fields.Many2one('project.project', readonly=False)
     
     
@@ -43,7 +43,7 @@ class SaleOrder(models.Model):
                 # create the project
                 values['project_description'] = rec.description
                 project = self.env['project.project'].create(values)
-                rec.write({'project_id': project.id})
+            rec.write({'project_id': project.id})
         
     
     

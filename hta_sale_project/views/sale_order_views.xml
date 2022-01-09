@@ -11,7 +11,7 @@
                         type="object" 
                         class="oe_highlight"
                         string="Create Project"
-                        attrs="{'invisible':[('project_id', '!=', False)]}"
+                        attrs="{'invisible':[('project_id', '!=', False), ('create_project', 'in', ['add_to_project'])]}"
                 />
             </xpath>
             <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
