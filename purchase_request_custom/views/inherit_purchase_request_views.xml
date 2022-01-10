@@ -1,0 +1,34 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="purchase_request_inherit_form_view">
+        <field name="name">purchase_request_inherit_form</field>
+        <field name="model">purchase.request</field>
+        <field name="inherit_id" ref="purchase_request.view_purchase_request_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']/tree" position="attributes">
+                <!-- force using the form -->
+                <attribute name="editable"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/form//sheet/group[1]" position="before">
+                <group>
+                    <field name="request_state" invisible="1" />
+                    <field name="product_tmpl_id"
+                        attrs="{'readonly': [('request_state', 'in', ('approved','done',))]}"
+                        domain="[('purchase_ok','=',True)]"
+                    />
+                    <field name="attribute_line_ids" widget="one2many"
+                        attrs="{'invisible': [('attribute_line_ids','=',[])], 'readonly': [('request_state', 'in', ('approved','done',))]}"
+                        nolabel="1"
+                        colspan="2"
+                    >
+                        <tree create="0" delete="0" editable="1">
+                            <field name="attribute_id" readonly='1'/>
+                            <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}" readonly='0'/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+      </record>
+  </data>
+</odoo>

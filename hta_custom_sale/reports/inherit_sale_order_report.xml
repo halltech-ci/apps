@@ -71,6 +71,7 @@
         <xpath expr="//div[hasclass('page')]/div[@id='informations']" position="replace">
             <div></div>
         </xpath>
+
         <!-- Separate qty and unit-->
         <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_quantity']" position="replace">
             <td name='td_quantity' class="text-right">
@@ -124,7 +125,7 @@
             <div style="font-size:16px; padding-bottom:30px;">
                 <tr class="border-black">
                     <td>
-                        <span t-field="doc.amount_to_word"/> <span t-field="doc.currency_id.currency_unit_label"/> <span t-field="doc.currency_id.symbol"/>
+                        <span t-field="doc.amount_to_word"/> <span style="text-transform: uppercase;" t-field="doc.currency_id.currency_unit_label"/> <span style="text-transform: uppercase;" t-field="doc.currency_id.symbol"/>
                         
                     </td>
                 </tr>
