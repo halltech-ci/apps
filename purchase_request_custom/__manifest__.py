@@ -34,6 +34,8 @@
         'views/templates.xml',
         'views/purchase_request_views.xml',
         'views/purchase_request_line_views.xml',
+        "views/inherit_purchase_request_views.xml",
+        #"report/purchase_request_report.xml",
         #'data/mail_template_data.xml'
         #data
         'data/purchase_request_sequence.xml',
