@@ -20,9 +20,9 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base',
+    'depends': ['product',
+                'base',
                 'purchase',
-                'product',
                 'purchase_stock'
                ],
 
