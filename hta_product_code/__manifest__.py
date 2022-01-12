@@ -31,9 +31,9 @@
         'views/views.xml',
         'views/templates.xml',
         #views
-        'views/product_category_views.xml',
-        'views/product_views.xml',
-        "views/product_attribute_views.xml",
+        #'views/product_category_views.xml',
+        #'views/product_views.xml',
+        #"views/product_attribute_views.xml",
         #"views/config_settings_views.xml",
     ],
     # only loaded in demonstration mode
@@ -42,5 +42,5 @@
     ],
     'license': 'LGPL-3',
     "installable": True,
-    "pre_init_hook": "pre_init_product_category_code",
+    #"pre_init_hook": "pre_init_product_category_code",
 }
