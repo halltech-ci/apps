@@ -30,6 +30,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
+        'views/hta_custom_product.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

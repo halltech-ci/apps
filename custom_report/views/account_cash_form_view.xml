@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_bank_statement_form_inherit" model="ir.ui.view">
+    <record id="hta_cuctom_product_views_button" model="ir.ui.view">
         <field name="name">bank_statement_views</field>
         <field name="model">account.bank.statement</field>
         <field name="inherit_id" ref="account.view_bank_statement_form" />

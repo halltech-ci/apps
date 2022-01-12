@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "hta_product_stock",
+    'name': "hta_codification_request",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,16 +20,20 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock'],
+    'depends': ['base'],
 
     # always loaded
     'data': [
-        #'security/product_stock_securite.xml',
+        #'views/codification_request_views',
         'security/ir.model.access.csv',
+        
+        'views/codification_request_views.xml',
+        #'views/codification_attribute_views.xml',
+        'views/rec_config_setting_views.xml',
+        
         'views/views.xml',
         'views/templates.xml',
-        'views/product_category_views.xml',
-        'views/product_template_views.xml',
+        
     ],
     # only loaded in demonstration mode
     'demo': [

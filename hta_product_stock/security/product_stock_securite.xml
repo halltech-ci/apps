@@ -1,0 +1,15 @@
+<odoo>
+   <data>
+        <record model="ir.module.category" id="modul_product_template_security">
+            <field name="description">Helps you manage Product.</field>
+            <field name="sequence">18</field>
+        </record>
+       
+       <record id="group_product_template" model="res.groups">
+            <field name="name">Product Management User</field>
+            <field name="category_id" ref="modul_product_template_security"/>
+            <field name="implied_ids" eval="[(3, ref('base.group_user'))]"/>
+        </record>   
+        
+    </data>
+</odoo>

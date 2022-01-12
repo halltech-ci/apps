@@ -21,7 +21,6 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
     
     #--------inherit product name_get methode-----------------------------
-    default_codes = fields.Char()
     
     def name_get(self):
         # TDE: this could be cleaned a bit I think

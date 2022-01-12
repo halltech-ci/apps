@@ -1,0 +1,153 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="codificate_request_view">
+          <field name="name">codification_request_from</field>
+          <field name="model">code.request</field>
+          <field name="arch" type="xml">
+            <form string="Demande de codification">  
+            <header>
+                <button name="action_approuve"
+                    string="Approval"
+                    type="object"
+                    class="oe_highlight"
+                    states="draft"
+                />
+            
+                <button name="to_validate"
+                    string="Valider"
+                    type="object"
+                    class="oe_highlight"
+                    states="approuve"
+                />
+                <button name="button_fait"
+                    string="Fait"
+                    type="object"
+                    class="oe_highlight"
+                    states="validate"
+                />
+                <button name="button_cancel"
+                    string="Annuler"
+                    type="object"
+                    class="oe_highlight"
+                    states="validate"
+                />
+             <field name="state" widget="statusbar" statusbar_visible="draft,approuve,validate,fait,annuler"                                                     tatusbar_colors='{"approved":"blue"}'/>
+             </header> 
+              <sheet>
+                  <group>
+                     <group>
+                         <field name="family" style="width:50%%"/>
+                     </group>
+                     <group>
+                         <field name="sous_family" style="width:80%%"/>
+                     </group>
+                     <group>
+                         <field name="name" style="width:50%%"/>
+                     </group>
+                     <group>
+                         <field name="type_product" style="width:50%%"/>
+                         <field name="date" style="width:50%%"/>
+                     </group>
+                 </group>
+              <notebook>
+                  <page string='Product Attribute' name="attribute">
+                      <field name="attribute_ids">
+                          <tree editable="bottom">
+                             <field name='name'/>
+                             <field name='valus'/>
+                          </tree>
+                         <form>
+                              <group>
+                                  <group>
+                                    <field name='name'/>
+                                  </group>
+                                  <group>
+                                    <field name='valus'/>
+                                  </group>
+                              </group>
+                          </form>
+                      </field>
+                  </page>
+              </notebook>
+          </sheet>
+        </form>
+    </field>
+</record>
+    
+     <record model="ir.ui.view" id="codificate_attribute_views">
+          <field name="name">codification_attribute_from</field>
+          <field name="model">codification.attribute</field>
+          <field name="arch" type="xml">
+            <form string="Demande de codification">          
+              <sheet>
+                     <group>
+                         <field name="name" String="Attribute Name"/>
+                     </group>
+              <notebook>
+                  <page string='Attribute'>
+                  </page>
+              </notebook>
+          </sheet>
+        </form>
+    </field>
+</record>  
+        
+     <record id='view_codification_attribute_tree' model='ir.ui.view'>
+         <field name="name">codification.attribute.tree</field>
+         <field name="model">code.request</field>
+         <field name="arch" type="xml">
+             <tree>
+                 <field name="family"/>
+                 <field name="sous_family"/>
+                 <field name="name"/>
+                 <field name="type_product"/>
+                 <field name="date"/>
+             </tree>
+         </field>
+     </record>
+        
+    
+    <!--<record model="ir.ui.view" id="attribute_attribute_views">
+        <field name="name">attribute_attribute_from</field>
+          <field name="model">attribute.attribute</field>
+          <field name="arch" type="xml">
+            <form>          
+              <sheet>
+                     <group>
+                         <field name="valus" String="Valeurs"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>--> 
+        
+    <record model="ir.actions.act_window" id="code_request_action_window">
+      <field name="name">Codification request</field>
+      <field name="res_model">code.request</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+        
+    <menuitem id="hta_codification_request.menu_root"
+        name="Demande Codication"
+        groups="hr.group_hr_user"
+        sequence="35"
+    />
+    <menuitem name="Demande de codification" id="hta_codification_request.code" parent="hta_codification_request.menu_root"
+              action="code_request_action_window"/>
+      
+    <!--menuitem name="Reports" id="hta_codification_request.report" parent="expense_management.menu_root"
+              action="attribute_line_action_window"/-->
+    <menuitem
+        action="code_request_action_window"      
+        id="menu_product_request"
+        sequence="01"      
+        parent="hta_codification_request.code"
+    />
+    
+    <menuitem id="menu_expense_codification_config" name="Settings" parent="hta_codification_request.menu_root"
+        sequence="99"
+        action="action_product_stock_config"
+        groups="base.group_system"
+    />
+    </data>
+</odoo>

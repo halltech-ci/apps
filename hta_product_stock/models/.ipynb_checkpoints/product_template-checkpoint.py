@@ -116,4 +116,20 @@ class ProductTemplate(models.Model):
                     rec.code_reference = rec.code_reference.rstrip(rec.code_reference[-1])
             else:
                 rec.code_reference = rec.code
-            
+                
+    #========================button validetor=====================================
+    
+    state = fields.Selection(selection=[('approuve', 'Approuve'),('validate', 'Validate'),('cancel', 'Cancelled')], string='Status',default='approuve', tracking=True)
+    
+    
+
+    to_approve_allowed = fields.Boolean()
+    
+    def button_to_approuve(self):
+        self.state = "approuve"
+        
+    def button_to_validate(self):
+        self.state = "validate"
+        
+    def button_to_cancel(self):
+        self.state = "cancel"
