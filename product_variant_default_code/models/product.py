@@ -99,6 +99,30 @@ class ProductTemplate(models.Model):
         '\nNote: make sure characters "[,]" do not appear in your '
         "attribute name",
     )
+    
+    @api.depends("categ_id")
+    def _depends_attribute(self):
+        for rec in self:
+            if rec.categ_id.attribute_lines:
+                lines = [(5,0,0)]
+                for line in rec.categ_id.attribute_lines:
+                    lines.append((0, 0, {
+                        'attribute_id': line.id,
+                        'value_ids':line.value_ids,
+                    }))
+                rec.attribute_line_ids = lines
+                
+    @api.onchange("categ_id")
+    def _onchange_categ_id(self):
+        for rec in self:
+            if rec.categ_id.attribute_lines:
+                lines = [(5,0,0)]
+                for line in rec.categ_id.attribute_lines:
+                    lines.append((0, 0, {
+                        'attribute_id': line.id,
+                        'value_ids':line.value_ids,
+                    }))
+                rec.attribute_line_ids = lines
 
     def _get_default_mask(self):
         attribute_names = []

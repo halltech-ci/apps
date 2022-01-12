@@ -6,7 +6,7 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     #product_code = fields.Char('Product Code',index=True, compute='_compute_product_code')
-    reference_mask = fields.Char(related="categ_id.reference_mask", string="Code Template", )
+    #reference_mask = fields.Char(related="categ_id.reference_mask", string="Code Template", )
     #product_attribute_ids = fields.One2many('product.attribute', "product_tmpl_id", compute="_compute_product_attribute_ids")
     
     """
