@@ -17,6 +17,7 @@
     "data": [
         "security/product_security.xml",
         "data/ir_config_parameter.xml",
+        "views/product_category_views.xml",
         "views/product_attribute_view.xml",
         "views/product_view.xml",
         "views/config_settings_view.xml",

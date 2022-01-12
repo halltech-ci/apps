@@ -14,7 +14,7 @@
             </field>
         </field>
     </record>
-    <record id="view_product_attribute_search" model="ir.ui.view">
+    <!--<record id="view_product_attribute_search" model="ir.ui.view">
         <field name="model">product.attribute</field>
         <field name="arch" type="xml">
             <search>
@@ -23,10 +23,23 @@
             </search>
         </field>
     </record>
+    -->
     <record id="view_product_attribute_form" model="ir.ui.view">
         <field name="model">product.attribute</field>
         <field name="inherit_id" ref="product.product_attribute_view_form" />
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='value_ids']" position="before">
+              <group>
+                  <group>
+                      <field name="code_type"/>
+                      <field name="code_compute_parameter"/>
+                  </group>
+                  <group>
+                      <field name="code_length"/>
+                      <field name="is_automatic_code" widget="boolean_button"/>
+                  </group>
+              </group>
+          </xpath>
             <xpath expr="//field[@name='name']" position="after">
                 <field name="code" />
             </xpath>
@@ -35,6 +48,7 @@
                 position="after"
             >
                 <field name="code" />
+                <field name="is_manual"/>
             </xpath>
         </field>
     </record>
