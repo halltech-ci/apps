@@ -20,19 +20,21 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['product',
-               'stock',
+    'depends': ['product_variant_default_code',
+               #'stock',
                ],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        #"security/product_security.xml",
         'views/views.xml',
         'views/templates.xml',
         #views
         'views/product_category_views.xml',
         'views/product_views.xml',
         "views/product_attribute_views.xml",
+        #"views/config_settings_views.xml",
     ],
     # only loaded in demonstration mode
     'demo': [

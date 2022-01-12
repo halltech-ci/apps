@@ -14,6 +14,9 @@ class ProductAttribute(models.Model):
     is_automatic_code = fields.Boolean(default=True, string="Automatique/Manuel")
     code_compute_parameter = fields.Char(string="Parametre")
     last_code = fields.Integer(string="Last Value Code", compute="_compute_last_value_code")
+    product_tmpl_id = fields.Many2one("product.template", compute="_compute_attribute_id")
+    
+    
     
     def _compute_last_value_code(self):
         for rec in self:
@@ -36,20 +39,18 @@ class ProductAttribute(models.Model):
                     val = int(param.get('incr'))
                     code = val
                     for line in rec.value_ids:
-                        if line.code:
-                            pass
-                        else:
+                        if not line.is_manual:
                             line.code = code
                             code += val
                 if "pre" in param:
                     val = param.get('pre')
                     for line in rec.value_ids:
-                        if not line.code:
+                        if not line.is_manual:
                             line.code = "{0}{1}".format(val, line.name)
                 if "tronc" in param:
                     val = int(param.get('tronc'))
                     for line in rec.value_ids:
-                        if not line.code:
+                        if not line.is_manual:
                             line.code = line.name[0:val]
     
     def write(self, line_values):
@@ -61,7 +62,13 @@ class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
     
     code = fields.Char(string="Code", store=True,)
+    is_manual = fields.Boolean(default=False)
     
+    """
+    @api.onchange('name')
+    def _onchange_name(self):
+        self.code = self.attribute_id._compute_code()
+    """
     
     
     
