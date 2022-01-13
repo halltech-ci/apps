@@ -129,10 +129,11 @@
         
     <menuitem id="hta_codification_request.menu_root"
         name="Demande Codication"
-        groups="hr.group_hr_user"
         sequence="35"
     />
-    <menuitem name="Demande de codification" id="hta_codification_request.code" parent="hta_codification_request.menu_root"
+    <menuitem name="Demande de codification" 
+              id="hta_codification_request.code" 
+              parent="hta_codification_request.menu_root"
               action="code_request_action_window"/>
       
     <!--menuitem name="Reports" id="hta_codification_request.report" parent="expense_management.menu_root"
@@ -144,10 +145,11 @@
         parent="hta_codification_request.code"
     />
     
-    <menuitem id="menu_expense_codification_config" name="Settings" parent="hta_codification_request.menu_root"
+    <menuitem id="menu_stock_codification_config" 
+        name="Settings" 
+        parent="hta_codification_request.menu_root"
         sequence="99"
         action="action_product_stock_config"
-        groups="base.group_system"
     />
     </data>
 </odoo>
