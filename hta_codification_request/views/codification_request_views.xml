@@ -121,10 +121,19 @@
         </field>
     </record>--> 
         
-    <record model="ir.actions.act_window" id="code_request_action_window">
+    <!--<record model="ir.actions.act_window" id="code_request_action_window">
       <field name="name">Codification request</field>
       <field name="res_model">code.request</field>
       <field name="view_mode">tree,form</field>
+    </record>-->
+        
+    <record id="action_product_stock_config" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">code.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'hta_codification_request'}</field>
     </record>
         
     <menuitem id="hta_codification_request.menu_root"
@@ -134,12 +143,12 @@
     <menuitem name="Demande de codification" 
               id="hta_codification_request.code" 
               parent="hta_codification_request.menu_root"
-              action="code_request_action_window"/>
+              action="action_product_stock_config"/>
       
     <!--menuitem name="Reports" id="hta_codification_request.report" parent="expense_management.menu_root"
               action="attribute_line_action_window"/-->
     <menuitem
-        action="code_request_action_window"      
+        action="action_product_stock_config"      
         id="menu_product_request"
         sequence="01"      
         parent="hta_codification_request.code"
