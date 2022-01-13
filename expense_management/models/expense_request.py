@@ -4,6 +4,10 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 
 
+READONLY_STATES = {
+        'to_cancel': [('readonly', True)],
+        }
+
 class ExpenseRequest(models.Model):
     _name = 'expense.request'
     _description = 'Custom expense request'
@@ -23,12 +27,12 @@ class ExpenseRequest(models.Model):
 
 
     def get_default_cash_journal(self):
-
         import datetime
         date = datetime.date.today()
         month = date.month
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month)
         return res
+    
     
     name = fields.Char(default=_get_default_name)
 
@@ -47,7 +51,7 @@ class ExpenseRequest(models.Model):
     ], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
     """employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, check_company=True)"""
     
-    line_ids = fields.One2many('expense.line', 'request_id', string='Expense Line')
+    line_ids = fields.One2many('expense.line', 'request_id', string='Expense Line', states={'to_cancel': [('readonly', True)]})
     intermediary = fields.Many2one('hr.employee', string="Intermediaire")
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange',
                     default=_get_default_requested_by)
@@ -58,24 +62,16 @@ class ExpenseRequest(models.Model):
     analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account')
     project_id = fields.Many2one('project.project', string='Projet')
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
-    journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
+    journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], states=READONLY_STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
 
-    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True,default=lambda self: self.get_default_cash_journal())
+    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True, states=READONLY_STATES, default=lambda self: self.get_default_cash_journal())
 
     move_id = fields.Many2one('account.move', string='Account Move')
     is_expense_approver = fields.Boolean(string="Is Approver",
         compute="_compute_is_expense_approver",
     )
-    expense_approver = fields.Many2one('res.users', string="Valideur")
+    expense_approver = fields.Many2one('res.users', string="Valideur", states=READONLY_STATES)
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
-    
-    
-#     @api.model
-#     def create(self, vals):
-#         if vals.get('name', _('New')) == _('New'):
-#             vals['name'] = self.env['ir.sequence'].next_by_code('expense.request.code') or _('Error')
-#         result = super(ExpenseRequest, self).create(vals)
-#         return result
     
     
     def send_validation_mail(self):
@@ -84,6 +80,12 @@ class ExpenseRequest(models.Model):
         lang = self.env.context.get('lang')
         template = self.env['mail.template'].browse(template_id)
         
+    @api.onchange('state')
+    def _onchange_state(self):
+        if self.state in ['authorize']:
+            if self.statement_id != self.get_default_cash_journal():
+                self.statement_id = self.get_default_cash_journal()
+    
     
     @api.depends("state")
     def _compute_to_approve_allowed(self):
@@ -179,12 +181,14 @@ class ExpenseRequest(models.Model):
         return self.write({'state': 'to_cancel'})
     
     def button_authorize(self):
-
-        #self.is_approver_check()
-
-        #self.is_approve_check()
+        if self.state not in  ['approve']:
+            raise UserError(
+                    _(
+                        "You can not authorize request not approved"
+                    )
+                )
         for line in self.line_ids:
-            line.action_approve()
+            line.action_authorize()
         return self.write({'state': 'authorize'})
     
     def button_to_approve(self):
@@ -196,7 +200,12 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
-        #self.is_approve_check()
+        if self.total_amount > self.amount_balance:
+            raise UserError(
+                    _(
+                        "Solde caisse insuffisant. Veillez faire un appro"
+                    )
+                )
         for line in self.line_ids:
             line.action_approve()
         return self.write({"state": "approve"})
@@ -208,7 +217,7 @@ class ExpenseRequest(models.Model):
     
     def button_rejected(self):
         self.is_approver_check()
-        if any(self.filtered(lambda expense: expense.state in ('approve', 'post'))):
+        if any(self.filtered(lambda expense: expense.state in ('post'))):
             raise UserError(_('You cannot reject expense which is approve or paid!'))
         self.mapped("line_ids").do_cancel()
         return self.write({"state": "draft"})
@@ -256,10 +265,6 @@ class ExpenseRequest(models.Model):
     
     def unlink(self):
         if any(self.filtered(lambda expense: expense.state not in ('draft', 'cancel', 'submitted'))):
-            raise UserError(_('You cannot delete a expense which is not draft, cancelled or submitted!'))
-        for expense in self:
-            if not expense.state == 'to_cancel':
-                raise UserError(_('In order to delete a expense request, you must cancel it first.'))
-                
+            raise UserError(_('You cannot delete an expense which is not draft, cancelled or submitted!'))        
         return super(ExpenseRequest, self).unlink()
     

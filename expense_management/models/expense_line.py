@@ -14,13 +14,16 @@ PAYMENT_TYPE = [('cash', 'Espece'),
 
 REQUEST_STATE = [('draft', 'Draft'),
         ('submit', 'Submitted'),
+        ('validate', 'Validate'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
-        ('validate', 'Validate'),
-        ('post', 'Posted'),
-        ('done', 'Paid'),
+        ('authorize','Autoriser'),
+        ('to_cancel', 'Annuler'),
+        ('post', 'Paid'),
+        #('done', 'Paid'),
         ('cancel', 'Refused')
         ]
+
 
 class ExpenseLine(models.Model):
     _name = 'expense.line'
@@ -86,6 +89,9 @@ class ExpenseLine(models.Model):
     def to_approve(self):
         self.request_state = "validate"
     
+    def action_authorize(self):
+        self.request_state = "authorize"
+    
     def action_post(self):
         self.request_state = "post"
     
@@ -98,13 +104,13 @@ class ExpenseLine(models.Model):
     
     def unlink(self):
         for expense in self:
-            if expense.request_state in ['done', 'approved', 'post']:
-                raise UserError(_('You cannot delete expense line wich is posted, approved or done.'))
+            if expense.request_state in ['approved', 'post', "authorize"]:
+                raise UserError(_('You cannot delete expense line wich is posted, approved or post.'))
         return super(ExpenseLine, self).unlink()
 
     def write(self, vals):
         for expense in self:
-            if expense.request_state in ['done', 'approved']:
-                raise UserError(_('You cannot modify a posted or approved expense.'))
+            if expense.request_state in ['post', 'approved', "authorize"]:
+                raise UserError(_('You cannot modify a posted, authorize or approved expense.'))
         return super(ExpenseLine, self).write(vals)
     

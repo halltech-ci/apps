@@ -6,11 +6,12 @@
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <field name='default_code' position="after">
-                <field name="product_code"/>
+                <!--<field name="product_code"/>-->
+                <field name="product_code_template" readonly="1"/>
             </field>
         </field>
     </record>
-
+    <!--
     <record id="product_template_tree_view_inherit" model="ir.ui.view">
         <field name="name">product.template.tree.view</field>
         <field name="model">product.template</field>
@@ -21,5 +22,6 @@
             </xpath>
         </field>
     </record>
+    -->
   </data>
 </odoo>
