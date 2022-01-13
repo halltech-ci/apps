@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding='UTF-8'?>
 <odoo>
   <data>
+    <!--
       <record id="product_template_form_views" model="ir.ui.view">
        <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_product_tree_view"/>
@@ -9,11 +9,12 @@
                     <field name="name" position="before">
                      <button name="creer" string="Creer" class="btn_primary"/>
                     </field>  
-                    <field name="barcode" position="after">
+                    <field name="co" position="after">
                      <field name="default_codes" string="Codesss"/>
                     </field>  
                </tree>
             </field>
     </record>
+    -->
   </data>
 </odoo>

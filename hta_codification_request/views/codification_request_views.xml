@@ -102,6 +102,7 @@
                  <field name="name"/>
                  <field name="type_product"/>
                  <field name="date"/>
+                 <field name="state"/>
              </tree>
          </field>
      </record>

@@ -1,5 +1,6 @@
-<!--odoo>
+<odoo>
   <data>
+    <!--
       <record id="product_template_form_views" model="ir.ui.view">
        <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_product_tree_view"/>
@@ -14,5 +15,6 @@
                </tree>
             </field>
     </record>
+    -->
   </data>
-</odoo-->
+</odoo>

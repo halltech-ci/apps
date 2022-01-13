@@ -21,8 +21,6 @@ class CodificationRequest(models.Model):
     date = fields.Date("Date demande")
     attribute_ids = fields.One2many('attribute.attribute','request_id',String='Attribute Values')
     description = fields.Text(String="Description")
-    
-    
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
         ('approuve', 'Approuve'),
