@@ -6,34 +6,37 @@
           <field name="arch" type="xml">
             <form string="Demande de codification">  
             <header>
-                <button name="action_approuve"
-                    string="Approval"
+                <button name="button_submit"
+                    string="Submit"
                     type="object"
                     class="oe_highlight"
                     states="draft"
                 />
             
-                <button name="to_validate"
+                <button id="button_validatre"
+                    name="button_validate"
                     string="Valider"
-                    type="object"
                     class="oe_highlight"
-                    states="approuve"
+                    states="submit"
+                    validate="êtes-vous sûr de valider cette codification ?"
+                    type="object"     
                 />
-                <button name="button_fait"
-                    string="Fait"
-                    type="object"
-                    class="oe_highlight"
-                    states="validate"
-                />
-                <button name="button_cancel"
+                
+                <button id="button_concel"
+                    name="button_cancel"
                     string="Annuler"
-                    type="object"
-                    class="oe_highlight"
-                    states="validate"
+                    states="submit"
+                    cancel="êtes-vous sûr d'annuler cette codification ?"
+                    type="object"   
                 />
-             <field name="state" widget="statusbar" statusbar_visible="draft,approuve,validate,fait,annuler"                                                     tatusbar_colors='{"approved":"blue"}'/>
+                
+             <field name="state" widget="statusbar" statusbar_visible="draft,submit,validate,cancel"                                          tatusbar_colors='{"approved":"blue"}'/>
+                
              </header> 
               <sheet>
+                   <group>
+                         <field name="object" style="width:50%%" required='True'/>
+                     </group>
                   <group>
                      <group>
                          <field name="family" style="width:50%%"/>
@@ -49,20 +52,26 @@
                          <field name="date" style="width:50%%"/>
                      </group>
                  </group>
+                <group>
+                    <field name="description"/>
+                </group>
+                <group>
+                    <field name="request_code_id" invisible ="True"/>
+                </group>
               <notebook>
-                  <page string='Product Attribute' name="attribute">
-                      <field name="attribute_ids">
-                          <tree editable="bottom">
-                             <field name='name'/>
-                             <field name='valus'/>
+                  <page string='Caracteristiques' name="attribute">
+                      <field name="caracteristique">
+                          <tree>
+                             <field name='attribute_name'/>
+                             <field name='attribute_valus'/>
                           </tree>
                          <form>
                               <group>
                                   <group>
-                                    <field name='name'/>
+                                    <field name='attribute_name'/>
                                   </group>
                                   <group>
-                                    <field name='valus'/>
+                                    <field name='attribute_valus'/>
                                   </group>
                               </group>
                           </form>
@@ -74,14 +83,14 @@
     </field>
 </record>
     
-     <record model="ir.ui.view" id="codificate_attribute_views">
-          <field name="name">codification_attribute_from</field>
-          <field name="model">codification.attribute</field>
-          <field name="arch" type="xml">
-            <form string="Demande de codification">          
-              <sheet>
-                     <group>
-                         <field name="name" String="Attribute Name"/>
+<record model="ir.ui.view" id="codificate_attribute_views">
+    <field name="name">codification_attribute_from</field>
+    <field name="model">codification.attribute</field>
+    <field name="arch" type="xml">
+        <form string="Demande de codification">          
+            <sheet>
+                <group>
+                     <field name="name" String="Attribute Name"/>
                      </group>
               <notebook>
                   <page string='Attribute'>
@@ -92,49 +101,48 @@
     </field>
 </record>  
         
-     <record id='view_codification_attribute_tree' model='ir.ui.view'>
-         <field name="name">codification.attribute.tree</field>
-         <field name="model">code.request</field>
-         <field name="arch" type="xml">
-             <tree>
-                 <field name="family"/>
-                 <field name="sous_family"/>
-                 <field name="name"/>
-                 <field name="type_product"/>
-                 <field name="date"/>
-                 <field name="state"/>
-             </tree>
-         </field>
-     </record>
+<record id='view_codification_attribute_tree' model='ir.ui.view'>
+    <field name="name">codification.attribute.tree</field>
+    <field name="model">code.request</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="object"/>
+            <field name="family"/>
+            <field name="sous_family"/>
+            <field name="name"/>
+            <field name="type_product"/>
+            <field name="date"/>
+            <field name="state"/>
+        </tree>
+    </field>
+</record>
         
     
-    <!--<record model="ir.ui.view" id="attribute_attribute_views">
+    <record model="ir.ui.view" id="attribute_attribute_views">
         <field name="name">attribute_attribute_from</field>
           <field name="model">attribute.attribute</field>
           <field name="arch" type="xml">
             <form>          
               <sheet>
                      <group>
-                         <field name="valus" String="Valeurs"/>
+                         <field name="attribute_valus" String="Valeurs"/>
                     </group>
                 </sheet>
             </form>
         </field>
-    </record>--> 
+    </record>
         
-    <!--<record model="ir.actions.act_window" id="code_request_action_window">
-      <field name="name">Codification request</field>
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="codification_requests_action_window">
+      <field name="name">Demande</field>
       <field name="res_model">code.request</field>
       <field name="view_mode">tree,form</field>
-    </record>-->
-        
-    <record id="action_product_stock_config" model="ir.actions.act_window">
-        <field name="name">Settings</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">code.request</field>
-        <field name="view_mode">tree,form</field>
-        <field name="target">inline</field>
-        <field name="context">{'module' : 'hta_codification_request'}</field>
+    </record>
+      
+    <record model="ir.actions.act_window" id="expense_line_action_window">
+      <field name="name">Rapports de demande</field>
+      <field name="res_model">code.request</field>
+      <field name="view_mode">tree,form</field>
     </record>
         
     <menuitem id="hta_codification_request.menu_root"
@@ -144,22 +152,23 @@
     <menuitem name="Demande de codification" 
               id="hta_codification_request.code" 
               parent="hta_codification_request.menu_root"
-              action="action_product_stock_config"/>
+              action="codification_requests_action_window"/>
       
     <!--menuitem name="Reports" id="hta_codification_request.report" parent="expense_management.menu_root"
               action="attribute_line_action_window"/-->
     <menuitem
-        action="action_product_stock_config"      
+        name="Demande de codification" 
+        action="codification_requests_action_window"      
         id="menu_product_request"
         sequence="01"      
         parent="hta_codification_request.code"
     />
-    
-    <menuitem id="menu_stock_codification_config" 
+        
+    <!--<menuitem id="menu_stock_codification_config" 
         name="Settings" 
         parent="hta_codification_request.menu_root"
-        sequence="99"
-        action="action_product_stock_config"
-    />
+        sequence="75"
+        action="action_code_request_config"
+        />-->     
     </data>
 </odoo>

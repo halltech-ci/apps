@@ -26,7 +26,6 @@
     'data': [
         #'views/codification_request_views',
         'security/ir.model.access.csv',
-        
         'views/codification_request_views.xml',
         #'views/codification_attribute_views.xml',
         'views/rec_config_setting_views.xml',
