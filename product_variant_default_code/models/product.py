@@ -280,7 +280,7 @@ class ProductAttribute(models.Model):
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
 
-    code = fields.Char(string="Code", store=True,)
+    code = fields.Char(string="Code", store=True, )
     is_manual = fields.Boolean(default=False)
 
     def write(self, vals):
