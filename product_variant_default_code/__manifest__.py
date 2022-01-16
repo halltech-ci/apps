@@ -1,13 +1,5 @@
-# Copyright 2014 AvancOSC - Alfredo de la Fuente
-# Copyright 2014 Tecnativa - Pedro M. Baeza
-# Copyright 2014 Shine IT - Tony Gu
-# Copyright 2017 Tecnativa - David Vidal
-# Copyright 2017 Akretion - David Beal
-# Copyright 2018 AvancOSC - Daniel Campos
-# Copyright 2020 Tecnativa - João Marques
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
-    "name": "Product Variant Default Code",
+    "name": "HTA Product Variant Default Code",
     "version": "13.0.1.1.0",
     "author": "AvancOSC," "Shine IT," "Tecnativa," "Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/product-variant",
@@ -15,6 +7,7 @@
     "category": "Product",
     "depends": ["product"],
     "data": [
+        'security/ir.model.access.csv',
         "security/product_security.xml",
         "data/ir_config_parameter.xml",
         "views/product_category_views.xml",

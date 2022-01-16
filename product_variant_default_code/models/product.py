@@ -75,7 +75,7 @@ class ProductTemplate(models.Model):
         string="Reference Prefix",
         help="Add prefix to product variant reference (default code)",
     )
-    reference_mask = fields.Char(
+    reference_mask = fields.Char(related="categ_id.reference_mask",
         string="Variant reference mask",
         copy=False,
         help="Reference mask for building internal references of a "
@@ -212,17 +212,63 @@ class ProductAttribute(models.Model):
     _inherit = "product.attribute"
 
     code = fields.Char(string="Attribute Code",)
+    code_type = fields.Selection(selection=([('number', 'numerique'), ('char', 'Alphanumerique')]), string="Type Code")
+    code_length = fields.Integer(default=2, string="Nombre de caractere")
+    is_automatic_code = fields.Boolean(default=True, string="Automatique/Manuel")
+    code_compute_parameter = fields.Char(string="Parametre")
+    last_code = fields.Integer(string="Last Value Code", compute="_compute_last_value_code")
+    
+    def _compute_last_value_code(self):
+        for rec in self:
+            code = rec.mapped('value_ids').sort(reverse=True)
+            self.last_code = int([0]) or 1
+    
+    def _recuperate_compute_parameter(self):
+        if self.code_compute_parameter:
+            convertedDict = dict((x.strip(), (y.strip()))
+                     for x, y in (element.split(':')
+                                  for element in self.code_compute_parameter.split(',')))
+            return convertedDict
+        
+    def _compute_code(self):
+        for rec in self:
+            if rec.code_compute_parameter:
+                param = rec._recuperate_compute_parameter()
+                val = 1
+                if "incr" in param:
+                    val = int(param.get('incr'))
+                    code = val
+                    for line in rec.value_ids:
+                        if not line.is_manual:
+                            line.code = code
+                            code += val
+                if "pre" in param:
+                    val = param.get('pre')
+                    for line in rec.value_ids:
+                        if not line.is_manual:
+                            line.code = "{0}{1}".format(val, line.name)
+                if "tronc" in param:
+                    val = int(param.get('tronc'))
+                    for line in rec.value_ids:
+                        if not line.is_manual:
+                            line.code = line.name[0:val]
+    
     
     """
     _sql_constraints = [
         ("number_uniq", "unique(name)", _("Attribute Name must be unique!"))
     ]
     """
-
+    
+    @api.model
+    def create(self, vals):
+        result = super(ProductAttribute, self).create(vals)
+        self._compute_code()
+        return result
+    
     def write(self, vals):
-        if "code" not in vals:
-            return super(ProductAttribute, self).write(vals)
         result = super(ProductAttribute, self).write(vals)
+        self._compute_code()
         # Rewrite reference on all product variants affected
         for product in self.mapped(
             "attribute_line_ids.product_tmpl_id.product_variant_ids"
@@ -234,22 +280,10 @@ class ProductAttribute(models.Model):
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
 
-    @api.onchange("name")
-    def onchange_name(self):
-        if self.name:
-            self.code = self.name[0:2]
-
-    code = fields.Char(string="Attribute Value Code", default=onchange_name,)
-
-    @api.model
-    def create(self, vals):
-        if "code" not in vals:
-            vals["code"] = vals.get("name", "")[0:2]
-        return super(ProductAttributeValue, self).create(vals)
+    code = fields.Char(string="Code", store=True,)
+    is_manual = fields.Boolean(default=False)
 
     def write(self, vals):
-        if "code" not in vals:
-            return super(ProductAttributeValue, self).write(vals)
         result = super(ProductAttributeValue, self).write(vals)
         # Rewrite reference on all product variants affected
         for product in (
