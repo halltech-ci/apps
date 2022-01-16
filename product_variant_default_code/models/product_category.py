@@ -13,7 +13,7 @@ class ProductCategory(models.Model):
                                #compute = '_compute_related_code', 
                                recursive=True, store=True, search='_search_related_field',
                               )
-    attribute_lines = fields.One2many('product.attribute', 'category_id')
+    attribute_lines = fields.One2many('product.attribute.line', 'category_id')
     reference_mask = fields.Char(string="Variant reference mask", copy=False,
         help="Reference mask for building internal references of a "
         "variant generated from this template.\n"
@@ -37,40 +37,10 @@ class ProductCategory(models.Model):
         "attribute name",
     )
         
-    """
-    @api.depends('parent_id.related_code', 'category_code')
-    def _compute_related_code(self):
-        for category in self:
-            if category.parent_id:
-                category.related_code = '%s%s' % (category.parent_id.related_code, category.category_code)
-            else:
-                category.related_code = '%s' %(category.category_code)
-    """
-    """
-    @api.onchange('parent_id')
-    def onchange_parent_id(self):
-        for category in self:
-            if category.parent_id:
-                category.related_code = '%s%s' % (category.parent_id.related_code, category.category_code)
-            else:
-                category.related_code = '%s' % (category.category_code)
-    """
-
-    """
-    @api.onchange('category_code')
-    def onchange_category_code(self):
-        for category in self:
-            if category.parent_id:
-                category.related_code = '%s%s' % (category.parent_id.related_code, category.category_code)
-            else:
-                category.related_code = '%s' % (category.category_code)
-
-    def _search_related_field(self, operator, value):
-        return [('related_code', operator, value)]
-    """
-    """
-    _sql_constraints = [
-        ('related_code_uniq', 'unique(related_code)', "Related_code must be unique !"),
-    ]
-    """
+class ProductAttributeLine(models.Model):
+    _name ="product.attribute.line"
+    _description = "Product attribute define in product category"
     
+    category_id = fields.Many2one("product.category")
+    attribute = fields.Many2one("product.attribute")
+    value_ids = fields.Many2many("product.attribute.value")

@@ -8,7 +8,7 @@ _VALUE_COMPUTE_PARAMETER = [('troncate')]
 class ProductAttribute(models.Model):
     _inherit = "product.attribute"
     
-    category_id = fields.Many2one("product.category")
+    #category_id = fields.Many2one("product.category")
     code_type = fields.Selection(selection=([('number', 'numerique'), ('char', 'Alphanumerique')]), string="Type Code")
     code_length = fields.Integer(default=2, string="Nombre de caractere")
     is_automatic_code = fields.Boolean(default=True, string="Automatique/Manuel")
@@ -53,11 +53,11 @@ class ProductAttribute(models.Model):
                         if not line.is_manual:
                             line.code = line.name[0:val]
     
-    """def write(self, line_values):
+    def write(self, line_values):
         res = super(ProductAttribute, self).write(line_values)
         self._compute_code()
         return res
-    """
+    
     
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
