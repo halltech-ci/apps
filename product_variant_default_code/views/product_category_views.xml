@@ -6,19 +6,15 @@
         <field name="inherit_id" ref="product.product_category_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//form/sheet/group[@name='first']/field[@name='parent_id']" position="after">
-                <field name="category_code" class="oe_inline"/>
-                <field name="related_code" class="oe_inline"/>
+                <!--<field name="category_code" class="oe_inline"/>
+                <field name="related_code" class="oe_inline"/>-->
                 <field name="reference_mask" class="oe_inline"/>
                 <notebook>
                     <page>
                         <field name="attribute_lines" widget="one2many">
                             <tree string="Attributes" editable="bottom">
-                                <field name="name"/>
-                                <field name="code_type"/>
-                                <field name="code_length"/>
-                                <field name="is_automatic_code"/>
-                                <field name="code_compute_parameter"/>
-                                <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}" invisible="1"/>
+                                <field name="attribute"/>
+                                <field name="value_ids" widget="many2many_tags"/>
                             </tree>
                         </field>
                     </page>
