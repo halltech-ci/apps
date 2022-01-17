@@ -200,12 +200,13 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
-        if self.total_amount > self.balance_amount:
+        """if self.total_amount > self.balance_amount:
             raise UserError(
                     _(
                         "Solde caisse insuffisant. Veillez faire un appro"
                     )
                 )
+        """
         for line in self.line_ids:
             line.action_approve()
         return self.write({"state": "approve"})
