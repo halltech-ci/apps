@@ -119,7 +119,7 @@ class ProductTemplate(models.Model):
                 lines = [(5,0,0)]
                 for line in rec.categ_id.attribute_lines:
                     lines.append((0, 0, {
-                        'attribute_id': line.id,
+                        'attribute_id': line.attribute.id,
                         'value_ids':line.value_ids,
                     }))
                 rec.attribute_line_ids = lines
@@ -217,6 +217,7 @@ class ProductAttribute(models.Model):
     is_automatic_code = fields.Boolean(default=True, string="Automatique/Manuel")
     code_compute_parameter = fields.Char(string="Parametre")
     last_code = fields.Integer(string="Last Value Code", compute="_compute_last_value_code")
+    #display_type = fields.Selection(default="select")
     
     def _compute_last_value_code(self):
         for rec in self:
