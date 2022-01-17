@@ -44,3 +44,8 @@ class ProductAttributeLine(models.Model):
     category_id = fields.Many2one("product.category")
     attribute = fields.Many2one("product.attribute")
     value_ids = fields.Many2many("product.attribute.value")
+    
+    @api.onchange("attribute")
+    def _onchange_attribute(self):
+        if self.attribute:
+            self.value_ids = self.env["product.attribute"].search([('id', "=", self.attribute.id)]).mapped('value_ids')
