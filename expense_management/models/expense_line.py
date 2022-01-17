@@ -110,8 +110,5 @@ class ExpenseLine(models.Model):
         return super(ExpenseLine, self).unlink()
 
     def write(self, vals):
-        for expense in self:
-            if expense.request_state in ['post', 'approved', "authorize"]:
-                raise UserError(_('You cannot modify a posted, authorize or approved expense.'))
         return super(ExpenseLine, self).write(vals)
     
