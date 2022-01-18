@@ -7,25 +7,12 @@ REQUEST_STATE = [('draft', 'Draft'),
         ]
 
 
-class AttributLine(models.Model):
-    _name = 'codification.attribute'
-    _description = 'Codification attribute'
-    
-    name = fields.Char("Attribute Name")
-    #valus = fields.Char(String="Valeurs")
-    #attribute_value = fields.One2many('attribute.attribute','attribut_id')
-    #attribute_ids = fields.One2many('codification.attribute', 'request_id')
-    #value_ids = fields.Many2many('attribute.attribute','Values')
-    attribute_id = fields.Many2one('attribute.attribute','Attribute')
-    
-    
-    
 class AttributeAttribute(models.Model):
     _name = 'attribute.attribute'
     _description = 'Attribute attribute'
     
     attribute_name = fields.Char("Attribute Name")
-    attribute_valus = fields.Char("Valeurs")
+    attribute_valus = fields.Many2many('codification.attribute')
     request_id = fields.Many2one('code.request')
     
     #======================ajoute===========
@@ -62,3 +49,17 @@ class AttributeAttribute(models.Model):
         #return super(AttributeAttribute, self).write(vals)
     
    
+
+
+
+class AttributLine(models.Model):
+    _name = 'codification.attribute'
+    _description = 'Codification attribute'
+    
+    name = fields.Char("Attribute Name")
+    #valus = fields.Char(String="Valeurs")
+    #attribute_value = fields.One2many('attribute.attribute','attribut_id')
+    #attribute_ids = fields.One2many('codification.attribute', 'request_id')
+    #value_ids = fields.Many2many('attribute.attribute','Values')
+    attribute_id = fields.Many2one('attribute.attribute','Attribute')
+        

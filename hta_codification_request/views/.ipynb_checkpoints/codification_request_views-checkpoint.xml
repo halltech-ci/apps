@@ -59,11 +59,11 @@
                     <field name="request_code_id" invisible ="True"/>
                 </group>
               <notebook>
-                  <page string='Caracteristiques' name="attribute">
+                  <page string='Caracteristiques' name="attribute" widget="one2many">
                       <field name="caracteristique">
-                          <tree>
+                          <tree editable="bottom">
                              <field name='attribute_name'/>
-                             <field name='attribute_valus'/>
+                             <field name='attribute_valus' widget="many2many_tags" String="Valeurs"/>
                           </tree>
                          <form>
                               <group>

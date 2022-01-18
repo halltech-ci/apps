@@ -24,13 +24,13 @@ class CodificationRequest(models.Model):
 
     
     type_product = fields.Selection([
-        #('storable', 'Produit stockable'),
-        ('service', 'Service'),
-        ('consu', 'Consumable'),      
-    ], default='Consumable', String="Type produit")
+        ('consu', 'Consommable'),
+        ('service', 'Service'), 
+        ('product', 'Produit stockable'),     
+    ], default='consu', String="Type produit")
     
     date = fields.Datetime("Date demande",readonly=True, default=fields.Datetime.now)
-    caracteristique = fields.One2many('attribute.attribute','request_id')
+    caracteristique = fields.One2many('attribute.attribute','request_id', copy=True)
     description = fields.Text("Description")
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
@@ -59,45 +59,55 @@ class CodificationRequest(models.Model):
             name = request.name
             type_product = request.type_product
             
-            product_template.create({"name":str(request.name),
-                                   "type":str(request.type_product),
-                                    "categ_id":str(request.family),
-                                   #"categ_id":request.sous_family,
+            product_template.create({"name":name,
+                                   "type":type_product,
                                    })    
+        return True
+    
+    def create_product_category(self):
+        for request in self:
+            product_category = self.env["product.category"]
+            family = request.family
+            sous_family = request.sous_family
+            
+            cat_family = product_category.create({
+                                    "name":family,
+                                    #"parent_id":family,
+                                   })
+            if cat_family:
+                product_category.create({
+                                    "name":sous_family,
+                                    "parent_id":cat_family.id,
+                                   })   
         return True
             
     def create_product_attribute(self):
         for rec in self:
-            attribute_name = rec.caracteristique.attribute_name
-            attribut_valus = rec.caracteristique.attribute_valus
-            
             product_attribute = self.env["product.attribute"]
-            product_attribute.write({"name":attribute_name,
-                                     "display_type":'select'})
-            product_attribute.write({"value_ids":attribute_valus})
-            
             value_lines = rec.mapped('caracteristique')
             value = []
             for line in value_lines:
-                project_id = line.project.id
-                lines = (0, 0, {
-                    "value_ids": line.attribute_valus.id,
-                })
-                value.append(lines)
-            request_code_id.write({'caracteristique': value})
-        return True
+                product_attribute.create({"name":line.attribute_name,"value_ids":line.attribute_valus,})
+            
+                #product_attribute.create({"name": line.attribute_name,
+                                          #"value_ids": line.attribute_valus,})
+            
+        #return True
     
     
     def button_validate(self):
+        category = self.create_product_category()
         template = self.create_product_template()
-        #attribute = self.create_product_attribute()
-        validate = template
+        attribute = self.create_product_attribute()
+        validate = (template,attribute,category)
         if validate:
             for line in self.caracteristique:
                 line.action_validate()
             return self.write({'state': 'validate'})
         #return True
-    
+        
+   
+        
     
     #@api.model
     #def create(self, vals):
@@ -125,5 +135,3 @@ class CodificationRequest(models.Model):
                     #)
                     #% rec.name
                 #)
-        
-        
