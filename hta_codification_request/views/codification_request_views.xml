@@ -55,9 +55,9 @@
                 <group>
                     <field name="description"/>
                 </group>
-                <group>
+                <!--<group>
                     <field name="request_code_id" invisible ="True"/>
-                </group>
+                </group>-->
               <notebook>
                   <page string='Caracteristiques' name="attribute" widget="one2many">
                       <field name="caracteristique">

@@ -18,7 +18,7 @@ class CodificationRequest(models.Model):
     sous_family = fields.Char('Sous Famille',required=True, tracking=True)
     name = fields.Char('Product Name',required=True, tracking=True)
     #================ajoute=======================
-    request_code_id = fields.Many2one('product.attribute', string="Stock", tracking=True, states=READONLY_STATES)
+    #request_code_id = fields.Many2one('product.attribute', string="Stock", tracking=True, states=READONLY_STATES)
     #is_code_product = fields.Boolean(string="Is Validate",compute="_compute_is_code_product",)
     #==============================================
 
