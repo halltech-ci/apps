@@ -71,7 +71,7 @@ def render_default_code(product, mask):
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    attribute_line_ids = fields.One2many(compute="_compute_attribute_line_ids")
+    #attribute_line_ids = fields.One2many(compute="_compute_attribute_line_ids")
     code_prefix = fields.Char(
         string="Reference Prefix",
         help="Add prefix to product variant reference (default code)",
@@ -100,7 +100,7 @@ class ProductTemplate(models.Model):
         '\nNote: make sure characters "[,]" do not appear in your '
         "attribute name",
     )
-    
+    """
     @api.depends("categ_id")
     def _compute_attribute_line_ids(self):
         for rec in self:
@@ -113,7 +113,7 @@ class ProductTemplate(models.Model):
                     }))
                 rec.attribute_line_ids = lines
 
-                
+    """            
     @api.onchange("categ_id")
     def _onchange_categ_id(self):
         for rec in self:
