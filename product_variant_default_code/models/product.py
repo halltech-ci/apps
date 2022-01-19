@@ -71,6 +71,7 @@ def render_default_code(product, mask):
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
+    attribute_line_ids = fields.One2many(compute="_compute_attribute_line_ids")
     code_prefix = fields.Char(
         string="Reference Prefix",
         help="Add prefix to product variant reference (default code)",
@@ -101,16 +102,17 @@ class ProductTemplate(models.Model):
     )
     
     @api.depends("categ_id")
-    def _depends_attribute(self):
+    def _compute_attribute_line_ids(self):
         for rec in self:
             if rec.categ_id.attribute_lines:
                 lines = [(5,0,0)]
                 for line in rec.categ_id.attribute_lines:
                     lines.append((0, 0, {
-                        'attribute_id': line.id,
+                        'attribute_id': line.attribute.id,
                         'value_ids':line.value_ids,
                     }))
                 rec.attribute_line_ids = lines
+
                 
     @api.onchange("categ_id")
     def _onchange_categ_id(self):
