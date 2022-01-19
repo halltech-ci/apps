@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_category_type,access_product_category_type,model_product_category_type,base.group_user,1,1,1,1
+access_product_category_type,access.product.category.type,model_product_category_type,base.group_user,1,1,1,1
 access_product_template,access.product.template,hta_product_stock.model_product_template,base.group_user,1,1,1,1
 

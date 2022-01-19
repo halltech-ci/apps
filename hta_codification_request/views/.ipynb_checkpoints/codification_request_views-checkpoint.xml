@@ -35,17 +35,17 @@
              </header> 
               <sheet>
                    <group>
-                         <field name="object" style="width:50%%" required='True'/>
+                         <field name="object" style="width:80%%" required='True'/>
                      </group>
                   <group>
                      <group>
-                         <field name="family" style="width:50%%"/>
+                         <field name="family" style="width:75%%" placeholder="Référer vous au fichier de codification Excel."/>
                      </group>
                      <group>
-                         <field name="sous_family" style="width:80%%"/>
+                         <field name="sous_family" style="width:90%%" placeholder="Référer vous au fichier de codification Excel."/>
                      </group>
                      <group>
-                         <field name="name" style="width:50%%"/>
+                         <field name="name" style="width:75%%" placeholder="Référer vous au fichier de codification Excel."/>
                      </group>
                      <group>
                          <field name="type_product" style="width:50%%"/>

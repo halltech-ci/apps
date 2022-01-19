@@ -3,3 +3,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_code_request,access.code.request,model_code_request,,1,1,1,1
 access_codification_attribute,access.codification.attribute,model_codification_attribute,,1,1,1,1
 access_attribute_attribute,access.attribute.attribute,model_attribute_attribute,,1,1,1,1
+
