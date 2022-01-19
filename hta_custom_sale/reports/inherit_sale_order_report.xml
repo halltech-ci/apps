@@ -47,20 +47,10 @@
              <table class="table table-bordeless table-sm">
                 <thead>
                     <tr>
-                      <strong>
-                        <th name="th_your_reference" class="text-left">Reference :</th>
-                        <th name="th_description" class="text-left">A l’attention de :</th>
-                      </strong>
+                        <th name="th_your_reference" class="text-left"><strong>Reference :</strong> <span t-esc="doc.client_order_ref"/></th>
+                        <th name="th_description" class="text-right"><strong>A l’attention de :</strong> <span t-esc="doc.sale_order_recipient"/></th>
                     </tr>
-                </thead>
-                 <tbody class="sale_tbody">
-                    <td name="td_client_order_ref" class="text-left">
-                    <span t-esc="doc.client_order_ref"/>
-                    </td>
-                        <td name="td_description" class="text-left">
-                            <span t-esc="doc.sale_order_recipient"/>
-                        </td>
-                 </tbody>       
+                </thead>       
             </table>
         </xpath>
         <!--Ajout de champ destinataire dans devis-->
