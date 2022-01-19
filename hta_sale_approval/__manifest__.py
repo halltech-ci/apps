@@ -36,6 +36,7 @@
         #'views/res_users_views.xml',
         'views/views.xml',
         'views/templates.xml',
+        "report/inherit_sale_order_report.xml",
         #wizard
         #'wizard/sale_approval_wizard.xml',
         #data
