@@ -36,14 +36,25 @@ class ProductCategory(models.Model):
         '\nNote: make sure characters "[,]" do not appear in your '
         "attribute name",
     )
-        
+    
+    """
+    @api.depends("attribute")
+    def _compute_value_ids(self):
+        for rec in self:
+            if rec.attribute:
+                rec.value_ids = self.env["product.attribute"].search([('id', "=", rec.attribute.id)]).mapped('value_ids')
+
+    """    
 class ProductAttributeLine(models.Model):
     _name ="product.attribute.line"
     _description = "Product attribute define in product category"
     
     category_id = fields.Many2one("product.category")
     attribute = fields.Many2one("product.attribute")
-    value_ids = fields.Many2many("product.attribute.value")
+
+    value_ids = fields.Many2many("product.attribute.value", 
+                                 #compute="_compute_value_ids"
+                                )
     
     @api.onchange("attribute")
     def _onchange_attribute(self):
