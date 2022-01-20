@@ -158,7 +158,7 @@ class ExpenseRequest(models.Model):
         if self.state == 'post':
             raise UserError(
                     _(
-                        "You can not post request already in posted state"
+                        "Vous ne pouvez pas payer une note déja payée"
                     )
                 )
         post = self.create_bank_statement()
@@ -203,7 +203,7 @@ class ExpenseRequest(models.Model):
         if not self.statement_id:
             raise UserError(
                     _(
-                        "Pas de journal caisse. Veillez en créer un journal"
+                        "Pas de journal caisse. Veillez en créer un pour ce mois"
                     )
                 )
         if self.total_amount > self.balance_amount:
