@@ -26,11 +26,11 @@ class ExpenseRequest(models.Model):
         return self.env['ir.sequence'].next_by_code("expense.request.code")
 
 
-    def get_default_cash_journal(self):
+    def get_default_statement_id(self):
         import datetime
         date = datetime.date.today()
         month = date.month
-        res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month)
+        res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
         return res
     
     
@@ -64,7 +64,7 @@ class ExpenseRequest(models.Model):
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
     journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], states=READONLY_STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
 
-    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True, states=READONLY_STATES, default=lambda self: self.get_default_cash_journal())
+    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True, states=READONLY_STATES, default=lambda self: self.get_default_statement_id())
 
     move_id = fields.Many2one('account.move', string='Account Move')
     is_expense_approver = fields.Boolean(string="Is Approver",
@@ -158,7 +158,7 @@ class ExpenseRequest(models.Model):
         if self.state == 'post':
             raise UserError(
                     _(
-                        "You can not post request already in posted state"
+                        "Vous ne pouvez pas payer une note déja payée"
                     )
                 )
         post = self.create_bank_statement()
@@ -184,7 +184,7 @@ class ExpenseRequest(models.Model):
         if self.state not in  ['approve']:
             raise UserError(
                     _(
-                        "You can not authorize request not approved"
+                        "Vous ne pouvez pas autoriser un dépense non approuvée!"
                     )
                 )
         for line in self.line_ids:
@@ -200,13 +200,18 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
-        """if self.total_amount > self.balance_amount:
+        if not self.statement_id:
+            raise UserError(
+                    _(
+                        "Pas de journal caisse. Veillez en créer un pour ce mois"
+                    )
+                )
+        if self.total_amount > self.balance_amount:
             raise UserError(
                     _(
                         "Solde caisse insuffisant. Veillez faire un appro"
                     )
                 )
-        """
         for line in self.line_ids:
             line.action_approve()
         return self.write({"state": "approve"})
@@ -228,8 +233,8 @@ class ExpenseRequest(models.Model):
             if not rec.to_approve_allowed:
                 raise UserError(
                     _(
-                        "You can't request an approval for a expense request "
-                        "which is not submited. (%s)"
+                        "Vous ne pouvez pas faire cette action. Veuillez demander approbation pour"
+                        ". (%s)"
                     )
                     % rec.name
                 )
@@ -238,7 +243,7 @@ class ExpenseRequest(models.Model):
             if not rec.is_expense_approver:
                 raise UserError(
                     _(
-                        "You are not allowed to approve this expense request "
+                        "Vous ne pouvez pas approuver cette demande. Problème de droit! "
                         ". (%s)"
                     )
                     % rec.name
