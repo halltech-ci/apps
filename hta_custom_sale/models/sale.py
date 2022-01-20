@@ -39,7 +39,7 @@ class SaleOrder(models.Model):
         return num_to_word
         
     #sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), )
-    
+    date_order = fields.Datetime(readonly=False)
     is_proforma = fields.Boolean('Proformat', default=False)
     description = fields.Text("Description : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
