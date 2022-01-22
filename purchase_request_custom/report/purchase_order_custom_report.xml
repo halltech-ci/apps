@@ -328,10 +328,6 @@
                 </tr>
             </table>
         </xpath>
-        <!-- Remove Analytic Account  -->
-        <!--<xpath expr="//table/thead/tr/th[2]" position='replace'>
-        </xpath>
-        <xpath expr="//table//tbody/tr/td[2]" position="replace">
-        </xpath>-->
+        
     </template>
 </odoo>
