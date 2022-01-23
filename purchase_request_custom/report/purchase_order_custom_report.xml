@@ -30,8 +30,8 @@
         <xpath expr="//table[hasclass('table', 'table-sm')]//thead/tr" position="replace">
             <tr>
                 <th class="text-left"><strong>Description</strong></th>
-                <th class="text-center"><strong>Unit</strong></th>
                 <th class="text-center"><strong>Qty</strong></th>
+                <th class="text-center"><strong>Unit</strong></th>
             </tr>
         </xpath>
         
@@ -42,10 +42,10 @@
                         <span t-field="order_line.name"/>
                     </td>
                     <td class="text-center">
-                        <span t-field="order_line.product_uom"/>
+                        <span t-field="order_line.product_qty"/>
                     </td>
                     <td class="text-center">
-                        <span t-field="order_line.product_qty"/>
+                        <span t-field="order_line.product_uom"/>
                     </td>
                 </tr>
             </t>
@@ -165,10 +165,10 @@
         <xpath expr="//div[hasclass('page')]/p[@t-field='o.notes']" position="before">
             <div class="row justify-content-center" style="font-size:16px; padding-bottom:30px;">
                 <div class="col-6" style="font-weight: bold; font-size: 15px;">
-                    <p> Arrêt la présente facture à la somme de:</p>
+                    <p> Arrêtée la présente facture à la somme de:</p>
                 </div>
                 <div class="col-6" >
-                                    <span t-field="o.amount_to_word"/> <span t-field="o.currency_id.currency_unit_label"/> <span t-field="o.currency_id.symbol"/>
+                                    <span t-field="o.amount_to_word"/> <span style="text-transform: uppercase;" t-field="o.currency_id.currency_unit_label"/> <span style="text-transform: uppercase;" t-field="o.currency_id.symbol"/>
                 </div>
             </div>
             <table class="table table-bordered">
@@ -177,7 +177,7 @@
                       <p>Adresse de livraison : <span t-field="o.dest_address_id"/></p>
                       <p>Nom et contact livraison: <span t-field="o.dest_address_id"/></p>
                       <p>Modalité de livraison: DDP</p>
-                      <p>Modalité e règlement: CONDITION HAITUELLE</p>
+                      <p>Modalité e règlement: CONDITION HABITUELLE</p>
                       <p>Date de livraison souhaité: <span t-field="o.date_order"/></p>
                   </th>
                   <th scope="col" width="15%" style="color: #b3b3b3">
