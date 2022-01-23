@@ -27,7 +27,7 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'report/report_template_puchase_request.xml',
+        #'report/report_template_puchase_request.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
