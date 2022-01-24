@@ -6,7 +6,7 @@
             <table class="table table-bordeless table-sm">
                 <thead>
                     <tr>
-                        <th name="th_your_reference" class="text-left"><strong>Date :</strong> <span t-esc="o.date_start"/></th>
+                        <th name="th_your_reference" class="text-left"><strong>Date :</strong> <span t-esc="o.date_start.date()"/></th>
                         <th name="th_description" class="text-right"><strong>Projet :</strong> <span t-esc="o.project_code"/></th>
                     </tr>
                 </thead>
