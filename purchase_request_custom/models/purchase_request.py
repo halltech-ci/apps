@@ -5,11 +5,11 @@ from odoo.exceptions import UserError, ValidationError
 
 class PurchaseRequest(models.Model):
     _inherit = "purchase.request"
-    """
+    
     @api.model
     def _get_default_name(self):
         return self.env["ir.sequence"].next_by_code("purchase.da.sequence")
-    """
+    
     @api.depends('requested_by')
     def _compute_has_manager(self):
         for rec in self:
@@ -33,7 +33,7 @@ class PurchaseRequest(models.Model):
             )
         return types[:1]
                
-    name = fields.Char(string="Request Reference", required=True, default=lambda self: _('New'), index=True)
+    name = fields.Char(string="Request Reference", required=True, default=_get_default_name, index=True)
     request_date = fields.Datetime(string="Request date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange",)
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
@@ -91,6 +91,21 @@ class PurchaseRequestLine(models.Model):
     #product_attribute_ids = fields.Many2many('product.attribute.', related="product_tmpl_id.product_attribute_ids")
     attribute_line_ids = fields.One2many("product.template.attribute.line", related="product_tmpl_id.attribute_line_ids")
     
+    @api.onchange("product_id")
+    def onchange_product_id(self):
+        for rec in self:
+            if rec.product_id:
+                name = rec.product_id.name
+                if rec.product_id.code:
+                    name = "{} (".format(rec.product_id.product_tmpl_id.name, name)
+                    for no_variant_attribute_value in rec.product_id.product_template_attribute_value_ids:
+                        name += "{}".format(no_variant_attribute_value.name + ', ')
+                    name += ")"
+                if rec.product_id.description_purchase:
+                    name += "\n" + rec.product_id.description_purchase
+                rec.product_uom_id = rec.product_id.uom_id.id
+                rec.product_qty = 1
+                rec.name = name
     
     @api.constrains('product_id', 'product_uom_id')
     def _compare_product_uom(self):

@@ -1,0 +1,61 @@
+<odoo>   
+    <template id="inherit_report_purchase_request_document" inherit_id="purchase_request.report_purchase_request">
+        <xpath expr="//div[hasclass('page')]/h2" position="replace">
+            <h4 class="text-center">DEMANDE D'ACHAT N°: <span t-field="o.name"/></h4>
+            <!-- Adding date and project in purchase request-->
+            <table class="table table-bordeless table-sm">
+                <thead>
+                    <tr>
+                        <th name="th_your_reference" class="text-left">
+                            <strong>Date :</strong> <span t-esc="o.date_start"/>
+                        </th>
+                        <th name="th_description" class="text-right"><strong>Projet :</strong> <span t-esc="o.project_code"/></th>
+                    </tr>
+                </thead>
+            </table>
+        </xpath>
+        <!-- Deleting default header-->
+        <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]" position="replace">
+        </xpath>
+        <!-- Adding new table -->
+        <xpath expr="//div[hasclass('page')]/t[@t-if='o.line_ids']" position="replace">
+            <t t-if="o.line_ids">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                <strong>Description</strong>
+                            </th>
+                            <th class="text-right">
+                                <strong>Qté</strong>
+                            </th>
+                                <th class="text-right" groups="uom.group_uom">
+                                <strong>Unité</strong>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.line_ids" t-as="line_ids">
+                            <td>
+                                <span t-field="line_ids.name" />
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line_ids.product_qty" />
+                            </td>
+                            <t>
+                                <td class="text-right" groups="uom.group_uom">
+                                    <span t-field="line_ids.product_uom_id.name"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </tbody>
+                </table>
+            </t>
+            <br/>
+            <p class="text-right"><span t-field="o.requested_by"/></p>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]" position="attributes">
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
+        </xpath>
+    </template>
+</odoo>
