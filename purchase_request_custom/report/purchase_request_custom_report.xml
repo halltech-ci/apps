@@ -6,7 +6,9 @@
             <table class="table table-bordeless table-sm">
                 <thead>
                     <tr>
-                        <th name="th_your_reference" class="text-left"><strong>Date :</strong> <span t-esc="o.date_start.date()"/></th>
+                        <th name="th_your_reference" class="text-left">
+                            <strong>Date :</strong> <span t-esc="o.date_start"/>
+                        </th>
                         <th name="th_description" class="text-right"><strong>Projet :</strong> <span t-esc="o.project_code"/></th>
                     </tr>
                 </thead>
@@ -50,7 +52,7 @@
                 </table>
             </t>
             <br/>
-            <h5 class="text-right"><span t-field="o.requested_by"/></h5>
+            <p class="text-right"><span t-field="o.requested_by"/></p>
         </xpath>
         <xpath expr="//div[hasclass('page')]" position="attributes">
             <attribute name="style">font:14px lucida-console,sans-serif</attribute>
