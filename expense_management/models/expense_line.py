@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError, ValidationError
 
 PAYMENT_MODE = [('justify', 'Employee (To justify)'),
                 ('company', 'Company (Not justify)'),
@@ -14,13 +15,16 @@ PAYMENT_TYPE = [('cash', 'Espece'),
 
 REQUEST_STATE = [('draft', 'Draft'),
         ('submit', 'Submitted'),
+        ('validate', 'Validate'),
         ('to_approve', 'To Approve'),
         ('approve', 'Approved'),
-        ('validate', 'Validate'),
-        ('post', 'Posted'),
-        ('done', 'Paid'),
+        ('authorize','Autoriser'),
+        ('to_cancel', 'Annuler'),
+        ('post', 'Paid'),
+        #('done', 'Paid'),
         ('cancel', 'Refused')
         ]
+
 
 class ExpenseLine(models.Model):
     _name = 'expense.line'
@@ -86,6 +90,9 @@ class ExpenseLine(models.Model):
     def to_approve(self):
         self.request_state = "validate"
     
+    def action_authorize(self):
+        self.request_state = "authorize"
+    
     def action_post(self):
         self.request_state = "post"
     
@@ -98,13 +105,10 @@ class ExpenseLine(models.Model):
     
     def unlink(self):
         for expense in self:
-            if expense.request_state in ['done', 'approved', 'post']:
-                raise UserError(_('You cannot delete expense line wich is posted, approved or done.'))
+            if expense.request_state in ['post',]:
+                raise UserError(_('Vous ne pouvez pas supprimer une dépense déja payée'))
         return super(ExpenseLine, self).unlink()
 
     def write(self, vals):
-        for expense in self:
-            if expense.request_state in ['done', 'approved']:
-                raise UserError(_('You cannot modify a posted or approved expense.'))
         return super(ExpenseLine, self).write(vals)
     

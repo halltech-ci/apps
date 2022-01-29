@@ -47,20 +47,10 @@
              <table class="table table-bordeless table-sm">
                 <thead>
                     <tr>
-                      <strong>
-                        <th name="th_your_reference" class="text-left">Reference :</th>
-                        <th name="th_description" class="text-left">A l’attention de :</th>
-                      </strong>
+                        <th name="th_your_reference" class="text-left"><strong>Reference :</strong> <span t-esc="doc.client_order_ref"/></th>
+                        <th name="th_description" class="text-right"><strong>A l’attention de :</strong> <span t-esc="doc.sale_order_recipient"/></th>
                     </tr>
-                </thead>
-                 <tbody class="sale_tbody">
-                    <td name="td_client_order_ref" class="text-left">
-                    <span t-esc="doc.client_order_ref"/>
-                    </td>
-                        <td name="td_description" class="text-left">
-                            <span t-esc="doc.sale_order_recipient"/>
-                        </td>
-                 </tbody>       
+                </thead>       
             </table>
         </xpath>
         <!--Ajout de champ destinataire dans devis-->
@@ -71,6 +61,7 @@
         <xpath expr="//div[hasclass('page')]/div[@id='informations']" position="replace">
             <div></div>
         </xpath>
+
         <!-- Separate qty and unit-->
         <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_quantity']" position="replace">
             <td name='td_quantity' class="text-right">
@@ -124,7 +115,7 @@
             <div style="font-size:16px; padding-bottom:30px;">
                 <tr class="border-black">
                     <td>
-                        <span t-field="doc.amount_to_word"/> <span t-field="doc.currency_id.currency_unit_label"/> <span t-field="doc.currency_id.symbol"/>
+                        <span t-field="doc.amount_to_word"/> <span style="text-transform: uppercase;" t-field="doc.currency_id.currency_unit_label"/> <span style="text-transform: uppercase;" t-field="doc.currency_id.symbol"/>
                         
                     </td>
                 </tr>

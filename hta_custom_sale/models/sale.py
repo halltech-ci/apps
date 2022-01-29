@@ -39,8 +39,8 @@ class SaleOrder(models.Model):
         return num_to_word
         
     #sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), )
-    
-    is_proforma = fields.Boolean('Proformat')
+    date_order = fields.Datetime(readonly=False)
+    is_proforma = fields.Boolean('Proformat', default=False)
     description = fields.Text("Description : ")
     signed_user = fields.Many2one("res.users", string="Signed In User", readonly=True, default= lambda self: self.env.uid)
     sale_order_recipient = fields.Char("Destinataire")
@@ -50,7 +50,7 @@ class SaleOrder(models.Model):
     sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
     sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0, copy=True)
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
-    proforma = fields.Boolean(default=False)
+    #proforma = fields.Boolean(default=False)
     #is_proforma = fields.Boolean('Proformat', default=True) 
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inherit_report_sale_document" inherit_id="hta_custom_sale.inherit_report_saleorder_document">
+        <xpath expr="//div[hasclass('page')]/div[hasclass('d-flex')]" position="replace">
+            <div class="d-flex">
+                <div class="mr-auto p-2">
+                    <h3>
+                        <t t-if="not (env.context.get('proforma', False) or is_pro_forma or doc.is_proforma)">
+                            <span t-if="doc.state in ['sale', 'done']">COMMANDE/ORDER :</span>
+                            <span t-if="doc.state not in ['sale']">DEVIS/QUOTATION : </span>
+                        </t>
+                        <t t-if="doc.is_proforma">
+                            <span>PROFORMA N°:</span>
+                        </t>
+                        <span t-field="doc.name"/> 
+                    </h3>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

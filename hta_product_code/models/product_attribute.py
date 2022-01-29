@@ -13,58 +13,64 @@ class ProductAttribute(models.Model):
     code_length = fields.Integer(default=2, string="Nombre de caractere")
     is_automatic_code = fields.Boolean(default=True, string="Automatique/Manuel")
     code_compute_parameter = fields.Char(string="Parametre")
+    last_code = fields.Integer(string="Last Value Code", compute="_compute_last_value_code")
+    #product_tmpl_id = fields.Many2one("product.template", compute="_compute_attribute_id")
+    
+    
+    
+    def _compute_last_value_code(self):
+        for rec in self:
+            code = rec.mapped('value_ids').sort(reverse=True)
+            self.last_code = int([0]) or 1
     
     def _recuperate_compute_parameter(self):
         if self.code_compute_parameter:
-            convertedDict = dict((x.strip(), int(y.strip()))
+            convertedDict = dict((x.strip(), (y.strip()))
                      for x, y in (element.split(':')
-                                  for element in self.code_compute_parameter.split(', ')))
+                                  for element in self.code_compute_parameter.split(',')))
             return convertedDict
+        
+    def _compute_code(self):
+        for rec in self:
+            if rec.code_compute_parameter:
+                param = rec._recuperate_compute_parameter()
+                val = 1
+                if "incr" in param:
+                    val = int(param.get('incr'))
+                    code = val
+                    for line in rec.value_ids:
+                        if not line.is_manual:
+                            line.code = code
+                            code += val
+                if "pre" in param:
+                    val = param.get('pre')
+                    for line in rec.value_ids:
+                        if not line.is_manual:
+                            line.code = "{0}{1}".format(val, line.name)
+                if "tronc" in param:
+                    val = int(param.get('tronc'))
+                    for line in rec.value_ids:
+                        if not line.is_manual:
+                            line.code = line.name[0:val]
+    
+    """def write(self, line_values):
+        res = super(ProductAttribute, self).write(line_values)
+        self._compute_code()
+        return res
+    """
     
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
     
-    def increment(self, val):
-        #domaine = [()]
-        last_code = self.env['product.attribute'].search([('id', '=', self.attribute_id.id)]).mapped('value_ids.code').sort(reverse=True)
-        code ="0"
-        if last_code:
-            code = last_code[0] + val
-        else:
-            code = 1
-        return code
+    code = fields.Char(string="Code", store=True,)
+    is_manual = fields.Boolean(default=False)
     
+    """
     @api.onchange('name')
     def _onchange_name(self):
-        if self.name:
-            param = self.attribute_id._recuperate_compute_parameter()
-            if param:
-                if 'incr' in param:
-                    val = param.get('incr')
-                    #self.increment(param.get('incr'))
-                    self.code = self.increment(val)
-                if 'tronc' in param:
-                    val = param.get('tronc')
-                    self.code = self.name[0:val]
-                if 'pre' in param:
-                    val = param.get('tronc')
-                    self.code = "{0}{1}".format(val, self.name)
+        self.code = self.attribute_id._compute_code()
+    """
     
     
-#     @api.onchange('name')
-#     def _onchange_name(self):
-#         if self.name:
-#             self.code = self.name[0:2]
-    
-    code = fields.Char(default=_onchange_name, string="Code", store=True)
-    
-    
-#     @api.depends('attribute_id.code_compute_parameter', 'name')
-#     def _compute_value_code(self):
-#         for val in self:
-#             parameter = val.attribute_id.code_compute_parameter
-#             if val.name:
-#                 parameter = val.attribute_id.code_compute_parameter
-#                 val.code = val.name[0:2]
     
     

@@ -1,0 +1,20 @@
+{
+    "name": "HTA Product Variant Default Code",
+    "version": "13.0.1.1.0",
+    "author": "AvancOSC," "Shine IT," "Tecnativa," "Odoo Community Association (OCA)",
+    "website": "https://github.com/OCA/product-variant",
+    "license": "AGPL-3",
+    "category": "Product",
+    "depends": ["product"],
+    "data": [
+        'security/ir.model.access.csv',
+        "security/product_security.xml",
+        "data/ir_config_parameter.xml",
+        "views/product_category_views.xml",
+        "views/product_attribute_view.xml",
+        "views/product_view.xml",
+        "views/config_settings_view.xml",
+    ],
+    "demo": ["demo/attribute_demo.xml"],
+    "installable": True,
+}

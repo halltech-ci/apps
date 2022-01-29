@@ -1,0 +1,24 @@
+<odoo>
+  <data>
+    <record id="view_order_form_project" model="ir.ui.view">
+        <field name="name">sale.order.project.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="hta_sale_approval.view_order_form_extends"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="create_project_sale_confirm" 
+                        states="sale" 
+                        type="object" 
+                        class="oe_highlight"
+                        string="Create Project"
+                        
+                />
+            </xpath>
+            <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
+                <field name="create_project" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('state', 'not in', ('sale'))]}"/>
+                <field name="project_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': [('create_project', '=', 'create_project')], 'required': [('create_project', 'in', ['add_to_project']), ('state', 'in', ('sale'))]}"/>
+            </xpath>
+        </field>
+      </record>
+  </data>
+</odoo>

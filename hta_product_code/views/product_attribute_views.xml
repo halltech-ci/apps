@@ -3,9 +3,9 @@
     <record id="hta_product_attribute_form_view" model="ir.ui.view">
         <field name="name">hta_product_attribute</field>
         <field name="model">product.attribute</field>
-        <field name="inherit_id" ref="product.product_attribute_view_form"/>
+        <field name="inherit_id" ref="product_variant_default_code.view_product_attribute_form"/>
         <field name="arch" type="xml">
-          <xpath expr="//sheet/group[@name='main_fields']" position="after">
+          <xpath expr="//field[@name='value_ids']" position="before">
               <group>
                   <group>
                       <field name="code_type"/>
@@ -17,8 +17,9 @@
                   </group>
               </group>
           </xpath>
-          <xpath expr="//field[@name='value_ids']//field[@name='name']" position="after">
-            <field name="code" />
+          <xpath expr="//field[@name='value_ids']//field[@name='code']" position="after">
+            <!--<field name="code" />-->
+            <field name="is_manual" widget="boolean_button"/>
           </xpath>
         </field>
       </record>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inherit_report_purchaseorder_document" inherit_id="purchase.report_purchaseorder_document">
+        
+        <xpath expr="//t[@t-set='address']" position="replace"></xpath>
+        <!-- Add custom sequence in purchase-->
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
+            <h4 t-if="o.state == 'draft'">DEMANDE DE COTATION N°:<span t-field="o.name"/></h4>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
+            <h4 class="text-center" t-if="o.state in ['sent', 'to approve']" style="color: #cb2020;">DEMANDE DE COTATION N°: <span t-field="o.name"/></h4>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace">
+            <h4 class="text-center" t-if="o.state in ['purchase', 'done']" style="color: #cb2020;">BON DE COMMANDE N°: <span t-field="o.name"/></h4>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/h2[1]" position="replace" style="color: #cb2020;">
+            <h4 class="text-center" t-if="o.state == 'cancel'">(ANNULE) BON DE COMMANDE N°: <span t-field="o.name"/></h4>
+        </xpath>
+        <!-- Replacing information-->
+        <xpath expr="//div[hasclass('page')]/div[@id='informations']" position="replace">
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        <td class="text-left">Date : 
+                            <t t-if="o.state in ['purchase','done'] and o.date_approve">
+                                <span t-esc="o.date_approve.date()"/>
+                            </t>
+                        </td>
+                        <td class="text-right"><strong>Fournisseur : <span t-esc="o.partner_id.name"/></strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row"/>
+            
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]/thead/tr" position="replace">
+            <tr>
+                <th name="th_description"><strong>Description</strong></th>
+                <th name="th_quantity" class="text-right"><strong>Qté</strong></th>
+                <th name="th_unit" class="text-right"><strong>Unité</strong></th>
+                <th name="th_price_unit" class="text-right"><strong>Prix Unitaire</strong></th>
+                <th name="th_amount" class="text-right"><strong>Total</strong></th>
+            </tr>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]/tbody/t[2]/tr" position="replace">
+            <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                <t t-if="not line.display_type">
+                    <td id="product">
+                        <span t-field="line.name"/>
+                    </td>
+                    <td class="text-right">
+                        <span t-field="line.product_qty"/>
+                    </td>
+                    <td class="text-right">
+                        <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                    </td>
+                    <td class="text-right">
+                        <span t-field="line.price_unit"/>
+                    </td>
+                    <td class="text-right">
+                        <span t-field="line.price_subtotal"
+                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                    </td>
+                </t>
+                <t t-if="line.display_type == 'line_section'">
+                    <td colspan="99" id="section">
+                        <span t-field="line.name"/>
+                    </td>
+                    <t t-set="current_section" t-value="line"/>
+                    <t t-set="current_subtotal" t-value="0"/>
+                </t>
+                <t t-if="line.display_type == 'line_note'">
+                    <td colspan="99" id="note">
+                        <span t-field="line.name"/>
+                    </td>
+                </t>
+            </tr>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/p[@t-field='o.notes']" position="after">
+            <br/>
+            <div class="text-left" style="font-weight: bold; font-size: 15px;">
+                <p> Arrêtée la présente commande à la somme de : 
+                    <span t-field="o.amount_to_word"/>
+                    <span style="text-transform: uppercase;" t-field="o.currency_id.currency_unit_label"/>
+                    <span t-field="o.currency_id.symbol"/>
+                </p>
+            </div>
+            
+            <table class="table table-sm table_bordered" style="font-size: 11px">
+                <thead>
+                    <tr>
+                        <th>Adresse de livraison</th>
+                        <th>Condition de paiement</th>
+                        <th>Date de livraison</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><t t-if="o.dest_address_id">
+                                <span t-field="o.dest_address_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' name="purchase_shipping_address"/>
+                            </t>
+                        </td>
+                        <td>
+                            <span t-esc="o.partner_id.property_supplier_payment_term_id.name"/>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br></br>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                      <td scope="col" style="font-size: 12px">EMETTEUR</td>
+                      <td scope="col" style="font-size: 12px;">VALIDE PAR</td>
+                      <td scope="col" style="font-size: 12px;">SIGNANTURE ET CACHET DG</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]" position="attributes">
+            <attribute name="class">table table-sm o_main_table table-bordered</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]" position="attributes">
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
+        </xpath>
+    </template>
+</odoo>
