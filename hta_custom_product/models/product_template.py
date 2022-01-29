@@ -65,7 +65,7 @@ class ProductProduct(models.Model):
         for product in self.sudo():
             variant = product.product_template_attribute_value_ids._get_combination_name()
 
-            name = variant and "%s (%s)" % (product.name, variant) or product.name
+            name = variant and "%s %s" % (product.name, variant) or product.name
             sellers = []
             if partner_ids:
                 product_supplier_info = supplier_info_by_template.get(product.product_tmpl_id, [])
@@ -80,7 +80,7 @@ class ProductProduct(models.Model):
             if sellers:
                 for s in sellers:
                     seller_variant = s.product_name and (
-                        variant and "%s (%s)" % (s.product_name, variant) or s.product_name
+                        variant and "%s %s" % (s.product_name, variant) or s.product_name
                         ) or False
                     mydict = {
                               'id': product.id,
