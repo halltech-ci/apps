@@ -24,6 +24,7 @@
                 'custom_apps',
                 'mail',
                 'contacts',
+                'hta_document_sign',
                ],
 
     # always loaded
