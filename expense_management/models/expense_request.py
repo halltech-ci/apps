@@ -271,6 +271,6 @@ class ExpenseRequest(models.Model):
     
     def unlink(self):
         if any(self.filtered(lambda expense: expense.state in ('post'))):
-            raise UserError(_('You cannot delete an expense which is not draft, cancelled or submitted!'))        
+            raise UserError(_('Vous ne pouvez pas supprimer une dépense déja payée!'))        
         return super(ExpenseRequest, self).unlink()
     

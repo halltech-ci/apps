@@ -86,21 +86,35 @@
                     <span t-field="o.currency_id.symbol"/>
                 </p>
             </div>
-            <table class="table table-bordered">
+            
+            <table class="table table-sm table_bordered" style="font-size: 11px">
+                <thead>
+                    <tr>
+                        <th>Adresse de livraison</th>
+                        <th>Condition de paiement</th>
+                        <th>Date de livraison</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr>
-                      <td scope="col" rowspan="2" width="40%" style="font-size: 14px;">
-                          <p>Adresse de livraison: <t t-if="o.dest_address_id">
-                              <span t-field="o.dest_address_id"
-                            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' name="purchase_shipping_address"/>
-                              </t>
-                          </p>
-                          <p>Modalité e règlement: <span t-esc="o.partner_id.property_supplier_payment_term_id.name"/></p>
-                          <p>Date de livraison souhaité: </p>
-                      </td>
-                      <td scope="col" style="font-size: 9px">EMETTEUR</td>
-                      <td scope="col" style="font-size: 9px;">VALIDE PAR</td>
-                      <td scope="col" style="font-size: 9px;">SIGNANTURE ET CACHET DG</td>
+                        <td><t t-if="o.dest_address_id">
+                                <span t-field="o.dest_address_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' name="purchase_shipping_address"/>
+                            </t>
+                        </td>
+                        <td>
+                            <span t-esc="o.partner_id.property_supplier_payment_term_id.name"/>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br></br>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                      <td scope="col" style="font-size: 12px">EMETTEUR</td>
+                      <td scope="col" style="font-size: 12px;">VALIDE PAR</td>
+                      <td scope="col" style="font-size: 12px;">SIGNANTURE ET CACHET DG</td>
                     </tr>
                     <tr>
                       <td></td>
