@@ -35,7 +35,7 @@ class PurchaseOrder(models.Model):
     purchase_approver = fields.Many2one('res.users')
     
     def button_approve(self, force=False):
-        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now(), 'purchase_approver':self.user_id})
+        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now(), 'purchase_approver':self.user_id.id})
         self.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
         return {}
     
