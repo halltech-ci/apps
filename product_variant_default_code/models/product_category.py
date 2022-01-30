@@ -8,6 +8,7 @@ class ProductCategory(models.Model):
     def _get_default_category_code(self):
         return self.env["ir.sequence"].next_by_code("product.category.code")
 
+    description = fields.Text()
     category_code = fields.Char(index=True,)
     related_code = fields.Char(string='Related Code', 
                                #compute = '_compute_related_code', 
