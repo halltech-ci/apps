@@ -20,6 +20,19 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = 'product.product'
     
+    
+    name = fields.Char(compute="_compute_product_name")
+    
+    def _compute_product_name(self):
+        for product in self.sudo():
+            product_name = product.product_tmpl_id.name
+            if product.product_template_attribute_value_ids:
+                variant = product.product_template_attribute_value_ids._get_combination_name()
+                product_name = variant and "%s %s" % (product_name, variant)
+            product.name = product_name
+            
+                
+    
     #--------inherit product name_get methode-----------------------------
     def name_get(self):
         # TDE: this could be cleaned a bit I think
@@ -63,9 +76,9 @@ class ProductProduct(models.Model):
             for r in supplier_info:
                 supplier_info_by_template.setdefault(r.product_tmpl_id, []).append(r)
         for product in self.sudo():
-            variant = product.product_template_attribute_value_ids._get_combination_name()
+            #variant = product.product_template_attribute_value_ids._get_combination_name()
 
-            name = variant and "%s %s" % (product.name, variant) or product.name
+            name = product.name
             sellers = []
             if partner_ids:
                 product_supplier_info = supplier_info_by_template.get(product.product_tmpl_id, [])
@@ -79,9 +92,7 @@ class ProductProduct(models.Model):
                     sellers = [x for x in sellers if x.company_id.id in [company_id, False]]
             if sellers:
                 for s in sellers:
-                    seller_variant = s.product_name and (
-                        variant and "%s %s" % (s.product_name, variant) or s.product_name
-                        ) or False
+                    seller_variant = s.product_name or False
                     mydict = {
                               'id': product.id,
                               'name': seller_variant or name,
