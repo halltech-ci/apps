@@ -105,8 +105,8 @@ class ExpenseLine(models.Model):
     
     def unlink(self):
         for expense in self:
-            if expense.request_state in ['post']:
-                raise UserError(_('You cannot delete expense line wich is posted, approved or post.'))
+            if expense.request_state in ['post',]:
+                raise UserError(_('Vous ne pouvez pas supprimer une dépense déja payée'))
         return super(ExpenseLine, self).unlink()
 
     def write(self, vals):
