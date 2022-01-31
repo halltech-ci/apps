@@ -38,7 +38,7 @@
             </xpath>
             
             <field name="picking_type_id" position="attributes">
-                <attribute name="attrs">{'required':[('purchase_type', 'not in', ['travaux'])], 'invisible':[('purchase_type', 'not in', ['travaux'])]} </attribute>
+                <attribute name="attrs">{'required':[('purchase_type', 'not in', ['travaux'])], 'invisible':[('purchase_type', 'in', ['travaux'])]}</attribute>
             </field>
         </field>
     </record>
