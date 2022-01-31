@@ -32,9 +32,18 @@ class PurchaseOrder(models.Model):
         default=lambda self: self.env['purchase.order.line'].search([('order_id', '=', self.id)], limit=1).project_id.code,
     )
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
+    purchase_approver = fields.Many2one('res.users', store=True)
     
-    
-    
+    @api.onchange('state')
+    def _compute_purchase_approver(self):
+        if self.state == 'approve':
+            self.purchase_approver = self.user_id
+    """
+    def button_approve(self, force=False):
+        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now(), 'purchase_approver':self.user_id.id})
+        self.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
+        return {}
+    """
     
     @api.model
     def create(self, vals):
