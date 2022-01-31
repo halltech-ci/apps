@@ -21,7 +21,7 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
     
     
-    name = fields.Char(compute="_compute_product_name")
+    name = fields.Char(compute="_compute_product_name", store=True)
     
     def _compute_product_name(self):
         for product in self.sudo():
