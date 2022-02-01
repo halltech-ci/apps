@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <report
+            string="Workorder Request"
+            id="action_report_workorder_request"
+            model="product.request"
+            report_type="qweb-pdf"
+            name="hta_workorder_request.report_workorder_request"
+            file="hta_workorder_request.report_workorder_request"
+            print_report_name="'OT - %s - %s' % (object.project_task_id.name or '', object.name)"
+        />
+    </data>
+</odoo>

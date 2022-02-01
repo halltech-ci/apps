@@ -42,3 +42,28 @@
 	path = OCA/account-financial-tools
 	url = git@github.com:OCA/account-financial-tools.git
 	branch = 13.0
+
+[submodule "OCA/product-variant"]
+	path = OCA/product-variant
+	url = git@github.com:OCA/product-variant.git
+	branch = 13.0
+
+[submodule "OCA/account-invoicing"]
+	path = OCA/account-invoicing
+	url = git@github.com:OCA/account-invoicing.git
+	branch = 13.0
+
+[submodule "OCA/account-reconcile"]
+	path = OCA/account-reconcile
+	url = git@github.com:OCA/account-reconcile.git
+	branch = 13.0
+
+[submodule "OCA/hr-holidays"]
+	path = OCA/hr-holidays
+	url = git@github.com:OCA/hr-holidays.git
+	branch = 13.0
+
+[submodule "OCA/web"]
+	path = OCA/web
+	url = git@github.com:OCA/web.git
+	branch = 13.0

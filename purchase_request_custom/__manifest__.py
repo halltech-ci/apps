@@ -20,17 +20,29 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['purchase_request',
-               'custom_apps'],
+    'depends': ['uom', 'purchase_request',
+                #'custom_apps',
+                'hta_custom_sale',
+                'mail',
+                'contacts',
+                'hta_document_sign',
+               ],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/purchase_request_security.xml',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         'views/purchase_request_views.xml',
         'views/purchase_request_line_views.xml',
-        'data/mail_template_data.xml'
+        #"views/inherit_purchase_request_views.xml",
+        "report/purchase_request_report.xml",
+        "report/purchase_request_custom_report.xml",
+        'report/purchase_order_custom_report.xml',
+        #'data/mail_template_data.xml'
+        #data
+        'data/purchase_request_sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,0 +1,11 @@
+<odoo>
+    <report id="account_result_generate_xlsx_report"
+        model="account.result.report.wizard"
+        string="Account Result Report"
+        report_type="xlsx"
+        name="custom_report.account_result_report_xlsx_generate"
+        file="custom_report.account_result_report_xlsx_generate"
+        />
+
+
+</odoo>

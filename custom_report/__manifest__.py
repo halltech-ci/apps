@@ -27,7 +27,8 @@
                'hr_payroll_account',
                'purchase_request_custom',
                'sale_management',
-               'sale_order_secondary_unit',
+                'report_xlsx',
+               #'sale_order_secondary_unit',
                ],
 
     # always loaded
@@ -35,10 +36,11 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/purchase_order_report.xml',
-        'views/sale_order_report.xml',
+        #'views/purchase_order_report.xml',
+        #'views/sale_order_report.xml',
         'views/account_cash_form_view.xml',
-        'views/sale_order_views.xml',
+        #'views/hr_salary_rule_views.xml',
+        #'views/sale_order_views.xml',
         #report
         'report/template_report_project_report.xml',
         'report/template_report_analytic_report.xml',
@@ -47,6 +49,8 @@
         'report/template_report_etat_tva_report.xml',
         'report/template_report_balance_analytic_report.xml',
         'report/template_report_cash_report.xml',
+        'report/template_report_result_xlsx_report.xml',
+        
         #wizard
         'wizard/wizard_project_project_views.xml',
         'wizard/wizard_account_analytic_views.xml',

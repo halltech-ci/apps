@@ -1,0 +1,79 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="hta_account_asset_type_tree">
+      <field name="name">Categorie Asset</field>
+      <field name="model">hta.account_asset.type</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="number_percentage"/>
+          <field name="asset_ids"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="hta_account_asset_type_form">
+      <field name="name">Categorie Asset form</field>
+      <field name="model">hta.account_asset.type</field>
+      <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <div class="oe_title">
+                <label for="name" name="name_label" class="oe_edit_only"/>
+                <label for="name" name="model_name_label" string="Name Group" class="oe_edit_only"/>
+                <h1>
+                    <field name="name" placeholder="Batiments administratifs...." required="1"/>
+                </h1>
+            </div>
+            <group>
+                <group string="Method Number">
+                    <field name="number_percentage" style="width:18%%"/>   
+                </group>
+                
+            </group>
+            <group>
+                <group string="Accounting">
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                            
+                </group>
+                
+            </group>
+            <notebook colspan="4">
+                <page string="Asset" name="asset_ids">
+                    <field name="asset_ids">
+                    </field>
+                </page>
+            </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+        </form>
+      </field>
+    </record>
+      
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="action_asset_type_views">
+      <field name="name">Categorie Asset</field>
+      <field name="res_model">hta.account_asset.type</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new documents
+            </p>
+      </field>
+    </record>
+      
+    <menuitem id="menu_action_account_hta_asset_type"
+              name="Actifs Categorie"
+              parent="account.menu_finance_entries_management" 
+              action="action_asset_type_views"  
+              sequence="105"/>
+
+  </data>
+</odoo>

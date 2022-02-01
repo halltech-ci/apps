@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+     <record model="ir.ui.view" id="balance_analytic_report_wizard_inherits">
+      <field name="model">balance.analytic.report.wizard</field>
+      <field name="inherit_id" ref="custom_report.balance_analytic_report_wizard"/>
+      <field name="arch" type="xml">
+          <xpath expr="//footer/button[@name='get_report']" position='after'>
+              <button name="get_excel" string="Report Excel" type="object" class="oe_highlight"/>
+          </xpath>
+          
+      </field>
+    </record>
+  </data>
+</odoo>

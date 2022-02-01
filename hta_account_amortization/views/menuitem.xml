@@ -1,0 +1,9 @@
+<odoo>
+  <data>
+    <menuitem id="menu_action_account_hta_asset_type"
+              name="Actifs Categorie"
+              parent="account.menu_finance_entries_management" 
+              action="action_asset_type_views"  
+              sequence="105"/>
+  </data>
+</odoo>

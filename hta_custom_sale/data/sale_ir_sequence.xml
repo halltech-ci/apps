@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence for CM order -->
+        <record id="seq_sale_cmgc_sequence" model="ir.sequence">
+            <field name="name">Sale CM Sequence</field>
+            <field name="code">sale.cmgc.sequence</field>
+            <field name="prefix">CMGC%(y)s-</field>
+            <field name="active">TRUE</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        <!-- Sequence for CM order -->
+        <record id="seq_sale_fmfe_sequence" model="ir.sequence">
+            <field name="name">Sale FE Sequence</field>
+            <field name="code">sale.fmfe.sequence</field>
+            <field name="prefix">FMFE%(y)s-</field>
+            <field name="active">TRUE</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        <!-- Sequence for CM order -->
+        <record id="seq_sale_mips_sequence" model="ir.sequence">
+            <field name="name">Sale MI Sequence</field>
+            <field name="code">sale.mips.sequence</field>
+            <field name="prefix">MIPS%(y)s-</field>
+            <field eval="1" name="number_next"/>
+            <field name="active">TRUE</field>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        <!-- Sequence for CM order -->
+        <record id="seq_sale_bec_sequence" model="ir.sequence">
+            <field name="name">Sale EC Sequence</field>
+            <field name="code">sale.bec.sequence</field>
+            <field name="prefix">BEC%(y)s-</field>
+            <field name="active">TRUE</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        
+        <!-- Sequence for CM order -->
+        <record id="seq_sale_erp_sequence" model="ir.sequence">
+            <field name="name">Sale ERP Sequence</field>
+            <field name="code">sale.erp.sequence</field>
+            <field name="prefix">ERP/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field name="active">TRUE</field>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        <!-- Sequence for CM order -->
+        <record id="seq_sale_rit_sequence" model="ir.sequence">
+            <field name="name">Sale RIT Sequence</field>
+            <field name="code">sale.rit.sequence</field>
+            <field name="prefix">RIT/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field name="active">TRUE</field>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        <!-- Sequence for CM order -->
+        <record id="seq_sale_sec_sequence" model="ir.sequence">
+            <field name="name">Sale SEL Sequence</field>
+            <field name="code">sale.sel.sequence</field>
+            <field name="prefix">SEL/%(range_year)s/</field>
+            <field name="active">TRUE</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+        <!-- Sequence for CM order -->
+        <record id="seq_sale_gtp_sequence" model="ir.sequence">
+            <field name="name">Sale GTP Sequence</field>
+            <field name="code">sale.gtp.sequence</field>
+            <field name="prefix">GTP/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field name="active">TRUE</field>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name='implementation'>standard</field>
+        </record>
+    </data>
+</odoo>

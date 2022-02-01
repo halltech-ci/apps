@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inherit_report_sale_order_document_sign" inherit_id="sale.report_saleorder_document">
+        <!-- Delete initial position of signature-->
+        <xpath expr="//div[@name='signature']" position="replace"></xpath>
+        <!-- -->
+        <xpath expr="//p[@t-field='doc.note']" position="after">
+            <div class="text-right">
+                <strong>
+                    <span t-field="doc.user_id"/>
+                </strong>
+                <div t-if="doc.user_id.hta_doc_signature" class="mt32 ml64 mr4" name="signature">
+                    <div class="offset-8">
+                        <img t-att-src="image_data_uri(doc.user_id.hta_doc_signature)" style="max-height: 4cm; max-width: 15cm;"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

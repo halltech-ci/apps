@@ -1,0 +1,94 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="sale_order_view_inherit">
+        <field name="name">sale.order.inherit.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert sale order object-->
+          <xpath expr="//sheet/group" position="after">
+              <group>
+                  <field name="description"/>
+              </group>
+          </xpath>
+          <!-- Insert sale quotation recipient-->
+          <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
+            <field name="sale_order_recipient"/>
+            <field name="client_order_ref"/>  
+            <field name='project_code'/>
+          </xpath>
+          
+          <xpath expr="//sheet/group/group" position="inside">
+            <field name="project_id"/>
+            <field name="sale_order_type"/>
+          </xpath>
+          <!-- Adding product_code-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='product_id']" position="before">
+            <field name="product_code"/>
+          </xpath>
+            
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="before">
+            <field name="product_code"/>
+          </xpath>
+        
+          <!-- Adding custom field line_subtotal in sale_order_line-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='price_unit']" position="after">
+            <field name="line_subtotal"/>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+            <field name="line_subtotal"/>
+          </xpath>
+          <!-- Adding product_cost in sale order-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/div[@name='ordered_qty']/field[@name='product_uom_qty']" position="after">
+            <field name="product_cost"/>
+            <field name="line_margin"/>
+          </xpath>
+          <!-- Display only service and consommable product in sale order line-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='product_id']" position="attributes">
+              <attribute name="domain">[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id), ('type', 'in', ['service', 'consumable'])]</attribute>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+              <attribute name="domain">[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id), ('type', 'in', ['service', 'consumable'])]</attribute>
+          </xpath>
+          <!-- Remove create product in sale_order-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='product_id']" position="attributes">
+              <attribute name="options">{'no_create_edit': True}</attribute>
+          </xpath>
+          <!-- Remove create product in sale_order-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+              <attribute name="options">{'no_create_edit': True}</attribute>
+          </xpath>
+          <!-- Adding no_create_edit for product_uom-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/div[@name='ordered_qty']/field[@name='product_uom']" position="attributes">
+              <attribute name="options">{'no_create_edit': True}</attribute>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom']" position="attributes">
+              <attribute name="options">{'no_create_edit': True}</attribute>
+          </xpath>
+          <!-- Adding product_cost and line margin in sale_order_line-->
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+            <field name="product_cost"/>
+            <field name="line_margin"/>
+          </xpath>
+          <!-- Adding custom field sale_margin in sale order-->
+          <xpath expr="//field[@name='amount_tax']" position="after">
+                <field name="sale_margin" />
+              <field name="sale_discuss_margin" />
+          </xpath>
+            <xpath expr="//sheet/notebook/page[@name='order_lines']/group[@name='note_group']/group[1]/field[@name='note']" position="replace">
+            </xpath>
+          <xpath expr="//sheet/notebook/page[@name='order_lines']/group[@name='note_group']/group[@name='sale_total']" position="after">
+              <div class="oe_subtotal_footer_separator oe_inline o_td_label" style="font-size:15px;">
+                  <group attrs="{'invisible': [('amount_total', '&lt;=', 0)]}">
+                      <span><field name="amount_to_word" nolabel="1"/>
+                          FRANCS CFA</span>
+                  </group>
+              </div>
+              <group colspan="4">
+                    <field name="note" nolabel="1" placeholder="Terms and conditions..."/>
+              </group>
+          </xpath>  
+        </field>
+    </record>
+  </data>
+</odoo>

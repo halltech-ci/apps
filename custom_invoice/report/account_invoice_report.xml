@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <template id="inherit_account_invoice_report_document" inherit_id="account.report_invoice_document">
+      <!-- Insert BL number on sale invoice-->
+       <xpath expr="//div[hasclass('page')]/div[hasclass('row', 'mt32', 'mb32')]" position="after">
+           <div>
+             <strong>Objet :</strong>
+             <span t-field ="o.invoice_object"/>
+           </div>
+           <div class="row">
+             <p></p>
+           </div>
+       </xpath>        
+       
+       <xpath expr="//div[hasclass('page')]//div[hasclass('row', 'mt32', 'mb32')]" position="replace">
+           <div id="informations" class="row mt32 mb32">
+               <div class="col-auto mw-100 mb-2" t-if="o.invoice_date">
+                  <strong>Date de Facture:</strong>
+                  <p class="m-0" t-field="o.invoice_date"/>
+               </div>
+               <div class="col-auto mw-100 mb-2"></div>
+               <div class='col-auto mw-100 mb-2' t-if="o.ref" name="reference">
+                    <strong>Reference:</strong>
+                    <p class="m-0" t-field="o.ref"/>
+                </div>
+           </div>
+        <div class="row">
+           <p></p>
+        </div>
+        <table class="table table-sm" name="invoice_table">
+            <tbody>
+                <tr>
+                    <td>
+                        <strong>Ref. Devis:</strong>
+                    </td>
+                    <td>
+                        <strong>N° Bordereau de Livraison :</strong>
+                    </td>
+                    <td>
+                        <strong>N° Bon de Commande:</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <t t-if="not o.invoice_origin">
+                            <t t-if='o.source_document'>
+                                <p t-field="o.source_document"/>
+                            </t>
+                        </t>
+                        <t t-if="o.invoice_origin">
+                            <p t-field="o.invoice_origin"/>
+                        </t>
+                    </td>
+                    <td>
+                        <t t-if="o.delivery_slip">
+                            <p t-field="o.delivery_slip"/>
+                        </t>
+                    </td>
+                    <td>
+                        <t t-if="o.customer_reference">
+                            <p t-field="o.customer_reference"/>
+                        </t>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </xpath>
+        
+        <xpath expr="//div[hasclass('page')]/h2" position='replace'>
+            <h2>
+                <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')"></span>
+                <!--<span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Invoice</span> -->
+                <!--<span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice</span>-->
+                <!--<span t-if="o.type == 'out_refund'">Credit Note</span>-->
+                <!--<span t-if="o.type == 'in_refund'">Vendor Credit Note</span>-->
+                <!--<span t-if="o.type == 'in_invoice'">Vendor Bill</span>-->
+                <!-- <span t-field="o.number"/> -->
+            </h2>
+        </xpath>
+        <!--Delete tax from report -->
+        <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]/thead/tr/th[@name='th_taxes']" position='replace'>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]/tbody[hasclass('invoice_tbody')]/t[3]/tr/t[@t-if='not line.display_type']/td[5]" position='replace'>
+        </xpath>
+        <!-- -->
+        <xpath expr="//div[hasclass('page')]/p[@name='payment_term']" position='replace'>
+            <span></span>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/p[@t-if='o.fiscal_position_id.note']" position="after">
+            <div class="row">
+                <p></p>
+            </div>
+            <div class="text-right">
+                <strong>LA COMPTABILITE</strong>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/p[1]" position="replace">
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/p[@name='comment']" position="before">
+            <div style="font-size:16px; padding-bottom:30px;">
+                <tr class="border-black">
+                    <td><span t-field="o.amount_to_word"/> <span t-field="o.currency_id.currency_unit_label"/> <span t-field="o.currency_id.symbol"/></td>
+                </tr>
+            </div>
+        </xpath>
+    </template>
+  </data>
+</odoo>
