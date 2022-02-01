@@ -28,13 +28,19 @@ class PurchaseOrder(models.Model):
             rec.amount_to_word = str(self._num_to_words(rec.amount_total)).upper()
     
     
-    project_id = fields.Many2one('project.project', string='Project',
-        default=lambda self: self.env['purchase.order.line'].search([('order_id', '=', self.id)], limit=1).project_id.code,
-    )
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
+    purchase_approver = fields.Many2one('res.users', store=True)
     
-    
-    
+    @api.onchange('state')
+    def _compute_purchase_approver(self):
+        if self.state == 'approve':
+            self.purchase_approver = self.user_id
+    """
+    def button_approve(self, force=False):
+        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now(), 'purchase_approver':self.user_id.id})
+        self.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
+        return {}
+    """
     
     @api.model
     def create(self, vals):
@@ -68,6 +74,7 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
     
+    """
     project_id = fields.Many2one('project.project', compute='_compute_project_id', string="Project")
     
     @api.depends('purchase_request_allocation_ids')
@@ -78,5 +85,5 @@ class PurchaseOrderLine(models.Model):
                 #allocation_ids = rec.mapped('purchase_request_allocation_ids') 
                 #if len(allocation_ids) == 1:
                 rec.project_id = allocation_ids.purchase_request_line_id.project or False
-    
+    """
     

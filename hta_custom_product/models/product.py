@@ -1,26 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import itertools
-import logging
-from collections import defaultdict
+from odoo import models, fields, api
 
-from odoo import api, fields, models, tools, _, SUPERUSER_ID
-from odoo.exceptions import ValidationError, RedirectWarning, UserError
-from odoo.osv import expression
-
-_logger = logging.getLogger(__name__)
-
-
-class ProductTemplate(models.Model):
-    _inherit = 'product.template'
-    
-    type = fields.Selection(default='service')
-    
 
 class ProductProduct(models.Model):
-    _inherit = 'product.product'
+    _inherit = "product.product"
     
-    #--------inherit product name_get methode-----------------------------
     def name_get(self):
         # TDE: this could be cleaned a bit I think
 
@@ -52,10 +37,14 @@ class ProductProduct(models.Model):
         product_template_ids = self.sudo().mapped('product_tmpl_id').ids
 
         if partner_ids:
-            supplier_info = self.env['product.supplierinfo'].sudo().search([
-                ('product_tmpl_id', 'in', product_template_ids),
-                ('name', 'in', partner_ids),
-            ])
+            # name_get() of product with different quantities of the same supplier will be ambiguous, so
+            # we can pass a supplier_info in the context if we already know which one we want
+            supplier_info = self.env.context.get('supplier_info', False)
+            if not supplier_info:
+                supplier_info = self.env['product.supplierinfo'].sudo().search([
+                    ('product_tmpl_id', 'in', product_template_ids),
+                    ('name', 'in', partner_ids),
+                ])
             # Prefetch the fields used by the `name_get`, so `browse` doesn't fetch other fields
             # Use `load=False` to not call `name_get` for the `product_tmpl_id` and `product_id`
             supplier_info.sudo().read(['product_tmpl_id', 'product_id', 'product_name', 'product_code'], load=False)
@@ -65,7 +54,7 @@ class ProductProduct(models.Model):
         for product in self.sudo():
             variant = product.product_template_attribute_value_ids._get_combination_name()
 
-            name = variant and "%s %s" % (product.name, variant) or product.name
+            name = variant and "%s (%s)" % (product.name, variant) or product.name
             sellers = []
             if partner_ids:
                 product_supplier_info = supplier_info_by_template.get(product.product_tmpl_id, [])
@@ -80,7 +69,7 @@ class ProductProduct(models.Model):
             if sellers:
                 for s in sellers:
                     seller_variant = s.product_name and (
-                        variant and "%s %s" % (s.product_name, variant) or s.product_name
+                        variant and "%s (%s)" % (s.product_name, variant) or s.product_name
                         ) or False
                     mydict = {
                               'id': product.id,
