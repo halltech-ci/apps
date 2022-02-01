@@ -29,7 +29,7 @@ class PurchaseOrder(models.Model):
     
     
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
-    purchase_approver = fields.Many2one('res.users', store=True)
+    purchase_approver = fields.Many2one('res.users')
     
     @api.onchange('state')
     def _compute_purchase_approver(self):
@@ -75,15 +75,13 @@ class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
     
     """
-    project_id = fields.Many2one('project.project', compute='_compute_project_id', string="Project")
+    project = fields.Many2one('project.project', compute="_compute_project_id", store=True)
+    project_code = fields.Char(related="project.code")
     
-    @api.depends('purchase_request_allocation_ids')
+    @api.depends('purchase_request_lines')
     def _compute_project_id(self):
-        for rec in self:
-            if rec.purchase_request_allocation_ids:
-                allocation_ids = self.env['purchase.order.line'].search([], limit=1).mapped('purchase_request_allocation_ids')
-                #allocation_ids = rec.mapped('purchase_request_allocation_ids') 
-                #if len(allocation_ids) == 1:
-                rec.project_id = allocation_ids.purchase_request_line_id.project or False
+        for line in self:
+            line.project = line.purchase_request_lines.project
     """
+    
     
