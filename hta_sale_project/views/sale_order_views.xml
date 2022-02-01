@@ -14,6 +14,12 @@
                         
                 />
             </xpath>
+            <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="replace">
+                <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
+                        type="action" context="{'default_advance_payment_method': 'percentage'}"
+                        attrs="{'invisible': ['|',('invoice_status', '!=', 'no'), ('state', 'not in', ('sale', 'create_project'))]}"/>
+            </xpath>
+
             <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
                 <field name="create_project" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('state', 'not in', ('sale'))]}"/>
                 <field name="project_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': [('create_project', '=', 'create_project')], 'required': [('create_project', 'in', ['add_to_project']), ('state', 'in', ('sale'))]}"/>
