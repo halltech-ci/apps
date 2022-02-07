@@ -11,7 +11,7 @@
                 </h1>
             <xpath expr="//sheet//group/group/field[@name='assigned_to']" position="after">
                 <field name='purchase_type' attrs="{'readonly': [('is_editable','=', False)], 'required': True}"/>
-                <field name='sale_order' attrs="{'required': [('purchase_type','=', 'project')]}" domain="[('state', 'in', ('sale', 'done', 'create_project'))]" options="{'no_create': True}"/>
+                <field name='sale_order' attrs="{'required': [('purchase_type','=', 'project')]}" domain="[('state', 'in', ('done', 'create_project'))]" options="{'no_create': True}"/>
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='group_id']" position="after">
                 <field name="project_code"/>

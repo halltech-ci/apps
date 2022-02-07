@@ -24,6 +24,9 @@
                 <field name="create_project" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('state', 'not in', ('sale'))]}"/>
                 <field name="project_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': [('create_project', '=', 'create_project')], 'required': [('create_project', 'in', ['add_to_project']), ('state', 'in', ('sale'))]}"/>
             </xpath>
+            <xpath expr="//sheet/group" position="after">
+                <field name='project_description' attrs="{'invisible': [('state', 'not in', ('sale')), ('create_project', '=', 'create_project')], 'required': [('create_project', 'in', ['add_to_project']), ('state', 'in', ('sale'))]}"/>
+            </xpath>
         </field>
       </record>
   </data>
