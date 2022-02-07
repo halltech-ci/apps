@@ -139,7 +139,7 @@
         <xpath expr="//p[@t-field='doc.note']" position="after">
             <div class="descrript_info">
                 <p><b><h style="color: red;">NON COMPRIS:</h> Toutes les charges non décrites dans cette offre</b></p>
-                <p><b><h style="color: red;">NB:</h> Prix valabre sous réserve de variation de prix sur le marché international et national.</b></p>
+                <p><b><h style="color: red;">NB:</h> Prix valable sous réserve de variation de prix sur le marché international et national.</b></p>
             </div>
         </xpath>
         
