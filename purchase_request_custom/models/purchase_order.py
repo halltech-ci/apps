@@ -74,6 +74,9 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
     
+    specifications = fields.Text(string="Specifications")
+    project = fields.Many2one('project.project',)
+    
     """
     project = fields.Many2one('project.project', compute="_compute_project_id", store=True)
     project_code = fields.Char(related="project.code")
