@@ -82,9 +82,10 @@ class PurchaseOrderLine(models.Model):
     
     def _compute_specifications(self):
         for line in self:
-            pr_line= self.env['purchase.order.line'].search([('id', '=', line.id)], limit=1).purchase_request_lines
-            line.project = pr_line.project
-            line.specifications = pr_line.specifications
+            pr_line= line.purchase_request_lines.ids[0]
+            purchase_request = self.env['purchase.request.line'].search([('id', '=', pr_line)], limit=1)
+            line.project = purchase_request.project
+            line.specifications = purchase_request.specifications
             
             
     """
