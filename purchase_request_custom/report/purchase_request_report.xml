@@ -31,6 +31,7 @@
         <xpath expr="//table[hasclass('table', 'table-sm')]//thead/tr" position="replace">
             <tr>
                 <th class="text-left"><strong>Description</strong></th>
+                <th class="text-left"><strong>Caractéristiques</strong></th>
                 <th class="text-right"><strong>Qté</strong></th>
                 <th class="text-right"><strong>Unité</strong></th>
                 
@@ -43,6 +44,9 @@
                     <t t-if="not order_line.display_type">
                         <td id="product">
                             <span t-field="order_line.name"/>
+                        </td>
+                        <td id="product">
+                            <span t-field="order_line.specifications"/>
                         </td>
                         <td class="text-right">
                             <span t-field="order_line.product_qty"/>

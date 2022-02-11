@@ -37,6 +37,7 @@
         <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]/thead/tr" position="replace">
             <tr>
                 <th name="th_description"><strong>Description</strong></th>
+                <th name="th_description"><strong>Caractéristiques</strong></th>
                 <th name="th_quantity" class="text-right"><strong>Qté</strong></th>
                 <th name="th_unit" class="text-right"><strong>Unité</strong></th>
                 <th name="th_price_unit" class="text-right"><strong>Prix Unitaire</strong></th>
@@ -48,6 +49,9 @@
                 <t t-if="not line.display_type">
                     <td id="product">
                         <span t-field="line.name"/>
+                    </td>
+                    <td class="text-right">
+                        <span t-field="line.specifications"/>
                     </td>
                     <td class="text-right">
                         <span t-field="line.product_qty"/>
