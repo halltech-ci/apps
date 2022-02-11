@@ -74,13 +74,20 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
     
-    specifications = fields.Text(string="Specifications")
-    project = fields.Many2one('project.project',)
+    specifications = fields.Text(string="Specifications",
+                                compute="_compute_specifications"
+                                )
+    project = fields.Many2one('project.project', compute="_compute_specifications")
     
+    
+    def _compute_specifications(self):
+        for line in self:
+            pr_line= self.env['purchase.order.line'].search([('id', '=', line.id)], limit=1).purchase_request_lines
+            line.project = pr_line.project
+            line.specifications = pr_line.specifications
+            
+            
     """
-    project = fields.Many2one('project.project', compute="_compute_project_id", store=True)
-    project_code = fields.Char(related="project.code")
-    
     @api.depends('purchase_request_lines')
     def _compute_project_id(self):
         for line in self:
