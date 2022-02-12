@@ -82,16 +82,12 @@ class PurchaseOrderLine(models.Model):
     
     def _compute_specifications(self):
         for line in self:
-            pr_line= self.env['purchase.order.line'].search([('id', '=', line.id)], limit=1).purchase_request_lines
-            line.project = pr_line.project
-            line.specifications = pr_line.specifications
+            #request_line = self.env['purchase.order.line'].search([])
+            pr_line = line.mapped('purchase_request_lines').ids
+            pr_obj = self.env['purchase.request.line'].browse()
+            if len(pr_line) > 0:
+                pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
+            line.project = pr_obj.project
+            line.specifications = pr_obj.specifications
             
-            
-    """
-    @api.depends('purchase_request_lines')
-    def _compute_project_id(self):
-        for line in self:
-            line.project = line.purchase_request_lines.project
-    """
-    
     

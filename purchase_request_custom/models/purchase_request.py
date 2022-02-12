@@ -90,6 +90,7 @@ class PurchaseRequestLine(models.Model):
     product_tmpl_id = fields.Many2one("product.template", related="product_id.product_tmpl_id")
     #product_attribute_ids = fields.Many2many('product.attribute.', related="product_tmpl_id.product_attribute_ids")
     attribute_line_ids = fields.One2many("product.template.attribute.line", related="product_tmpl_id.attribute_line_ids")
+    specifications = fields.Text(default="")
 
     
     @api.onchange("product_id")

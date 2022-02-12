@@ -116,14 +116,22 @@
             <table class="table table-sm table-bordered">
                 <tbody>
                     <tr>
-                      <td scope="col" style="font-size: 12px">EMETTEUR</td>
-                      <td scope="col" style="font-size: 12px;">SIGNANTURE ET CACHET DG</td>
+                      <td class="text-left" scope="col" style="font-size: 12px">EMETTEUR</td>
+                      <td class="text-center" scope="col" style="font-size: 12px;">VALIDE PAR</td>
+                      <td class="text-right" scope="col" style="font-size: 12px;">SIGNANTURE ET CACHET DG</td>
                     </tr>
                     <tr>
                       <td>
                           <t t-if="o.user_id.hta_doc_signature" class="mt32 ml64 mr4">
                               <img t-att-src="image_data_uri(o.user_id.hta_doc_signature)" style="max-height: 4cm; max-width: 15cm;"/>
                           </t>
+                      </td>
+                      <td>
+                          <t t-if="o.purchase_approver" class="mt32 ml64 mr4">
+                              <t t-if="o.purchase_approver.hta_doc_signature">
+                                  <img t-att-src="image_data_uri(o.purchase_approver.hta_doc_signature)" style="max-height: 4cm; max-width: 15cm;"/>
+                              </t>
+                            </t>
                       </td>
                       <td>
                           <t t-if="o.purchase_approver" class="mt32 ml64 mr4">
