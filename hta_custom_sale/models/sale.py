@@ -50,9 +50,20 @@ class SaleOrder(models.Model):
     sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
     sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0, copy=True)
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
-    #proforma = fields.Boolean(default=False)
-    #is_proforma = fields.Boolean('Proformat', default=True) 
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
+    total_cost = fields.Monetary(string="Cout Total", copute='_compute_total_cost')
+    total_margin_amount = fields.Monetary(string="Marge Brut", compute="_compute_total_margin_amount")
+    
+    @api.depends('order_line.product_cost', )
+    def _compute_total_cost(self):
+        total_cost = 0 
+        for line in self.order_line:
+            total_cost += line.product.cost
+    
+    @api.depends('total_cost', 'amount_total_no_tax')
+    def _compute_total_margin_amount(self):
+        for rec in self:
+            rec.total_margin_amount = rec.amount_total_no_tax - rec.total_cost
 
     @api.onchange('sale_margin')
     def onchange_sale_margine(self):
