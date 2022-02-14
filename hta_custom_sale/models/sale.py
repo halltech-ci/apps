@@ -51,7 +51,7 @@ class SaleOrder(models.Model):
     sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0, copy=True)
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
-    total_cost = fields.Monetary(string="Cout Total", copute='_compute_total_cost')
+    total_cost = fields.Monetary(string="Cout Total", compute='_compute_total_cost')
     total_margin_amount = fields.Monetary(string="Marge Brut", compute="_compute_total_margin_amount")
     
     @api.depends('order_line.product_cost', )
