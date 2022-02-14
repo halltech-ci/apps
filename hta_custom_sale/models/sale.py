@@ -55,10 +55,13 @@ class SaleOrder(models.Model):
     total_margin_amount = fields.Monetary(string="Marge Brut", compute="_compute_total_margin_amount")
     
     @api.depends('order_line.product_cost', )
-    def _compute_total_cost(self):
-        total_cost = 0 
-        for line in self.order_line:
-            total_cost += line.product.cost
+    def _compute_total_cost(self): 
+        for rec in self:
+            total_cost = 0
+            for line in rec.order_line:
+                total_cost += line.product.cost
+            rec.total_cost = total_cost
+        
     
     @api.depends('total_cost', 'amount_total_no_tax')
     def _compute_total_margin_amount(self):
