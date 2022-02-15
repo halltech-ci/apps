@@ -59,7 +59,7 @@ class SaleOrder(models.Model):
         for rec in self:
             total_cost = 0
             for line in rec.order_line:
-                total_cost += line.product.cost
+                total_cost += line.product_cost
             rec.total_cost = total_cost
         
     
