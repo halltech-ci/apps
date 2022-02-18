@@ -14,11 +14,11 @@
                         
                 />
             </xpath>
-            <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="replace">
+            <!--<xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="replace">
                 <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
                         type="action" context="{'default_advance_payment_method': 'percentage'}"
                         attrs="{'invisible': ['|',('invoice_status', '!=', 'no'), ('state', 'not in', ('sale', 'create_project'))]}"/>
-            </xpath>
+            </xpath>-->
 
             <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
                 <field name="create_project" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('state', 'not in', ('sale'))]}"/>
@@ -26,7 +26,7 @@
             </xpath>
             <xpath expr="//sheet/group" position="after">
                 <group>
-                    <field name='project_description' string="Description Projet :" attrs="{'invisible': [('state', 'not in', ('sale'))], 'required': [('create_project', 'in', ['add_to_project']), ('state', 'in', ('sale'))]}"/>
+                    <field name='project_description' string="Description Projet :" attrs="{'invisible': [('state', 'not in', ('sale'))], 'required': [('create_project', 'in', ['create_project']), ('state', 'in', ('sale'))]}"/>
                 </group>
             </xpath>
         </field>
