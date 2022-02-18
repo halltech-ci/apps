@@ -7,16 +7,23 @@ from odoo.exceptions import UserError, ValidationError
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-
+    
     create_project = fields.Selection(selection=[('add_to_project', "Use project"), ('create_project', "Create Project"),], default='add_to_project')
     project_id = fields.Many2one('project.project', readonly=False)
     state = fields.Selection(selection_add=[('create_project', 'Project'),])
     project_description = fields.Text(string="Decription du Projet")
+    state = fields.Selection([
+        ('draft', 'Quotation'),
+        ('sent', 'Quotation Sent'),
+        ('sale', 'Sales Order'),
+        ('done', 'Projet'),
+        ('cancel', 'Cancelled'),
+        ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
     
     
     def action_create_project(self):
         for rec in self:
-            rec.state = 'create_project'
+            rec.state = 'done'
             
     #@api.depends("create_project")
     def create_project_sale_confirm(self):

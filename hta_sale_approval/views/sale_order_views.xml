@@ -32,11 +32,11 @@
             </xpath>
             <xpath expr="//button[@name='action_cancel']" position="replace">
                 <button name="action_cancel" 
-                        states="draft,sent" 
+                        states="draft,sent,waiting_for_approval" 
                         type="object"
                         string="Cancel"
-                        confirm='Voulez-vous vraiment valider annuler ce devis ?'
-                        attrs="{'invisible': [('state', 'not in', ['done'])]}"
+                        confirm='Voulez-vous vraiment annuler ce devis ?'
+                        attrs="{'invisible': [('state', 'not in', ['done','sale'])]}"
                 />
             </xpath>
 
