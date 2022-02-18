@@ -12,13 +12,7 @@ class SaleOrder(models.Model):
     project_id = fields.Many2one('project.project', readonly=False)
     state = fields.Selection(selection_add=[('create_project', 'Project'),])
     project_description = fields.Text(string="Decription du Projet")
-    state = fields.Selection([
-        ('draft', 'Quotation'),
-        ('sent', 'Quotation Sent'),
-        ('sale', 'Sales Order'),
-        ('done', 'Projet'),
-        ('cancel', 'Cancelled'),
-        ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
+    state = fields.Selection(selection_add=[('done', 'Projet')])
     
     
     def action_create_project(self):
@@ -43,7 +37,7 @@ class SaleOrder(models.Model):
                     rec._create_analytic_account(prefix=rec.description or rec.name or None)
                     account = rec.analytic_account_id
                 values = {
-                    'name': rec.name,
+                    'name': rec.project_description or rec.name,
                     'analytic_account_id': account.id,
                     'partner_id': rec.partner_id.id,
                     #'sale_line_id': self.id,
@@ -55,6 +49,6 @@ class SaleOrder(models.Model):
                     values['project_description'] = rec.project_description
                 project = self.env['project.project'].create(values)
                 rec.write({'project_id': project.id,
-                      'state':'create_project',
+                      'state':'done',
                       })
             
