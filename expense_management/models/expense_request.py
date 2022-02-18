@@ -21,10 +21,6 @@ class ExpenseRequest(models.Model):
     @api.model
     def _get_default_requested_by(self):
         return self.env['res.users'].browse(self.env.uid)
-    
-    def _get_default_name(self):
-        return self.env['ir.sequence'].next_by_code("expense.request.code")
-
 
     def get_default_statement_id(self):
         import datetime
@@ -34,7 +30,7 @@ class ExpenseRequest(models.Model):
         return res
     
     
-    name = fields.Char(default=_get_default_name)
+    name = fields.Char(default='/', compute = '_compute_default_name')
 
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
@@ -73,7 +69,10 @@ class ExpenseRequest(models.Model):
     expense_approver = fields.Many2one('res.users', string="Valideur", states=READONLY_STATES)
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
     
-    
+    def _compute_default_name(self):
+        sequence = self.env['ir.sequence'].next_by_code("expense.request.code")
+        self.name = sequence
+
     def send_validation_mail(self):
         self.ensure_one()
         template_id = self.env.ref('expense_management.expense_mail_template').id
