@@ -7,8 +7,8 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
      
     state = fields.Selection(selection_add=[
-        ('waiting_for_approval', 'Waiting For Approval'),
-        ('approve', 'Approved'),
+        ('waiting_for_approval', 'Attente de validation'),
+        ('approve', 'Approuve'),
         ('sent',),
         ]
     )
