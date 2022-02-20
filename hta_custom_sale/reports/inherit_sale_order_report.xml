@@ -40,7 +40,7 @@
         </xpath>
         <xpath expr="//table[hasclass('table', 'table-sm', 'o_main_table')]" position="before">
             <br/>
-            <p style="font-size: 18px; text-transform: uppercase; font-weight: bold; text-align: left;" t-field="doc.description"/>
+            <p style="font-size: 16px; text-transform: uppercase; font-weight: bold; text-align: left;" t-field="doc.description"/>
             <br/>
         </xpath>
         <xpath expr="//div[hasclass('page')]/div[hasclass('d-flex')]" position="after">
