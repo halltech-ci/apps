@@ -29,9 +29,7 @@ class ExpenseRequest(models.Model):
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
         return res
     
-    
     name = fields.Char(default='/', compute = '_compute_default_name')
-
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
