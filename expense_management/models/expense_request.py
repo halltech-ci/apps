@@ -49,7 +49,9 @@ class ExpenseRequest(models.Model):
     intermediary = fields.Many2one('hr.employee', string="Intermediaire")
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange',
                     default=_get_default_requested_by)
-    date = fields.Datetime(readonly=True, default=fields.Datetime.now, string="Date")
+    date = fields.Datetime(default=fields.Datetime.now, string="Date",
+                          #readonly=True, 
+                          )
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env.company.currency_id)
     total_amount = fields.Monetary('Total Amount', currency_field='currency_id', compute='_compute_amount', store=True, tracking=True)
