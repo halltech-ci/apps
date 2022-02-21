@@ -18,6 +18,9 @@ class ExpenseRequest(models.Model):
     def _default_employee_id(self):
         return self.env.user.employee_id
     
+    def _get_default_name(self):
+        return self.env['ir.sequence'].next_by_code("expense.request.code")
+    
     @api.model
     def _get_default_requested_by(self):
         return self.env['res.users'].browse(self.env.uid)
@@ -29,7 +32,7 @@ class ExpenseRequest(models.Model):
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
         return res
     
-    name = fields.Char(default='/', compute = '_compute_default_name')
+    name = fields.Char(default=_get_default_name)
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
@@ -69,9 +72,12 @@ class ExpenseRequest(models.Model):
     expense_approver = fields.Many2one('res.users', string="Valideur", states=READONLY_STATES)
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
     
+    """
     def _compute_default_name(self):
-        sequence = self.env['ir.sequence'].next_by_code("expense.request.code")
-        self.name = sequence
+        for rec in self:
+            sequence = self.env['ir.sequence'].next_by_code("expense.request.code")
+            rec.name = sequence
+    """
 
     def send_validation_mail(self):
         self.ensure_one()
