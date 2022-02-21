@@ -96,7 +96,8 @@
                       />
                  </group>
                   <group>
-                      <field name="date" readonly='True'/>
+                      <field name="date"/>
+                      <!--<field name="date" readonly='True'/>-->
                       <field name="requested_by" readonly='True'/>
                       <field name="total_amount" readonly='True'/>
                       <field name="balance_amount" readonly='True' attrs="{'invisible': [('state','!=', 'to_approve'),('requested_by','!=', 'expense_approver')]}"/>
