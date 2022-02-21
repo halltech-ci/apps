@@ -54,7 +54,7 @@ class ProductProduct(models.Model):
         for product in self.sudo():
             variant = product.product_template_attribute_value_ids._get_combination_name()
 
-            name = variant and "%s (%s)" % (product.name, variant) or product.name
+            name = variant and "%s %s" % (product.name, variant) or product.name
             sellers = []
             if partner_ids:
                 product_supplier_info = supplier_info_by_template.get(product.product_tmpl_id, [])
