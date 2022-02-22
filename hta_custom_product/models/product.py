@@ -17,7 +17,7 @@ class ProductTemplate(models.Model):
         for template, vals in zip(templates, vals_list):
             related_vals = {}
             if vals.get('product_variant_id'):
-                related_vals['name'] = vals['product_variant_id']
+                related_vals['name'] = vals['display_name']
             if vals.get('barcode'):
                 related_vals['barcode'] = vals['barcode']
             if vals.get('default_code'):
