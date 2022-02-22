@@ -241,10 +241,10 @@
                     <br/>
                     <div class="container">
                         <div class="row justify-content-end" style="font-size:16px; padding-bottom:30px;">
-                            <div class="col-6" style="font-weight: bold;">
+                            <div class="col-6" style="font-weight: bold; margin-top:90px;">
                                 <p> Arrêt la présente facture à la somme de:</p>
                             </div>
-                            <div class="col-4" style="text-align: center; width: 300px; border:1px solid #000; margin-right:30px;" >
+                            <div class="col-4" style="text-align: center; width: 300px; border:1px solid #000; margin-right:30px; margin-top:90px;" >
                                 <span t-field="o.amount_to_word"/> <span t-field="o.currency_id.currency_unit_label"/> <span t-field="o.currency_id.symbol"/>
                             </div>
                         </div>
