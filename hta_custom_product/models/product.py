@@ -1,10 +1,56 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        ''' Store the initial standard price in order to be able to retrieve the cost of a product template for a given date'''
+        templates = super(ProductTemplate, self).create(vals_list)
+        if "create_product_product" not in self._context:
+            templates._create_variant_ids()
+
+        # This is needed to set given values to first variant after creation
+        for template, vals in zip(templates, vals_list):
+            related_vals = {}
+            if vals.get('product_variant_id'):
+                related_vals['name'] = vals['product_variant_id']
+            if vals.get('barcode'):
+                related_vals['barcode'] = vals['barcode']
+            if vals.get('default_code'):
+                related_vals['default_code'] = vals['default_code']
+            if vals.get('standard_price'):
+                related_vals['standard_price'] = vals['standard_price']
+            if vals.get('volume'):
+                related_vals['volume'] = vals['volume']
+            if vals.get('weight'):
+                related_vals['weight'] = vals['weight']
+            # Please do forward port
+            if vals.get('packaging_ids'):
+                related_vals['packaging_ids'] = vals['packaging_ids']
+            if related_vals:
+                template.write(related_vals)
+
+        return templates
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
+    
+    
+    name = fields.Char()
+    
+    @api.depends('product_variant_id')
+    def _compute_product_name(self):
+        for product in self:
+            if not product.product_variant_id:
+                product.name = product.product_tmpl_id.name
+            else:
+                product.name = product.product_variant_id.name
+        
+    
     
     def name_get(self):
         # TDE: this could be cleaned a bit I think
@@ -54,7 +100,7 @@ class ProductProduct(models.Model):
         for product in self.sudo():
             variant = product.product_template_attribute_value_ids._get_combination_name()
 
-            name = variant and "%s %s" % (product.name, variant) or product.name
+            name = variant and "%s (%s)" % (product.name, variant) or product.name
             sellers = []
             if partner_ids:
                 product_supplier_info = supplier_info_by_template.get(product.product_tmpl_id, [])
