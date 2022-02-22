@@ -16,7 +16,7 @@ class ProductTemplate(models.Model):
         # This is needed to set given values to first variant after creation
         for template, vals in zip(templates, vals_list):
             related_vals = {}
-            if vals.get('product_variant_id'):
+            if vals.get('display_name'):
                 related_vals['name'] = vals['display_name']
             if vals.get('barcode'):
                 related_vals['barcode'] = vals['barcode']
@@ -38,18 +38,6 @@ class ProductTemplate(models.Model):
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
-    
-    
-    name = fields.Char()
-    
-    @api.depends('product_variant_id')
-    def _compute_product_name(self):
-        for product in self:
-            if not product.product_variant_id:
-                product.name = product.product_tmpl_id.name
-            else:
-                product.name = product.product_variant_id.name
-        
     
     
     def name_get(self):
