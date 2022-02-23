@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 
+"""
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
@@ -15,8 +16,8 @@ class ProductTemplate(models.Model):
         # This is needed to set given values to first variant after creation
         for template, vals in zip(templates, vals_list):
             related_vals = {}
-            if vals.get('product_variant_id'):
-                related_vals['name'] = vals['product_variant_id']
+            if vals.get('display_name'):
+                related_vals['description_sale'] = vals['display_name']
             if vals.get('barcode'):
                 related_vals['barcode'] = vals['barcode']
             if vals.get('default_code'):
@@ -34,12 +35,23 @@ class ProductTemplate(models.Model):
                 template.write(related_vals)
 
         return templates
-
-
+    """
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
     
+    """
+    name = fields.Char(default=lambda self:self.product_tmpl_id.name, compute='_compute_product_name')
+    
+    @api.depends('product_tmpl_id')
+    def _compute_product_name(self):
+        for product in self:        
+            product_name = product.product_tmpl_id.name
+            if product.product_template_attribute_value_ids:
+                variant = product.product_template_attribute_value_ids._get_combination_name()
+                product_name = "%s %s" % (product_name, variant)
+            product.name = product_name
+    """    
     
     def name_get(self):
         # TDE: this could be cleaned a bit I think
