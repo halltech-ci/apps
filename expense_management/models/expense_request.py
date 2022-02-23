@@ -18,13 +18,12 @@ class ExpenseRequest(models.Model):
     def _default_employee_id(self):
         return self.env.user.employee_id
     
+    def _get_default_name(self):
+        return self.env['ir.sequence'].next_by_code("expense.request.code")
+    
     @api.model
     def _get_default_requested_by(self):
         return self.env['res.users'].browse(self.env.uid)
-    
-    def _get_default_name(self):
-        return self.env['ir.sequence'].next_by_code("expense.request.code")
-
 
     def get_default_statement_id(self):
         import datetime
@@ -33,9 +32,7 @@ class ExpenseRequest(models.Model):
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
         return res
     
-    
     name = fields.Char(default=_get_default_name)
-
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
@@ -55,7 +52,9 @@ class ExpenseRequest(models.Model):
     intermediary = fields.Many2one('hr.employee', string="Intermediaire")
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange',
                     default=_get_default_requested_by)
-    date = fields.Datetime(readonly=True, default=fields.Datetime.now, string="Date")
+    date = fields.Datetime(default=fields.Datetime.now, string="Date",
+                          #readonly=True, 
+                          )
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env.company.currency_id)
     total_amount = fields.Monetary('Total Amount', currency_field='currency_id', compute='_compute_amount', store=True, tracking=True)
@@ -73,7 +72,13 @@ class ExpenseRequest(models.Model):
     expense_approver = fields.Many2one('res.users', string="Valideur", states=READONLY_STATES)
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
     
-    
+    """
+    def _compute_default_name(self):
+        for rec in self:
+            sequence = self.env['ir.sequence'].next_by_code("expense.request.code")
+            rec.name = sequence
+    """
+
     def send_validation_mail(self):
         self.ensure_one()
         template_id = self.env.ref('expense_management.expense_mail_template').id

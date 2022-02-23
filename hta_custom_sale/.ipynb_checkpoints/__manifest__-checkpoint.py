@@ -21,12 +21,14 @@
 
     # any module necessary for this one to work correctly
     'depends': ['sale_order_general_discount',
+                'sale_management',
                'hta_custom_project',
+                'sign',
                ],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        #'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         #views
@@ -34,7 +36,8 @@
         #data
         'data/sale_ir_sequence.xml',
         #Reports
-        'reports/sale_order_report.xml',
+        #'reports/sale_order_report.xml',
+        'reports/inherit_sale_order_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

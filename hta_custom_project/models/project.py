@@ -49,6 +49,6 @@ class Project(models.Model):
 
         for project in result:
             rec = self.browse(project[0])
-            name = "[{}] {}".format(rec.code, project[1])
+            name = "{}-{}".format(rec.code, project[1])
             new_result.append((rec.id, name))
         return new_result

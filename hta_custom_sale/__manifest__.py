@@ -21,6 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['sale_order_general_discount',
+                'sale_management',
                'hta_custom_project',
                 'sign',
                ],
