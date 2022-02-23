@@ -11,7 +11,7 @@
                 </h1>
             <xpath expr="//sheet//group/group/field[@name='assigned_to']" position="after">
                 <field name='purchase_type' attrs="{'readonly': [('is_editable','=', False)], 'required': True}"/>
-                <field name='sale_order' attrs="{'required': [('purchase_type','=', 'project')]}" domain="[('state', 'in', ('done', 'False'))]" options="{'no_create': True}"/>
+                <field name='sale_order' string="Devis" attrs="{'required': [('purchase_type','=', 'project')]}" domain="[('state', 'in', ('done', 'False'))]" options="{'no_create': True}"/>
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='group_id']" position="after">
                 <field name="project_code"/>
@@ -27,6 +27,14 @@
             <xpath expr="//notebook/page/field[@name='line_ids']/tree/field[@name='product_id']" 
                    position="before">
                 <field name="product_code" readonly="True" string="Code"/>
+            </xpath>
+            
+            <!-- ihnerit specification line views-->
+            <xpath expr="//sheet/notebook/page/field[@name='line_ids']/form/sheet/group[@name='main']/group/field[@name='name']" position="after">
+                <field name="specifications" string="Caractéristiques"/>
+            </xpath>
+            <xpath expr="//notebook/page/field[@name='line_ids']/tree/field[@name='name']" position="after">
+                <field name="specifications" string="Caractéristiques"/>
             </xpath>
             
             <xpath expr="//notebook/page/field[@name='line_ids']//form/sheet/group[1]/group/field[@name='product_id']" position="attributes">
