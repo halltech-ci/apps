@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api, _
 
-
+"""
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
@@ -35,20 +35,23 @@ class ProductTemplate(models.Model):
                 template.write(related_vals)
 
         return templates
+    """
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
     
     
-    """@api.model_create_multi
-    def create(self, vals_list):
-        products = super(ProductProduct, self.with_context(create_product_product=True)).create(vals_list)
-        # `_get_variant_id_for_combination` depends on existing variants
-        if vals.get('product_variant_id'):
-            related_vals['name'] = vals['product_variant_id']
-        self.clear_caches()
-        return products
-    """
+    name = fields.Char(default=lambda self:self.product_tmpl_id.name, compute='_compute_product_name')
+    
+    @api.depends('product_tmpl_id')
+    def _compute_product_name(self):
+        for product in self:        
+            product_name = product.product_tmpl_id.name
+            if product.product_template_attribute_value_ids:
+                variant = product.product_template_attribute_value_ids._get_combination_name()
+                product_name = "%s %s" % (product_name, variant)
+            product.name = product_name
+        
     
     def name_get(self):
         # TDE: this could be cleaned a bit I think
