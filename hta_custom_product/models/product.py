@@ -40,7 +40,7 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = "product.product"
     
-    
+    """
     name = fields.Char(default=lambda self:self.product_tmpl_id.name, compute='_compute_product_name')
     
     @api.depends('product_tmpl_id')
@@ -51,7 +51,7 @@ class ProductProduct(models.Model):
                 variant = product.product_template_attribute_value_ids._get_combination_name()
                 product_name = "%s %s" % (product_name, variant)
             product.name = product_name
-        
+    """    
     
     def name_get(self):
         # TDE: this could be cleaned a bit I think
