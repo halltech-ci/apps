@@ -76,7 +76,7 @@ class ProductTemplate(models.Model):
         string="Reference Prefix",
         help="Add prefix to product variant reference (default code)",
     )
-    reference_mask = fields.Char(related="categ_id.reference_mask",
+    reference_mask = fields.Char(
         string="Variant reference mask",
         copy=False,
         help="Reference mask for building internal references of a "
