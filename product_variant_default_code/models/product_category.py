@@ -21,7 +21,7 @@ class ProductCategory(models.Model):
 
     """
     
-   
+"""   
 class ProductAttributeLine(models.Model):
     _name ="product.attribute.line"
     _description = "Product attribute define in product category"
@@ -37,4 +37,5 @@ class ProductAttributeLine(models.Model):
     def _onchange_attribute(self):
         if self.attribute:
             self.value_ids = self.env["product.attribute"].search([('id', "=", self.attribute.id)]).mapped('value_ids')
+"""
 

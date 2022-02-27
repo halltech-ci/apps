@@ -127,7 +127,7 @@ class ProductTemplate(models.Model):
                         'value_ids':line.value_ids,
                     }))
                 rec.attribute_line_ids = lines
-
+    """
     def _get_default_mask(self):
         attribute_names = []
         default_reference_separator = (
@@ -141,7 +141,7 @@ class ProductTemplate(models.Model):
             attribute_names
         )
         return default_mask
-    """
+    
 
     @api.model
     def create(self, vals):
