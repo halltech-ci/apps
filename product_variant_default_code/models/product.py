@@ -222,7 +222,6 @@ class ProductAttribute(models.Model):
     is_automatic_code = fields.Boolean(default=True, string="Automatique/Manuel")
     code_compute_parameter = fields.Char(string="Parametre")
     last_code = fields.Integer(string="Last Value Code", compute="_compute_last_value_code")
-    #display_type = fields.Selection(default="select")
     
     def _compute_last_value_code(self):
         for rec in self:
