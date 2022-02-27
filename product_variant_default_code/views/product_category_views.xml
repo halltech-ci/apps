@@ -8,9 +8,9 @@
             <xpath expr="//form/sheet/group[@name='first']/field[@name='parent_id']" position="after">
                 <field name="category_code" class="oe_inline"/>
                 <!--<field name="related_code" class="oe_inline"/>-->
-                <field name="reference_mask" class="oe_inline"/>
+                <!--<field name="reference_mask" class="oe_inline"/>-->
                 <field name="description"/>
-                <notebook>
+                <!--<notebook>
                     <page>
                         <field name="attribute_lines" widget="one2many">
                             <tree string="Attributes" editable="bottom">
@@ -19,7 +19,7 @@
                             </tree>
                         </field>
                     </page>
-                </notebook>
+                </notebook>-->
             </xpath>
         </field>
     </record>
