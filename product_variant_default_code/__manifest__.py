@@ -7,7 +7,7 @@
     "category": "Product",
     "depends": ["product"],
     "data": [
-        'security/ir.model.access.csv',
+        #'security/ir.model.access.csv',
         "security/product_security.xml",
         "data/ir_config_parameter.xml",
         "views/product_category_views.xml",

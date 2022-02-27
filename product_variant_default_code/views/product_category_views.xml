@@ -7,8 +7,6 @@
         <field name="arch" type="xml">
             <xpath expr="//form/sheet/group[@name='first']/field[@name='parent_id']" position="after">
                 <field name="category_code" class="oe_inline"/>
-                <!--<field name="related_code" class="oe_inline"/>-->
-                <field name="category_code" class="oe_inline"/>
                 <field name="description"/>
             </xpath>
         </field>
