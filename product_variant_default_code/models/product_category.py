@@ -9,4 +9,3 @@ class ProductCategory(models.Model):
     description = fields.Text()
     category_code = fields.Char(index=True,)
     
-    
