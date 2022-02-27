@@ -65,11 +65,8 @@ class ProductAttributeValue(models.Model):
     code = fields.Char(string="Code", store=True,)
     is_manual = fields.Boolean(default=False)
     
-    """
-    @api.onchange('name')
-    def _onchange_name(self):
-        self.code = self.attribute_id._compute_code()
-    """
+    
+    
     
     
     

@@ -8,5 +8,5 @@ class ProductCategory(models.Model):
 
     description = fields.Text()
     category_code = fields.Char(index=True,)
-    #attribute_lines = fields.One2many('product.attribute.line', 'category_id')
+    
     

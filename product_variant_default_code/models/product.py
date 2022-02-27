@@ -100,34 +100,7 @@ class ProductTemplate(models.Model):
         '\nNote: make sure characters "[,]" do not appear in your '
         "attribute name",
     )
-    """
-    @api.depends("categ_id")
-    def _compute_attribute_line_ids(self):
-        for rec in self:
-            if rec.categ_id.attribute_lines:
-                lines = [(5,0,0)]
-                for line in rec.categ_id.attribute_lines:
-                    lines.append((0, 0, {
-                        'attribute_id': line.attribute.id,
-                        'value_ids':line.value_ids,
-                    }))
-                rec.attribute_line_ids = lines
-
-    """            
     
-    """
-    @api.onchange("categ_id")
-    def _onchange_categ_id(self):
-        for rec in self:
-            if rec.categ_id.attribute_lines:
-                lines = [(5,0,0)]
-                for line in rec.categ_id.attribute_lines:
-                    lines.append((0, 0, {
-                        'attribute_id': line.attribute.id,
-                        'value_ids':line.value_ids,
-                    }))
-                rec.attribute_line_ids = lines
-    """
     def _get_default_mask(self):
         attribute_names = []
         default_reference_separator = (
@@ -268,7 +241,7 @@ class ProductAttribute(models.Model):
     @api.model
     def create(self, vals):
         result = super(ProductAttribute, self).create(vals)
-        self._compute_code()
+        #self._compute_code()
         return result
     
     def write(self, vals):
@@ -284,6 +257,11 @@ class ProductAttribute(models.Model):
 
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
+    
+    @api.onchange("name")
+    def onchange_name(self):
+        if self.name:
+            self.code = self.name[0:2]
 
     code = fields.Char(string="Code", store=True, )
     is_manual = fields.Boolean(default=False)
