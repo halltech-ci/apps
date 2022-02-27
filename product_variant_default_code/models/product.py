@@ -28,6 +28,7 @@ def extract_token(s):
     return set(pattern.findall(s))
 
 
+
 def sanitize_reference_mask(product, mask):
     main_lang = product._guess_main_lang()
     tokens = extract_token(mask)
