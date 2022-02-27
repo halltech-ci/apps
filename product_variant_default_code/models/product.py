@@ -114,6 +114,8 @@ class ProductTemplate(models.Model):
                 rec.attribute_line_ids = lines
 
     """            
+    
+    """
     @api.onchange("categ_id")
     def _onchange_categ_id(self):
         for rec in self:
@@ -139,6 +141,7 @@ class ProductTemplate(models.Model):
             attribute_names
         )
         return default_mask
+    """
 
     @api.model
     def create(self, vals):

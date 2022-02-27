@@ -10,7 +10,7 @@ class ProductCategory(models.Model):
 
     description = fields.Text()
     category_code = fields.Char(index=True,)
-    #attribute_lines = fields.One2many('product.attribute.line', 'category_id')
+    attribute_lines = fields.One2many('product.attribute.line', 'category_id')
     
     """
     @api.depends("attribute")
@@ -21,7 +21,7 @@ class ProductCategory(models.Model):
 
     """
     
-"""    
+   
 class ProductAttributeLine(models.Model):
     _name ="product.attribute.line"
     _description = "Product attribute define in product category"
@@ -37,4 +37,4 @@ class ProductAttributeLine(models.Model):
     def _onchange_attribute(self):
         if self.attribute:
             self.value_ids = self.env["product.attribute"].search([('id', "=", self.attribute.id)]).mapped('value_ids')
-"""
+
