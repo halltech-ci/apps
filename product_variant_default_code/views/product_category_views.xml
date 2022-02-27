@@ -7,19 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//form/sheet/group[@name='first']/field[@name='parent_id']" position="after">
                 <field name="category_code" class="oe_inline"/>
-                <!--<field name="related_code" class="oe_inline"/>-->
-                <!--<field name="reference_mask" class="oe_inline"/>-->
                 <field name="description"/>
-                <!--<notebook>
-                    <page>
-                        <field name="attribute_lines" widget="one2many">
-                            <tree string="Attributes" editable="bottom">
-                                <field name="attribute"/>
-                                <field name="value_ids" widget="many2many_tags"/>
-                            </tree>
-                        </field>
-                    </page>
-                </notebook>-->
             </xpath>
         </field>
     </record>
