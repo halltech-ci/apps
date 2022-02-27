@@ -53,6 +53,12 @@ class SaleOrder(models.Model):
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
     total_cost = fields.Monetary(string="Cout Total", compute='_compute_total_cost')
     total_margin_amount = fields.Monetary(string="Marge Brut", compute="_compute_total_margin_amount")
+    partner_id = fields.Many2one(
+        'res.partner', string='Customer', 
+        #readonly=True,
+        #states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        required=True, change_default=True, index=True, tracking=1,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     
     @api.depends('order_line.product_cost', )
     def _compute_total_cost(self): 
