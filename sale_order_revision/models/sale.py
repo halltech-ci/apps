@@ -31,7 +31,8 @@ class SaleOrder(models.Model):
     )
     active = fields.Boolean(default=True)
     has_old_revisions = fields.Boolean(compute="_compute_has_old_revisions")
-
+    
+    """
     _sql_constraints = [
         (
             "revision_unique",
@@ -39,14 +40,19 @@ class SaleOrder(models.Model):
             "Order Reference and revision must be unique per Company.",
         )
     ]
+    """
 
     @api.returns("self", lambda value: value.id)
     def copy(self, default=None):
         if default is None:
             default = {}
         if default.get("name", "/") == "/":
+            next_code = "sale.order"
+            domaine_code = vals.get('sale_order_type')
+            if domaine_code != "fm":
+                next_code = '{0}.{1}.{2}'.format('sale', domaine_code, 'sequence')
             seq = self.env["ir.sequence"]
-            default["name"] = seq.next_by_code("sale.order") or "/"
+            default["name"] = seq.next_by_code("next_code") or "/"
             default["revision_number"] = 0
             default["unrevisioned_name"] = default["name"]
         return super(SaleOrder, self).copy(default=default)
@@ -58,7 +64,7 @@ class SaleOrder(models.Model):
             {
                 "revision_number": new_rev_number,
                 "unrevisioned_name": self.unrevisioned_name,
-                "name": "%s-%02d" % (self.unrevisioned_name, new_rev_number),
+                "name": "%s/%02d" % (self.unrevisioned_name, new_rev_number),
                 "old_revision_ids": [(4, self.id, False)],
             }
         )
