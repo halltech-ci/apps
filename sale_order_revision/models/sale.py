@@ -73,7 +73,7 @@ class SaleOrder(models.Model):
     def create(self, values):
         if "unrevisioned_name" not in values:
             if values.get("name", "/") == "/":
-                domaine_code = vals.get('sale_order_type')
+                domaine_code = values.get('sale_order_type')
                 next_code = '{0}.{1}.{2}'.format('sale', domaine_code, 'sequence')
                 seq = self.env["ir.sequence"]
                 values["name"] = seq.next_by_code(next_code) or "/"
