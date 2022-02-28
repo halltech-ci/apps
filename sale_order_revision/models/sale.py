@@ -48,7 +48,7 @@ class SaleOrder(models.Model):
             default = {}
         if default.get("name", "/") == "/":
             next_code = "sale.order"
-            domaine_code = vals.get('sale_order_type')
+            domaine_code = default.get('sale_order_type')
             if domaine_code != "fm":
                 next_code = '{0}.{1}.{2}'.format('sale', domaine_code, 'sequence')
             seq = self.env["ir.sequence"]
