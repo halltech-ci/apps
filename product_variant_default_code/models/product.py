@@ -242,7 +242,7 @@ class ProductAttribute(models.Model):
     @api.model
     def create(self, vals):
         result = super(ProductAttribute, self).create(vals)
-        #self._compute_code()
+        self._compute_code()
         return result
     
     def write(self, vals):
@@ -259,10 +259,12 @@ class ProductAttribute(models.Model):
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
     
+    """
     @api.onchange("name")
     def onchange_name(self):
         if self.name:
             self.code = self.name[0:2]
+    """
 
     code = fields.Char(string="Code", store=True, )
     is_manual = fields.Boolean(default=False)
