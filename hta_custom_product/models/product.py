@@ -15,6 +15,15 @@ class ProductProduct(models.Model):
     
     product_name = fields.Char(default=lambda self:self.product_tmpl_id.name, compute='_compute_product_name', store=True)
     
+    @api.depends('product_tmpl_id')
+    def _compute_product_name(self):
+        for product in self:        
+            product_name = product.product_tmpl_id.name
+            if product.product_template_attribute_value_ids:
+                variant = product.product_template_attribute_value_ids._get_combination_name()
+                product_name = "%s %s" % (product_name, variant)
+            product.name = product_name
+    
     _sql_constraints = [
         (
             "default_code_uniq",
