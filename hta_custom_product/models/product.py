@@ -2,12 +2,11 @@
 
 from odoo import models, fields, api, _
 
-
+"""
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
+"""
     
-    
-
 class ProductProduct(models.Model):
     _inherit = "product.product"
     _rec_name = "product_name"
