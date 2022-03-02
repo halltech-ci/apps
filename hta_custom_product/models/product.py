@@ -21,7 +21,7 @@ class ProductProduct(models.Model):
             if product.product_template_attribute_value_ids:
                 variant = product.product_template_attribute_value_ids._get_combination_name()
                 product_name = "%s %s" % (product_name, variant)
-            product.name = product_name
+            product.product_name = product_name
     
     _sql_constraints = [
         (
