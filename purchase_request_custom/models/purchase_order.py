@@ -74,10 +74,9 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
     
-    specifications = fields.Text(string="Specifications",
-                                compute="_compute_specifications"
-                                )
+    specifications = fields.Text(string="Specifications", compute="_compute_specifications",)
     project = fields.Many2one('project.project', compute="_compute_specifications")
+    product_code = fields.Char(related="product_id.default_code", sting="Code Article")
     
     
     def _compute_specifications(self):
