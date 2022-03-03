@@ -46,13 +46,13 @@ class SaleOrder(models.Model):
     sale_order_recipient = fields.Char("Destinataire")
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine", required=True, index=True, default='fm')
     amount_total_no_tax = fields.Monetary(string='Total HT', store=True, readonly=True, compute='_amount_total_no_tax', tracking=4)
-    remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
-    sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
-    sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0, copy=True)
-    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
+    remise_total = fields.Monetary(string='Remise Totale', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
+    sale_margin = fields.Float(string='Coef. Majoration (%)', default=35)
+    sale_discuss_margin = fields.Float(string='Marge disc. (%)', default=0.0, copy=True)
+    amount_to_word = fields.Char(string="Montant en lettre:", compute='_compute_amount_to_word')        
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
-    total_cost = fields.Monetary(string="Cout Total", compute='_compute_total_cost')
-    total_margin_amount = fields.Monetary(string="Marge Brut", compute="_compute_total_margin_amount")
+    total_cost = fields.Monetary(string="Coût Total", compute='_compute_total_cost')
+    total_margin_amount = fields.Monetary(string="Marge Brute", compute="_compute_total_margin_amount")
     partner_id = fields.Many2one(
         'res.partner', string='Customer', 
         #readonly=True,
@@ -130,14 +130,14 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     #product_code = fields.Char(related='product_id.default_code', string="Code")
-    product_cost = fields.Float(string="Cost", digits='Product Price', copy=True)
+    product_cost = fields.Float(string="Coût", digits='Product Price', copy=True)
     line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True, copy=True)
-    price_unit = fields.Float('Unit Price', required=True, digits='Product Price',
+    price_unit = fields.Float('Prix Unit.', required=True, digits='Product Price',
         compute='_compute_price_unit',
         store=True,
         copy=True
     )
-    line_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
+    line_margin = fields.Float(string="Marge (%)", compute="_compute_line_margin", store=True, readonly=False, copy=True)
     line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
     
     @api.onchange('product_cost')

@@ -121,19 +121,19 @@
                       <td class="text-right" scope="col" style="font-size: 12px;">SIGNANTURE ET CACHET DG</td>
                     </tr>
                     <tr>
-                      <td>
+                      <td class='text-left'>
                           <t t-if="o.user_id.hta_doc_signature" class="mt32 ml64 mr4">
                               <img t-att-src="image_data_uri(o.user_id.hta_doc_signature)" style="max-height: 4cm; max-width: 15cm;"/>
                           </t>
                       </td>
-                      <td>
+                      <td class='text-center'>
                           <t t-if="o.purchase_approver" class="mt32 ml64 mr4">
                               <t t-if="o.purchase_approver.hta_doc_signature">
                                   <img t-att-src="image_data_uri(o.purchase_approver.hta_doc_signature)" style="max-height: 4cm; max-width: 15cm;"/>
                               </t>
                             </t>
                       </td>
-                      <td>
+                      <td class='text-right'>
                           <t t-if="o.purchase_approver" class="mt32 ml64 mr4">
                               <t t-if="o.purchase_approver.hta_doc_signature">
                                   <img t-att-src="image_data_uri(o.purchase_approver.hta_doc_signature)" style="max-height: 4cm; max-width: 15cm;"/>

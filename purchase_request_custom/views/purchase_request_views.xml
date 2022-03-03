@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
         <field name="arch" type="xml">
             <h1 position="after">
-                    <field name="is_expense"/><label for="is_expense"/>
+                    <field name="is_expense" string="Note de frais"/><label for="is_expense"/>
                 </h1>
             <xpath expr="//sheet//group/group/field[@name='assigned_to']" position="after">
                 <field name='purchase_type' attrs="{'readonly': [('is_editable','=', False)], 'required': True}"/>
@@ -66,7 +66,7 @@
             <!-- Adding project in purchase order line-->
             <xpath expr="//form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position='before'>
                 <field name="product_code"/>
-                <field name="project"/>
+                <field name="project" string="Projet"/>
             </xpath>
             <xpath expr="//form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='name']" position='after'>
                 <field name="specifications"/>
