@@ -20,14 +20,14 @@ class SaleOrder(models.Model):
     old_revision_ids = fields.One2many(
         comodel_name="sale.order",
         inverse_name="current_revision_id",
-        string="Old revisions",
+        string="Version Précédente",
         readonly=True,
         domain=["|", ("active", "=", False), ("active", "=", True)],
         context={"active_test": False},
     )
     revision_number = fields.Integer(string="Revision", copy=False, default=0)
     unrevisioned_name = fields.Char(
-        string="Original Order Reference", copy=True, readonly=True
+        string="Devis Source", copy=True, readonly=True
     )
     active = fields.Boolean(default=True)
     has_old_revisions = fields.Boolean(compute="_compute_has_old_revisions")

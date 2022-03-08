@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
         ('sent',),
         ]
     )
-    approver_id = fields.Many2one('res.users', string="Approver")
+    approver_id = fields.Many2one('res.users', string="Valideur")
     
     def ask_for_approval(self):
         for rec in self:
