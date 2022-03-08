@@ -36,6 +36,7 @@
         </xpath>
         <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]/thead/tr" position="replace">
             <tr>
+                <th name="th_projet"><strong>Projet</strong></th>
                 <th name="th_description"><strong>Description</strong></th>
                 <th name="th_description"><strong>Caractéristiques</strong></th>
                 <th name="th_quantity" class="text-right"><strong>Qté</strong></th>
@@ -47,6 +48,9 @@
         <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]/tbody/t[2]/tr" position="replace">
             <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
                 <t t-if="not line.display_type">
+                    <td id="project">
+                        <span t-esc="line.project.code"/>
+                    </td>
                     <td id="product">
                         <span t-field="line.name"/>
                     </td>
