@@ -224,10 +224,10 @@
                               />
                               <field name="expense_type" widget='boolean_button'/>
                               <field name="analytic_account" options="{'no_create': True}"
-                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])], 'invisible': [('expense_type', '=', 'False')], 'required': [('expense_type', '=', 'True')]}"
+                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])], 'invisible': [('expense_type', '=', True)], 'required': [('expense_type', '!=', True)]}"
                               />
                               <field name="project" options="{'no_create': True}" 
-                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])], 'invisible': [('expense_type', '=', 'False')], 'required': [('expense_type', '=', 'True')]}"
+                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])], 'invisible': [('expense_type', '!=', True)], 'required': [('expense_type', '=', True)]}"
                               />
                               
                               <field name='request_state' invisible='1'/>
