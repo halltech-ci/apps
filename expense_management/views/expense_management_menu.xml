@@ -113,6 +113,7 @@
                               <field name="expense_product" options="{'no_create_edit': True}"/>
                               <field name='amount'/>
                               <!--<field name='payment_mode'/>-->
+                              <field name='project'/>
                               <field name='analytic_account'/>
                               <field name='request_state'/>
                           </tree>
@@ -140,7 +141,7 @@
                     <field name="requested_by"/>
                     <field name="expense_approver" string="Approbateur"/>
                     <field name="total_amount" sum="Total Amount"/>
-                    <field name="project_id"/>
+                    <!--<field name="project_id"/>-->
                     <field name="currency_id" invisible="1"/>
                     <field name="state"/>
                     <field name="company_id" groups="base.group_multi_company"/>
@@ -173,6 +174,7 @@
              <tree>
                  <field name="name" string="Description" readonly="1"/>
                  <field name="date"/>
+                 <field name="expense_type" invisible='1'/>
                  <field name="expense_product"/>
                  <field name="requested_by"/>
                  <field name="partner_id"/>
@@ -220,18 +222,14 @@
                               <field name='amount' 
                                      attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])]}"
                               />
-                              <field name="analytic_account" required='True' options="{'no_create': True}"
-                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])]}"
+                              <field name="expense_type" widget='boolean_button'/>
+                              <field name="analytic_account" options="{'no_create': True}"
+                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])], 'invisible': [('expense_type', '=', True)], 'required': [('expense_type', '!=', True)]}"
                               />
                               <field name="project" options="{'no_create': True}" 
-                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])]}"
+                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])], 'invisible': [('expense_type', '!=', True)], 'required': [('expense_type', '=', True)]}"
                               />
-                              <!--<field name='payment_mode' groups='account.group_account_user'
-                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])]}"
-                              />-->
-                              <!--<field name="credit_account" groups='account.group_account_user'
-                                     attrs="{'readonly': [('request_state', 'not in', ['approve'])]}"
-                              />-->
+                              
                               <field name='request_state' invisible='1'/>
                             </group>
                             <group>

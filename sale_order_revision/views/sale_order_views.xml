@@ -10,7 +10,7 @@
                 <button
                     name="create_revision"
                     states="cancel,sent"
-                    string="New Revision of Quotation"
+                    string="Créer Version"
                     type="object"
                 />
             </xpath>
