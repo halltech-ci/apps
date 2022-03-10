@@ -51,6 +51,7 @@ class ExpenseLine(models.Model):
     name = fields.Char('Description', required=True)
     request_state = fields.Selection(selection=REQUEST_STATE, string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
     employee_id = fields.Many2one('hr.employee', string="Beneficiaire", required=True, check_company=True, domain=lambda self: self._get_employee_id_domain())
+    expense_type = fields.Boolean(string="Imputer au projet", default=True)
     request_id = fields.Many2one('expense.request', string='Expense Request')
     date = fields.Datetime(readonly=True, related='request_id.date', string="Date")
     amount = fields.Float("Montant", required=True, digits='Product Price')
@@ -63,7 +64,8 @@ class ExpenseLine(models.Model):
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange', related='request_id.requested_by')
     #payment_mode = fields.Selection(selection=PAYMENT_MODE, string="Payment Mode", default='justify')
     #payed_by = fields.Selection(selection=PAYMENT_TYPE, string="Payer Par", default='cash')
-    analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account', domain=lambda self: self._get_analytic_domain())
+    analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account/Projet', domain=lambda self: self._get_analytic_domain())
+    expense_type = fields.Boolean(string="Imputer au projet", default=True)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, 
                                   default=lambda self: self.env.company.currency_id
                                  )
