@@ -53,6 +53,12 @@ class PurchaseOrder(models.Model):
             
         return super(PurchaseOrder, self).create(vals)
     
+    def button_approve(self, force=False):
+        self.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
+        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
+        self.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
+        return {}
+    
     def button_confirm(self):
         for order in self:
             if order.state not in ['draft', 'sent']:
