@@ -51,7 +51,7 @@ class ExpenseLine(models.Model):
     @api.model
     def _get_project_domain(self):
         project_ids = self.env['project.project'].search([]).ids
-        res = [('project_ids', 'in', project_ids)]
+        res = [('id', 'in', project_ids)]
         return res
     
     name = fields.Char('Description', required=True)
@@ -79,7 +79,7 @@ class ExpenseLine(models.Model):
     debit_account = fields.Many2one('account.account', string='Debit Account')
     credit_account = fields.Many2one('account.account', string='Credit Account')
     transfer_amount = fields.Float('Frais de transfert', digits='Product Price')
-    project = fields.Many2one('account.analytic.account', string='Project', domain=lambda self: self._get_project_domain())
+    project = fields.Many2one('project.project', string='Project', domain=lambda self: self._get_project_domain())
     expense_product = fields.Many2one('product.product', string='Product', domain="[('can_be_expensed', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", ondelete='restrict')
     #journal = fields.Many2one('account.journal')
     
