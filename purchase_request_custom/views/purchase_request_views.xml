@@ -66,25 +66,5 @@
             </field>
         </field>
     </record>
-    
-    <!--Adding project_id in purchase_order-->
-    <record id="purchase_form_inherit" model="ir.ui.view">
-        <field name="name">purchase.order.form_inherit</field>
-        <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//sheet/group/group[1]/field[@name='partner_id']" position="after">
-                <field name="dest_address_id"/>
-            </xpath>
-            <!-- Adding project in purchase order line-->
-            <xpath expr="//form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position='before'>
-                <field name="product_code"/>
-                <field name="project" string="Projet"/>
-            </xpath>
-            <xpath expr="//form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='name']" position='after'>
-                <field name="specifications"/>
-            </xpath>
-        </field>
-    </record>
   </data>
 </odoo>
