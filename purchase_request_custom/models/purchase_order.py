@@ -30,6 +30,15 @@ class PurchaseOrder(models.Model):
     
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
     purchase_approver = fields.Many2one('res.users')
+    state = fields.Selection(selection_add=[
+        ('draft', 'RFQ'),
+        ('sent', 'RFQ Sent'),
+        ('order', 'Bon de commande'),
+        ('to approve', 'To Approve'),
+        ('purchase', 'Commande confirmee'),
+        ('done', 'Locked'),
+        ('cancel', 'Cancelled')
+    ])
     
     @api.onchange('state')
     def _compute_purchase_approver(self):
@@ -53,9 +62,15 @@ class PurchaseOrder(models.Model):
             
         return super(PurchaseOrder, self).create(vals)
     
+    def create_order(self):
+        for order in self:
+            order.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
+            order.write({'state':'order'})
+        return True
+    
     def button_confirm(self):
         for order in self:
-            if order.state not in ['draft', 'sent']:
+            if order.state not in ['draft', 'sent', 'order']:
                 continue
             order._add_supplier_to_product()
             # Deal with double validation process
@@ -65,9 +80,10 @@ class PurchaseOrder(models.Model):
                             order.company_id.po_double_validation_amount, order.currency_id, order.company_id, order.date_order or fields.Date.today()))\
                     or order.user_has_groups('purchase.group_purchase_manager'):
                 order.button_approve()
+                #order.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
             else:
                 order.write({'state': 'to approve'})
-            order.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
+            #order.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
         return True
     
     
