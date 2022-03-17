@@ -8,7 +8,13 @@ class StockPicking(models.Model):
     location_dest_id = fields.Many2one('stock.location', readonly=False)
 
 
-class StockMoveLine(models.Model):
+class StockMove(models.Model):
     _inherit = "stock.move"
+    
+    product_code = fields.Char(related='product_id.default_code', string="Code Article")
+    
+    
+class StockMoveLine(models.Model):
+    _inherit = "stock.move.line"
     
     product_code = fields.Char(related='product_id.default_code', string="Code Article")

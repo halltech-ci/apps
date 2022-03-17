@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/stock_picking_views.xml',
+        'views/stock_move_line.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
