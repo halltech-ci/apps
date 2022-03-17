@@ -2,6 +2,11 @@
 
 from odoo import models, fields, api
 
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+    
+    location_dest_id = fields.Many2one('stock.location', readonly=False)
+
 
 class StockMoveLine(models.Model):
     _inherit = "stock.move"
