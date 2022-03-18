@@ -63,8 +63,15 @@
                     string='Rejeter'
                     type='object'
                     class="oe_highlight"
-                    states="to_approve,approved,authorize"
+                    states="to_approve,approved,authorize,cancel"
                     groups="expense_management.group_expense_approver_1"
+            />
+            <button name="button_rejected"
+                    string='Rejeter'
+                    type='object'
+                    class="oe_highlight"
+                    states="cancel"
+                    groups="expense_management.group_expense_management_manager"
             />
             <field name="state"
                  widget="statusbar"
