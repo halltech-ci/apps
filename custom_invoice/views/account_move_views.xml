@@ -6,7 +6,6 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-          <!-- Insert secondary unit in report-->
         <!--  
         <header>
             <button name="function_create_invoice"
@@ -15,6 +14,15 @@
                     class="oe_highlight"/>
           </header>
         -->
+          <xpath expr="//header/button[@name='action_post']" position="replace">
+            <button name="action_post"
+                  string="Post" class="oe_highlight" 
+                  type="object" 
+                  groups="account.group_account_invoice" 
+                  attrs="{'invisible': [('state', '!=', 'draft')]}"
+                  confirm='Voulez-vous vraiment comptabilier cette facture ?'
+            />
+          </xpath>
           <!-- Insert BL number on sale invoice-->
           <xpath expr="//sheet/group/group[2]/field[@name='company_id']" position="after">
               <field name="delivery_slip"/>
