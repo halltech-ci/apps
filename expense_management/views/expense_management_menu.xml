@@ -7,7 +7,7 @@
         <form string="Exepnse Request">
           <header>
             <button name="action_submit"
-                    string="Request Approval"
+                    string="Soumettre"
                     type="object"
                     class="oe_highlight"
                     states="draft"
@@ -22,7 +22,7 @@
                     groups="expense_management.group_expense_valider"
             />
             <button name="button_to_approve"
-                    string="To Approve"
+                    string="A Approuver"
                     type="object"
                     class="oe_highlight"
                     states="validate"
@@ -47,7 +47,6 @@
                     type="object"
                     class="oe_highlight"
                     states="authorize"
-
                     groups="expense_management.group_expense_group_payer"
             />  
             <button name="button_to_cancel"
