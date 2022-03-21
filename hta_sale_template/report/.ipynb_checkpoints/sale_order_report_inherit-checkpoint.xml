@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="hta_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//table[hasclass('table','table-sm','o_main_table')]/thead/tr/th[@name='th_description']" position='before'>
+                <th name="line_item" class="text-center">Item</th>
+            </xpath>
+            <xpath expr="//tbody[hasclass('sale_tbody')]/t/tr/t[@t-if='not line.display_type']/td[@name='td_name']" position="before">
+                <td name="td_line_item" class="text-center">
+                    <span t-field="line.line_item"/>
+                </td>
+            </xpath>
+        </template>
+    </data>
+</odoo>

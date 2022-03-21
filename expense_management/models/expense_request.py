@@ -35,16 +35,16 @@ class ExpenseRequest(models.Model):
     name = fields.Char(default=_get_default_name)
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
-        ('draft', 'Draft'),
-        ('submit', 'Submitted'),
+        ('draft', 'Broullon'),
+        ('submit', 'Soumis'),
         ('validate', 'Validate'),
-        ('to_approve', 'To Approve'),
-        ('approve', 'Approved'),
+        ('to_approve', 'A approuver'),
+        ('approve', 'Approuve'),
         ('authorize','Autoriser'),
         ('to_cancel', 'Annuler'),
-        ('post', 'Paid'),
+        ('post', 'Paye'),
         #('done', 'Paid'),
-        ('cancel', 'Refused')
+        ('cancel', 'Refuse')
     ], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
     """employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, check_company=True)"""
     
