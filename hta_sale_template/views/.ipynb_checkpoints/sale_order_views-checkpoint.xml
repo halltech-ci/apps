@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="sale_order_view_inherit">
+        <field name="name">sale.order.inherit.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='sequence']" position="after">
+                <field name="line_item"/>
+            </xpath>
+            <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='sequence']" position="after">
+                <field name="line_item"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
