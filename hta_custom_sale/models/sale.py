@@ -72,7 +72,11 @@ class SaleOrder(models.Model):
     @api.depends('total_cost', 'amount_total_no_tax')
     def _compute_total_margin_amount(self):
         for rec in self:
-            rec.total_margin_amount = rec.amount_total_no_tax - rec.total_cost
+            rec.total_margin_amount = 0.0
+            if rec.total_cost > 0:
+                rec.total_margin_amount = rec.amount_total_no_tax - rec.total_cost
+            
+                
 
     @api.onchange('sale_margin')
     def onchange_sale_margine(self):
