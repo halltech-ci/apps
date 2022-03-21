@@ -11,7 +11,7 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
-    line_item = fields.Char(string='Item')
+    line_item = fields.Char(string='Item', default='A')
     
     
     
