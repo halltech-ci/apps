@@ -77,7 +77,9 @@ class SaleOrder(models.Model):
     @api.onchange('sale_margin')
     def onchange_sale_margine(self):
         for line in self.order_line:
-            line.line_margin = self.sale_margin            
+            line.line_margin = self.sale_margin
+            line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
+            line.line_subtotal = line.product_uom_qty * line.price_unit
             
     def _compute_amount_to_word(self):
         for rec in self:
