@@ -58,7 +58,6 @@
                     groups="expense_management.group_expense_group_payer"
 
             />
-            
             <button name="button_rejected"
                     string='Reject'
                     type='object'
