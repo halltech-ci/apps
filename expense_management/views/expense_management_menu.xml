@@ -54,7 +54,7 @@
                     string="Annuler"
                     type="object"
                     class="oe_highlight"
-                    states="authorize"
+                    states="authorize, approve"
                     groups="expense_management.group_expense_group_payer"
 
             />
@@ -63,7 +63,7 @@
                     string='Reject'
                     type='object'
                     class="oe_highlight"
-                    states="to_approve"
+                    states="to_approve, approve"
                     groups="expense_management.group_expense_approver_1"
             />
             <field name="state"
