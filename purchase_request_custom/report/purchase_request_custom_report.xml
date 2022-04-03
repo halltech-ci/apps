@@ -24,7 +24,13 @@
                     <thead>
                         <tr>
                             <th>
+                                <strong>Code</strong>
+                            </th>
+                            <th>
                                 <strong>Description</strong>
+                            </th>
+                            <th>
+                                <strong>Caractéristiques</strong>
                             </th>
                             <th class="text-right">
                                 <strong>Qté</strong>
@@ -37,7 +43,13 @@
                     <tbody>
                         <tr t-foreach="o.line_ids" t-as="line_ids">
                             <td>
+                                <span t-field="line_ids.product_code"/>
+                            </td>
+                            <td>
                                 <span t-field="line_ids.name" />
+                            </td>
+                            <td>
+                                <span t-field="line_ids.specifications" />
                             </td>
                             <td class="text-right">
                                 <span t-field="line_ids.product_qty" />

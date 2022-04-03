@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <br/>
-                    <div class="container">
+                    <!--div class="container">
                         <div class="row justify-content-end">
                             <div class="col-2" style="text-decoration: underline; font-weight: bold;margin-right:25px; top:70px;">
     <p>CLIENT:</p>
@@ -32,11 +32,27 @@
                                <p t-field="o.partner_id.vat"/>
                             </div>
                         </div>
-                    </div>
-                    <br/>
-                    <br/>
-            
+                    </div-->
                     
+                    <div class="col-6">
+                    <table class="body table-sm" style="width: 400px; margin-left: 370px;">
+                        <tbody>
+                            <tr>
+                                <td style="padding-top:40px;">
+                                    <p>CLIENT:</p>
+                                </td>
+                                <td style="width: 300px;text-align: center; border: 1px solid black; vertical-align: top; margin-left:10px">
+                                    <p t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;:                                               [&quot;address&quot;, &quot;name&quot;,&quot;phone&quot;], &quot;no_marker&quot;: True}"/>
+                    
+                                    <p t-field="o.partner_id.vat"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    
+                    <br/>
+                    <br/>                    
                     
                     <!--<<h2>-->
                         <!--<span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')"></span>-->
@@ -225,10 +241,10 @@
                     <br/>
                     <div class="container">
                         <div class="row justify-content-end" style="font-size:16px; padding-bottom:30px;">
-                            <div class="col-6" style="font-weight: bold;">
-                                <p> Arrêt la présente facture à la somme de:</p>
+                            <div class="col-6" style="font-weight: bold; margin-top:90px;">
+                                <p> Arrêté la présente facture à la somme de:</p>
                             </div>
-                            <div class="col-4" style="text-align: center; width: 300px; border:1px solid #000; margin-right:30px;" >
+                            <div class="col-4" style="text-align: center; width: 300px; border:1px solid #000; margin-right:30px; margin-top:90px;" >
                                 <span t-field="o.amount_to_word"/> <span t-field="o.currency_id.currency_unit_label"/> <span t-field="o.currency_id.symbol"/>
                             </div>
                         </div>

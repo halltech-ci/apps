@@ -3,23 +3,21 @@
     <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
         <!-- Changin VAT ID to N°CC-->
         <xpath expr="//t[@t-set='address']" position="replace">
-                    <div class="container">
-                        <div class="row justify-content-end">
-                            <div class="col-2" style="font-style: italic; font-weight: bold;margin-right:2px; top:40px;">
-                <p style="text-decoration: underline;">CLIENT:</p>
-                                
-                <p style="margin-left: -408px; margin-top: -50px; font-style: italic; text-decoration: underline;">
-                    DATE : <span t-esc="doc.date_order" style="text-decoration: none;"/>   
-                    </p>
-                        </div>
-                         <div class="col-6" style="text-align: center;width: 300px; border:1px solid #000;border-radius:10px;margin-right:21px;">
-                            <p t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;,&quot;phone&quot;], &quot;no_marker&quot;: True}"/>
-                    
-                                   <p t-if="doc.partner_id.vat"><t t-esc="'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
-                            </div>
-                        </div>
+            <div class="container">
+                <div class="row justify-content-end">
+                    <div class="col-2" style="font-style: italic; font-weight: bold;margin-right:2px; top:40px;">
+                        <p style="text-decoration: underline;">CLIENT:</p>
+                        <p style="margin-left: -408px; margin-top: -50px; font-style: italic; text-decoration: underline;">
+                            DATE : <span t-esc="doc.date_order" style="text-decoration: none;"/>
+                        </p>
                     </div>
-                    <br/>
+                     <div class="col-6" style="text-align: center;width: 300px; border:1px solid #000;border-radius:10px;margin-right:21px;">
+                        <p t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;,&quot;phone&quot;], &quot;no_marker&quot;: True}"/>
+                         <p t-if="doc.partner_id.vat"><t t-esc="'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
+                    </div>
+                </div>
+            </div>
+            <br/>
         </xpath>
         <!-- Change quotation name-->
         <xpath expr="//div[hasclass('page')]/h2" position="replace">    
@@ -40,7 +38,7 @@
         </xpath>
         <xpath expr="//table[hasclass('table', 'table-sm', 'o_main_table')]" position="before">
             <br/>
-            <p style="font-size: 20px; text-transform: uppercase; font-weight: bold; text-align: left;" t-field="doc.description"/>
+            <p style="font-size: 16px; text-transform: uppercase; font-weight: bold; text-align: left;" t-field="doc.description"/>
             <br/>
         </xpath>
         <xpath expr="//div[hasclass('page')]/div[hasclass('d-flex')]" position="after">
@@ -139,7 +137,7 @@
         <xpath expr="//p[@t-field='doc.note']" position="after">
             <div class="descrript_info">
                 <p><b><h style="color: red;">NON COMPRIS:</h> Toutes les charges non décrites dans cette offre</b></p>
-                <p><b><h style="color: red;">NB:</h> Prix valabre sous réserve de variation de prix sur le marché international et national.</b></p>
+                <p><b><h style="color: red;">NB:</h> Prix valable sous réserve de variation de prix sur le marché international et national.</b></p>
             </div>
         </xpath>
         

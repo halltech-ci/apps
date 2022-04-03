@@ -28,13 +28,28 @@ class PurchaseOrder(models.Model):
             rec.amount_to_word = str(self._num_to_words(rec.amount_total)).upper()
     
     
-    project_id = fields.Many2one('project.project', string='Project',
-        default=lambda self: self.env['purchase.order.line'].search([('order_id', '=', self.id)], limit=1).project_id.code,
-    )
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
+    purchase_approver = fields.Many2one('res.users')
+    state = fields.Selection(selection_add=[
+        ('draft', 'RFQ'),
+        ('sent', 'RFQ Sent'),
+        ('order', 'Bon de commande'),
+        ('to approve', 'To Approve'),
+        ('purchase', 'Commande confirmee'),
+        ('done', 'Locked'),
+        ('cancel', 'Cancelled')
+    ])
     
-    
-    
+    @api.onchange('state')
+    def _compute_purchase_approver(self):
+        if self.state == 'approve':
+            self.purchase_approver = self.user_id
+    """
+    def button_approve(self, force=False):
+        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now(), 'purchase_approver':self.user_id.id})
+        self.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
+        return {}
+    """
     
     @api.model
     def create(self, vals):
@@ -47,9 +62,15 @@ class PurchaseOrder(models.Model):
             
         return super(PurchaseOrder, self).create(vals)
     
+    def create_order(self):
+        for order in self:
+            order.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
+            order.write({'state':'order'})
+        return True
+    
     def button_confirm(self):
         for order in self:
-            if order.state not in ['draft', 'sent']:
+            if order.state not in ['draft', 'sent', 'order']:
                 continue
             order._add_supplier_to_product()
             # Deal with double validation process
@@ -59,24 +80,29 @@ class PurchaseOrder(models.Model):
                             order.company_id.po_double_validation_amount, order.currency_id, order.company_id, order.date_order or fields.Date.today()))\
                     or order.user_has_groups('purchase.group_purchase_manager'):
                 order.button_approve()
+                #order.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
             else:
                 order.write({'state': 'to approve'})
-            order.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
+            #order.write({'name':self.env['ir.sequence'].next_by_code('purchase.bc.sequence')})
         return True
     
     
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
     
-    project_id = fields.Many2one('project.project', compute='_compute_project_id', string="Project")
+    specifications = fields.Text(string="Specifications", compute="_compute_specifications",)
+    project = fields.Many2one('project.project', compute="_compute_specifications")
+    product_code = fields.Char(related="product_id.default_code", sting="Code Article")
     
-    @api.depends('purchase_request_allocation_ids')
-    def _compute_project_id(self):
-        for rec in self:
-            if rec.purchase_request_allocation_ids:
-                allocation_ids = self.env['purchase.order.line'].search([], limit=1).mapped('purchase_request_allocation_ids')
-                #allocation_ids = rec.mapped('purchase_request_allocation_ids') 
-                #if len(allocation_ids) == 1:
-                rec.project_id = allocation_ids.purchase_request_line_id.project or False
     
+    def _compute_specifications(self):
+        for line in self:
+            #request_line = self.env['purchase.order.line'].search([])
+            pr_line = line.mapped('purchase_request_lines').ids
+            pr_obj = self.env['purchase.request.line'].browse()
+            if len(pr_line) > 0:
+                pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
+            line.project = pr_obj.project
+            line.specifications = pr_obj.specifications
+            
     

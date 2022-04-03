@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="hta_stock_picking_view_inherit">
+        <field name="name">hta_stock_picking_inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group/group[1]/field[@name='partner_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in',['done', 'assigned'])]}</attribute>
+            </xpath>
+            <xpath expr="//sheet/notebook/page[3]/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="before">
+                <field name="product_code"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

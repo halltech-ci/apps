@@ -8,7 +8,7 @@
             <!-- Insert sale order object-->
             
          <field name="sale_order_template_id" position="after">
-                <field name="is_proforma"/>
+                <field name="is_proforma" string='Proforma'/>
             </field>    
           <xpath expr="//sheet/group" position="after">
               <group>
@@ -39,7 +39,7 @@
           -->
           <!-- Adding custom field line_subtotal in sale_order_line-->
           <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group/field[@name='price_unit']" position="after">
-            <field name="line_subtotal"/>
+            <field name="line_subtotal" />
           </xpath>
           <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
             <field name="line_subtotal"/>
@@ -78,8 +78,9 @@
           </xpath>
           <!-- Adding custom field sale_margin in sale order-->
           <xpath expr="//field[@name='amount_tax']" position="after">
-                <field name="sale_margin" />
+              <field name="sale_margin" />
               <field name="sale_discuss_margin" />
+              <field name='total_margin_amount'/>
           </xpath>
             <xpath expr="//sheet/notebook/page[@name='order_lines']/group[@name='note_group']/group[1]/field[@name='note']" position="replace">
             </xpath>

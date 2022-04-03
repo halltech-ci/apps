@@ -7,15 +7,17 @@ from odoo.exceptions import UserError, ValidationError
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-
+    
     create_project = fields.Selection(selection=[('add_to_project', "Use project"), ('create_project', "Create Project"),], default='add_to_project')
     project_id = fields.Many2one('project.project', readonly=False)
     state = fields.Selection(selection_add=[('create_project', 'Project'),])
+    project_description = fields.Text(string="Decription du Projet")
+    state = fields.Selection(selection_add=[('done', 'Projet')])
     
     
     def action_create_project(self):
         for rec in self:
-            rec.state = 'create_project'
+            rec.state = 'done'
             
     #@api.depends("create_project")
     def create_project_sale_confirm(self):
@@ -35,7 +37,7 @@ class SaleOrder(models.Model):
                     rec._create_analytic_account(prefix=rec.description or rec.name or None)
                     account = rec.analytic_account_id
                 values = {
-                    'name': rec.description or rec.name,
+                    'name': rec.project_description or rec.name,
                     'analytic_account_id': account.id,
                     'partner_id': rec.partner_id.id,
                     #'sale_line_id': self.id,
@@ -43,10 +45,10 @@ class SaleOrder(models.Model):
                     'active': True,
                     'company_id': rec.company_id.id,
                 }
-                if self.description:
-                    values['project_description'] = rec.description
+                if rec.project_description:
+                    values['project_description'] = rec.project_description
                 project = self.env['project.project'].create(values)
                 rec.write({'project_id': project.id,
-                      'state':'create_project',
+                      'state':'done',
                       })
             

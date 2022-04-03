@@ -46,18 +46,44 @@ class SaleOrder(models.Model):
     sale_order_recipient = fields.Char("Destinataire")
     sale_order_type = fields.Selection(_SALE_ORDER_DOMAINE, string="Domaine", required=True, index=True, default='fm')
     amount_total_no_tax = fields.Monetary(string='Total HT', store=True, readonly=True, compute='_amount_total_no_tax', tracking=4)
-    remise_total = fields.Monetary(string='Remise', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
-    sale_margin = fields.Float(string='Coef. Majoration (%)', default=25)
-    sale_discuss_margin = fields.Float(string='Disc Margin (%)', default=0.0, copy=True)
-    amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')        
-    #proforma = fields.Boolean(default=False)
-    #is_proforma = fields.Boolean('Proformat', default=True) 
+    remise_total = fields.Monetary(string='Remise Totale', store=True, readonly=True, compute='_amount_discount_no', tracking=4)
+    sale_margin = fields.Float(string='Coef. Majoration (%)', default=35)
+    sale_discuss_margin = fields.Float(string='Marge disc. (%)', default=0.0, copy=True)
+    amount_to_word = fields.Char(string="Montant en lettre:", compute='_compute_amount_to_word')        
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
+    total_cost = fields.Monetary(string="Coût Total", compute='_compute_total_cost')
+    total_margin_amount = fields.Monetary(string="Marge Brute", compute="_compute_total_margin_amount")
+    partner_id = fields.Many2one(
+        'res.partner', string='Customer', 
+        #readonly=True,
+        #states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        required=True, change_default=True, index=True, tracking=1,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
+    
+    @api.depends('order_line.product_cost', )
+    def _compute_total_cost(self): 
+        for rec in self:
+            total_cost = 0
+            for line in rec.order_line:
+                total_cost += line.product_cost * line.product_uom_qty
+            rec.total_cost = total_cost
+        
+    
+    @api.depends('total_cost', 'amount_total_no_tax')
+    def _compute_total_margin_amount(self):
+        for rec in self:
+            rec.total_margin_amount = 0.0
+            if rec.total_cost > 0:
+                rec.total_margin_amount = rec.amount_total_no_tax - rec.total_cost
+            
+                
 
     @api.onchange('sale_margin')
     def onchange_sale_margine(self):
         for line in self.order_line:
-            line.line_margin = self.sale_margin            
+            line.line_margin = self.sale_margin
+            line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
+            line.line_subtotal = line.product_uom_qty * line.price_unit
             
     def _compute_amount_to_word(self):
         for rec in self:
@@ -110,39 +136,49 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     #product_code = fields.Char(related='product_id.default_code', string="Code")
-    product_cost = fields.Float(string="Cost", digits='Product Price', copy=True)
+    product_cost = fields.Float(string="Coût", digits='Product Price', copy=True)
     line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True, copy=True)
-    price_unit = fields.Float('Unit Price', required=True, digits='Product Price',
-        compute='_compute_price_unit',
-        store=True,
+    price_unit = fields.Float('Prix Unit.', required=True, digits='Product Price',
+        #compute='_compute_price_unit',
+        #store=True,
         copy=True
     )
-    line_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
+    line_margin = fields.Float(string="Marge (%)", compute="_compute_line_margin", store=True, readonly=False, copy=True)
     line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
     
     @api.onchange('product_cost')
     def _onchange_product_cost(self):
+        if self.product_cost < 0:
+            raise UserError(_('Le coût ne peut etre negatif.'))
+        self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
+        self.line_subtotal = self.product_uom_qty * self.price_unit
+    
+    @api.onchange('line_margin')
+    def _onchange_line_margin(self):
+        if self.product_cost < 0:
+            raise UserError(_('Le coût ne peut etre negatif.'))
         self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
         self.line_subtotal = self.product_uom_qty * self.price_unit
         
     @api.onchange('product_uom_qty')
-    def _onchange_product_cost(self):
+    def _onchange_product_qty(self):
         self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
         self.line_subtotal = self.product_uom_qty * self.price_unit
-
-    
+        
     """@api.onchange('product_uom_qty')
     def _onchange_product_qty(self):
         if self.product_cost > 0 :
             self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
             self.line_subtotal = self.product_uom_qty * self.price_unit
     """
-    @api.onchange('line_margin')
-    def _onchange_line_margin(self):
-        if self.product_cost > 0 :
-            self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
-            self.line_subtotal = self.product_uom_qty * self.price_unit
     
+    """        
+    @api.depends('product_cost')
+    def _compute_price_unit(self):
+        for line in self:
+            if line.product_cost > 0 :
+                line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
+    """
     @api.depends("order_id", "order_id.sale_margin", "order_id.sale_discuss_margin")
     def _compute_line_margin(self):
         if hasattr(super(), "_compute_line_margin"):
@@ -160,11 +196,21 @@ class SaleOrderLine(models.Model):
         for line in self:
             line.line_subtotal = line.product_uom_qty * line.price_unit
     
+    """@api.depends('line_margin', 'product_cost')
+    def _compute_price_unit(self):
+        for line in self:
+            if line.display_type :
+                continue
+            if line.product_cost > 0 :
+                line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
+    """
+    """
     @api.depends('line_margin', 'product_cost')
     def _compute_price_unit(self):
         for line in self:
             if line.product_cost > 0 :
                 line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
+    """            
         
     @api.model
     def create(self, vals):

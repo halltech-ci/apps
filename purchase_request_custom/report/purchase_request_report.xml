@@ -12,10 +12,10 @@
                     <t t-set="date" t-value="o.date_order.date()"/>
                     <span t-esc="date" class="m-0"/>
                 </div>
-                <div class="col-6 bm-2">
+                <!--<div class="col-6 bm-2">
                     <strong>PROJET:</strong>
                     <span t-field="o.project_id" class="m-0"/>
-                </div>
+                </div>-->
             </div>
         </xpath>
         <!-- Delete company header-->
@@ -31,6 +31,7 @@
         <xpath expr="//table[hasclass('table', 'table-sm')]//thead/tr" position="replace">
             <tr>
                 <th class="text-left"><strong>Description</strong></th>
+                <th class="text-left"><strong>Caractéristiques</strong></th>
                 <th class="text-right"><strong>Qté</strong></th>
                 <th class="text-right"><strong>Unité</strong></th>
                 
@@ -43,6 +44,9 @@
                     <t t-if="not order_line.display_type">
                         <td id="product">
                             <span t-field="order_line.name"/>
+                        </td>
+                        <td id="product">
+                            <span t-field="order_line.specifications"/>
                         </td>
                         <td class="text-right">
                             <span t-field="order_line.product_qty"/>

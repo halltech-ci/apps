@@ -7,12 +7,12 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
      
     state = fields.Selection(selection_add=[
-        ('waiting_for_approval', 'Waiting For Approval'),
-        ('approve', 'Approved'),
+        ('waiting_for_approval', 'Attente de validation'),
+        ('approve', 'Approuve'),
         ('sent',),
         ]
     )
-    approver_id = fields.Many2one('res.users', string="Approver")
+    approver_id = fields.Many2one('res.users', string="Valideur")
     
     def ask_for_approval(self):
         for rec in self:
