@@ -57,12 +57,19 @@
                     groups="expense_management.group_expense_group_payer"
 
             />
-            
+            <button name="button_to_cancel"
+                    string="Annuler"
+                    type="object"
+                    class="oe_highlight"
+                    states="authorize, approve"
+                    groups="expense_management.group_expense_authorize"
+
+            />
             <button name="button_rejected"
                     string='Rejeter'
                     type='object'
                     class="oe_highlight"
-                    states="to_approve,approved,authorize,cancel"
+                    states="to_approve,approve,authorize,cancel"
                     groups="expense_management.group_expense_approver_1"
             />
             <button name="button_rejected"
