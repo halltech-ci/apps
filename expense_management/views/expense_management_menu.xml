@@ -13,6 +13,20 @@
                     states="draft"
                     groups="expense_management.group_expense_user"
             />
+            <button name="button_to_cancel"
+                    string="Annuler"
+                    type="object"
+                    class="oe_highlight"
+                    states="submit"
+                    groups="expense_management.group_expense_valider"
+            />
+            <button name="button_rejected"
+                    string='Rejeter'
+                    type='object'
+                    class="oe_highlight"
+                    states="submit"
+                    groups="expense_management.group_expense_valider"
+            />
             
             <button name="to_validate"
                     string="Valider"
