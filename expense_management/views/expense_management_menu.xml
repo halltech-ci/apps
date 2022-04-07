@@ -13,6 +13,20 @@
                     states="draft"
                     groups="expense_management.group_expense_user"
             />
+            <button name="button_to_cancel"
+                    string="Annuler"
+                    type="object"
+                    class="oe_highlight"
+                    states="submit"
+                    groups="expense_management.group_expense_valider"
+            />
+            <button name="button_rejected"
+                    string='Rejeter'
+                    type='object'
+                    class="oe_highlight"
+                    states="submit"
+                    groups="expense_management.group_expense_valider"
+            />
             
             <button name="to_validate"
                     string="Valider"
@@ -53,16 +67,21 @@
                     string="Annuler"
                     type="object"
                     class="oe_highlight"
-                    states="authorize,to_approve,approved,authorize"
+                    states="authorize"
                     groups="expense_management.group_expense_group_payer"
-
             />
-            
+            <button name="button_to_cancel"
+                    string="Annuler"
+                    type="object"
+                    class="oe_highlight"
+                    states="authorize,to_approve,approve,authorize"
+                    groups="expense_management.group_expense_approver_1"
+            />
             <button name="button_rejected"
                     string='Rejeter'
                     type='object'
                     class="oe_highlight"
-                    states="to_approve,approved,authorize,cancel"
+                    states="to_approve,approve,authorize,cancel"
                     groups="expense_management.group_expense_approver_1"
             />
             <button name="button_rejected"
@@ -154,24 +173,6 @@
                </tree>
           </field>
      </record>
-    <!--
-    <record id="view_expense_request_filter" model="ir.ui.view">
-            <field name="name">hr.expense.request.filter</field>
-            <field name="model">expense.request</field>
-          <field name="arch" type="xml">
-              <search>
-                    <filter domain="[('user_id', '=', uid)]" string="my_expenses"/>
-                    <field name="requested_by"/>
-                    <field name="date"/>
-                    <field name="total_amount"/>
-                    <field name="project_id"/>
-                    <field name="currency_id" invisible="1"/>
-                    <field name="state"/>
-                    <field name="company_id"/>
-               </search>
-          </field>
-     </record>
-     -->
      <!-- Expense line tree view-->
      <record id='view_expense_line_tree' model='ir.ui.view'>
          <field name="name">hr.expense.line.tree</field>
@@ -201,8 +202,15 @@
             <field name="priority" eval="15"/>
             <field name="arch" type="xml">
                 <search string="Search expense">
-                    <field name="project" string="Project" filter_domain="[('project', 'ilike', self)]"/>
+                    <field name="project" string="Project" filter_domain="[('project.code', 'ilike', self)]"/>
                     <field name="analytic_account" string="Analytic" filter_domain="[('analytic_account.name', 'ilike', self)]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter string="Projet" name="Projet" domain="[]" context="{'group_by': 'project'}"/>
+                        <filter string="Analytic" name="analytic" domain="[]" context="{'group_by': 'analytic_account'}"/>
+                        <filter string="Order Date" name="date" domain="[]" context="{'group_by': 'date'}"/>
+                        <filter string="Valideur" name="valideur" domain="[]" context="{'group_by': 'expense_approver'}"/>
+                    </group>
                 </search>
             </field>
       </record>
