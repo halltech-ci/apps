@@ -93,7 +93,7 @@
             />
             <field name="state"
                  widget="statusbar"
-                 statusbar_visible="draft,submit,validate,to_approve,approved,authorize,post,cancel"
+                 statusbar_visible="draft,submit,validate,to_approve,approved,authorize,post,to_cancel,cancel"
                  statusbar_colors='{"approved":"blue"}'
              />
           </header>
@@ -108,16 +108,16 @@
                  <label for="description" class="oe_inline" />
               </div>
                <h1>
-                    <field name="description" class="oe_inline" attrs="{'readonly': [('state', 'in',['cancel'])]}"/>
+                    <field name="description" class="oe_inline" attrs="{'readonly': [('state', 'in',['to_cancel'])]}"/>
                 </h1>
               <group>
                   <group>
                       <field name="expense_approver" options="{'no_create': True}" required='True' 
-                             attrs="{'readonly': [('state', 'in', ['post', 'approve','cancel'])]}"
+                             attrs="{'readonly': [('state', 'in', ['post', 'approve','to_cancel'])]}"
                       />
-                      <field name='journal' options="{'no_create': True}" attrs="{'readonly': [('state', 'in', ['post','cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"/>
+                      <field name='journal' options="{'no_create': True}" attrs="{'readonly': [('state', 'in', ['post','to_cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"/>
                       <field name="statement_id" string="Journal Caisse" options="{'no_create': True}"
-                             attrs="{'readonly': [('state', 'in', ['post','cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"
+                             attrs="{'readonly': [('state', 'in', ['post','to_cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"
                       />
                  </group>
                   <group>
@@ -130,7 +130,7 @@
               </group>
               <notebook>
                   <page string='Expense lines'>
-                      <field name="line_ids"  attrs="{'readonly': [('state', 'in', ['approve', 'post','cancel',])]}">
+                      <field name="line_ids"  attrs="{'readonly': [('state', 'in', ['approve', 'post','to_cancel',])]}">
                           <tree>
                               <field name='name'/>
                               <field name='date'/>
