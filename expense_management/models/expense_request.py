@@ -32,7 +32,9 @@ class ExpenseRequest(models.Model):
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
         return res
     
-    name = fields.Char(default=_get_default_name)
+    name = fields.Char(default='/',
+                       #_get_default_name
+    )
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Broullon'),
@@ -275,7 +277,7 @@ class ExpenseRequest(models.Model):
         return res
     
     def unlink(self):
-        if any(self.filtered(lambda expense: expense.state in ('post'))):
-            raise UserError(_('Vous ne pouvez pas supprimer une dépense déja payée!'))        
+        if any(self.filtered(lambda expense: expense.state not in ('draft'))):
+            raise UserError(_('Vous ne pouvez pas supprimer une note de frais !'))        
         return super(ExpenseRequest, self).unlink()
     
