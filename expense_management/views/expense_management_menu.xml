@@ -74,7 +74,7 @@
                     string="Annuler"
                     type="object"
                     class="oe_highlight"
-                    states="authorize,to_approve,approve,authorize"
+                    states="to_approve,approve,authorize"
                     groups="expense_management.group_expense_approver_1"
             />
             <button name="button_rejected"
@@ -93,7 +93,7 @@
             />
             <field name="state"
                  widget="statusbar"
-                 statusbar_visible="draft,submit,validate,to_approve,approved,authorize,post,cancel"
+                 statusbar_visible="draft,submit,validate,to_approve,approved,authorize,post,to_cancel,cancel"
                  statusbar_colors='{"approved":"blue"}'
              />
           </header>
