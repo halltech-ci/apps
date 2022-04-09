@@ -44,7 +44,7 @@ class ExpenseRequest(models.Model):
         ('to_cancel', 'Annuler'),
         ('post', 'Paye'),
         #('done', 'Paid'),
-        ('cancel', 'Refuse')
+        ('cancel', 'Rejete')
     ], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
     """employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, check_company=True)"""
     
@@ -183,7 +183,7 @@ class ExpenseRequest(models.Model):
         #self.is_approver_check()
         #self.mapped("line_ids").do_cancel()
         
-        return self.write({'state': 'to_cancel'})
+        return self.write({'state': 'to_cancel'})#Annuler
     
     def button_authorize(self):
         if self.state not in  ['approve']:
