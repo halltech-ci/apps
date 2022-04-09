@@ -57,10 +57,10 @@ class ExpenseRequest(models.Model):
     date = fields.Datetime(default=fields.Datetime.now, string="Date",
                           #readonly=True, 
                           )
-    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company', string='Company', required=True, index=True, readonly=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env.company.currency_id)
     total_amount = fields.Monetary('Total Amount', currency_field='currency_id', compute='_compute_amount', store=True, tracking=True)
-    analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account')
+    analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account', check_company=True,)
     project_id = fields.Many2one('project.project', string='Projet')
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
     journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], states=READONLY_STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
