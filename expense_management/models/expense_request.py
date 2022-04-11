@@ -32,7 +32,9 @@ class ExpenseRequest(models.Model):
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
         return res
     
-    name = fields.Char(default=_get_default_name)
+    name = fields.Char(default='/',
+                       #_get_default_name
+    )
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Broullon'),
@@ -40,11 +42,11 @@ class ExpenseRequest(models.Model):
         ('validate', 'Validate'),
         ('to_approve', 'A approuver'),
         ('approve', 'Approuve'),
-        ('authorize','Autoriser'),
-        ('to_cancel', 'Annuler'),
+        ('authorize','Autorise'),
+        ('to_cancel', 'Annule'),
         ('post', 'Paye'),
         #('done', 'Paid'),
-        ('cancel', 'Refuse')
+        ('cancel', 'Rejete')
     ], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
     """employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, check_company=True)"""
     
@@ -55,10 +57,10 @@ class ExpenseRequest(models.Model):
     date = fields.Datetime(default=fields.Datetime.now, string="Date",
                           #readonly=True, 
                           )
-    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company', string='Company', required=True, index=True, readonly=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env.company.currency_id)
     total_amount = fields.Monetary('Total Amount', currency_field='currency_id', compute='_compute_amount', store=True, tracking=True)
-    analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account')
+    analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account', check_company=True,)
     project_id = fields.Many2one('project.project', string='Projet')
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
     journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], states=READONLY_STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
@@ -183,7 +185,7 @@ class ExpenseRequest(models.Model):
         #self.is_approver_check()
         #self.mapped("line_ids").do_cancel()
         
-        return self.write({'state': 'to_cancel'})
+        return self.write({'state': 'to_cancel'})#Annuler
     
     def button_authorize(self):
         if self.state not in  ['approve']:
@@ -267,6 +269,11 @@ class ExpenseRequest(models.Model):
     
     @api.model
     def create(self, vals):
+        if vals.get('name', '/') == '/':
+            if 'company_id' in vals:
+                vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code('expense.request.code') or '/'
+            else:
+                vals['name'] = self.env['ir.sequence'].next_by_code('expense.request.code') or '/'
         request = super(ExpenseRequest, self).create(vals)
         return request
     
@@ -275,7 +282,7 @@ class ExpenseRequest(models.Model):
         return res
     
     def unlink(self):
-        if any(self.filtered(lambda expense: expense.state in ('post'))):
-            raise UserError(_('Vous ne pouvez pas supprimer une dépense déja payée!'))        
+        if any(self.filtered(lambda expense: expense.state not in ('draft'))):
+            raise UserError(_('Vous ne pouvez pas supprimer une note de frais !'))        
         return super(ExpenseRequest, self).unlink()
     
