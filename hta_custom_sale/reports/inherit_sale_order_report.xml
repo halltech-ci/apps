@@ -8,7 +8,7 @@
                     <div class="col-2" style="font-style: italic; font-weight: bold;margin-right:2px; top:40px;">
                         <p style="text-decoration: underline;">CLIENT:</p>
                         <p style="margin-left: -408px; margin-top: -50px; font-style: italic; text-decoration: underline;">
-                            DATE : <span t-esc="doc.date_order" style="text-decoration: none;"/>
+                            DATE : <span t-esc="doc.date_order.date()" style="text-decoration: none;"/>
                         </p>
                     </div>
                      <div class="col-6" style="text-align: center;width: 300px; border:1px solid #000;border-radius:10px;margin-right:21px;">
