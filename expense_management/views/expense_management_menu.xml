@@ -65,6 +65,7 @@
             />  
             <button name="button_to_cancel"
                     string="Annuler"
+                    confirm='Voulez-vous vraiment annuler ce devis ? Il ne sera plus modifiable'
                     type="object"
                     class="oe_highlight"
                     states="authorize"
@@ -72,6 +73,7 @@
             />
             <button name="button_to_cancel"
                     string="Annuler"
+                    confirm='Voulez-vous vraiment annuler ce devis ? Il ne sera plus modifiable'
                     type="object"
                     class="oe_highlight"
                     states="to_approve,approve,authorize"
@@ -79,6 +81,7 @@
             />
             <button name="button_rejected"
                     string='Rejeter'
+                    confirm='Voulez-vous vraiment rejeter ce devis ?'
                     type='object'
                     class="oe_highlight"
                     states="to_approve,approve,authorize,cancel"
@@ -86,6 +89,7 @@
             />
             <button name="button_rejected"
                     string='Rejeter'
+                    confirm='Voulez-vous vraiment rejeter ce devis ?.'
                     type='object'
                     class="oe_highlight"
                     states="to_cancel"
