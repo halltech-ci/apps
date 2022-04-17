@@ -129,7 +129,21 @@ class ExpenseRequest(models.Model):
     def _compute_amount(self):
         for request in self:
             request.total_amount = sum(request.line_ids.mapped('amount'))
+    
+    """        
+    def button_reconcile_expense(self):
+        self.ensure_one()
+        domain = [('id', 'in', self.line_ids)]
+        #view_id = selv.env['ir.actions.act_window'].search([()])
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'expense.line',
+            'views': [[False, 'form']],
+            'target': 'new',
+            'domain': domain,
             
+        }
+    """
     def action_reconcile_expense(self):
         self.ensure_one()
         lines = self.line_ids
@@ -139,7 +153,11 @@ class ExpenseRequest(models.Model):
             'target': 'new',
             'context': {'expense_line_ids': self.line_ids, 'company_ids': self.mapped('company_id').ids} ,           
         }
-        
+    
+    def get_expense_line(self):
+        #lines = self.env['expense.request'].mapped('self.line_ids')
+        return self.mapped('line_ids')
+    
     
     
     """This create account_bank_statetment_line in bank_statement given in expense request"""

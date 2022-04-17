@@ -7,19 +7,24 @@
                    Lettrage
                </h3>
            </div>
-            <div>
+            <div class="table_view">
                 <table class="accounting_view">
                     <thead>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
+                        <th>Date</th>
+                        <th>name</th>
+                        <th>partner</th>
+                        <th>Amount</th>
                     </thead>
                     <tbody>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
+                        <span>'report_lines'</span>
+                        <!--<t t-foreach="report_lines" t-as="data">
+                            <tr style="border: 1px solid black;">
+                                <td><span t-field='data.date'/></td>
+                                <td><span t-field='data.name'/></td>
+                                <td><span t-field='data.partner_id'/></td>
+                                <td><span t-field='data.amount'/></td>
+                            </tr>
+                        </t>-->
                     </tbody>
                 </table>
             </div>

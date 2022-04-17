@@ -6,11 +6,15 @@ odoo.define('expense_management.expense_line_reconcile_action', function (requir
     var AbstractAction = require('web.AbstractAction');
     var core = require('web.core');
     var QWeb = core.qweb;
-    //title: core._t("Lettrage des notes de frais"),
+    var rpc = require('web.rpc');
 
     var ExpenseLineReconcile = AbstractAction.extend({
         title: core._t('Expense Reconciliation'),
         template: 'expense_line',
+        
+        events: {
+            //Include events such as click, change, here
+            },
 
         init: function(parent, action, options){
             this._super.apply(this, arguments);
@@ -21,10 +25,12 @@ odoo.define('expense_management.expense_line_reconcile_action', function (requir
             this.actionManager = parent;
             this.options = options || {};
             },
+        start: function(){
+            var self = this;
+            alert('Hello !')
+            //self.load_data()
+        },
         
-        events: {
-            //Include events such as click, change, here
-            },
     })
     core.action_registry.add('expense_line_reconcile_action', ExpenseLineReconcile);//client action tag:
 
