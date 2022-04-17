@@ -1,22 +1,32 @@
-<templates id="expense_reconciliation">
+<templates>
     <!-- Template for input fields  -->
-    <t t-name="expense.reconciliation.form">
-        <div class="container-fluid">
-            <div class="row" id="header_section">
-                <div class="col-6">
-                    <label for="product_name">Product Name</label>
-                    <input type="text" id="product_name" name="product_name" class="form-control header-input"/>
-                </div>
-                <div class="col-6">
-                    <label for="price">Price</label>
-                    <input type="text" id="price" name="price" class="form-control header-input"/>
-                </div>
+    <t t-name="expense_line">
+        <div>
+            <div>
+               <h3>
+                   Lettrage
+               </h3>
+           </div>
+            <div>
+                <table class="accounting_view">
+                    <thead>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                    </thead>
+                    <tbody>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                    </tbody>
+                </table>
             </div>
         </div>
     </t>
-    <!-- Template for footer buttons, Save and Close -->
     <t t-name="FooterButtons">
-        <button type="button" class="btn btn-primary custom_btn_save" accesskey="s">Save</button>
-        <button type="button" class="btn btn-cancel margin-r-15" data-dismiss="modal" accesskey="j">Discard</button>
+        <button type="button" class="btn btn-primary custom_btn_save" accesskey="s">Lettrer</button>
+        <button type="button" class="btn btn-cancel margin-r-15" data-dismiss="modal" accesskey="j">Annuler</button>
     </t>
 </templates>

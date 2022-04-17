@@ -45,7 +45,7 @@ class ExpenseRequest(models.Model):
         ('authorize','Autorise'),
         ('to_cancel', 'Annule'),
         ('post', 'Paye'),
-        #('done', 'Paid'),
+        ('reconcile', 'Lettre'),
         ('cancel', 'Rejete')
     ], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
     """employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, check_company=True)"""
@@ -130,6 +130,18 @@ class ExpenseRequest(models.Model):
         for request in self:
             request.total_amount = sum(request.line_ids.mapped('amount'))
             
+    def action_reconcile_expense(self):
+        self.ensure_one()
+        lines = self.line_ids
+        return {
+            'type':'ir.actions.client',
+            'tag': 'expense_line_reconcile_action',
+            'target': 'new',
+            'context': {'expense_line_ids': self.line_ids, 'company_ids': self.mapped('company_id').ids} ,           
+        }
+        
+    
+    
     """This create account_bank_statetment_line in bank_statement given in expense request"""
     def create_bank_statement(self):
         for request in self:

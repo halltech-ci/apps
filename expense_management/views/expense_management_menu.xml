@@ -62,7 +62,14 @@
                     class="oe_highlight"
                     states="authorize"
                     groups="expense_management.group_expense_group_payer"
-            />  
+            />
+            <button name="action_reconcile_expense"
+                    string="Lettrer"
+                    type="object"
+                    class="oe_highlight"
+                    states="post"
+                    groups="expense_management.group_expense_group_payer"
+            />
             <button name="button_to_cancel"
                     string="Annuler"
                     confirm='Voulez-vous vraiment annuler ce devis ? Il ne sera plus modifiable'
@@ -97,7 +104,7 @@
             />
             <field name="state"
                  widget="statusbar"
-                 statusbar_visible="draft,submit,validate,to_approve,approved,authorize,post,to_cancel,cancel"
+                 statusbar_visible="draft,submit,validate,to_approve,approved,authorize,post,reconcile,to_cancel,cancel"
                  statusbar_colors='{"approved":"blue"}'
              />
           </header>

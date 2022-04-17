@@ -1,0 +1,10 @@
+<odoo>
+  <data>
+    <record id="action_expense_line_reconcile" model="ir.actions.client">
+        <field name="name">Reconciliation on Expense Lines</field>
+        <field name="res_model">expense.request</field>
+        <field name="tag">expense_line_reconcile_action</field>
+        <!--<field name='target'>new</field>-->
+    </record>
+  </data>
+</odoo>
