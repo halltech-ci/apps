@@ -155,6 +155,9 @@
                           </tree>
                       </field>
                   </page>
+                  <page id='aml_tab' string='Ecritures Comptables' groups="account.group_account_user">
+                      <field name='line_ids'></field>
+                  </page>
               </notebook>
               <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
