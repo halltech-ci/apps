@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.project.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='emails']" position="after">
+                <page string='Stock' groups="stock.group_stock_multi_locations">
+                    <group>
+                        <group string="Stock" name="stock_misc">
+                            <field name="picking_type_id" />
+                            <field name="location_id" />
+                            <field name="location_dest_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
