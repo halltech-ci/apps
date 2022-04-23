@@ -27,7 +27,7 @@ class ProductRequestLine(models.Model):
     )
     request_id = fields.Many2one('product.request', string="Product Request")
     product_id = fields.Many2one("product.product", string="Product",
-        domain=[("sale_ok", "=", True)],
+        domain=[("purchase_ok", "=", True)],
         track_visibility="onchange",
     )
     product_uom_id = fields.Many2one("uom.uom",
