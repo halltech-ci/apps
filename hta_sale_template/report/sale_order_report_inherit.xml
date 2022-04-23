@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="hta_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <template id="hta_report_saleorder_document" inherit_id="hta_custom_sale.inherit_report_saleorder_document">
             <xpath expr="//table[hasclass('table','table-sm','o_main_table')]/thead/tr/th[@name='th_description']" position='before'>
                 <th name="line_item" class="text-center">Item</th>
             </xpath>
