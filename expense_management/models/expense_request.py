@@ -236,7 +236,7 @@ class ExpenseRequest(models.Model):
             #st_lines = self.env['account.bank.statement.line'].search([('expense_id', '=', rec.id)]).ids
             for line in self.line_ids:
                 line.action_post()
-            return self.write({'state': 'post', 'statement_line_ids':st_lines})
+            return self.write({'state': 'post'})
         return True
     
     def action_submit(self):

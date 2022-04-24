@@ -155,8 +155,15 @@
                           </tree>
                       </field>
                   </page>
-                  <page id='aml_tab' string='Ecritures Comptables' groups="account.group_account_user">
-                      <field name='line_ids'></field>
+                  <page id='aml_tab' string='Ecritures Comptables' groups="account.group_account_user" attrs="{'invisible':[('state', 'not in', ['post'])]}">
+                      <field name='statement_line_ids'>
+                          <tree>
+                              <field name='name'/>
+                              <!--<field name='project_id'/>-->
+                              <field name='analytic_account_id'/>
+                              <field name='amount'/>
+                          </tree>
+                      </field>
                   </page>
               </notebook>
               <div class="oe_chatter">
