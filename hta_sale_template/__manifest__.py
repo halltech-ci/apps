@@ -30,8 +30,8 @@
         #views
         'views/sale_order_views.xml',
         'report/sale_order_report_inherit.xml',
-        'views/sale_order_overview.xml',
-        'report/sale_overview_report.xml',
+        #'views/sale_order_overview.xml',
+        #'report/sale_overview_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
