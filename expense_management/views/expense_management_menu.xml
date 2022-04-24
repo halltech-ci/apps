@@ -159,7 +159,7 @@
                       <field name='statement_line_ids'>
                           <tree>
                               <field name='name'/>
-                              <!--<field name='project_id'/>-->
+                              <field name='project_id'/>
                               <field name='analytic_account_id'/>
                               <field name='amount'/>
                           </tree>

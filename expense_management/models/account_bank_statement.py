@@ -17,9 +17,9 @@ class AccountBankStatementLine(models.Model):
     )
     debit = fields.Monetary(currency_field='journal_currency_id')
     credit_account = fields.Monetary(currency_field='journal_currency_id')
-    expense_account = fields.Many2one('expense.request',"Expense",store=True)
+    expense_id = fields.Many2one('expense.request',"Expense")
     project_id = fields.Many2one("project.project", "Project",store=True)
-    expense_id = fields.Many2one('expense.request')
+    #expense_id = fields.Many2one('expense.request')
     
    
     
