@@ -35,6 +35,7 @@
             <xpath expr="//sheet/group/group[1]/field[@name='partner_id']" position="after">
                 <field name="dest_address_id"/>
             </xpath>
+            
             <!-- Adding project in purchase order line-->
             <xpath expr="//form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position='before'>
                 <field name="product_code"/>
