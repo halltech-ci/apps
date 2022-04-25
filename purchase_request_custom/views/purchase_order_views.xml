@@ -28,6 +28,10 @@
                         id="bid_confirm"
                 />
             </xpath>
+            <xpath expr="//sheet/group/group[2]/field[@name='company_id']" position="after">
+                <field name="debit_limit" readonly='1'/>
+            </xpath>
+            
             <xpath expr="//sheet/group/group[1]/field[@name='partner_id']" position="after">
                 <field name="dest_address_id"/>
             </xpath>
