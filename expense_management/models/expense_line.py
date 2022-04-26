@@ -81,7 +81,9 @@ class ExpenseLine(models.Model):
     transfer_amount = fields.Float('Frais de transfert', digits='Product Price')
     project = fields.Many2one('project.project', string='Project', domain=lambda self: self._get_project_domain())
     expense_product = fields.Many2one('product.product', string='Product', domain="[('can_be_expensed', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", ondelete='restrict')
+    #move_id = fields.Many2one('account.move')
     #journal = fields.Many2one('account.journal')
+    
     
     def action_submit(self):
         self._action_submit()

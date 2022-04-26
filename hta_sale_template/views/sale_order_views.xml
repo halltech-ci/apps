@@ -11,6 +11,9 @@
             <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='sequence']" position="after">
                 <field name="line_item"/>
             </xpath>
+            <xpath expr="//sheet/div[@name='button_box']/button[@name='preview_sale_order']" position='before'>
+                <button name="action_sale_overview" string="Sale Overview" type="object" class="oe_stat_button" help="Apercu"/>
+            </xpath>
         </field>
     </record>
   </data>

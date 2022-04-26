@@ -1,0 +1,25 @@
+<odoo>
+  <data>
+      
+    <record id='sale_order_qweb_overview' model='ir.ui.view'>
+        <field name="name">Sale_Order_Overiview</field>
+        <field name="type">qweb</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type='xml'>
+            <nav class='o_qweb_cp_buttons'>
+            </nav>
+            <div class='o_tittle'>
+                <h2>Sale Order</h2>
+            </div>
+                <strong><field name='order_line'/></strong>
+        </field>
+    </record>  
+    
+    <record id="sale_order_overview_action" model="ir.actions.act_window">
+        <field name="name">Sale_order_Overview</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">qweb</field>
+        <field name='view_id' ref='sale_order_qweb_overview'/>
+    </record>
+  </data>
+</odoo>

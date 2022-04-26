@@ -37,10 +37,15 @@
         #views
         'views/account_bank_statement_views.xml',
         'views/product_template_views.xml',
+        'views/expense_line_reconcile_views.xml',
         #data
         'data/mail_template.xml',
         'data/expense_request_seq.xml',
+        'data/assets_backend.xml',
         
+    ],
+    'qweb':[
+      'static/src/xml/expense_reconciliation.xml',  
     ],
     # only loaded in demonstration mode
     'demo': [

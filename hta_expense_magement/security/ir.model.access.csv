@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hta_expense_magement_hta_expense_magement,hta_expense_magement.hta_expense_magement,model_hta_expense_magement_hta_expense_magement,base.group_user,1,1,1,1

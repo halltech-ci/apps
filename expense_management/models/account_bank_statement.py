@@ -6,18 +6,6 @@ from odoo import models, fields, api, _
 class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
     
-    def action_view_reconcile(self):
-        view_id = self.env['ir.ui.view'].search([('name', '=', 'account_statement_reconcile_tree')]).id
-        return {
-                'type': 'ir.actions.act_window',
-                'name': 'Lettrage Caisse',
-                'res_model': 'account.bank.statement.line',
-                "domain": [["statement_id", "=", self.id], ['journal_entry_ids', '=', False], 
-                       ['amount', '!=', 0]
-                ],
-                'views': [[view_id,'tree']],
-                };
-    
     
 class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
@@ -28,29 +16,12 @@ class AccountBankStatementLine(models.Model):
         relation='account_statement_model_analytic_tag_rel'
     )
     debit = fields.Monetary(currency_field='journal_currency_id')
-    credit = fields.Monetary(currency_field='journal_currency_id')
-    expense_id = fields.Many2one('expense.request',"Expense",store=True)
-    #amount = fields.Monetary(compute="_compute_amount")
+    credit_account = fields.Monetary(currency_field='journal_currency_id')
+    expense_id = fields.Many2one('expense.request',"Expense")
+    project_id = fields.Many2one("project.project", "Project",store=True)
+    #expense_id = fields.Many2one('expense.request')
     
-    """
-    @api.depends('credit', 'debit')
-    def _compute_amount(self):
-        for line in self:
-            if line.amount != line.credit or line.amount != -line.credit:
-                if line.debit > 0:
-                    line.amount = -line.debit 
-            elif line.credit:
-                line.amount = line.credit
-    """        
-    def button_action_reconcile(self):
-        for line in self:
-            move_value = {
-                'ref': self.name,
-                'date': self.date,
-                'journal_id': self.statement_id.journal_id.id,
-                'company_id': self.company_id.id,
-            }
-    
+   
     
     #Method for reconcile expense line
     """def create_move_values(self):

@@ -45,7 +45,7 @@ class ExpenseRequest(models.Model):
         ('authorize','Autorise'),
         ('to_cancel', 'Annule'),
         ('post', 'Paye'),
-        #('done', 'Paid'),
+        ('reconcile', 'Lettre'),
         ('cancel', 'Rejete')
     ], string='Status', index=True, readonly=True, tracking=True, copy=False, default='draft', required=True, help='Expense Report State')
     """employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, check_company=True)"""
@@ -65,22 +65,17 @@ class ExpenseRequest(models.Model):
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
     journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], states=READONLY_STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
 
-    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True, states=READONLY_STATES, default=lambda self: self.get_default_statement_id())
-
-    move_id = fields.Many2one('account.move', string='Account Move')
+    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True, states=READONLY_STATES, 
+                                   #default=lambda self: self.get_default_statement_id()
+    )
+    statement_line_ids = fields.One2many('account.bank.statement.line', 'expense_id')
+    move_ids = fields.Many2many('account.move', string='Account Move')
     is_expense_approver = fields.Boolean(string="Is Approver",
         compute="_compute_is_expense_approver",
     )
     expense_approver = fields.Many2one('res.users', string="Valideur", states=READONLY_STATES)
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
     
-    """
-    def _compute_default_name(self):
-        for rec in self:
-            sequence = self.env['ir.sequence'].next_by_code("expense.request.code")
-            rec.name = sequence
-    """
-
     def send_validation_mail(self):
         self.ensure_one()
         template_id = self.env.ref('expense_management.expense_mail_template').id
@@ -129,9 +124,77 @@ class ExpenseRequest(models.Model):
     def _compute_amount(self):
         for request in self:
             request.total_amount = sum(request.line_ids.mapped('amount'))
+    
+    """        
+    def button_reconcile_expense(self):
+        self.ensure_one()
+        domain = [('id', 'in', self.line_ids)]
+        #view_id = selv.env['ir.actions.act_window'].search([()])
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'expense.line',
+            'views': [[False, 'form']],
+            'target': 'new',
+            'domain': domain,
             
+        }
+    """
+    def action_reconcile_expense(self):
+        self.ensure_one()
+        lines = self.line_ids
+        return {
+            'type':'ir.actions.client',
+            'tag': 'expense_line_reconcile_action',
+            'target': 'new',
+            'context': {'expense_line_ids': self.line_ids, 'company_ids': self.mapped('company_id').ids} ,           
+        }
+    
+    def get_expense_line(self):
+        #lines = self.env['expense.request'].mapped('self.line_ids')
+        return self.mapped('line_ids')
+    '''
+    def _prepare_move(self):
+        """
+        Prepare the dict of values to create the new move for a expense request. This method may be
+        overridden to implement custom move generation (making sure to call super() to establish
+        a clean extension chain).
+        """
+        self.ensure_one()
+        self = self.with_context(default_company_id=self.company_id.id, force_company=self.company_id.id)
+        #journal = self.env['account.move'].with_context(default_type='in_invoice')._get_default_journal()
+        statement_line_ids = self.env['account.bank.statement.line'].search([('expense_id', '=', self.id)])
+        
+        for line in statement_line_ids:
+            move_vals = {
+                'ref': self.expense_id.statement_id.name + line.ref,
+                'company_id': self.company_id,
+                'journal_id'self.journal,
+            }
+            move_lines = {
+                'account_id': ,
+                'name': line.name,
+                'analytic_account_id': line.analytic_account,
+                'analytic_tag_ids': line.analytic_tags,
+                'amount_currency': line.amount_currency,
+                'currency_id': line.currency_id,
+            }
+    '''
+    '''
+    def _get_account_move_line(self):
+        """Return move line for expense `self`."""
+        
+        statement_line_ids = self.env['account.bank.statement.line'].search([('expense_id', '=', self.id)])
+        
+        for line in statement_line_ids:
+            move_name = line.name
+    '''        
+            
+        
+        
+    
     """This create account_bank_statetment_line in bank_statement given in expense request"""
     def create_bank_statement(self):
+        self.ensure_one()
         for request in self:
             ref = request.description
             statement_id = request.statement_id
@@ -170,6 +233,7 @@ class ExpenseRequest(models.Model):
                 )
         post = self.create_bank_statement()
         if post:
+            #st_lines = self.env['account.bank.statement.line'].search([('expense_id', '=', rec.id)]).ids
             for line in self.line_ids:
                 line.action_post()
             return self.write({'state': 'post'})
@@ -207,10 +271,11 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
+        self.statement_id = self.get_default_statement_id()
         if not self.statement_id:
             raise UserError(
                     _(
-                        "Pas de journal caisse. Veillez en créer un pour ce mois"
+                        "Veuillez contacter la comptabilite pour creer le journal caisse."
                     )
                 )
         if self.total_amount > self.balance_amount:
@@ -221,7 +286,7 @@ class ExpenseRequest(models.Model):
                 )
         for line in self.line_ids:
             line.action_approve()
-        return self.write({"state": "approve"})
+        return self.write({"state": "approve", 'statement_id': self.statement_id.id})
     
     def to_validate(self):
         for line in self.line_ids:
