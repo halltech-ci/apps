@@ -125,20 +125,22 @@ class ExpenseRequest(models.Model):
         for request in self:
             request.total_amount = sum(request.line_ids.mapped('amount'))
     
-    """        
+    """  
     def button_reconcile_expense(self):
-        self.ensure_one()
-        domain = [('id', 'in', self.line_ids)]
-        #view_id = selv.env['ir.actions.act_window'].search([()])
+        #self.ensure_one()
+        #domain = [('line_ids', 'in', self.statement_line_ids)]
+        view_id = self.env['ir.ui.view'].search([('name', '=', 'expense_bank_reconciliation')])
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'expense.line',
-            'views': [[False, 'form']],
+            'res_model': 'account.bank.statement',
+            #'domain': [['expense_id', 'in', self.id]],
+            'views': [(view_id.id, 'form')],
+            'context': {'lien_ids': self.mapped('statement_line_ids').ids},
             'target': 'new',
-            'domain': domain,
-            
         }
-    """
+    """    
+        
+        
     def action_reconcile_expense(self):
         self.ensure_one()
         lines = self.line_ids
@@ -188,9 +190,7 @@ class ExpenseRequest(models.Model):
         for line in statement_line_ids:
             move_name = line.name
     '''        
-            
-        
-        
+
     
     """This create account_bank_statetment_line in bank_statement given in expense request"""
     def create_bank_statement(self):
@@ -216,14 +216,19 @@ class ExpenseRequest(models.Model):
                     "name": line.name,
                     #"partner_id": line.employee_id.address_home_id.id,
                     'amount': amount,
-                    'project_id': line.project.id,
-                    'analytic_account_id': line.analytic_account.id,
+                    #'project_id': line.project.id,
+                    'analytic_account_id': line.analytic_account.id or line.project.id,
                     'expense_id': line.request_id.id,
+                    'debit_account': line.request_id.journal.default_debit_account_id.id,
                 })
                 value.append(lines)
             statement_id.write({'line_ids': value})
         return True
-            
+    
+    #def action_reconcile(self):
+        
+        
+        
     def action_post(self):
         if self.state == 'post':
             raise UserError(

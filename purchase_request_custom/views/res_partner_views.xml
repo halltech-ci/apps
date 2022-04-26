@@ -9,7 +9,7 @@
                 <field name='company_id'/>
             </xpath>
             <xpath expr="//notebook//page[@name='sales_purchases']/group/group[@name='purchase']" position='inside'>
-                <field name="debit_limit"/>
+                <field name="debit_limit" />
             </xpath>
         </field>
     </record>
