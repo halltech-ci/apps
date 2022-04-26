@@ -27,7 +27,6 @@ class PurchaseOrder(models.Model):
         for rec in self:
             rec.amount_to_word = str(self._num_to_words(rec.amount_total)).upper()
     
-    
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
     purchase_approver = fields.Many2one('res.users')
     state = fields.Selection(selection_add=[
