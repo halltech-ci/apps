@@ -10,7 +10,7 @@ odoo.define('expense_management.expense_line_reconcile_action', function (requir
 
     var ExpenseLineReconcile = AbstractAction.extend({
         title: core._t('Expense Reconciliation'),
-        template: 'expense_line',
+        //template: 'expense_line',
         
         events: {
             //Include events such as click, change, here
@@ -27,7 +27,7 @@ odoo.define('expense_management.expense_line_reconcile_action', function (requir
             },
         start: function(){
             var self = this;
-            alert('Hello !')
+            alert('Cette fonction sera disponible demain !')
             //self.load_data()
         },
         
