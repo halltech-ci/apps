@@ -38,12 +38,12 @@ class PurchaseOrder(models.Model):
         ('done', 'Locked'),
         ('cancel', 'Cancelled')
     ])
-    debit_limit = fields.Float(compute='_compute_debit_limit',)
+    amount_due = fields.Float(compute='_compute_debit_limit', string="Solde Credit")
     
     @api.depends('partner_id')
     def _compute_debit_limit(self):
         for rec in self:
-            rec.debit_limit = rec.partner_id.debit_limit
+            rec.amount_due = rec.partner_id.debit_limit - rec.partner_id.debit
     
     @api.onchange('state')
     def _compute_purchase_approver(self):
