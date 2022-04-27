@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <report 
+        id='sale_order_overview_report'
+        string='Overview'
+        model='sale.order'
+        report_type='qweb-html'
+        name='sale.report_saleorder_document'
+    />
+    </data>
+</odoo>

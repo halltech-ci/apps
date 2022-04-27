@@ -8,6 +8,9 @@
             <xpath expr="//sheet/group/group[2]/field[@name='category_id']" position="after">
                 <field name='company_id'/>
             </xpath>
+            <xpath expr="//notebook//page[@name='sales_purchases']/group/group[@name='purchase']" position='inside'>
+                <field name="debit_limit" />
+            </xpath>
         </field>
     </record>
   </data>

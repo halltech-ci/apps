@@ -1,0 +1,8 @@
+<odoo>
+    <data>
+        <!-- Sale overview template-->
+        <template id="sale_overview_report" inherit_id='hta_sale_template.hta_report_saleorder_document'>
+            
+        </template>
+    </data>
+</odoo>

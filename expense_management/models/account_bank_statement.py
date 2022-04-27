@@ -6,51 +6,38 @@ from odoo import models, fields, api, _
 class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
     
-    def action_view_reconcile(self):
-        view_id = self.env['ir.ui.view'].search([('name', '=', 'account_statement_reconcile_tree')]).id
-        return {
-                'type': 'ir.actions.act_window',
-                'name': 'Lettrage Caisse',
-                'res_model': 'account.bank.statement.line',
-                "domain": [["statement_id", "=", self.id], ['journal_entry_ids', '=', False], 
-                       ['amount', '!=', 0]
-                ],
-                'views': [[view_id,'tree']],
-                };
-    
     
 class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
     
+    
+    '''def get_credit_account(self):
+        res = self.env['account.account'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
+        return res
+    '''
     analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account', ondelete='set null')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags', 
         #domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]", 
         relation='account_statement_model_analytic_tag_rel'
     )
     debit = fields.Monetary(currency_field='journal_currency_id')
-    credit = fields.Monetary(currency_field='journal_currency_id')
-    expense_id = fields.Many2one('expense.request',"Expense",store=True)
-    #amount = fields.Monetary(compute="_compute_amount")
+    credit_account = fields.Monetary(currency_field='journal_currency_id')
+    expense_id = fields.Many2one('expense.request',"Expense")
+    project_id = fields.Many2one("project.project", "Project",store=True)
+    credit_account = fields.Many2one('account.account', string='Credit Account')
+    debit_account = fields.Many2one('account.account',string='Debit Account')
+    p_amount = fields.Float("Montant", digits='Product Price', compute='_compute_p_amount')
     
-    """
-    @api.depends('credit', 'debit')
-    def _compute_amount(self):
+    @api.depends('amount')
+    def _compute_p_amount(self):
         for line in self:
-            if line.amount != line.credit or line.amount != -line.credit:
-                if line.debit > 0:
-                    line.amount = -line.debit 
-            elif line.credit:
-                line.amount = line.credit
+            line.p_amount = -line.amount
     """        
-    def button_action_reconcile(self):
-        for line in self:
-            move_value = {
-                'ref': self.name,
-                'date': self.date,
-                'journal_id': self.statement_id.journal_id.id,
-                'company_id': self.company_id.id,
-            }
-    
+    def _prepare_expense_move(self, move_ref):
+        ref = move_ref or ''
+        if self.ref
+    """
+   
     
     #Method for reconcile expense line
     """def create_move_values(self):

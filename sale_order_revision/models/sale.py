@@ -46,13 +46,14 @@ class SaleOrder(models.Model):
     def copy(self, default=None):
         if default is None:
             default = {}
-        if default.get("name", "/") == "/":
-            next_code = "sale.order"
+        if default.get("name", _('New')) == _('New'):
             domaine_code = default.get('sale_order_type')
             if domaine_code != "fm":
                 next_code = '{0}.{1}.{2}'.format('sale', domaine_code, 'sequence')
+            else:
+                next_code = "sale.order"
             seq = self.env["ir.sequence"]
-            default["name"] = seq.next_by_code("next_code") or "/"
+            default["name"] = seq.next_by_code("next_code") or _('New')
             default["revision_number"] = 0
             default["unrevisioned_name"] = default["name"]
         return super(SaleOrder, self).copy(default=default)
@@ -78,13 +79,14 @@ class SaleOrder(models.Model):
     @api.model
     def create(self, values):
         if "unrevisioned_name" not in values:
-            if values.get("name", "/") == "/":
-                next_code = "sale.order"
+            if values.get('name', '/') == '/':
                 domaine_code = values.get('sale_order_type')
                 if domaine_code != "fm":
                     next_code = '{0}.{1}.{2}'.format('sale', domaine_code, 'sequence')
+                else:
+                    next_code = "sale.order"
                 seq = self.env["ir.sequence"]
-                values["name"] = seq.next_by_code(next_code) or "/"
+                values["name"] = seq.next_by_code(next_code) or '/'
             values["unrevisioned_name"] = values["name"]
         return super(SaleOrder, self).create(values)
 

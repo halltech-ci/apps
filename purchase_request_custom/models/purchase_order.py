@@ -27,7 +27,6 @@ class PurchaseOrder(models.Model):
         for rec in self:
             rec.amount_to_word = str(self._num_to_words(rec.amount_total)).upper()
     
-    
     amount_to_word = fields.Char(string="Amount In Words:", compute='_compute_amount_to_word')
     purchase_approver = fields.Many2one('res.users')
     state = fields.Selection(selection_add=[
@@ -39,6 +38,12 @@ class PurchaseOrder(models.Model):
         ('done', 'Locked'),
         ('cancel', 'Cancelled')
     ])
+    amount_due = fields.Float(compute='_compute_debit_limit', string="Solde Credit")
+    
+    @api.depends('partner_id')
+    def _compute_debit_limit(self):
+        for rec in self:
+            rec.amount_due = rec.partner_id.debit_limit - rec.partner_id.debit
     
     @api.onchange('state')
     def _compute_purchase_approver(self):
