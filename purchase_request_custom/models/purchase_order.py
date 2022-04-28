@@ -45,11 +45,6 @@ class PurchaseOrder(models.Model):
         for rec in self:
             rec.amount_due = rec.partner_id.debit_limit - rec.partner_id.debit
     
-    @api.depends('partner_id')
-    def _compute_debit_limit(self):
-        for rec in self:
-            rec.debit_limit = rec.partner_id.debit_limit
-    
     @api.onchange('state')
     def _compute_purchase_approver(self):
         if self.state == 'approve':
