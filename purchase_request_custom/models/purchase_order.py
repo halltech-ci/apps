@@ -40,7 +40,7 @@ class PurchaseOrder(models.Model):
     ])
     amount_due = fields.Float(compute='_compute_debit_limit', string="Solde Credit")
     
-    @api.depends('partner_id')
+    @api.depends('partner_id.debit_limit', 'partner_id.debit')
     def _compute_debit_limit(self):
         for rec in self:
             rec.amount_due = rec.partner_id.debit_limit - rec.partner_id.debit
