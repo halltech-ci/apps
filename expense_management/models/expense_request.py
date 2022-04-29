@@ -32,9 +32,7 @@ class ExpenseRequest(models.Model):
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
         return res
     
-    name = fields.Char(default='/',
-                       #_get_default_name
-    )
+    name = fields.Char(default='/',)
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
         ('draft', 'Broullon'),
@@ -125,20 +123,12 @@ class ExpenseRequest(models.Model):
         for request in self:
             request.total_amount = sum(request.line_ids.mapped('amount'))
     
-    """  
+      
     def button_reconcile_expense(self):
         #self.ensure_one()
-        #domain = [('line_ids', 'in', self.statement_line_ids)]
-        view_id = self.env['ir.ui.view'].search([('name', '=', 'expense_bank_reconciliation')])
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'account.bank.statement',
-            #'domain': [['expense_id', 'in', self.id]],
-            'views': [(view_id.id, 'form')],
-            'context': {'lien_ids': self.mapped('statement_line_ids').ids},
-            'target': 'new',
-        }
-    """    
+        action = self.env.ref('expensemanagement.act_bank_stline_reconcile')
+        result = action.read()[0]
+         
         
         
     def action_reconcile_expense(self):
@@ -153,43 +143,7 @@ class ExpenseRequest(models.Model):
     
     def get_expense_line(self):
         #lines = self.env['expense.request'].mapped('self.line_ids')
-        return self.mapped('line_ids')
-    '''
-    def _prepare_move(self):
-        """
-        Prepare the dict of values to create the new move for a expense request. This method may be
-        overridden to implement custom move generation (making sure to call super() to establish
-        a clean extension chain).
-        """
-        self.ensure_one()
-        self = self.with_context(default_company_id=self.company_id.id, force_company=self.company_id.id)
-        #journal = self.env['account.move'].with_context(default_type='in_invoice')._get_default_journal()
-        statement_line_ids = self.env['account.bank.statement.line'].search([('expense_id', '=', self.id)])
-        
-        for line in statement_line_ids:
-            move_vals = {
-                'ref': self.expense_id.statement_id.name + line.ref,
-                'company_id': self.company_id,
-                'journal_id'self.journal,
-            }
-            move_lines = {
-                'account_id': ,
-                'name': line.name,
-                'analytic_account_id': line.analytic_account,
-                'analytic_tag_ids': line.analytic_tags,
-                'amount_currency': line.amount_currency,
-                'currency_id': line.currency_id,
-            }
-    '''
-    '''
-    def _get_account_move_line(self):
-        """Return move line for expense `self`."""
-        
-        statement_line_ids = self.env['account.bank.statement.line'].search([('expense_id', '=', self.id)])
-        
-        for line in statement_line_ids:
-            move_name = line.name
-    '''        
+        return self.mapped('line_ids')   
 
     
     """This create account_bank_statetment_line in bank_statement given in expense request"""
@@ -216,8 +170,8 @@ class ExpenseRequest(models.Model):
                     "name": line.name,
                     #"partner_id": line.employee_id.address_home_id.id,
                     'amount': amount,
-                    #'project_id': line.project.id,
-                    'analytic_account_id': line.analytic_account.id or line.project.id,
+                    'project_id': line.project.id,
+                    'analytic_account_id': line.analytic_account.id,
                     'expense_id': line.request_id.id,
                     'debit_account': line.request_id.journal.default_debit_account_id.id,
                 })
@@ -225,10 +179,6 @@ class ExpenseRequest(models.Model):
             statement_id.write({'line_ids': value})
         return True
     
-    #def action_reconcile(self):
-        
-        
-        
     def action_post(self):
         if self.state == 'post':
             raise UserError(
@@ -241,7 +191,55 @@ class ExpenseRequest(models.Model):
             #st_lines = self.env['account.bank.statement.line'].search([('expense_id', '=', rec.id)]).ids
             for line in self.line_ids:
                 line.action_post()
-            return self.write({'state': 'post'})
+            return self.write({'state': 'post',})
+        return True
+    
+    def _create_move_values(self):
+        for request in self:
+            #expense_line = request.statement_line_ids
+            account_src = request.journal.default_debit_account_id.id
+            ref = request.statement_id.name
+            journal = request.journal
+            company = request.company_id
+            account_date = fields.Date.today()
+            
+            lines = self.mapped('statement_line_ids')
+            move_lines = []
+            for line in lines:
+                partner = line.partner_id
+                debit_account = line.debit_account
+                move_value = {
+                    'ref': ref +'-' + line.ref ,
+                    'date': account_date,
+                    'journal_id': journal.id,
+                    'company_id': company.id,
+                }
+                debit_line = (0, 0, {
+                    'name': line.name,
+                    'account_id': debit_account.id,
+                    'debit': line.amount > 0.0 and line.amount or 0.0,
+                    'credit': line.amount < 0.0 and -line.amount or 0.0, 
+                    'partner_id': partner.id,
+                    'journal_id': journal.id,
+                    'date': account_date,
+                    'analytic_account_id': line.analytic_account.id or line.project_id.id,
+                })
+                move_lines.append(debit_line)
+                credit_line = (0, 0, {
+                    'name': line.name,
+                    'account_id': account_src,
+                    'debit': line.amount < 0.0 and -line.amount or 0.0,
+                    'credit': line.amount > 0.0 and line.amount or 0.0, 
+                    'partner_id': partner.id,
+                    'journal_id': journal.id,
+                    'date': account_date,
+                    #'analytic_account_id': line.analytic_account.id or line.project_id.id,
+                })
+                move_lines.append(credit_line)
+                move_value['line_ids'] = move_lines
+                move = self.env['account.move'].create(move_value)
+                line.write({'move_id': move.id})
+                move.post()
         return True
     
     def action_submit(self):

@@ -69,7 +69,7 @@
                     class="oe_highlight"
                     states="post"
                     groups="expense_management.group_expense_group_payer"
-                    attrs="{'invisible':[('state', 'in', 'reconcile')]}"
+                    
             />
             <button name="button_to_cancel"
                     string="Annuler"
@@ -161,7 +161,9 @@
                           <tree editable='bottom'>
                               <field name="ref"/>
                               <field name='name'/>
+                              <field name='project_id'/>
                               <field name='analytic_account_id' string="Compte Analytique"/>
+                              <field name="partner_id"/>
                               <field name='p_amount'/>
                               <field name='debit_account'/>
                               <field name='credit_account'/>
