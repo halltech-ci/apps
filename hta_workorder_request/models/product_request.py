@@ -37,6 +37,12 @@ class ProductRequest(models.Model):
         company = self.env.company.id
         warehouse_ids = self.env['stock.warehouse'].search([('company_id', '=', company)], limit=1)
         return warehouse_ids
+    
+    def get_task_domain(self):
+        domain = self.env[('project_id', '=', self.project_id.id)]
+        if not self.project_id:
+            domain = []
+        return domain
         
     name = fields.Char(string="Request Reference", required=True,
         default= '/',
@@ -76,7 +82,7 @@ class ProductRequest(models.Model):
         index=True,
     )
     #Manage analytic
-    project_task_id = fields.Many2one('project.task', string="Project Task")
+    project_task_id = fields.Many2one('project.task', string="Project Task", domain = "[('project_id', '=', project_id)]")
     project_id = fields.Many2one('project.project', string="Project",)
     analytic_account_id = fields.Many2one("account.analytic.account",
         string="Analytic Account",
