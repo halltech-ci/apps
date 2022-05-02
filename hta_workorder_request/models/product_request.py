@@ -37,9 +37,9 @@ class ProductRequest(models.Model):
         company = self.env.company.id
         warehouse_ids = self.env['stock.warehouse'].search([('company_id', '=', company)], limit=1)
         return warehouse_ids
-    
+        
     name = fields.Char(string="Request Reference", required=True,
-        default=_get_default_name,
+        default= '/',
         track_visibility="onchange",
     )
     company_id = fields.Many2one("res.company", "Company",
@@ -183,6 +183,11 @@ class ProductRequest(models.Model):
     
     @api.model
     def create(self, vals):
+        if vals.get('name', '/') == '/':
+            if 'company_id' in  vals:
+                vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code('product.request') or '/'
+            else:
+                vals['name'] = self.env['ir.sequence'].next_by_code('product.request') or '/'
         request = super(ProductRequest, self).create(vals)
         return request
     
