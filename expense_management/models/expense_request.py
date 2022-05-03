@@ -126,7 +126,7 @@ class ExpenseRequest(models.Model):
       
     def button_reconcile_expense(self):
         #self.ensure_one()
-        action = self.env.ref('expensemanagement.act_bank_stline_reconcile')
+        action = self.env.ref('expense_management.act_bank_stline_reconcile')
         result = action.read()[0]
          
         
@@ -173,7 +173,7 @@ class ExpenseRequest(models.Model):
                     'project_id': line.project.id,
                     'analytic_account_id': line.analytic_account.id,
                     'expense_id': line.request_id.id,
-                    'debit_account': line.request_id.journal.default_debit_account_id.id,
+                    'credit_account': line.request_id.journal.default_credit_account_id.id,
                 })
                 value.append(lines)
             statement_id.write({'line_ids': value})
@@ -194,10 +194,11 @@ class ExpenseRequest(models.Model):
             return self.write({'state': 'post',})
         return True
     
-    def _create_move_values(self):
+    def create_move_values(self):
+        self.ensure_one()
         for request in self:
             #expense_line = request.statement_line_ids
-            account_src = request.journal.default_debit_account_id.id
+            account_src = request.journal.default_credit_account_id.id
             ref = request.statement_id.name
             journal = request.journal
             company = request.company_id
@@ -209,7 +210,7 @@ class ExpenseRequest(models.Model):
                 partner = line.partner_id
                 debit_account = line.debit_account
                 move_value = {
-                    'ref': ref +'-' + line.ref ,
+                    'ref': ref,
                     'date': account_date,
                     'journal_id': journal.id,
                     'company_id': company.id,
@@ -217,29 +218,31 @@ class ExpenseRequest(models.Model):
                 debit_line = (0, 0, {
                     'name': line.name,
                     'account_id': debit_account.id,
-                    'debit': line.amount > 0.0 and line.amount or 0.0,
-                    'credit': line.amount < 0.0 and -line.amount or 0.0, 
+                    'debit': line.p_amount > 0.0 and line.p_amount or 0.0,
+                    'credit': line.p_amount < 0.0 and -line.p_amount or 0.0, 
                     'partner_id': partner.id,
                     'journal_id': journal.id,
                     'date': account_date,
-                    'analytic_account_id': line.analytic_account.id or line.project_id.id,
+                    #'analytic_account_id': line.analytic_account_id.id or line.project_id.id,
                 })
                 move_lines.append(debit_line)
                 credit_line = (0, 0, {
                     'name': line.name,
                     'account_id': account_src,
-                    'debit': line.amount < 0.0 and -line.amount or 0.0,
-                    'credit': line.amount > 0.0 and line.amount or 0.0, 
+                    'debit': line.p_amount < 0.0 and -line.p_amount or 0.0,
+                    'credit': line.p_amount > 0.0 and line.p_amount or 0.0, 
                     'partner_id': partner.id,
                     'journal_id': journal.id,
                     'date': account_date,
-                    #'analytic_account_id': line.analytic_account.id or line.project_id.id,
+                    'analytic_account_id': line.analytic_account_id.id or line.project_id.analytic_account_id.id,
+                    'reconciled': True,
                 })
                 move_lines.append(credit_line)
                 move_value['line_ids'] = move_lines
                 move = self.env['account.move'].create(move_value)
-                line.write({'move_id': move.id})
+                #line.write({'move_id': move.id})
                 move.post()
+        self.write({'state': 'reconcile'})
         return True
     
     def action_submit(self):
