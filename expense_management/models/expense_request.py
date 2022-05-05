@@ -30,6 +30,12 @@ class ExpenseRequest(models.Model):
         date = datetime.date.today()
         month = date.month
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
+        if not res:
+            raise UserError(
+                    _(
+                        "Veuillez contacter la comptabilite pour creer le journal caisse."
+                    )
+                )
         return res
     
     name = fields.Char(default='/',)
@@ -186,6 +192,9 @@ class ExpenseRequest(models.Model):
                         "Vous ne pouvez pas payer une note déja payée"
                     )
                 )
+        res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
+        if res.id != self.statement_id.id:
+            self.write({'statement_id': self.get_default_statement_id()})
         post = self.create_bank_statement()
         if post:
             #st_lines = self.env['account.bank.statement.line'].search([('expense_id', '=', rec.id)]).ids
@@ -223,6 +232,8 @@ class ExpenseRequest(models.Model):
                     'partner_id': partner.id,
                     'journal_id': journal.id,
                     'date': account_date,
+                    'statement_id': self.statement_id.id,
+                    'statement_line_id': line.id,
                     #'analytic_account_id': line.analytic_account_id.id or line.project_id.id,
                 })
                 move_lines.append(debit_line)
@@ -235,7 +246,9 @@ class ExpenseRequest(models.Model):
                     'journal_id': journal.id,
                     'date': account_date,
                     'analytic_account_id': line.analytic_account_id.id or line.project_id.analytic_account_id.id,
-                    'reconciled': True,
+                    #'reconciled': True,
+                    'statement_id': self.statement_id.id,
+                    'statement_line_id': line.id,
                 })
                 move_lines.append(credit_line)
                 move_value['line_ids'] = move_lines
@@ -277,7 +290,7 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
-        self.statement_id = self.get_default_statement_id()
+        #self.write({'statement_id' : self.get_default_statement_id()})
         if not self.statement_id:
             raise UserError(
                     _(
@@ -292,7 +305,7 @@ class ExpenseRequest(models.Model):
                 )
         for line in self.line_ids:
             line.action_approve()
-        return self.write({"state": "approve", 'statement_id': self.statement_id.id})
+        return self.write({"state": "approve"})
     
     def to_validate(self):
         for line in self.line_ids:
