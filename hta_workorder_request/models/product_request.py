@@ -92,22 +92,12 @@ class ProductRequest(models.Model):
     #picking_id = fields.Many2one('stock.picking')
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
     picking_count = fields.Integer(string='Picking Orders', compute='_compute_picking_ids', default=0)
-    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type',
-        default=_default_picking_type,
-    )
-    picking_policy = fields.Selection([('direct', 'As soon as possible'),
-        ('one', 'When all products are ready')],
-        string='Picking Policy', required=True, readonly=True, default='direct',
-        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}
-        ,help="If you deliver all products at once, the delivery order will be scheduled based on the greatest "
-        "product lead time. Otherwise, it will be based on the shortest.")
-    warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse',
-        required=True, readonly=True, 
-        states={'draft': [('readonly', False)], 'to_approve': [('readonly', False)]},
-        default=_default_warehouse_id, check_company=True
-    )
+    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type', default=_default_picking_type,)
+    warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', required=True, readonly=True, states={'draft': [('readonly', False)], 'to_approve': [('readonly', False)]}, default=_default_warehouse_id, check_company=True)
     location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
     location_dest_id = fields.Many2one('stock.location', 'Dest Location',)
+    move_ids = fields.One2many('stock.move', 'product_request')
+    #Manage timesheet for workorder request
     timesheet_ids = fields.One2many(related="project_task_id.timesheet_ids")
     
     @api.model
