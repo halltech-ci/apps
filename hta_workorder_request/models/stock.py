@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class StockPicking(models.Model):
@@ -17,6 +17,16 @@ class StockMove(models.Model):
     
     product_line_id = fields.Many2one('product.request.line', string='Product Request Line', ondelete='set null', index = True, readonly = True, check_company = True)
     product_request = fields.Many2one('product.request', check_company = True, ondelete = 'set null', copy = False)
+    task_id = fields.Many2one('project.task', compute='move_task_id', store=True)
+    
+    
+    @api.depends('product_request')
+    def move_task_id(self):
+        for move in self:
+            if move.product_request:
+                move.task_id = move.product_request.project_task_id
+            else:
+                move.task_id = self.env['project.task']
     
     def _prepare_analytic_line_from_task(self):
         product = self.product_id
@@ -64,4 +74,13 @@ class StockMove(models.Model):
             vals["amount"] = new_amount
         res.update(vals)
         return res
+
+class StockMoveLine(models.Model):
+    _inherit = 'stock.move.line'
     
+    task_id = fields.Many2one('project.task', store=True, compute='_compute_task_id')
+    
+    @api.depends('move_id')
+    def _compute_task_id(self):
+        for item in self:
+            item.task = item.move_id.task_id

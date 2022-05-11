@@ -83,11 +83,8 @@ class ProductRequest(models.Model):
     )
     #Manage analytic
     project_task_id = fields.Many2one('project.task', string="Project Task", domain = "[('project_id', '=', project_id)]")
-    project_id = fields.Many2one('project.project', string="Project",)
-    analytic_account_id = fields.Many2one("account.analytic.account",
-        string="Analytic Account",
-        track_visibility="onchange",
-    )
+    project_id = fields.Many2one('project.project', string="Project", required=True)
+    analytic_account_id = fields.Many2one("account.analytic.account", string="Analytic Account", track_visibility="onchange",  compute='compute_analytic_account', store=True)
     #Manage stock for product request
     #picking_id = fields.Many2one('stock.picking')
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
@@ -100,6 +97,11 @@ class ProductRequest(models.Model):
     #Manage timesheet for workorder request
     timesheet_ids = fields.One2many(related="project_task_id.timesheet_ids")
     
+    @api.depends('project_id.analytic_account_id')
+    def _compute_analytic_account(self):
+        for rec in self:
+            rec.analytic_account_id = rec.project_id.analytic_account_id or self.env['account.analytic.account']
+            
     @api.model
     def _get_picking_type(self, company_id):
         picking_type = self.env['stock.picking.type'].search([('code', '=', 'outgoing'), ('warehouse_id.company_id', '=', company_id)])
