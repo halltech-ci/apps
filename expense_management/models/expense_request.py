@@ -69,9 +69,7 @@ class ExpenseRequest(models.Model):
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
     journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], states=READONLY_STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
 
-    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True, states=READONLY_STATES, 
-                                   #default=lambda self: self.get_default_statement_id()
-    )
+    statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True, states=READONLY_STATES,)
     statement_line_ids = fields.One2many('account.bank.statement.line', 'expense_id')
     move_ids = fields.Many2many('account.move', string='Account Move')
     is_expense_approver = fields.Boolean(string="Is Approver",
@@ -134,9 +132,7 @@ class ExpenseRequest(models.Model):
         #self.ensure_one()
         action = self.env.ref('expense_management.act_bank_stline_reconcile')
         result = action.read()[0]
-         
-        
-        
+              
     def action_reconcile_expense(self):
         self.ensure_one()
         lines = self.line_ids
