@@ -10,10 +10,10 @@ class ProjectProject(models.Model):
     dest_location = fields.Many2one('stock.location', string="Emplacement destination", readonly=False, index=True, check_company=True)
     picking_type = fields.Many2one('stock.picking.type', string='Opération', readonly=False, index=True, check_company=True)
     
-    @api.onchange("picking_type_id")
+    @api.onchange("picking_type")
     def onchange_picking_type(self):
-        self.location_id = self.picking_type_id.default_location_src_id.id
-        self.location_dest_id = self.picking_type_id.default_location_dest_id.id
+        self.location_id = self.picking_type.default_location_src_id.id
+        self.location_dest_id = self.picking_type.default_location_dest_id.id
 
 class ProjectTask(models.Model):
     _inherit = 'project.task'
