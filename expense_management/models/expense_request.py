@@ -231,7 +231,7 @@ class ExpenseRequest(models.Model):
                     'date': account_date,
                     'statement_id': self.statement_id.id,
                     'statement_line_id': line.id,
-                    #'analytic_account_id': line.analytic_account_id.id or line.project_id.id,
+                    'analytic_account_id': line.analytic_account_id.id or line.project_id.analytic_account_id.id,
                 })
                 move_lines.append(debit_line)
                 credit_line = (0, 0, {
@@ -242,7 +242,7 @@ class ExpenseRequest(models.Model):
                     'partner_id': partner.id,
                     'journal_id': journal.id,
                     'date': account_date,
-                    'analytic_account_id': line.analytic_account_id.id or line.project_id.analytic_account_id.id,
+                    #'analytic_account_id': line.analytic_account_id.id or line.project_id.analytic_account_id.id,
                     #'reconciled': True,
                     'statement_id': self.statement_id.id,
                     'statement_line_id': line.id,
@@ -250,7 +250,7 @@ class ExpenseRequest(models.Model):
                 move_lines.append(credit_line)
                 move_value['line_ids'] = move_lines
                 move = self.env['account.move'].create(move_value)
-                #line.write({'move_id': move.id})
+                move.write({'expense_id': request.id})
                 move.post()
         self.write({'state': 'reconcile'})
         return True
@@ -287,7 +287,7 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
-        #self.write({'statement_id' : self.get_default_statement_id()})
+        self.write({'statement_id' : self.get_default_statement_id()})
         if not self.statement_id:
             raise UserError(
                     _(
