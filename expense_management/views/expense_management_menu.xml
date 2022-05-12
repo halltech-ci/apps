@@ -68,7 +68,7 @@
                     type="object"
                     class="oe_highlight"
                     states="post"
-                    groups="expense_management.group_expense_group_payer"
+                    groups="account.group_account_manager"
                     
             />
             <button name="button_to_cancel"
