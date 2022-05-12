@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
-
+import datetime
 
 READONLY_STATES = {
         'to_cancel': [('readonly', True)],
@@ -26,7 +26,6 @@ class ExpenseRequest(models.Model):
         return self.env['res.users'].browse(self.env.uid)
 
     def get_default_statement_id(self):
-        import datetime
         date = datetime.date.today()
         month = date.month
         res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
@@ -182,6 +181,8 @@ class ExpenseRequest(models.Model):
         return True
     
     def action_post(self):
+        date = datetime.date.today()
+        month = date.month
         if self.state == 'post':
             raise UserError(
                     _(
