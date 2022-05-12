@@ -20,20 +20,6 @@
                         </div>
                     </div>
                     <br/>
-                    <!--div class="container">
-                        <div class="row justify-content-end">
-                            <div class="col-2" style="text-decoration: underline; font-weight: bold;margin-right:25px; top:70px;">
-    <p>CLIENT:</p>
-                        </div>
-                         <div class="col-6" style="text-align: center;width: 300px; border:1px solid #000;border-radius:10px;
-                                                   margin-right:21px;">
-                            <p t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;,&quot;phone&quot;], &quot;no_marker&quot;: True}"/>
-                    
-                               <p t-field="o.partner_id.vat"/>
-                            </div>
-                        </div>
-                    </div-->
-                    
                     <div class="col-6">
                     <table class="body table-sm" style="width: 400px; margin-left: 370px;">
                         <tbody>
@@ -53,23 +39,6 @@
                     
                     <br/>
                     <br/>                    
-                    
-                    <!--<<h2>-->
-                        <!--<span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')"></span>-->
-                        <!--<span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Invoice</span> -->
-                        <!--<span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice</span>-->
-                        <!--<span t-if="o.type == 'out_refund'">Credit Note</span>-->
-                        <!--<span t-if="o.type == 'in_refund'">Vendor Credit Note</span>-->
-                        <!--<span t-if="o.type == 'in_invoice'">Vendor Bill</span>-->
-                        <!-- <span t-field="o.number"/> -->
-                    <!--</h2>-->
-
-                        <!--<div id="informations" class="row mt32 mb32">
-                           <div class='col-auto mw-100 mb-2' t-if="o.ref" name="reference">
-                                <strong>Reference:</strong>
-                                <p class="m-0" t-field="o.ref"/>
-                            </div>
-                       </div>-->
                     
         <table class="table table-sm" name="invoice_table" style="padding:10px 40px; width:810px;resize:both;overflow:auto;">
             
@@ -238,14 +207,13 @@
                     <!--<p t-if="o.type in ('out_invoice', 'in_refund')">
                         Please use the following communication for your payment : <b><span t-field="o.invoice_payment_ref"/></b>
                     </p>-->
-                    <br/>
-                    <div class="container">
-                        <div class="row justify-content-end" style="font-size:16px; padding-bottom:30px;">
-                            <div class="col-6" style="font-weight: bold; margin-top:90px;">
+                    <div class="container-fluid">
+                        <div class="row" style="font-size:16px;">
+                            <div class="col-6" style="font-weight: bold; padding-top: 70px;">
                                 <p> Arrêté la présente facture à la somme de:</p>
                             </div>
-                            <div class="col-4" style="text-align: center; width: 300px; border:1px solid #000; margin-right:30px; margin-top:90px;" >
-                                <span t-field="o.amount_to_word"/> <span t-field="o.currency_id.currency_unit_label"/> <span t-field="o.currency_id.symbol"/>
+                            <div class="col-4 p-4 m-4" style="text-align: center; width: auto; border:1px solid #000; margin-right:30px;" >
+                                <span t-field="o.amount_to_word"/> FRANCS CFA <!--span t-field="o.currency_id.currency_unit_label"/--> <!--span t-field="o.currency_id.symbol"/-->
                             </div>
                         </div>
                     </div>

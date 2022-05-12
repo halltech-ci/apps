@@ -63,7 +63,7 @@
                     states="authorize"
                     groups="expense_management.group_expense_group_payer"
             />
-            <button name="action_reconcile_expense"
+            <button name="create_move_values"
                     string="Lettrer"
                     type="object"
                     class="oe_highlight"
@@ -156,7 +156,7 @@
                           </tree>
                       </field>
                   </page>
-                  <page id='aml_tab' string='Ecritures Comptables' groups="account.group_account_user" attrs="{'invisible':[('state', 'not in', ['post'])]}">
+                  <page id='aml_tab' string='Ecritures Comptables' groups="account.group_account_user" attrs="{'invisible':[('state', 'not in', ['post', 'reconcile'])]}">
                       <field name='statement_line_ids'>
                           <tree editable='bottom'>
                               <field name="ref"/>
@@ -165,8 +165,8 @@
                               <field name='analytic_account_id' string="Compte Analytique"/>
                               <field name="partner_id"/>
                               <field name='p_amount'/>
-                              <field name='debit_account'/>
-                              <field name='credit_account'/>
+                              <field name='debit_account' required='1'/>
+                              <field name='credit_account' required='1'/>
                           </tree>
                       </field>
                   </page>

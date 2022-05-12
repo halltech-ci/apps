@@ -38,6 +38,7 @@
         'views/account_bank_statement_views.xml',
         'views/product_template_views.xml',
         'views/expense_line_reconcile_views.xml',
+        'views/bank_statement_line_reconcile_view.xml',
         #data
         'data/mail_template.xml',
         'data/expense_request_seq.xml',
