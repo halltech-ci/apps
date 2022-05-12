@@ -252,7 +252,7 @@ class ExpenseRequest(models.Model):
                 move = self.env['account.move'].create(move_value)
                 move.write({'expense_id': request.id})
                 move.post()
-        self.write({'state': 'reconcile'})
+            request.write({'state': 'reconcile'})
         return True
     
     def action_submit(self):
