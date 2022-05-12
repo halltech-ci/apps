@@ -6,6 +6,8 @@ from odoo import models, fields, api, _
 class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
     
+    expense_ids = fields.One2many('expense.request', 'statement_id')
+    
     
 class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
@@ -21,7 +23,7 @@ class AccountBankStatementLine(models.Model):
         relation='account_statement_model_analytic_tag_rel'
     )
     debit = fields.Monetary(currency_field='journal_currency_id')
-    credit_account = fields.Monetary(currency_field='journal_currency_id')
+    #credit_account = fields.Monetary(currency_field='journal_currency_id')
     expense_id = fields.Many2one('expense.request',"Expense")
     project_id = fields.Many2one("project.project", "Project",store=True)
     credit_account = fields.Many2one('account.account', string='Credit Account')
