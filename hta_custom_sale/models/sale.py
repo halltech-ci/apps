@@ -51,8 +51,9 @@ class SaleOrder(models.Model):
     sale_discuss_margin = fields.Float(string='Marge disc. (%)', default=0.0, copy=True)
     amount_to_word = fields.Char(string="Montant en lettre:", compute='_compute_amount_to_word')        
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
-    total_cost = fields.Monetary(string="Coût Total", compute='_compute_total_cost')
+    total_cost = fields.Monetary(string="Coût Total HT", compute='_compute_total_cost')#Le cout du projet
     total_margin_amount = fields.Monetary(string="Marge Brute", compute="_compute_total_margin_amount")
+    total_margin_percent = fields.Float(string='Marge Brut (%)', compute='_compute_total_margin_amount')
     partner_id = fields.Many2one(
         'res.partner', string='Customer', 
         #readonly=True,
@@ -60,7 +61,8 @@ class SaleOrder(models.Model):
         required=True, change_default=True, index=True, tracking=1,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     
-    @api.depends('order_line.product_cost', )
+    
+    @api.depends('order_line.product_cost', 'order_line.product_uom_qty')
     def _compute_total_cost(self): 
         for rec in self:
             total_cost = 0
@@ -68,15 +70,23 @@ class SaleOrder(models.Model):
                 total_cost += line.product_cost * line.product_uom_qty
             rec.total_cost = total_cost
         
-    
-    @api.depends('total_cost', 'amount_total_no_tax')
+    @api.depends('total_cost', 'amount_untaxed')
     def _compute_total_margin_amount(self):
         for rec in self:
-            rec.total_margin_amount = 0.0
-            if rec.total_cost > 0:
-                rec.total_margin_amount = rec.amount_total_no_tax - rec.total_cost
+            #rec.total_margin_amount = 0.0
+            rec.total_margin_percent = 0.0
+            rec.total_margin_amount = rec.amount_untaxed - rec.total_cost
+            if rec.amount_untaxed > 0:
+                rec.total_margin_percent = (1 - (rec.total_cost / rec.amount_untaxed)) * 100
             
-                
+    @api.onchange('amount_untaxed')
+    def _onchange_amount_untaxed(self):
+        for rec in self:
+            #rec.total_margin_amount = 0.0
+            rec.total_margin_percent = 0.0
+            rec.total_margin_amount = rec.amount_untaxed - rec.total_cost
+            if rec.amount_untaxed > 0:
+                rec.total_margin_percent = (1 - (rec.total_cost / rec.amount_untaxed)) * 100
 
     @api.onchange('sale_margin')
     def onchange_sale_margine(self):
