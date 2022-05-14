@@ -38,7 +38,6 @@ class SaleOrder(models.Model):
         num_to_word = _num2words(num, lang=lang.iso_code)
         return num_to_word
         
-    #sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), )
     date_order = fields.Datetime(readonly=False)
     is_proforma = fields.Boolean('Proformat', default=False)
     description = fields.Text("Description : ")
@@ -78,7 +77,8 @@ class SaleOrder(models.Model):
             rec.total_margin_amount = rec.amount_untaxed - rec.total_cost
             if rec.amount_untaxed > 0:
                 rec.total_margin_percent = (1 - (rec.total_cost / rec.amount_untaxed)) * 100
-            
+    
+    
     @api.onchange('amount_untaxed')
     def _onchange_amount_untaxed(self):
         for rec in self:
@@ -88,17 +88,20 @@ class SaleOrder(models.Model):
             if rec.amount_untaxed > 0:
                 rec.total_margin_percent = (1 - (rec.total_cost / rec.amount_untaxed)) * 100
 
+    #@api.onchange('sale_margin')
     @api.onchange('sale_margin')
-    def onchange_sale_margine(self):
+    def _onchange_sale_margin(self):
         for line in self.order_line:
             line.line_margin = self.sale_margin
-            line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
+            if line.product_cost > 0:
+                line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
             line.line_subtotal = line.product_uom_qty * line.price_unit
             
     def _compute_amount_to_word(self):
         for rec in self:
             rec.amount_to_word = str(self._num_to_words(rec.amount_total)).upper()
     
+    #amount untaxed without disc
     @api.depends('order_line.line_subtotal')
     def _amount_total_no_tax(self):
         for order in self:
@@ -156,27 +159,47 @@ class SaleOrderLine(models.Model):
     line_margin = fields.Float(string="Marge (%)", compute="_compute_line_margin", store=True, readonly=False, copy=True)
     line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
     
-    @api.onchange('product_cost', 'product_uom_qty', 'line_margin')
+    @api.onchange('product_cost')
     def _onchange_product_cost(self):
-        if self.product_cost < 0:
-            raise UserError(_('Le coût ne peut etre negatif.'))
-        self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
-        self.line_subtotal = self.product_uom_qty * self.price_unit
+        if self.product_cost > 0:
+            self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
+            self.line_subtotal = self.product_uom_qty * self.price_unit
     
-    """
     @api.onchange('line_margin')
     def _onchange_line_margin(self):
         if self.product_cost < 0:
             raise UserError(_('Le coût ne peut etre negatif.'))
         self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
         self.line_subtotal = self.product_uom_qty * self.price_unit
+            
+    @api.onchange('product_uom', 'product_uom_qty')
+    def product_uom_change(self):
+        if not self.product_uom or not self.product_id:
+            self.price_unit = 0.0
+            return
         
-    @api.onchange('product_uom_qty')
-    def _onchange_product_qty(self):
-        self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
-        self.line_subtotal = self.product_uom_qty * self.price_unit
-    """
-    
+        if self.order_id.pricelist_id and self.order_id.partner_id:
+            product = self.product_id.with_context(
+                lang=self.order_id.partner_id.lang,
+                partner=self.order_id.partner_id,
+                quantity=self.product_uom_qty,
+                date=self.order_id.date_order,
+                pricelist=self.order_id.pricelist_id.id,
+                uom=self.product_uom.id,
+                fiscal_position=self.env.context.get('fiscal_position')
+            )
+            self.price_unit = product._get_tax_included_unit_price(
+                self.company_id or self.order_id.company_id,
+                self.order_id.currency_id,
+                self.order_id.date_order,
+                'sale',
+                fiscal_position=self.order_id.fiscal_position_id,
+                product_price_unit=self._get_display_price(product),
+                product_currency=self.currency_id
+            )
+        if self.product_cost > 0:
+            self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
+        
     @api.depends("order_id", "order_id.sale_margin", "order_id.sale_discuss_margin")
     def _compute_line_margin(self):
         if hasattr(super(), "_compute_line_margin"):
@@ -192,23 +215,7 @@ class SaleOrderLine(models.Model):
     @api.depends('product_uom_qty', 'price_unit')
     def _compute_line_subtotal(self):
         for line in self:
-            line.line_subtotal = line.product_uom_qty * line.price_unit
-    
-    """@api.depends('line_margin', 'product_cost')
-    def _compute_price_unit(self):
-        for line in self:
-            if line.display_type :
-                continue
-            if line.product_cost > 0 :
-                line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
-    """
-    """
-    @api.depends('line_margin', 'product_cost')
-    def _compute_price_unit(self):
-        for line in self:
-            if line.product_cost > 0 :
-                line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
-    """            
+            line.line_subtotal = line.product_uom_qty * line.price_unit     
         
     @api.model
     def create(self, vals):
