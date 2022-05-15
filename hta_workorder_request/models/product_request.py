@@ -12,6 +12,7 @@ REQUEST_STATES = [
     ("to_approve", "To Approve"),
     ("open", "In progress"),
     ("done", "Done"),
+    ("close", "Closed"),
     ("cancel", "Cancelled"),
 ]
 
@@ -148,7 +149,11 @@ class ProductRequest(models.Model):
         for line in self.line_ids:
             line.action_done()
         return self.write({"state": 'done'})
-        
+    
+    def action_close_task(self):
+        for line in self:
+            line.project_task_id.action_done()
+        return self.write({'state': 'close'})
     
     @api.model
     def create(self, vals):

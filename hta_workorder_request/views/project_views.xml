@@ -32,7 +32,7 @@
                               <field name='product_uom_qty' readonly='True'/>
                               <field name='qty_done' readonly='True'/>
                               <field name='product_uom_id' string="Unit" readonly='True'/>
-                              <field name='analytic_account_id' options="{'no_create': True}"/>
+                              <!--<field name='analytic_account_id' options="{'no_create': True}"/>-->
                               <field name="project_id" readonly='True'/>
                               <field name='request_state' readonly='True'/>
                         </tree>

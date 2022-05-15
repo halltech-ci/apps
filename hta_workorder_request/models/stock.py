@@ -17,8 +17,7 @@ class StockMove(models.Model):
     
     product_line_id = fields.Many2one('product.request.line', string='Product Request Line', ondelete='set null', index = True, readonly = True, check_company = True)
     product_request = fields.Many2one('product.request', check_company = True, ondelete = 'set null', copy = False)
-    task_id = fields.Many2one('project.task', compute='move_task_id', store=True)
-    
+    task_id = fields.Many2one('project.task', compute='move_task_id', store=True, check_company=True)
     
     @api.depends('product_request')
     def move_task_id(self):
