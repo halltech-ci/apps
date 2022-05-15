@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     
+    <record id="hta_project_edit_project" model="ir.ui.view">
+        <field name='name'>hta_edit_project_views</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='settings']/group/group[@name='extra_settings']" position='inside'>
+                <field name="picking_type"/>
+                <field name="dest_location"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='settings']/group/group[@name='extra_settings']" position='after'>
+                <group>
+                    <field name="src_location"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    
     <record id="view_project_task_product_request_inherit" model="ir.ui.view">
         <field name="name">product_request_project.task.form.inherit</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
-            <!--<header>
-                <button name="button_action_product"
-                    string="MANAGE"
-                    type="object"
-                    class="oe_highlight"
-            />
-            </header>-->
             <xpath expr="/form/sheet/notebook" position="inside">
                 <page name="product_request" string="Products">
                     <field name="product_lines">
