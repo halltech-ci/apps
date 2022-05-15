@@ -6,12 +6,12 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project" />
         <field name="arch" type="xml">
-            <xpath expr="//notebook/page[@name='settings']/group/group[@name='extra_settings']" position='inside'>
-                <field name="picking_type"/>
-                <field name="dest_location"/>
-            </xpath>
-            <xpath expr="//notebook/page[@name='settings']/group/group[@name='extra_settings']" position='after'>
-                <group>
+            <xpath expr="//notebook/page[@name='settings']/group/group[@name='extra_settings']" position='before'>
+                <group name='project_stock' string="Stock Operation">
+                    <field name="picking_type"/>
+                    <field name="dest_location"/>
+                </group>
+                <group string="stock destination">
                     <field name="src_location"/>
                 </group>
             </xpath>
