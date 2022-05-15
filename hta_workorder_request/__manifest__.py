@@ -35,6 +35,7 @@
         'views/project_views.xml',
         #data
         'data/workorder_ir_sequence.xml',
+        #'data/stock_data.xml',
         #report
         'report/workorder_report.xml',
         'report/workorder_request_report.xml',
