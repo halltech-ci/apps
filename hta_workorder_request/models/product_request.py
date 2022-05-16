@@ -67,7 +67,7 @@ class ProductRequest(models.Model):
     location_dest_id = fields.Many2one('stock.location', 'Dest Location', related='project_id.dest_location')
     move_ids = fields.One2many('stock.move', 'product_request')
     #manage scrap move
-    scrap_ids = fields.One2many(comodel_name="stock.scrap", inverse_name="product_request_id", string="Scraps")
+    scrap_ids = fields.One2many(comodel_name="stock.scrap", inverse_name="product_request", string="Scraps")
     scrap_count = fields.Integer(compute="_compute_scrap_move_count", string="Scrap Move")
     #Manage timesheet for workorder request
     timesheet_ids = fields.One2many(related="project_task_id.timesheet_ids")
