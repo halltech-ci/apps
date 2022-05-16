@@ -82,4 +82,4 @@ class StockMoveLine(models.Model):
     @api.depends('move_id')
     def _compute_task_id(self):
         for item in self:
-            item.task = item.move_id.task_id or self.env['project.task']
+            item.task_id = item.move_id.product_request_task_id or self.env['project.task']
