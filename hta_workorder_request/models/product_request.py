@@ -66,8 +66,19 @@ class ProductRequest(models.Model):
     location_src_id = fields.Many2one('stock.location', 'Source Location', related='project_id.src_location')
     location_dest_id = fields.Many2one('stock.location', 'Dest Location', related='project_id.dest_location')
     move_ids = fields.One2many('stock.move', 'product_request')
+    #manage scrap move
+    scrap_ids = fields.One2many(comodel_name="stock.scrap", inverse_name="product_request_id", string="Scraps")
+    scrap_count = fields.Integer(compute="_compute_scrap_move_count", string="Scrap Move")
     #Manage timesheet for workorder request
     timesheet_ids = fields.One2many(related="project_task_id.timesheet_ids")
+    
+    def _compute_scrap_move_count(self):
+        data = self.env["stock.scrap"].read_group(
+            [("task_id", "in", self.ids)], ["task_id"], ["task_id"]
+        )
+        count_data = {item["task_id"][0]: item["task_id_count"] for item in data}
+        for item in self:
+            item.scrap_count = count_data.get(item.id, 0)
     
     @api.depends('project_id.analytic_account_id')
     def _compute_analytic_account(self):

@@ -17,20 +17,20 @@ class StockMove(models.Model):
     
     product_line_id = fields.Many2one('product.request.line', string='Product Request Line', ondelete='set null', index = True, readonly = True, check_company = True)
     product_request = fields.Many2one('product.request', check_company = True, ondelete = 'set null', copy = False)
-    task_id = fields.Many2one('project.task', compute='move_task_id', store=True, check_company=True)
+    product_request_task_id = fields.Many2one('project.task', compute='move_task_id', store=True, check_company=True)
     
     @api.depends('product_request')
     def move_task_id(self):
         for move in self:
             if move.product_request:
-                move.task_id = move.product_request.project_task_id
+                move.product_request_task_id = move.product_request.project_task_id
             else:
-                move.task_id = self.env['project.task']
+                move.product_request_task_id = self.env['project.task']
     
     def _prepare_analytic_line_from_task(self):
         product = self.product_id
         company = self.env.company_id
-        task = self.product_request
+        task = self.product_request.project_task_id
         analytic_account = task.stock_analytic_account_id or task.project_id.analytic_account_id
         
         if not analytic_account:
