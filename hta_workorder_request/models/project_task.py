@@ -17,7 +17,7 @@ class ProjectTask(models.Model):
     location_id = fields.Many2one("stock.location", string="Source Location", related="project_id.src_location", readonly=False, index=True, check_company=True,)
     location_dest_id = fields.Many2one("stock.location", related="project_id.dest_location", string="Destination Location", readonly=False, index=True, check_company=True,)
     #manage scrap stock
-    scrap_ids = fields.One2many("stock.scrap", inverse_name="product_request_id", string="Scraps")
+    scrap_ids = fields.One2many("stock.scrap", inverse_name="product_request", string="Scraps")
     
     def action_done(self):
         for move in self.mapped("move_ids"):
