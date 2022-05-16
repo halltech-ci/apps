@@ -7,7 +7,7 @@ class StockMove(models.Model):
     _inherit = "stock.scrap"
 
     product_request = fields.Many2one("product.request", string="Task", check_company=True)
-    task_id = fields.Many2one('project.task', related="product_request.project.task_id")
+    task_id = fields.Many2one('project.task', related="product_request.project_task_id")
 
     @api.onchange("product_request")
     def _onchange_task_id(self):
