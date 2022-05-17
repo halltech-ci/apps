@@ -56,7 +56,7 @@ class ProductRequest(models.Model):
     #Manage analytic
     project_task_id = fields.Many2one('project.task', string="Project Task", domain = "[('project_id', '=', project_id)]")
     project_id = fields.Many2one('project.project', string="Project", required=True)
-    analytic_account_id = fields.Many2one("account.analytic.account", string="Analytic Account", track_visibility="onchange",  compute='compute_analytic_account', store=True)
+    analytic_account_id = fields.Many2one("account.analytic.account", string="Analytic Account", track_visibility="onchange")
     
     #Manage stock for product request
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
