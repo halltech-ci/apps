@@ -42,19 +42,9 @@ class ProductRequestLine(models.Model):
     )
     initial_qty = fields.Float('Initial Qty', digits="Product Unit of Measure")
     product_uom_qty = fields.Float('Product Qty', digits="Product Unit of Measure")
-    qty_done = fields.Float('Qty Done', digits="Product Unit of Measure",
-        compute='_compute_qty_done',
-    )
-    product_request_allocation_ids = fields.One2many("product.request.allocation",
-        "product_request_line_id",
-        string="Product Request Allocation",
-    )
-    qty_in_progress = fields.Float(string="Qty In Progress", digits="Product Unit of Measure",
-        readonly=True,
-        compute="_compute_qty",
-        store=True,
-        help="Quantity in progress. Qty left",
-    )
+    qty_done = fields.Float('Qty Done', digits="Product Unit of Measure", compute='_compute_qty_done', )
+    product_request_allocation_ids = fields.One2many("product.request.allocation", "product_request_line_id", string="Product Request Allocation",)
+    qty_in_progress = fields.Float(string="Qty In Progress", digits="Product Unit of Measure", readonly=True, compute="_compute_qty", store=True, help="Quantity in progress. Qty left", )
     analytic_account_id = fields.Many2one(comodel_name="account.analytic.account",
         string="Analytic Account",
         track_visibility="onchange",
@@ -67,9 +57,9 @@ class ProductRequestLine(models.Model):
     project_id = fields.Many2one('project.project', related="request_id.project_id")
     display_type = fields.Selection([('line_section', "Section"), ('line_note', "Note")], 
         default=False, help="Technical field for UX purpose.")
-    #manage product_requestpicking
+    
+    #manage stock
     move_ids = fields.One2many('stock.move', 'product_line_id', string='Reservation', readonly=True, ondelete='set null', copy=False)
-    #move_dest_ids = fields.One2many('stock.move', 'created_product_request_line_id', 'Downstream Moves')
     
     @api.constrains('initial_qty', 'product_uom_qty')
     def compare_product_qty(self):
@@ -86,7 +76,7 @@ class ProductRequestLine(models.Model):
                 for move in line.move_ids:
                     qty += move.quantity_done
             line.qty_done = qty
-            
+    
     def _prepare_stock_moves(self, picking):
         """ Prepare the stock moves data for one product line. This function returns a list of
         dictionary ready to be used in stock.move's create()
@@ -99,11 +89,9 @@ class ProductRequestLine(models.Model):
         price_unit = self._get_stock_move_price_unit()
         moves = self.move_ids.filtered(lambda r: r.state != 'cancel' and not r.scrapped and self.product_id == r.product_id)
         for move in moves:
-            qty -= move.product_uom._compute_quantity(move.product_uom_qty, self.product_uom, rounding_method='HALF-UP')
+            qty += move.product_uom._compute_quantity(move.product_uom_qty, self.product_uom, rounding_method='HALF-UP')
         description_picking = self.product_id.with_context(lang=self.request_id.project_id.partner_id.lang or self.env.user.lang)._get_description(self.request_id.picking_type_id)
         template = {
-            # truncate to 2000 to avoid triggering index limit error
-            # TODO: remove index in master?
             'name': (self.name or '')[:2000],
             'product_id': self.product_id.id,
             'product_uom': self.product_uom_id.id,
@@ -144,6 +132,7 @@ class ProductRequestLine(models.Model):
             for val in line._prepare_stock_moves(picking):
                 values.append(val)
         return self.env['stock.move'].create(values)
+    
            
     def action_to_approve(self):
         self.request_state = "to_approve"

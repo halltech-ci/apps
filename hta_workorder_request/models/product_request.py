@@ -57,8 +57,8 @@ class ProductRequest(models.Model):
     project_task_id = fields.Many2one('project.task', string="Project Task", domain = "[('project_id', '=', project_id)]")
     project_id = fields.Many2one('project.project', string="Project", required=True)
     analytic_account_id = fields.Many2one("account.analytic.account", string="Analytic Account", track_visibility="onchange",  compute='compute_analytic_account', store=True)
+    
     #Manage stock for product request
-    #picking_id = fields.Many2one('stock.picking')
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
     picking_count = fields.Integer(string='Picking Orders', compute='_compute_picking_ids', default=0)
     picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type', related='project_id.picking_type')
@@ -141,8 +141,6 @@ class ProductRequest(models.Model):
         return self.write({"state": "to_approve"})
     
     def button_approve(self):
-        #self.is_approver_check()
-        #self._create_picking()
         for line in self.line_ids:
             line.action_approve()
         self.write({"state": "open", 'date_approve': fields.Datetime.now()})
