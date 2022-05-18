@@ -159,6 +159,11 @@ class ProductRequest(models.Model):
             line.action_to_approve()
         return self.write({"state": "to_approve"})
     
+    def _set_to_draft(self):
+        for line in self.line_ids:
+            line.set_to_draft()
+        self.write({'state': 'draft'})
+        
     def button_approve(self):
         #self.is_approver_check()
         #self._create_picking()

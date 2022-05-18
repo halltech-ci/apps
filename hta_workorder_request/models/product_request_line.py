@@ -27,7 +27,7 @@ class ProductRequestLine(models.Model):
     )
     request_id = fields.Many2one('product.request', string="Product Request")
     product_id = fields.Many2one("product.product", string="Product",
-        domain=[("sale_ok", "=", True)],
+        domain=[("purchase_ok", "=", True)],
         track_visibility="onchange",
     )
     product_uom_id = fields.Many2one("uom.uom",
@@ -110,7 +110,7 @@ class ProductRequestLine(models.Model):
             'date': self.request_id.date_approve,
             #'date_expected': self.date_planned,
             'location_id': self.request_id.location_src_id.id,
-            'location_dest_id': self.request_id.location_dest_id.id,
+            'location_dest_id': self.request_id.location_dest_id.id,#
             'picking_id': picking.id,
             #'partner_id': self.request_id.dest_address_id.id,
             #'move_dest_ids': [(4, x) for x in self.move_dest_ids.ids],
@@ -154,6 +154,9 @@ class ProductRequestLine(models.Model):
     def action_done(self):
         self.request_state = "done"
     
+    def set_to_draft(self):
+        self.request_state = 'draft'
+        
     def _get_stock_move_price_unit(self):
         self.ensure_one()
         line = self[0]
