@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     
-    <record id="hta_project_edit_project" model="ir.ui.view">
-        <field name='name'>hta_edit_project_views</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.edit_project" />
-        <field name="arch" type="xml">
-            <xpath expr="//notebook/page[@name='settings']/group/group[@name='extra_settings']" position='before'>
-                <group name='project_stock' string="Stock Operation">
-                    <field name="picking_type"/>
-                    <field name="dest_location"/>
-                </group>
-                <group string="stock destination">
-                    <field name="src_location"/>
-                </group>
-            </xpath>
-        </field>
-    </record>
-    
     <record id="view_project_task_product_request_inherit" model="ir.ui.view">
         <field name="name">product_request_project.task.form.inherit</field>
         <field name="model">project.task</field>
@@ -32,7 +15,7 @@
                               <field name='product_uom_qty' readonly='True'/>
                               <field name='qty_done' readonly='True'/>
                               <field name='product_uom_id' string="Unit" readonly='True'/>
-                              <!--<field name='analytic_account_id' options="{'no_create': True}"/>-->
+                              <field name='analytic_account_id' options="{'no_create': True}"/>
                               <field name="project_id" readonly='True'/>
                               <field name='request_state' readonly='True'/>
                         </tree>

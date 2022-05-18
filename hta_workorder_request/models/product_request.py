@@ -12,7 +12,6 @@ REQUEST_STATES = [
     ("to_approve", "To Approve"),
     ("open", "In progress"),
     ("done", "Done"),
-    ("close", "Closed"),
     ("cancel", "Cancelled"),
 ]
 
@@ -39,52 +38,72 @@ class ProductRequest(models.Model):
         warehouse_ids = self.env['stock.warehouse'].search([('company_id', '=', company)], limit=1)
         return warehouse_ids
     
-    def get_task_domain(self):
-        domain = self.env[('project_id', '=', self.project_id.id)]
-        if not self.project_id:
-            domain = []
-        return domain
-        
-    name = fields.Char(string="Request Reference", required=True, readonly=True, default= '/', track_visibility="onchange",)
-    company_id = fields.Many2one("res.company", "Company", required=True, readonly=True, states={"draft": [("readonly", False)]}, default=lambda self: self.env.company, ) 
-    state = fields.Selection(selection=REQUEST_STATES, string="Status", copy=False, default="draft", index=True, readonly=True, track_visibility="onchange",)
+    name = fields.Char(string="Request Reference", required=True,
+        default=_get_default_name,
+        track_visibility="onchange",
+    )
+    company_id = fields.Many2one("res.company", "Company",
+        required=True,
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+        default=lambda self: self.env.company,
+    ) 
+    state = fields.Selection(
+        selection=REQUEST_STATES,
+        string="Status",
+        copy=False,
+        default="draft",
+        index=True,
+        readonly=True,
+        track_visibility="onchange",
+    )
     date = fields.Datetime(readonly=True, default=fields.Datetime.now, string="Date")
     date_approve = fields.Datetime('Date Approve', readonly=1, index=True, copy=False)
-    line_ids = fields.One2many(comodel_name="product.request.line", inverse_name="request_id", string="Products to request", readonly=False,
-        copy=True, track_visibility="onchange",)
-    requested_by = fields.Many2one("res.users", string="Requested by", required=True, copy=False, track_visibility="onchange", default=_get_default_requested_by, index=True,)
+    line_ids = fields.One2many(
+        comodel_name="product.request.line",
+        inverse_name="request_id",
+        string="Products to request",
+        readonly=False,
+        copy=True,
+        track_visibility="onchange",
+    )
+    requested_by = fields.Many2one("res.users",
+        string="Requested by",
+        required=True,
+        copy=False,
+        track_visibility="onchange",
+        default=_get_default_requested_by,
+        index=True,
+    )
     #Manage analytic
-    project_task_id = fields.Many2one('project.task', string="Project Task", domain = "[('project_id', '=', project_id)]")
-    project_id = fields.Many2one('project.project', string="Project", required=True)
-    analytic_account_id = fields.Many2one("account.analytic.account", string="Analytic Account", track_visibility="onchange")
-    
+    project_task_id = fields.Many2one('project.task', string="Project Task")
+    project_id = fields.Many2one('project.project', string="Project", related='project_task_id.project_id')
+    analytic_account_id = fields.Many2one("account.analytic.account",
+        string="Analytic Account",
+        track_visibility="onchange",
+    )
     #Manage stock for product request
+    #picking_id = fields.Many2one('stock.picking')
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
     picking_count = fields.Integer(string='Picking Orders', compute='_compute_picking_ids', default=0)
-    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type', related='project_id.picking_type')
-    warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', required=True, readonly=True, states={'draft': [('readonly', False)], 'to_approve': [('readonly', False)]}, default=_default_warehouse_id, check_company=True)
-    location_src_id = fields.Many2one('stock.location', 'Source Location', related='project_id.src_location')
-    location_dest_id = fields.Many2one('stock.location', 'Dest Location', related='project_id.dest_location')
-    move_ids = fields.One2many('stock.move', 'product_request')
-    #manage scrap move
-    scrap_ids = fields.One2many(comodel_name="stock.scrap", inverse_name="product_request", string="Scraps")
-    scrap_count = fields.Integer(compute="_compute_scrap_move_count", string="Scrap Move")
-    #Manage timesheet for workorder request
+    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type',
+        default=_default_picking_type,
+    )
+    picking_policy = fields.Selection([('direct', 'As soon as possible'),
+        ('one', 'When all products are ready')],
+        string='Picking Policy', required=True, readonly=True, default='direct',
+        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}
+        ,help="If you deliver all products at once, the delivery order will be scheduled based on the greatest "
+        "product lead time. Otherwise, it will be based on the shortest.")
+    warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse',
+        required=True, readonly=True, 
+        states={'draft': [('readonly', False)], 'to_approve': [('readonly', False)]},
+        default=_default_warehouse_id, check_company=True
+    )
+    location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
+    location_dest_id = fields.Many2one('stock.location', 'Dest Location',)
     timesheet_ids = fields.One2many(related="project_task_id.timesheet_ids")
     
-    def _compute_scrap_move_count(self):
-        data = self.env["stock.scrap"].read_group(
-            [("task_id", "in", self.ids)], ["task_id"], ["task_id"]
-        )
-        count_data = {item["task_id"][0]: item["task_id_count"] for item in data}
-        for item in self:
-            item.scrap_count = count_data.get(item.id, 0)
-    
-    @api.depends('project_id.analytic_account_id')
-    def _compute_analytic_account(self):
-        for rec in self:
-            rec.analytic_account_id = rec.project_id.analytic_account_id or self.env['account.analytic.account']
-            
     @api.model
     def _get_picking_type(self, company_id):
         picking_type = self.env['stock.picking.type'].search([('code', '=', 'outgoing'), ('warehouse_id.company_id', '=', company_id)])
@@ -141,6 +160,8 @@ class ProductRequest(models.Model):
         return self.write({"state": "to_approve"})
     
     def button_approve(self):
+        #self.is_approver_check()
+        #self._create_picking()
         for line in self.line_ids:
             line.action_approve()
         self.write({"state": "open", 'date_approve': fields.Datetime.now()})
@@ -158,19 +179,10 @@ class ProductRequest(models.Model):
         for line in self.line_ids:
             line.action_done()
         return self.write({"state": 'done'})
-    
-    def action_close_task(self):
-        for line in self:
-            line.project_task_id.action_done()
-        return self.write({'state': 'close'})
+        
     
     @api.model
     def create(self, vals):
-        if vals.get('name', '/') == '/':
-            if 'company_id' in  vals:
-                vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code('product.request') or '/'
-            else:
-                vals['name'] = self.env['ir.sequence'].next_by_code('product.request') or '/'
         request = super(ProductRequest, self).create(vals)
         return request
     
@@ -212,8 +224,6 @@ class ProductRequest(models.Model):
                     values={'self': picking, 'origin': request},
                     subtype_id=self.env.ref('mail.mt_note').id)
         return True
-    
-    
     """
     def _create_picking(self):
         for request in self:
@@ -256,9 +266,3 @@ class ProductRequest(models.Model):
             picking.write({'move_lines': move_value})
         return True
         """
-                
-            
-    
-
-    
-    
