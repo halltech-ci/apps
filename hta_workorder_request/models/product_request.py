@@ -99,7 +99,9 @@ class ProductRequest(models.Model):
     )
     #Manage stock location. disable setting of origin location
     origin_location_disable = fields.Boolean(compute="_compute_readonly_locations", help="technical field to disable the edition of origin location.",)
-    origin_location_id = fields.Many2one("stock.location", string="Origin Location", required=True, domain=lambda self: self._get_locations_domain(),)
+    origin_location_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, domain=lambda self: self._get_locations_domain(),)
+    destination_location_disable = fields.Boolean(compute="_compute_readonly_locations", help="technical field to disable the edition of destination location.",)
+    destination_location_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, domain=lambda self: self._get_locations_domain(),)
     #allow or deny edit location
     edit_locations = fields.Boolean(string="Edit Locations", default=True)
     location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
