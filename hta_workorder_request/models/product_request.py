@@ -21,10 +21,9 @@ class ProductRequest(models.Model):
     _description = "Product request"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
-    @api.model
-    def _default_picking_type(self):
-        return self._get_picking_type(self.env.context.get('company_id') or self.env.company.id)
     
+    #Set default picking type to internal
+    @api.model
     def _default_picking_type(self):
         company_id = self.env.context.get("company_id") or self.env.user.company_id.id
         return self.env["stock.picking.type"].search([("code", "=", "internal"), ("warehouse_id.company_id", "=", company_id),], limit=1)
@@ -91,6 +90,7 @@ class ProductRequest(models.Model):
     #picking_id = fields.Many2one('stock.picking')
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
     picking_count = fields.Integer(string='Picking Orders', compute='_compute_picking_ids', default=0)
+    #Adding new picking type id
     picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type', default=_default_picking_type, )
     warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse',
         required=True, readonly=True, 
@@ -100,8 +100,10 @@ class ProductRequest(models.Model):
     #Manage stock location. disable setting of origin location
     origin_location_disable = fields.Boolean(compute="_compute_readonly_locations", help="technical field to disable the edition of origin location.",)
     origin_location_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, domain=lambda self: self._get_locations_domain(),)
+    #Adding destination location
     destination_location_disable = fields.Boolean(compute="_compute_readonly_locations", help="technical field to disable the edition of destination location.",)
     destination_location_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, domain=lambda self: self._get_locations_domain(),)
+    #adding apply put away strategy
     apply_putaway_strategy = fields.Boolean(string="Apply putaway strategy")
     #allow or deny edit location
     edit_locations = fields.Boolean(string="Edit Locations", default=True)
@@ -113,6 +115,7 @@ class ProductRequest(models.Model):
     def _get_locations_domain(self):
         return ["|", ("company_id", "=", self.env.user.company_id.id), ("company_id", "=", False), ]
     
+    #Adding compute readonly location
     @api.depends("edit_locations")
     def _compute_readonly_locations(self):
         for rec in self:
@@ -121,13 +124,6 @@ class ProductRequest(models.Model):
             if not rec.edit_locations:
                 rec.origin_location_disable = True
                 rec.destination_location_disable = True
-    
-    @api.model
-    def _get_picking_type(self, company_id):
-        picking_type = self.env['stock.picking.type'].search([('code', '=', 'outgoing'), ('warehouse_id.company_id', '=', company_id)])
-        if not picking_type:
-            picking_type = self.env['stock.picking.type'].search([('code', '=', 'outgoing'), ('warehouse_id', '=', False)])
-        return picking_type[:1]
     
     @api.depends('picking_ids')
     def _compute_picking_ids(self):
