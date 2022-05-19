@@ -2,6 +2,7 @@
 
 
 from odoo import api, fields, models, _
+from odoo.fields import first
 from odoo.tools.float_utils import float_compare
 from dateutil import relativedelta
 from odoo.exceptions import UserError
@@ -24,13 +25,17 @@ class ProductRequest(models.Model):
     def _default_picking_type(self):
         return self._get_picking_type(self.env.context.get('company_id') or self.env.company.id)
     
-    @api.model
-    def _get_default_requested_by(self):
-        return self.env["res.users"].browse(self.env.uid)
+    def _default_picking_type(self):
+        company_id = self.env.context.get("company_id") or self.env.user.company_id.id
+        return self.env["stock.picking.type"].search([("code", "=", "internal"), ("warehouse_id.company_id", "=", company_id),], limit=1)
     
     @api.model
     def _get_default_name(self):
         return self.env["ir.sequence"].next_by_code("product.request")
+    
+    @api.model
+    def _get_default_requested_by(self):
+        return self.env["res.users"].browse(self.env.uid)
     
     @api.model
     def _default_warehouse_id(self):
@@ -86,23 +91,33 @@ class ProductRequest(models.Model):
     #picking_id = fields.Many2one('stock.picking')
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
     picking_count = fields.Integer(string='Picking Orders', compute='_compute_picking_ids', default=0)
-    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type',
-        default=_default_picking_type,
-    )
-    picking_policy = fields.Selection([('direct', 'As soon as possible'),
-        ('one', 'When all products are ready')],
-        string='Picking Policy', required=True, readonly=True, default='direct',
-        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}
-        ,help="If you deliver all products at once, the delivery order will be scheduled based on the greatest "
-        "product lead time. Otherwise, it will be based on the shortest.")
+    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type', default=_default_picking_type, )
     warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse',
         required=True, readonly=True, 
         states={'draft': [('readonly', False)], 'to_approve': [('readonly', False)]},
         default=_default_warehouse_id, check_company=True
     )
+    #Manage stock location. disable setting of origin location
+    origin_location_disable = fields.Boolean(compute="_compute_readonly_locations", help="technical field to disable the edition of origin location.",)
+    origin_location_id = fields.Many2one("stock.location", string="Origin Location", required=True, domain=lambda self: self._get_locations_domain(),)
+    #allow or deny edit location
+    edit_locations = fields.Boolean(string="Edit Locations", default=True)
     location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
     location_dest_id = fields.Many2one('stock.location', 'Dest Location',)
     timesheet_ids = fields.One2many(related="project_task_id.timesheet_ids")
+    
+    #get default location domain
+    def _get_locations_domain(self):
+        return ["|", ("company_id", "=", self.env.user.company_id.id), ("company_id", "=", False), ]
+    
+    @api.depends("edit_locations")
+    def _compute_readonly_locations(self):
+        for rec in self:
+            rec.origin_location_disable = self.env.context.get("origin_location_disable", False)
+            rec.destination_location_disable = self.env.context.get("destination_location_disable", False)
+            if not rec.edit_locations:
+                rec.origin_location_disable = True
+                rec.destination_location_disable = True
     
     @api.model
     def _get_picking_type(self, company_id):
