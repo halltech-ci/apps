@@ -144,6 +144,13 @@ class ProductRequestLine(models.Model):
             for val in line._prepare_stock_moves(picking):
                 values.append(val)
         return self.env['stock.move'].create(values)
+    
+    def _create_stock_move_line(self, picking):
+        values = []
+        for line in self:
+            for val in line._prepare_stock_moves(picking):
+                values.append(val)
+        return self.env['stock.move'].create(values)
            
     def action_to_approve(self):
         self.request_state = "to_approve"

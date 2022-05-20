@@ -209,7 +209,7 @@ class ProductRequest(models.Model):
         res = super(ProductRequest, self).write(vals)
         return res
     
-    @api.model
+    '''@api.model
     def _prepare_picking(self):
         return {
             'picking_type_id': self.picking_type_id.id,
@@ -243,7 +243,8 @@ class ProductRequest(models.Model):
                     values={'self': picking, 'origin': request},
                     subtype_id=self.env.ref('mail.mt_note').id)
         return True
-    """
+    ''' 
+    
     def _create_picking(self):
         for request in self:
             #prepare picking
@@ -264,12 +265,13 @@ class ProductRequest(models.Model):
             }
             picking = self.env['stock.picking'].create(picking_value)
             move_value = []
+            move_line_value = []
             product_lines = request.mapped('line_ids')
             for line in product_lines:
                 #create stock_move (move_lines)
-                description_picking = line.product_id._get_description(request.picking_type_id)
+                description_picking = line.product_id.with_context(lang=self.request_id.project_id.partner_id.lang or self.env.user.lang)._get_description(request.picking_type_id)
                 moves = (0, 0, {
-                    'name': line.product_id.name,
+                    'name': line.product_id.display_name,
                     'product_id': line.product_id.id,
                     'description_picking': description_picking,
                     'product_uom_qty': line.product_uom_qty,
@@ -279,9 +281,30 @@ class ProductRequest(models.Model):
                     'price_unit': line.product_id.standard_price,
                     'product_line_id': line.id,
                     'company_id': self.company_id.id,
+                    'origin': origin,
+                        }
+                    )
+                #stock_move_line
+                move_lines = (0, 0, {
+                    'name': line.product_id.display_name,
+                    'product_id': line.product_id.id,
+                    'description_picking': description_picking,
+                    'product_uom_qty': line.product_uom_qty,
+                    'product_uom': line.product_uom_id.id,
+                    'location_id': location_id.id,
+                    'location_dest_id':location_dest_id.id,
+                    'price_unit': line.product_id.standard_price,
+                    'product_line_id': line.id,
+                    'company_id': self.company_id.id,
+                    'origin': origin,
                         }
                     )
                 move_value.append(moves)
-            picking.write({'move_lines': move_value})
+                move_line_value.append(move_lines)
+            picking.write(
+                {
+                'move_lines': move_value,
+                'move_line_ids': move_line_value,
+                }
+            )
         return True
-        """
