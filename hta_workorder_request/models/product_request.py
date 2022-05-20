@@ -42,7 +42,7 @@ class ProductRequest(models.Model):
         warehouse_ids = self.env['stock.warehouse'].search([('company_id', '=', company)], limit=1)
         return warehouse_ids
     
-    name = fields.Char(string="Request Reference", required=True, track_visibility="onchange",)
+    name = fields.Char(string="Request Reference", required=True, track_visibility="onchange", default='/', readonly=True)
     company_id = fields.Many2one("res.company", "Company",
         required=True,
         readonly=True,
@@ -77,7 +77,7 @@ class ProductRequest(models.Model):
         index=True,
     )
     #Manage analytic
-    project_task_id = fields.Many2one('project.task', string="Project Task")
+    project_task_id = fields.Many2one('project.task', string="Project Task", domain = "[('project_id', '=', project_id)]")
     project_id = fields.Many2one('project.project', string="Project", related='project_task_id.project_id')
     analytic_account_id = fields.Many2one("account.analytic.account",
         string="Analytic Account",
