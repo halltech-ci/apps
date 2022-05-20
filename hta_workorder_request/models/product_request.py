@@ -42,10 +42,7 @@ class ProductRequest(models.Model):
         warehouse_ids = self.env['stock.warehouse'].search([('company_id', '=', company)], limit=1)
         return warehouse_ids
     
-    name = fields.Char(string="Request Reference", required=True,
-        default=_get_default_name,
-        track_visibility="onchange",
-    )
+    name = fields.Char(string="Request Reference", required=True, track_visibility="onchange",)
     company_id = fields.Many2one("res.company", "Company",
         required=True,
         readonly=True,
@@ -99,16 +96,16 @@ class ProductRequest(models.Model):
     )
     #Manage stock location. disable setting of origin location
     origin_location_disable = fields.Boolean(compute="_compute_readonly_locations", help="technical field to disable the edition of origin location.",)
-    origin_location_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, domain=lambda self: self._get_locations_domain(),)
+    location_src_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, related='picking_type_id.default_location_src_id')
     #Adding destination location
     destination_location_disable = fields.Boolean(compute="_compute_readonly_locations", help="technical field to disable the edition of destination location.",)
-    destination_location_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, domain=lambda self: self._get_locations_domain(),)
+    location_dest_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True,)
     #adding apply put away strategy
     apply_putaway_strategy = fields.Boolean(string="Apply putaway strategy")
     #allow or deny edit location
     edit_locations = fields.Boolean(string="Edit Locations", default=True)
-    location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
-    location_dest_id = fields.Many2one('stock.location', 'Dest Location',)
+    #location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
+    #location_dest_id = fields.Many2one('stock.location', 'Dest Location',)
     timesheet_ids = fields.One2many(related="project_task_id.timesheet_ids")
     
     #get default location domain
@@ -202,6 +199,11 @@ class ProductRequest(models.Model):
     
     @api.model
     def create(self, vals):
+        if vals.get('name', '/') == '/':
+            if 'company_id' in  vals:
+                vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code('product.request') or '/'
+            else:
+                vals['name'] = self.env['ir.sequence'].next_by_code('product.request') or '/'
         request = super(ProductRequest, self).create(vals)
         return request
     
@@ -269,9 +271,9 @@ class ProductRequest(models.Model):
             product_lines = request.mapped('line_ids')
             for line in product_lines:
                 #create stock_move (move_lines)
-                description_picking = line.product_id.with_context(lang=self.request_id.project_id.partner_id.lang or self.env.user.lang)._get_description(request.picking_type_id)
+                description_picking = line.product_id.with_context(lang=request.project_id.partner_id.lang or self.env.user.lang)._get_description(request.picking_type_id)
                 moves = (0, 0, {
-                    'name': line.product_id.display_name,
+                    #'name': line.product_id.display_name,
                     'product_id': line.product_id.id,
                     'description_picking': description_picking,
                     'product_uom_qty': line.product_uom_qty,
@@ -286,15 +288,15 @@ class ProductRequest(models.Model):
                     )
                 #stock_move_line
                 move_lines = (0, 0, {
-                    'name': line.product_id.display_name,
+                    #'name': line.product_id.display_name,
                     'product_id': line.product_id.id,
                     'description_picking': description_picking,
                     'product_uom_qty': line.product_uom_qty,
-                    'product_uom': line.product_uom_id.id,
+                    'product_uom_id': line.product_uom_id.id,
                     'location_id': location_id.id,
                     'location_dest_id':location_dest_id.id,
-                    'price_unit': line.product_id.standard_price,
-                    'product_line_id': line.id,
+                    #'price_unit': line.product_id.standard_price,
+                    #'product_line_id': line.id,
                     'company_id': self.company_id.id,
                     'origin': origin,
                         }
@@ -307,4 +309,5 @@ class ProductRequest(models.Model):
                 'move_line_ids': move_line_value,
                 }
             )
+            picking.action_confirm()
         return True
