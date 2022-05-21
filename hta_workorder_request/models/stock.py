@@ -46,7 +46,7 @@ class StockMove(models.Model):
     product_line_id = fields.Many2one('product.request.line', string='Product Request Line')
     
     def _action_assign(self):
-        return super(StockMove, self).button_assign()
+        return super(StockMove, self)._action_assign()
             
             
         
