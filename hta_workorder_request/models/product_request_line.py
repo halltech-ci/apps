@@ -10,6 +10,7 @@ REQUEST_STATE = [('draft', 'Draft'),
         ('to_approve', 'To Approve'),
        ("open", "In progress"),
         ('done', 'Done'),
+        ('close', 'Closed'),
         ('cancel', 'Refused')
         ]
 
@@ -160,6 +161,9 @@ class ProductRequestLine(models.Model):
     
     def set_to_draft(self):
         self.request_state = 'draft'
+        
+    def action_close(self):
+        self.request_state = 'close'
         
     def _get_stock_move_price_unit(self):
         self.ensure_one()

@@ -13,6 +13,7 @@ REQUEST_STATES = [
     ("to_approve", "To Approve"),
     ("open", "In progress"),
     ("done", "Done"),
+    ('close', 'Closed'),
     ("cancel", "Cancelled"),
 ]
 
@@ -78,7 +79,7 @@ class ProductRequest(models.Model):
     )
     #Manage analytic
     project_task_id = fields.Many2one('project.task', string="Project Task", domain = "[('project_id', '=', project_id)]")
-    project_id = fields.Many2one('project.project', string="Project", related='project_task_id.project_id')
+    project_id = fields.Many2one('project.project', string="Project",)
     analytic_account_id = fields.Many2one("account.analytic.account",
         string="Analytic Account",
         track_visibility="onchange",
@@ -174,6 +175,13 @@ class ProductRequest(models.Model):
         for line in self.line_ids:
             line.set_to_draft()
         self.write({'state': 'draft'})
+        
+    def action_close_task(self):
+        if self.state not in ['close']:
+            raise ValidationError(_("Vous ne pouvez pas cloturer un OT sans livraison de matière"))
+        for line in self.line_ids:
+            line.action_close()
+        self.write({'state': 'close'})
         
     def button_approve(self):
         #self.is_approver_check()
