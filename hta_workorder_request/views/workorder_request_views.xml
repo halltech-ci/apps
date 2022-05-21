@@ -25,6 +25,12 @@
                     class="oe_highlight"
                     states="open"
                   />
+                  <button name="action_close_task"
+                          string="Cloturer"
+                          type='object'
+                          class="oe_highlight"
+                          states="done"
+                  />
                   <button name = "set_to_draft"
                           string="remettre en brouillon"
                           type="object"
@@ -33,7 +39,7 @@
                     />
                   <field name="state"
                      widget="statusbar"
-                     statusbar_visible="draft,to_approve,open,done,cancel"
+                     statusbar_visible="draft,to_approve,open,done,close,cancel"
                      statusbar_colors='{"done":"blue"}'
                  />
               </header>

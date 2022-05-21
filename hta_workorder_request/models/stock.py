@@ -11,6 +11,7 @@ class Picking(models.Model):
     
     def _create_stock_analytic_account(self):
         self.ensure_once()
+        
         for picking in self:
             if picking.state not in ['done'] :
                 continue
@@ -44,6 +45,8 @@ class StockMove(models.Model):
     
     product_line_id = fields.Many2one('product.request.line', string='Product Request Line')
     
+    def _action_assign(self):
+        return super(StockMove, self).button_assign()
             
             
         

@@ -195,7 +195,12 @@ class ProductRequest(models.Model):
         for line in self.line_ids:
             line.action_done()
         return self.write({"state": 'done'})
-        
+    
+    def action_close_task(self):
+        for picking in self.picking_ids:
+            if picking.state not in ['done']:
+                continue
+            picking._create_stock_analytic_account()               
     
     @api.model
     def create(self, vals):
@@ -210,42 +215,6 @@ class ProductRequest(models.Model):
     def write(self, vals):
         res = super(ProductRequest, self).write(vals)
         return res
-    
-    '''@api.model
-    def _prepare_picking(self):
-        return {
-            'picking_type_id': self.picking_type_id.id,
-            #'partner_id': self.partner_id.id,
-            'user_id': False,
-            'date': self.date_approve,
-            'origin': self.name,
-            'location_dest_id': self.location_dest_id.id,
-            'location_id': self.location_src_id.id,
-            'company_id': self.company_id.id,
-        }
-
-    def _create_picking(self):
-        StockPicking = self.env['stock.picking']
-        for request in self:
-            if any([ptype in ['product', 'consu'] for ptype in request.line_ids.mapped('product_id.type')]):
-                pickings = request.picking_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
-                if not pickings:
-                    res = request._prepare_picking()
-                    picking = StockPicking.create(res)
-                else:
-                    picking = pickings[0]
-                moves = request.line_ids._create_stock_moves(picking)
-                moves = moves.filtered(lambda x: x.state not in ('done', 'cancel'))._action_confirm()
-                seq = 0
-                for move in sorted(moves, key=lambda move: move.date_expected):
-                    seq += 5
-                    move.sequence = seq
-                moves._action_assign()
-                picking.message_post_with_view('mail.message_origin_link',
-                    values={'self': picking, 'origin': request},
-                    subtype_id=self.env.ref('mail.mt_note').id)
-        return True
-    ''' 
     
     def _create_picking(self):
         for request in self:
