@@ -55,10 +55,7 @@ class ProductRequestLine(models.Model):
         store=True,
         help="Quantity in progress. Qty left",
     )
-    analytic_account_id = fields.Many2one(comodel_name="account.analytic.account",
-        string="Analytic Account",
-        track_visibility="onchange",
-    )
+    analytic_account_id = fields.Many2one(comodel_name="account.analytic.account", string="Analytic Account", track_visibility="onchange",)
     product_request_allocation_ids = fields.One2many("product.request.allocation",
         "product_request_line_id",
         string="Product Request Allocation",
