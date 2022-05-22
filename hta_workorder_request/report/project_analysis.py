@@ -9,12 +9,20 @@ class ProjectAnalysis(models.Model):
     _description = "Custom project analysis"
     
     project_id = fields.Many2one('project.project', string="Projet")
-    invoice_total = fields.Float(string="Total Vente")#Bon de commande
-    purchase_total = fields.Float(string="Total coüt matière")#consommation de matière imputée au projet stock.move ou stock.move.line
-    expense_total = fields.Float(string="Total Dépense")#expense_line
-    sub_contract = fields.Float(string='Sous Traitance')#
-    timesheet_total = fields.Float(string='Total Feuille de temps')
+    sale_total = fields.Float(string="Total Vente")#sale.order (project_id)
+    #stock_move = fields.Many2one('stock.move')#Total matière
+    stock_move_total = fields.Float(string="Total coüt matière")#stock.move
+    expense_total = fields.Float(string="Total Dépense")#expense.request
+    sub_contract = fields.Float(string='Sous Traitance')#purchase.order
+    timesheet_total = fields.Float(string='Total Feuille de temps')#
     exclude_from_invoice_tab = fields.Boolean('Exclude from invoice')
+    
+    """
+    table (project.project): project_id, 
+    table (sale.order) : project_id ==> total_sale (total vente)
+    table (stock.move) : project_id ==> stock_move total matière
+    table (expense.request) : project_id ==> expense_total 
+    """
     
     def init(self):
         tools.drop_view_if_exists(self.env.cr, 'custom_project_analysis')
@@ -28,5 +36,10 @@ class ProjectAnalysis(models.Model):
                     expense_total,
                     sub_contract,
                     timesheet_total,
-                    
+                    exclude_from_invoice_tab FROM (
+                        SELECT
+                            p.id as project_id,
+                            am.amount_untaxed as invoice_total,
+                            
+                    )
         """)

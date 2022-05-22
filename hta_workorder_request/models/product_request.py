@@ -80,10 +80,7 @@ class ProductRequest(models.Model):
     #Manage analytic
     project_task_id = fields.Many2one('project.task', string="Project Task", domain = "[('project_id', '=', project_id)]")
     project_id = fields.Many2one('project.project', string="Project",)
-    analytic_account_id = fields.Many2one("account.analytic.account",
-        string="Analytic Account",
-        track_visibility="onchange",
-    )
+    analytic_account_id = fields.Many2one("account.analytic.account", related="project_id.analytic_account_id", string="Analytic Account", track_visibility="onchange", )
     #Manage stock for product request
     #picking_id = fields.Many2one('stock.picking')
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
@@ -250,7 +247,7 @@ class ProductRequest(models.Model):
                 #create stock_move (move_lines)
                 description_picking = line.product_id.with_context(lang=request.project_id.partner_id.lang or self.env.user.lang)._get_description(request.picking_type_id)
                 moves = (0, 0, {
-                    #'name': line.product_id.display_name,
+                    'name': line.product_id.display_name,
                     'product_id': line.product_id.id,
                     'description_picking': description_picking,
                     'product_uom_qty': line.product_uom_qty,
@@ -283,7 +280,7 @@ class ProductRequest(models.Model):
             picking.write(
                 {
                 'move_lines': move_value,
-                'move_line_ids': move_line_value,
+                #'move_line_ids': move_line_value,
                 }
             )
             picking.action_confirm()
