@@ -202,10 +202,9 @@ class ProductRequest(models.Model):
         return self.write({"state": 'done'})
     
     def action_close_task(self):
-        for picking in self.picking_ids:
-            if picking.state not in ['done']:
-                continue
-            picking._create_stock_analytic_account()               
+        pickings = self.picking_ids.filtered(lambda l:l.state in ['done'])
+        for picking in pickings:
+            picking._create_stock_analytic_account()
     
     @api.model
     def create(self, vals):
@@ -220,6 +219,12 @@ class ProductRequest(models.Model):
     def write(self, vals):
         res = super(ProductRequest, self).write(vals)
         return res
+    
+    def unlink(self):
+        for request in self:
+            if request.state in ('close', 'done'):
+                raise UserError(_('Vous ne pouvez pas supprimer un OT déja traité.'))
+        return super(ProductRequest, self).unlink()
     
     def _create_picking(self):
         for request in self:
