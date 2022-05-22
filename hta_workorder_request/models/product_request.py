@@ -169,12 +169,14 @@ class ProductRequest(models.Model):
         return self.write({"state": "to_approve"})
     
     def set_to_draft(self):
+        if self.state in ['done', 'close']:
+            raise ValidationError(_("Vous ne pouvez pas reinitialiser un OT déja traité"))
         for line in self.line_ids:
             line.set_to_draft()
         self.write({'state': 'draft'})
         
     def action_close_task(self):
-        if self.state not in ['close']:
+        if self.state not in ['done']:
             raise ValidationError(_("Vous ne pouvez pas cloturer un OT sans livraison de matière"))
         for line in self.line_ids:
             line.action_close()
