@@ -11,4 +11,6 @@ class AccountAnalyticAccount(models.Model):
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
     
+    request_id = fields.Many2one('product.request', string="Workorder")
+    planned_date = fields.Date('Planned Date')
     

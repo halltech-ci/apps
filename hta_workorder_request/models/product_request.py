@@ -104,7 +104,7 @@ class ProductRequest(models.Model):
     edit_locations = fields.Boolean(string="Edit Locations", default=True)
     #location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
     #location_dest_id = fields.Many2one('stock.location', 'Dest Location',)
-    timesheet_ids = fields.One2many(related="project_task_id.timesheet_ids")
+    timesheet_ids = fields.One2many('account.analytic.line', 'request_id', string="Feuille de temps")
     
     #get default location domain
     def _get_locations_domain(self):
@@ -174,14 +174,7 @@ class ProductRequest(models.Model):
         for line in self.line_ids:
             line.set_to_draft()
         self.write({'state': 'draft'})
-        
-    def action_close_task(self):
-        if self.state not in ['done']:
-            raise ValidationError(_("Vous ne pouvez pas cloturer un OT sans livraison de matière"))
-        for line in self.line_ids:
-            line.action_close()
-        self.write({'state': 'close'})
-        
+           
     def button_approve(self):
         #self.is_approver_check()
         #self._create_picking()
@@ -207,7 +200,22 @@ class ProductRequest(models.Model):
         pickings = self.picking_ids.filtered(lambda l:l.state in ['done'])
         for picking in pickings:
             picking._create_stock_analytic_account()
-    
+            
+    '''def _create_task_timesheet(self):
+        for sheet in self.timesheet_ids:
+            move_line = (0, 0, {
+                    'name' : sheet.employee_id.name,
+                    'employee_id' : sheet.employee_id.id,
+                    'amount' : -sheet.employee_id.timesheet_cost * sheet.unit_amount,
+                    #'account_id' : analytic_account.id,
+                    'ref' : move.reference,
+                    'unit_amount' : sheet.unit_amount,
+                    'task_id': self.project_task_id,
+                    #'move_id' : move.id,
+                    'company_id' : self.company_id.id,
+                    }
+                )
+    '''
     @api.model
     def create(self, vals):
         if vals.get('name', '/') == '/':
@@ -229,6 +237,7 @@ class ProductRequest(models.Model):
         return super(ProductRequest, self).unlink()
     
     def _create_picking(self):
+        self.ensure_one()
         for request in self:
             #prepare picking
             picking_type_id = request.picking_type_id
@@ -267,28 +276,7 @@ class ProductRequest(models.Model):
                     'origin': origin,
                         }
                     )
-                #stock_move_line
-                move_lines = (0, 0, {
-                    #'name': line.product_id.display_name,
-                    'product_id': line.product_id.id,
-                    'description_picking': description_picking,
-                    'product_uom_qty': line.product_uom_qty,
-                    'product_uom_id': line.product_uom_id.id,
-                    'location_id': location_id.id,
-                    'location_dest_id':location_dest_id.id,
-                    #'price_unit': line.product_id.standard_price,
-                    #'product_line_id': line.id,
-                    'company_id': self.company_id.id,
-                    'origin': origin,
-                        }
-                    )
                 move_value.append(moves)
-                move_line_value.append(move_lines)
-            picking.write(
-                {
-                'move_lines': move_value,
-                #'move_line_ids': move_line_value,
-                }
-            )
+            picking.write({'move_lines': move_value,})
             picking.action_confirm()
         return True

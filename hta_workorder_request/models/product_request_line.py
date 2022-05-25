@@ -85,7 +85,7 @@ class ProductRequestLine(models.Model):
                     qty += move.quantity_done
             line.qty_done = qty
             
-    def _prepare_stock_moves(self, picking):
+    '''def _prepare_stock_moves(self, picking):
         """ Prepare the stock moves data for one product line. This function returns a list of
         dictionary ready to be used in stock.move's create()
         """
@@ -135,7 +135,7 @@ class ProductRequestLine(models.Model):
             template['product_uom'] = product_uom.id
             res.append(template)
         return res
-        
+    '''    
     def _create_stock_moves(self, picking):
         values = []
         for line in self:
