@@ -101,7 +101,7 @@
                   <page string="Feuille de temps" name="timesheet">
                       <field name="timesheet_ids">
                           <tree editable="bottom">
-                              <field name="planend_date"/>
+                              <field name="planned_date"/>
                               <field name="employee_id"/>
                               <field name="description"/>
                               <field name="unit_amount"/>
