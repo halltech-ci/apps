@@ -197,25 +197,30 @@ class ProductRequest(models.Model):
         return self.write({"state": 'done'})
     
     def action_close_task(self):
+        self._action_close_task()
+        self._create_analytic_line_from_timesheet
+    
+    def _action_close_task(self):
         pickings = self.picking_ids.filtered(lambda l:l.state in ['done'])
         for picking in pickings:
             picking._create_stock_analytic_account()
             
-    '''def _create_task_timesheet(self):
+    def _create_analytic_line_from_timesheet(self):
+        lines = []
+        account = self.analytic_account_id
         for sheet in self.timesheet_ids:
-            move_line = (0, 0, {
-                    'name' : sheet.employee_id.name,
+            line = (0, 0, {
+                    'name' : sheet.name,
                     'employee_id' : sheet.employee_id.id,
                     'amount' : -sheet.employee_id.timesheet_cost * sheet.unit_amount,
-                    #'account_id' : analytic_account.id,
-                    'ref' : move.reference,
                     'unit_amount' : sheet.unit_amount,
                     'task_id': self.project_task_id,
-                    #'move_id' : move.id,
                     'company_id' : self.company_id.id,
                     }
                 )
-    '''
+            lines.append(line)
+        account.write({'line_ids': lines})
+    
     @api.model
     def create(self, vals):
         if vals.get('name', '/') == '/':

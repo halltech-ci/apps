@@ -91,7 +91,7 @@
                               <field name='product_uom_qty' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
                               <field name='qty_done'/>
                               <field name='product_uom_id' string="Unit" readonly='True'/>
-                              <field name='analytic_account_id' options="{'no_create': True}"/>
+                              <field name='analytic_account_id' options="{'no_create': True}" invisible='1'/>
                               <field name="project_id" readonly='True'/>
                               <field name="task_id" readonly='True'/>
                               <field name='request_state' readonly='True'/>
@@ -103,7 +103,7 @@
                           <tree editable="bottom">
                               <field name="planned_date"/>
                               <field name="employee_id"/>
-                              <field name="description"/>
+                              <field name="name"/>
                               <field name="unit_amount"/>
                           </tree>
                       </field>
