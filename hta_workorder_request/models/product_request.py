@@ -30,8 +30,29 @@ class ProductRequest(models.Model):
         return self.env["stock.picking.type"].search([("code", "=", "internal"), ("warehouse_id.company_id", "=", company_id),], limit=1)
     
     @api.model
-    def _get_default_name(self):
-        return self.env["ir.sequence"].next_by_code("product.request")
+    def _get_default_picking_type(self):
+        company_id = self.env.context.get('default_company_id', self.env.company.id)
+        return self.env['stock.picking.type'].search([('code', '=', 'internal'), ('warehouse_id.company_id', '=', company_id), ], limit=1).id
+    
+    @api.model
+    def _get_default_location_src_id(self):
+        location = False
+        company_id = self.env.context.get('default_company_id', self.env.company.id)
+        if self.env.context.get('default_picking_type_id'):
+            location = self.env['stock.picking.type'].browse(self.env.context['default_picking_type_id']).default_location_src_id
+        if not location:
+            location = self.env['stock.warehouse'].search([('company_id', '=', company_id)], limit=1).lot_stock_id
+        return location and location.id or False
+
+    @api.model
+    def _get_default_location_dest_id(self):
+        location = False
+        company_id = self.env.context.get('default_company_id', self.env.company.id)
+        if self._context.get('default_picking_type_id'):
+            location = self.env['stock.picking.type'].browse(self.env.context['default_picking_type_id']).default_location_dest_id
+        if not location:
+            location = self.env['stock.warehouse'].search([('company_id', '=', company_id)], limit=1).lot_stock_id
+        return location and location.id or False
     
     @api.model
     def _get_default_requested_by(self):
@@ -44,14 +65,8 @@ class ProductRequest(models.Model):
         return warehouse_ids
     
     name = fields.Char(string="Request Reference", required=True, track_visibility="onchange", default='/', readonly=True)
-    company_id = fields.Many2one("res.company", "Company",
-        required=True,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
-        default=lambda self: self.env.company,
-    ) 
-    state = fields.Selection(
-        selection=REQUEST_STATES,
+    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company, index=True, required=True)
+    state = fields.Selection(selection=REQUEST_STATES,
         string="Status",
         copy=False,
         default="draft",
@@ -61,14 +76,7 @@ class ProductRequest(models.Model):
     )
     date = fields.Datetime(readonly=True, default=fields.Datetime.now, string="Date")
     date_approve = fields.Datetime('Date Approve', readonly=1, index=True, copy=False)
-    line_ids = fields.One2many(
-        comodel_name="product.request.line",
-        inverse_name="request_id",
-        string="Products to request",
-        readonly=False,
-        copy=True,
-        track_visibility="onchange",
-    )
+    line_ids = fields.One2many(comodel_name="product.request.line", inverse_name="request_id", string="Products to request", readonly=False, copy=True, track_visibility="onchange",)
     requested_by = fields.Many2one("res.users",
         string="Requested by",
         required=True,
@@ -86,40 +94,22 @@ class ProductRequest(models.Model):
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
     picking_count = fields.Integer(string='Picking Orders', compute='_compute_picking_ids', default=0)
     #Adding new picking type id
-    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type', default=_default_picking_type, )
-    warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse',
-        required=True, readonly=True, 
-        states={'draft': [('readonly', False)], 'to_approve': [('readonly', False)]},
-        default=_default_warehouse_id, check_company=True
-    )
+    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type', default=_get_default_picking_type, )
+    #warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', required=True, readonly=True, states={'draft': [('readonly', False)], 'to_approve': [('readonly', False)]}, default=_default_warehouse_id, check_company=True)
+    
     #Manage stock location. disable setting of origin location
-    origin_location_disable = fields.Boolean(compute="_compute_readonly_locations", help="technical field to disable the edition of origin location.",)
-    location_src_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, related='picking_type_id.default_location_src_id')
+    location_src_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, default=_get_default_location_src_id, domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     #Adding destination location
-    destination_location_disable = fields.Boolean(compute="_compute_readonly_locations", help="technical field to disable the edition of destination location.",)
-    location_dest_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True,)
+    location_dest_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, default=_get_default_location_dest_id, domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     #adding apply put away strategy
     apply_putaway_strategy = fields.Boolean(string="Apply putaway strategy")
-    #allow or deny edit location
-    edit_locations = fields.Boolean(string="Edit Locations", default=True)
-    #location_src_id = fields.Many2one('stock.location', 'Source Location', related='picking_type_id.default_location_src_id')
-    #location_dest_id = fields.Many2one('stock.location', 'Dest Location',)
+    
     timesheet_ids = fields.One2many('account.analytic.line', 'request_id', string="Feuille de temps")
     
     #get default location domain
     def _get_locations_domain(self):
         return ["|", ("company_id", "=", self.env.user.company_id.id), ("company_id", "=", False), ]
-    
-    #Adding compute readonly location
-    @api.depends("edit_locations")
-    def _compute_readonly_locations(self):
-        for rec in self:
-            rec.origin_location_disable = self.env.context.get("origin_location_disable", False)
-            rec.destination_location_disable = self.env.context.get("destination_location_disable", False)
-            if not rec.edit_locations:
-                rec.origin_location_disable = True
-                rec.destination_location_disable = True
-    
+        
     @api.depends('picking_ids')
     def _compute_picking_ids(self):
         for request in self:
