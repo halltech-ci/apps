@@ -35,7 +35,7 @@
         'views/project_views.xml',
         #data
         'data/workorder_ir_sequence.xml',
-        #'data/stock_data.xml',
+        'data/stock_data.xml',
         #report
         'report/workorder_report.xml',
         'report/workorder_request_report.xml',
@@ -45,4 +45,5 @@
     'demo': [
         'demo/demo.xml',
     ],
+    "post_init_hook": "enable_multi_locations",
 }

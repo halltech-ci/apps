@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright 2018-2019 ForgeFlow, S.L.
-     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0) -->
+
 <odoo noupdate="1">
-    <record id="stock_workorder_locations" model="stock.location">
-        <field name="name">Workorder Location</field>
-        <field name="usage">transit</field>
-        <field name="location_id" ref="stock_location_locations_virtual"/>
-        <field name="company_id"></field>
+    <!-- Enable the manufacturing in warehouse0 -->
+    <record id='stock.warehouse0' model='stock.warehouse'>
+        <field name='delivery_steps'>pick_ship</field>
     </record>
 </odoo>
