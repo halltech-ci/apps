@@ -274,4 +274,5 @@ class ProductRequest(models.Model):
                 move_value.append(moves)
             picking.write({'move_lines': move_value,})
             picking.action_confirm()
+            #request._action_done()
         return True
