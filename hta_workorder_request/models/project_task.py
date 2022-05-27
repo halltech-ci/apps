@@ -11,3 +11,8 @@ class ProjectTask(models.Model):
     
     def _action_close_task(self):
         pass
+    
+class projectTaskType(models.Model):
+    _inherit = 'project.task.type'
+    
+    closed = fields.Boolean(help="project task closed state")
