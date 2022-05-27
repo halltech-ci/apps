@@ -44,5 +44,5 @@
     'demo': [
         'demo/demo.xml',
     ],
-    #"post_init_hook": "enable_multi_locations",
+    "post_init_hook": "enable_multi_locations",
 }
