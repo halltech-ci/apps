@@ -10,6 +10,7 @@ REQUEST_STATE = [('draft', 'Draft'),
         ('to_approve', 'To Approve'),
        ("open", "In progress"),
         ('done', 'Done'),
+        ('close', 'Closed'),
         ('cancel', 'Refused')
         ]
 
@@ -55,10 +56,7 @@ class ProductRequestLine(models.Model):
         store=True,
         help="Quantity in progress. Qty left",
     )
-    analytic_account_id = fields.Many2one(comodel_name="account.analytic.account",
-        string="Analytic Account",
-        track_visibility="onchange",
-    )
+    analytic_account_id = fields.Many2one(comodel_name="account.analytic.account", string="Analytic Account", track_visibility="onchange",)
     product_request_allocation_ids = fields.One2many("product.request.allocation",
         "product_request_line_id",
         string="Product Request Allocation",
@@ -87,7 +85,7 @@ class ProductRequestLine(models.Model):
                     qty += move.quantity_done
             line.qty_done = qty
             
-    def _prepare_stock_moves(self, picking):
+    '''def _prepare_stock_moves(self, picking):
         """ Prepare the stock moves data for one product line. This function returns a list of
         dictionary ready to be used in stock.move's create()
         """
@@ -110,7 +108,7 @@ class ProductRequestLine(models.Model):
             'date': self.request_id.date_approve,
             #'date_expected': self.date_planned,
             'location_id': self.request_id.location_src_id.id,
-            'location_dest_id': self.request_id.location_dest_id.id,
+            'location_dest_id': self.request_id.location_dest_id.id,#
             'picking_id': picking.id,
             #'partner_id': self.request_id.dest_address_id.id,
             #'move_dest_ids': [(4, x) for x in self.move_dest_ids.ids],
@@ -137,8 +135,15 @@ class ProductRequestLine(models.Model):
             template['product_uom'] = product_uom.id
             res.append(template)
         return res
-        
+    '''    
     def _create_stock_moves(self, picking):
+        values = []
+        for line in self:
+            for val in line._prepare_stock_moves(picking):
+                values.append(val)
+        return self.env['stock.move'].create(values)
+    
+    def _create_stock_move_line(self, picking):
         values = []
         for line in self:
             for val in line._prepare_stock_moves(picking):
@@ -154,10 +159,14 @@ class ProductRequestLine(models.Model):
     def action_done(self):
         self.request_state = "done"
     
+    def set_to_draft(self):
+        self.request_state = 'draft'
+        
+    def action_close(self):
+        self.request_state = 'close'
+        
     def _get_stock_move_price_unit(self):
         self.ensure_one()
         line = self[0]
         price_unit = line.product_id.standard_price
         return price_unit
-    
-    
