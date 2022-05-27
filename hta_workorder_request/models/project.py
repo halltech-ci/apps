@@ -36,6 +36,13 @@ class ProjectProject(models.Model):
     location_dest_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, default=_get_default_location_dest_id, domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     
     
+    def action_close_project(self):
+        for project in self:
+            tasks = project.mapped('tasks')
+            for task in tasks:
+                task._action_close_task()
+        return True
+    
     @api.onchange("picking_type")
     def onchange_picking_type(self):
         self.location_src_id = self.picking_type.default_location_src_id.id
