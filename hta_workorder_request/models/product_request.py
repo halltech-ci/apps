@@ -94,13 +94,13 @@ class ProductRequest(models.Model):
     picking_ids = fields.One2many('stock.picking', 'product_request_id', string='Transfers')
     picking_count = fields.Integer(string='Picking Orders', compute='_compute_picking_ids', default=0)
     #Adding new picking type id
-    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type', default=_get_default_picking_type, )
+    picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type', related="project_id.picking_type", )
     #warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', required=True, readonly=True, states={'draft': [('readonly', False)], 'to_approve': [('readonly', False)]}, default=_default_warehouse_id, check_company=True)
     
     #Manage stock location. disable setting of origin location
-    location_src_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, default=_get_default_location_src_id, domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
+    location_src_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, related="project_id.location_src_id",)
     #Adding destination location
-    location_dest_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, default=_get_default_location_dest_id, domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
+    location_dest_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, related="project_id.location_dest_id")
     #adding apply put away strategy
     apply_putaway_strategy = fields.Boolean(string="Apply putaway strategy")
     

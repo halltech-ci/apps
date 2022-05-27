@@ -7,14 +7,36 @@ class ProjectProject(models.Model):
     _inherit = 'project.project'
     
     @api.model
-    def _default_picking_type(self):
-        return self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1)
+    def _get_default_picking_type(self):
+        company_id = self.env.context.get('default_company_id', self.env.company.id)
+        return self.env['stock.picking.type'].search([('code', '=', 'internal'), ('warehouse_id.company_id', '=', company_id), ], limit=1).id
     
-    src_location = fields.Many2one('stock.location', string="Emplacement source", readonly=False, index=True, check_company=True)
-    dest_location = fields.Many2one('stock.location', string="Emplacement destination", readonly=False, index=True, check_company=True)
-    picking_type = fields.Many2one('stock.picking.type', string='Opération', readonly=False, index=True, check_company=True, default=_default_picking_type)
+    @api.model
+    def _get_default_location_src_id(self):
+        location = False
+        company_id = self.env.context.get('default_company_id', self.env.company.id)
+        if self.env.context.get('default_picking_type_id'):
+            location = self.env['stock.picking.type'].browse(self.env.context['default_picking_type_id']).default_location_src_id
+        if not location:
+            location = self.env['stock.warehouse'].search([('company_id', '=', company_id)], limit=1).lot_stock_id
+        return location and location.id or False
+
+    @api.model
+    def _get_default_location_dest_id(self):
+        location = False
+        company_id = self.env.context.get('default_company_id', self.env.company.id)
+        if self._context.get('default_picking_type_id'):
+            location = self.env['stock.picking.type'].browse(self.env.context['default_picking_type_id']).default_location_dest_id
+        if not location:
+            location = self.env['stock.warehouse'].search([('company_id', '=', company_id)], limit=1).lot_stock_id
+        return location and location.id or False
+    
+    picking_type = fields.Many2one('stock.picking.type', 'Picking Type', default=_get_default_picking_type, )
+    location_src_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, default=_get_default_location_src_id, domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
+    location_dest_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, default=_get_default_location_dest_id, domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
+    
     
     @api.onchange("picking_type")
     def onchange_picking_type(self):
-        self.src_location = self.picking_type.default_location_src_id.id
-        self.dest_location = self.picking_type.default_location_dest_id.id
+        self.location_src_id = self.picking_type.default_location_src_id.id
+        self.location_dest_id = self.picking_type.default_location_dest_id.id
