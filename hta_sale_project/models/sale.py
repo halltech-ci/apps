@@ -9,11 +9,19 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
     
     create_project = fields.Selection(selection=[('add_to_project', "Use project"), ('create_project', "Create Project"),], default='add_to_project')
-    project_id = fields.Many2one('project.project', readonly=False)
-    state = fields.Selection(selection_add=[('create_project', 'Project'),])
+    project_id = fields.Many2one('project.project', readonly=False, copy=False)
+    project_template = fields.Many2one('project.project', string='Modele projet', domain="[('is_template', '=', True)]")
+    state = fields.Selection(selection_add=[('create_project', 'Project'), ('done', 'Projet')])
     project_description = fields.Text(string="Decription du Projet")
-    state = fields.Selection(selection_add=[('done', 'Projet')])
+    has_project = fields.Boolean(compute = '_compute_has_project_id',)
+    #state = fields.Selection(selection_add=[('done', 'Projet')])
     
+    #@api.depends('project_id')
+    def _compute_has_project_id(self):
+        for rec in self:
+            rec.has_project = False
+            if rec.project_id:
+                rec.has_project = True
     
     def action_create_project(self):
         for rec in self:
@@ -22,14 +30,14 @@ class SaleOrder(models.Model):
     #@api.depends("create_project")
     def create_project_sale_confirm(self):
         """ Generate project for the given so, and link it.
-            :param project: record of project.project in which the task should be created
+            :param project or project template: record of project.project in which the task should be created
             :return task: record of the created task
         """
         self.ensure_one()
         for rec in self:
             if rec.create_project in ('add_to_project'):
                 rec.write({'project_id': rec.project_id.id,
-                      'state':'create_project',
+                      'state':'done',
                       })
             if rec.create_project == "create_project":
                 account = rec.analytic_account_id
@@ -45,8 +53,8 @@ class SaleOrder(models.Model):
                     'active': True,
                     'company_id': rec.company_id.id,
                 }
-                if rec.project_description:
-                    values['project_description'] = rec.project_description
+                #if rec.project_description:
+                #    values['project_description'] = rec.project_description
                 project = self.env['project.project'].create(values)
                 rec.write({'project_id': project.id,
                       'state':'done',
