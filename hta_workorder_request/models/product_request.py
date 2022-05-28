@@ -65,26 +65,12 @@ class ProductRequest(models.Model):
         return warehouse_ids
     
     name = fields.Char(string="Request Reference", required=True, track_visibility="onchange", default='/', readonly=True)
-    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company, index=True, required=True)
-    state = fields.Selection(selection=REQUEST_STATES,
-        string="Status",
-        copy=False,
-        default="draft",
-        index=True,
-        readonly=True,
-        track_visibility="onchange",
-    )
+    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company, index=True, required=True, readonly=True)
+    state = fields.Selection(selection=REQUEST_STATES, string="Status", copy=False, default="draft", index=True, readonly=True, track_visibility="onchange",)
     date = fields.Datetime(readonly=True, default=fields.Datetime.now, string="Date")
     date_approve = fields.Datetime('Date Approve', readonly=1, index=True, copy=False)
     line_ids = fields.One2many(comodel_name="product.request.line", inverse_name="request_id", string="Products to request", readonly=False, copy=True, track_visibility="onchange",)
-    requested_by = fields.Many2one("res.users",
-        string="Requested by",
-        required=True,
-        copy=False,
-        track_visibility="onchange",
-        default=_get_default_requested_by,
-        index=True,
-    )
+    requested_by = fields.Many2one("res.users", string="Requested by", required=True, copy=False, track_visibility="onchange", default=_get_default_requested_by, index=True, readonly=True)
     #Manage analytic
     project_task_id = fields.Many2one('project.task', string="Project Task", domain = "[('project_id', '=', project_id)]")
     project_id = fields.Many2one('project.project', string="Project",)
