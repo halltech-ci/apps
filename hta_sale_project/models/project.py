@@ -15,5 +15,4 @@ class ProjectProject(models.Model):
             sales = self.env['sale.order'].search([('project_id', "=", rec.id)])#.mapped('sale_order_id')
             rec.sale_order_ids = sales
             
-    def create_project_from_template(self):
-        pass
+    

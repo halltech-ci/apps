@@ -25,13 +25,7 @@ class SaleOrder(models.Model):
     
     def action_create_project(self):
         for rec in self:
-            rec.state = 'done'
-    
-    def create_project_from_template(self, template):
-        for rec in self:
-            if rec.project_template:
-                pass
-                
+            rec.state = 'done'                
     
     #@api.depends("create_project")
     def create_project_sale_confirm(self):
