@@ -41,21 +41,12 @@ class ProductRequestLine(models.Model):
         string="Requested by",
         store=True,
     )
-    initial_qty = fields.Float('Initial Qty', digits="Product Unit of Measure")
-    product_uom_qty = fields.Float('Product Qty', digits="Product Unit of Measure")
-    qty_done = fields.Float('Qty Done', digits="Product Unit of Measure",
-        compute='_compute_qty_done',
-    )
-    product_request_allocation_ids = fields.One2many("product.request.allocation",
-        "product_request_line_id",
-        string="Product Request Allocation",
-    )
-    qty_in_progress = fields.Float(string="Qty In Progress", digits="Product Unit of Measure",
-        readonly=True,
-        compute="_compute_qty",
-        store=True,
-        help="Quantity in progress. Qty left",
-    )
+    initial_qty = fields.Float('Initial Qty', digits="Product Unit of Measure")#Quantity in sale order
+    product_uom_qty = fields.Float('Product Qty', digits="Product Unit of Measure")#Quantity as for workorder
+    qty_done = fields.Float('Qty Done', digits="Product Unit of Measure", compute='_compute_qty_done',)#Quantity give by stock
+    product_request_allocation_ids = fields.One2many("product.request.allocation", "product_request_line_id", string="Product Request Allocation",)
+    qty_in_progress = fields.Float(string="Qty In Progress", digits="Product Unit of Measure", readonly=True, compute="_compute_qty", store=True,
+        help="Quantity in progress. Qty left",)
     analytic_account_id = fields.Many2one(comodel_name="account.analytic.account", string="Analytic Account", track_visibility="onchange",)
     product_request_allocation_ids = fields.One2many("product.request.allocation",
         "product_request_line_id",

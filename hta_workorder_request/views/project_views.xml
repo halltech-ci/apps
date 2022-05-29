@@ -10,7 +10,8 @@
                 <page name="product_request" string="Products" attrs="{'invisible': [('use_product', '=', False)]}">
                     <field name="product_lines" attrs="{'required': [('use_product', '=', True)]}">
                         <tree editable="bottom">
-                              <field name='product_id' options="{'no_create': True}" required='1'/>
+                            <field name="request_state" invisible='1'/>
+                              <field name='product_id' options="{'no_create': True}" required='1' attrs="{'readonly': [('request_state', 'not in', ('draft'))]}"/>
                               <field name='initial_qty' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
                               <field name='product_uom_qty' readonly='True'/>
                               <field name='qty_done' readonly='True'/>
