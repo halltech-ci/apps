@@ -15,7 +15,7 @@ class Picking(models.Model):
         for picking in self:
             if picking.state not in ['done'] :
                 continue
-            moves = picking.mapped('move_lines').filtered(lambda move:move.state == 'done' and move.analytic_line == False)
+            moves = picking.mapped('move_lines').filtered(lambda move:move.state == 'done')
             analytic_account = picking.product_request_id.analytic_account_id
             #analytic_line = self.env['account.analyitc.line'].sudo()
             lines = []
