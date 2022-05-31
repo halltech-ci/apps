@@ -15,7 +15,7 @@ class Picking(models.Model):
         for picking in self:
             if picking.state not in ['done'] :
                 continue
-            moves = picking.mapped('move_lines')
+            moves = picking.mapped('move_lines').filtered(lambda move:move.state == 'done' and move.analytic_line == False)
             analytic_account = picking.product_request_id.analytic_account_id
             #analytic_line = self.env['account.analyitc.line'].sudo()
             lines = []
@@ -30,6 +30,7 @@ class Picking(models.Model):
                     'move_id' : move.id,
                     'company_id' : move.company_id.id,
                     'product_id' : move.product_id.id,
+                    'product_line': move.product_line_id,
                     }
                 )
                 if qty_done > 0 :
@@ -45,9 +46,15 @@ class StockMove(models.Model):
     _inherit = 'stock.move'
     
     product_line_id = fields.Many2one('product.request.line', string='Product Request Line')
+    analytic_line = fields.Many2one('account.analytic.line', string="Analytic line", compute = '_compute_analytic_line')
     
     def _action_assign(self):
         return super(StockMove, self)._action_assign()
+    
+    @api.depends('product_line_id.analytic_line')
+    def _compute_analytic_line(self):
+        for move in self:
+            move.analytic_line = move.product_line_id.analytic_line
             
             
         

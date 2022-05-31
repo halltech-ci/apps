@@ -53,8 +53,8 @@ class ProductRequestLine(models.Model):
             if len(line.move_ids) > 0:
                 for move in line.move_ids:
                     qty += move.quantity_done
-            line.qty_done = qty
-                
+            line.qty_done = qty            
+    
     def _create_stock_moves(self, picking):
         values = []
         for line in self:
