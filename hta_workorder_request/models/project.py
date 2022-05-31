@@ -2,6 +2,10 @@
 
 from odoo import models, fields, api
 
+STATES = [('open', 'Opened'),
+         ('done', 'Done'),
+         ('close', 'Closed')
+         ]
 
 class ProjectProject(models.Model):
     _inherit = 'project.project'
@@ -34,6 +38,8 @@ class ProjectProject(models.Model):
     picking_type = fields.Many2one('stock.picking.type', 'Picking Type', default=_get_default_picking_type, )
     location_src_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, default=_get_default_location_src_id, domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     location_dest_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, default=_get_default_location_dest_id, domain="[('usage','=','internal'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
+    #Manage project state
+    state = fields.Selection(selection=STATES, default='open')
     
     
     def action_close_project(self):

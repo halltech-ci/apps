@@ -11,7 +11,7 @@ class SaleOrder(models.Model):
     create_project = fields.Selection(selection=[('add_to_project', "Use project"), ('create_project', "Create Project"),], default='add_to_project')
     project_id = fields.Many2one('project.project', readonly=False, copy=False)
     project_template = fields.Many2one('project.project', string='Modele projet', domain="[('is_template', '=', True)]")
-    state = fields.Selection(selection_add=[('create_project', 'Project'), ('done', 'Projet')])
+    state = fields.Selection(selection_add=[('done', 'Projet')])
     project_description = fields.Text(string="Decription du Projet")
     has_project = fields.Boolean(compute = '_compute_has_project_id',)
     #state = fields.Selection(selection_add=[('done', 'Projet')])
@@ -25,8 +25,8 @@ class SaleOrder(models.Model):
     
     def action_create_project(self):
         for rec in self:
-            rec.state = 'done'
-            
+            rec.state = 'done'                
+    
     #@api.depends("create_project")
     def create_project_sale_confirm(self):
         """ Generate project for the given so, and link it.
