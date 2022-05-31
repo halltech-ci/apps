@@ -101,14 +101,14 @@
                       </field>
                   </page>
                   <page string="Feuille de temps" name="timesheet">
-                      <field name="timesheet_ids">
+                      <!--<field name="timesheet_ids">
                           <tree editable="bottom">
                               <field name="planned_date" string="Date planifiée"/>
                               <field name="employee_id" string="Employé"/>
                               <field name="name"/>
                               <field name="unit_amount" string='Qté (Heure)'/>
                           </tree>
-                      </field>
+                      </field>-->
                   </page>
               </notebook>
               <div class="oe_chatter">

@@ -6,11 +6,11 @@ from odoo import models, fields, api
 class AccountAnalyticAccount(models.Model):
     _inherit = 'account.analytic.account'
     
-    product_request = fields.One2many('product.request', 'analytic_account_id', copy=False, check_company=True)
+    #product_request = fields.One2many('product.request', 'analytic_account_id', copy=False, check_company=True)
 
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
     
-    request_id = fields.Many2one('product.request', string="Workorder")
+    product_line = fields.One2many('product.request.line', 'analytic_line', string="Product line")
     planned_date = fields.Date('Planned Date')
     
