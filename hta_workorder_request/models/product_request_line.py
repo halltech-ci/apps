@@ -27,20 +27,9 @@ class ProductRequestLine(models.Model):
                     related="request_id.state",
     )
     request_id = fields.Many2one('product.request', string="Product Request")
-    product_id = fields.Many2one("product.product", string="Product",
-        domain=[("purchase_ok", "=", True)],
-        track_visibility="onchange",
-    )
-    product_uom_id = fields.Many2one("uom.uom",
-        string="Product Unit of Measure",
-        track_visibility="onchange",
-        related='product_id.uom_id'
-    )
-    requested_by = fields.Many2one("res.users",
-        related="request_id.requested_by",
-        string="Requested by",
-        store=True,
-    )
+    product_id = fields.Many2one("product.product", string="Product", domain=[("purchase_ok", "=", True)], track_visibility="onchange",)
+    product_uom_id = fields.Many2one("uom.uom", string="Product Unit of Measure", track_visibility="onchange", related='product_id.uom_id')
+    requested_by = fields.Many2one("res.users", related="request_id.requested_by", string="Requested by", store=True,)
     initial_qty = fields.Float('Initial Qty', digits="Product Unit of Measure")#Quantity in sale order
     product_uom_qty = fields.Float('Product Qty', digits="Product Unit of Measure")#Quantity as for workorder
     qty_done = fields.Float('Qty Done', digits="Product Unit of Measure", compute='_compute_qty_done',)#Quantity give by stock
@@ -48,14 +37,9 @@ class ProductRequestLine(models.Model):
     qty_in_progress = fields.Float(string="Qty In Progress", digits="Product Unit of Measure", readonly=True, compute="_compute_qty", store=True,
         help="Quantity in progress. Qty left",)
     analytic_account_id = fields.Many2one(comodel_name="account.analytic.account", string="Analytic Account", track_visibility="onchange",)
-    product_request_allocation_ids = fields.One2many("product.request.allocation",
-        "product_request_line_id",
-        string="Product Request Allocation",
-    )
-    task_id = fields.Many2one('project.task', string='Project Task')
+    product_request_allocation_ids = fields.One2many("product.request.allocation", "product_request_line_id", string="Product Request Allocation",)
+    task_id = fields.Many2one('project.task', string='Project Task', required=True, ondelete='cascade')
     project_id = fields.Many2one('project.project', related="request_id.project_id")
-    display_type = fields.Selection([('line_section', "Section"), ('line_note', "Note")], 
-        default=False, help="Technical field for UX purpose.")
     #manage product_requestpicking
     move_ids = fields.One2many('stock.move', 'product_line_id', string='Reservation', readonly=True, ondelete='set null', copy=False)
     #move_dest_ids = fields.One2many('stock.move', 'created_product_request_line_id', 'Downstream Moves')
