@@ -11,6 +11,7 @@ class SaleOrder(models.Model):
     has_project = fields.Boolean(compute = '_compute_has_project_id',)
     project_template = fields.Many2one('project.project', string='Modele projet', domain="[('is_template', '=', True)]")
     project_description = fields.Text(string="Decription du Projet")
+    project_id = fields.Many2one('project.project', readonly=False, copy=False)
     
     def _compute_has_project_id(self):
         for rec in self:
@@ -23,7 +24,7 @@ class SaleOrder(models.Model):
         for order in self:
             if not order.has_project and order.description == '':
                 raise ValidationError(_('Vous devez indiquer une description du projet.'))
-            order.create_project_from_sale()
+            order.sudo().with_context(force_company=order.company_id.id,).create_project_from_sale()
         return result
     
     def _generate_project_value(self):
