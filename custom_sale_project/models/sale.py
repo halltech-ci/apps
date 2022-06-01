@@ -25,6 +25,7 @@ class SaleOrder(models.Model):
             if not order.has_project and order.description == '':
                 raise ValidationError(_('Vous devez indiquer une description du projet.'))
             order.sudo().with_context(force_company=order.company_id.id,).create_project_from_sale()
+            order.write({'state': 'sale'})
         return result
     
     def _generate_project_value(self):
@@ -37,6 +38,7 @@ class SaleOrder(models.Model):
             'analytic_account_id': account.id,
             'partner_id': self.partner_id.id,
             #'sale_line_id': self.id,
+            #'allow_timesheets': True,
             'sale_order_id': self.id,
             'active': True,
             'company_id': self.company_id.id,
