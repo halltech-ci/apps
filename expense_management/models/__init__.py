@@ -8,3 +8,4 @@ from . import res_company
 from . import res_config_settings
 from . import account_bank_statement
 from . import product_template
+from . import analytic_account
