@@ -1,0 +1,22 @@
+<odoo>
+  <data>
+    <record id="view_order_form_project_1" model="ir.ui.view">
+        <field name="name">sale.order.project.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="hta_sale_approval.view_order_form_extends"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
+                <field name='project_template' options="{'no_create': True, 'no_create_edit':True}"/>
+                <field name="has_project" invisible='1'/>
+                <field name="project_id"/>
+            </xpath>
+            <xpath expr="//sheet/group" position="after">
+                <group>
+                    <field name='project_description' string="Description Projet : "/>
+                </group>
+            </xpath>
+        </field>
+      </record>
+  </data>
+</odoo>

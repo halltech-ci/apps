@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+  <data>
+      <record id='custom_analytic_report_view' model='ir.ui.view'>
+          <field name="name">custom_analytic_report_pivot</field>
+          <field name="model">account.analytic.line</field>
+          <field name="arch" type="xml">
+              <pivot string="Rapport analytic">
+                  <field name='account_id' type='row'/>
+                  <field name='unit_amount' type='mesure'/>
+                  <field name="amount" type="meusre"/>
+              </pivot>
+          </field>
+      </record>
+      
+      <record id="view_custom_analytic_report_filter" model="ir.ui.view">
+            <field name="name">custom_analytic_report_filter</field>
+            <field name="model">account.analytic.line</field>
+            <field name="arch" type="xml">
+                <search string="Rapport analytic">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="account_id"/>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    <filter string="Date" name="date" date="date"/>
+                    <group string="Group By..." expand="0" name="groupby">
+                        <filter string="Analytic Account" name="account_id" context="{'group_by': 'account_id'}"/>
+                        <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+      
+      <record model="ir.actions.act_window" id="account_analytic_report_pivot_view">
+            <field name="name">Analytic Rapport</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_mode">tree,pivot</field>
+            <field name="view_id" ref="custom_analytic_report_view"/>
+            <field name="search_view_id" ref="view_custom_analytic_report_filter"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_empty_folder">
+                Pas encore d'informations
+              </p>
+            </field>
+      </record>
+      
+      <menuitem id="menu_custom_analytic_report" name="Analyse des coûts" action="account_analytic_report_pivot_view" groups="project.group_project_manager" parent="project.menu_project_report" sequence="99"/>
+  </data>
+</odoo>

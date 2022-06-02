@@ -275,7 +275,7 @@ class ExpenseRequest(models.Model):
                 move.write({'expense_id': request.id})
             move.post()
             request.write({'state': 'reconcile'})
-            request._create_analytic_line()
+            #request._create_analytic_line()
         return True
     
     def action_submit(self):

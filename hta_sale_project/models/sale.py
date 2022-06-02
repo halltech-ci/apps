@@ -59,4 +59,5 @@ class SaleOrder(models.Model):
                 rec.write({'project_id': project.id,
                       'state':'done',
                       })
+        return project
             
