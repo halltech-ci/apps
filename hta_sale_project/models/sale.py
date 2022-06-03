@@ -14,6 +14,7 @@ class SaleOrder(models.Model):
     state = fields.Selection(selection_add=[('done', 'Projet')])
     project_description = fields.Text(string="Decription du Projet")
     has_project = fields.Boolean(compute = '_compute_has_project_id',)
+    analytic_group = fields.Many2one('account.analytic.group', string='Groupe Analytic')
     #state = fields.Selection(selection_add=[('done', 'Projet')])
     
     #@api.depends('project_id')
@@ -44,6 +45,7 @@ class SaleOrder(models.Model):
                 if not account:
                     rec._create_analytic_account(prefix=rec.description or rec.name or None)
                     account = rec.analytic_account_id
+                account.write({'group_id': rec.analytic_group})
                 values = {
                     'name': rec.project_description or rec.name,
                     'analytic_account_id': account.id,

@@ -20,6 +20,7 @@
                 <field name='project_template' options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': [('create_project', 'in', ('add_to_project'))]}"/>
                 <field name="has_project" invisible='1'/>
                 <field name="project_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': ['|',('create_project', '=', 'create_project'), ('state', 'not in', ('sale'))], 'required':[('create_project', 'in', ['add_to_project']), ('state', 'in', ('sale'))], 'readonly': [('has_project', '=', True)]}"/>
+                <field name='analytic_group' options="{'no_create': True, 'no_create_edit':True}"/>
             </xpath>
             <xpath expr="//sheet/group" position="after">
                 <group>
