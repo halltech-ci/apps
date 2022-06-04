@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_workorder_sale_workorder_sale,workorder_sale.workorder_sale,model_workorder_sale_workorder_sale,base.group_user,1,1,1,1
