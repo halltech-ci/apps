@@ -28,8 +28,6 @@ class PaybookReportWizard(models.TransientModel):
         month = str(fields.Date.today().month)
         return month
     
-    #date_start = fields.Date(string='Start Date', required=True, default=fields.Date.today)
-    #date_end = fields.Date(string='End Date', required=True, default=fields.Date.today)
     slip_month = fields.Selection(selection=month_list, string='Period', default=lambda self:self.get_default_month())
     salary_structure = fields.Many2one('hr.payroll.structure', string="Structure du Salaire")
     employee = fields.Many2one('hr.employee', string="Employee")
