@@ -1,0 +1,40 @@
+<odoo>
+  <data>
+      
+    <record model="ir.ui.view" id="workorder_sale.tree_viwe">
+      <field name="name">workorder_sale_list</field>
+      <field name="model">workorder.sale</field>
+      <field name="arch" type="xml">
+          <form>
+              <header>
+                  <notebook>
+                      <page>
+                          <tree>
+                              <field name='line_ids'>
+                                  <field name='name'/>
+                                  <field name="product_id"/>
+                                  <field name="product_template_id" insible='1'/>
+                                  <field name="product_uom_qty"/>
+                                  <field name="product_uom"/>
+                                  <field name="price_subtotal"/>
+                              </field>
+                          </tree>
+                      </page>
+                  </notebook>
+              </header>
+          </form>
+      </field>
+    </record>
+      
+    <record model="ir.actions.act_window" id="workorder_sale.action_window">
+      <field name="name">workorder_sale window</field>
+      <field name="res_model">workorder.sale</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="workorder_sale.menu_root" name="Workorder Sale" groups="sales_team.group_sale_salesman" sequence="100"/>
+    
+    <!-- web_icon="hr_expense,static/description/icon.png -->
+
+  </data>
+</odoo>
