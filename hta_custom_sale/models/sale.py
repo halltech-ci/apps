@@ -140,7 +140,7 @@ class SaleOrderLine(models.Model):
     line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True, copy=True)
     price_unit = fields.Float('Prix Unit.', required=True, digits='Product Price',
         compute='_compute_price_unit',
-        #store=True,
+        store=True,
         copy=True
     )
     line_margin = fields.Float(string="Marge (%)", compute="_compute_line_margin", store=True, readonly=False, copy=True)
