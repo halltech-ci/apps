@@ -140,18 +140,11 @@ class SaleOrderLine(models.Model):
     line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True, copy=True)
     price_unit = fields.Float('Prix Unit.', required=True, digits='Product Price',
         compute='_compute_price_unit',
-        store=True,
+        #store=True,
         copy=True
     )
     line_margin = fields.Float(string="Marge (%)", compute="_compute_line_margin", store=True, readonly=False, copy=True)
     line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
-    
-    '''
-    @api.depends('price_unit', 'product_uom_qty')
-    def _compute_subtotal(self):
-        for line in self:
-            line.price_subtotal = line.price_unit * line.product_uom_qty
-    '''
     
     @api.depends('product_cost', 'line_margin', 'product_id.standard_price')
     def _compute_price_unit(self):
@@ -160,7 +153,18 @@ class SaleOrderLine(models.Model):
                 line.price_unit = line.product_cost * (1 + line.line_margin/100)
             else:
                 line.price_unit = line.product_id.standard_price
-    
+                
+    @api.depends("order_id", "order_id.sale_margin", "order_id.sale_discuss_margin")
+    def _compute_line_margin(self):
+        if hasattr(super(), "_compute_line_margin"):
+            super()._compute_line_margin()
+        for line in self:
+            #line_margin = line.order_id.sale_margin
+            #line_discuss_margin = line.order_id.sale_discuss_margin
+            if not line.line_margin:
+                line.line_margin = line.order_id.sale_margin
+            if not line.line_discuss_margin:
+                line.line_discuss_margin = line.order_id.sale_discuss_margin
     
     @api.depends('product_uom_qty', 'price_unit')
     def _compute_line_subtotal(self):
