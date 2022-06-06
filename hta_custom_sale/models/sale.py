@@ -38,7 +38,6 @@ class SaleOrder(models.Model):
         num_to_word = _num2words(num, lang=lang.iso_code)
         return num_to_word
         
-    #sequence_id = fields.Many2one('sale.order.type', string="Sequence", required=True, ondelete='restrict', copy=True, default=lambda so: so._default_type_id(), )
     date_order = fields.Datetime(readonly=False)
     is_proforma = fields.Boolean('Proformat', default=False)
     description = fields.Text("Description : ")
@@ -51,8 +50,9 @@ class SaleOrder(models.Model):
     sale_discuss_margin = fields.Float(string='Marge disc. (%)', default=0.0, copy=True)
     amount_to_word = fields.Char(string="Montant en lettre:", compute='_compute_amount_to_word')        
     note = fields.Text('Termes et conditions', default=_default_note, required=True)
-    total_cost = fields.Monetary(string="Coût Total", compute='_compute_total_cost')
+    total_cost = fields.Monetary(string="Coût Total HT", compute='_compute_total_cost')#Le cout du projet
     total_margin_amount = fields.Monetary(string="Marge Brute", compute="_compute_total_margin_amount")
+    total_margin_percent = fields.Float(string='Marge Brut (%)', compute='_compute_total_margin_amount')
     partner_id = fields.Many2one(
         'res.partner', string='Customer', 
         #readonly=True,
@@ -60,7 +60,8 @@ class SaleOrder(models.Model):
         required=True, change_default=True, index=True, tracking=1,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     
-    @api.depends('order_line.product_cost', )
+    
+    @api.depends('order_line.product_cost', 'order_line.product_uom_qty')
     def _compute_total_cost(self): 
         for rec in self:
             total_cost = 0
@@ -68,27 +69,39 @@ class SaleOrder(models.Model):
                 total_cost += line.product_cost * line.product_uom_qty
             rec.total_cost = total_cost
         
-    
-    @api.depends('total_cost', 'amount_total_no_tax')
+    @api.depends('total_cost', 'amount_untaxed')
     def _compute_total_margin_amount(self):
         for rec in self:
-            rec.total_margin_amount = 0.0
-            if rec.total_cost > 0:
-                rec.total_margin_amount = rec.amount_total_no_tax - rec.total_cost
-            
-                
+            #rec.total_margin_amount = 0.0
+            rec.total_margin_percent = 0.0
+            rec.total_margin_amount = rec.amount_untaxed - rec.total_cost
+            if rec.amount_untaxed > 0:
+                rec.total_margin_percent = (1 - (rec.total_cost / rec.amount_untaxed)) * 100
+    
+    
+    @api.onchange('amount_untaxed')
+    def _onchange_amount_untaxed(self):
+        for rec in self:
+            #rec.total_margin_amount = 0.0
+            rec.total_margin_percent = 0.0
+            rec.total_margin_amount = rec.amount_untaxed - rec.total_cost
+            if rec.amount_untaxed > 0:
+                rec.total_margin_percent = (1 - (rec.total_cost / rec.amount_untaxed)) * 100
 
+    #@api.onchange('sale_margin')
     @api.onchange('sale_margin')
-    def onchange_sale_margine(self):
+    def _onchange_sale_margin(self):
         for line in self.order_line:
             line.line_margin = self.sale_margin
-            line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
+            if line.product_cost > 0:
+                line.price_unit = line.product_cost * (1 + line.line_margin/100 + line.line_discuss_margin/100)
             line.line_subtotal = line.product_uom_qty * line.price_unit
             
     def _compute_amount_to_word(self):
         for rec in self:
             rec.amount_to_word = str(self._num_to_words(rec.amount_total)).upper()
     
+    #amount untaxed without disc
     @api.depends('order_line.line_subtotal')
     def _amount_total_no_tax(self):
         for order in self:
@@ -152,7 +165,35 @@ class SaleOrderLine(models.Model):
                 line.price_unit = line.product_cost * (1 + line.line_margin/100)
             else:
                 pass
-                
+                            
+    @api.onchange('product_uom', 'product_uom_qty')
+    def product_uom_change(self):
+        if not self.product_uom or not self.product_id:
+            self.price_unit = 0.0
+            return
+        
+        if self.order_id.pricelist_id and self.order_id.partner_id:
+            product = self.product_id.with_context(
+                lang=self.order_id.partner_id.lang,
+                partner=self.order_id.partner_id,
+                quantity=self.product_uom_qty,
+                date=self.order_id.date_order,
+                pricelist=self.order_id.pricelist_id.id,
+                uom=self.product_uom.id,
+                fiscal_position=self.env.context.get('fiscal_position')
+            )
+            self.price_unit = product._get_tax_included_unit_price(
+                self.company_id or self.order_id.company_id,
+                self.order_id.currency_id,
+                self.order_id.date_order,
+                'sale',
+                fiscal_position=self.order_id.fiscal_position_id,
+                product_price_unit=self._get_display_price(product),
+                product_currency=self.currency_id
+            )
+        if self.product_cost > 0:
+            self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
+        
     @api.depends("order_id", "order_id.sale_margin", "order_id.sale_discuss_margin")
     def _compute_line_margin(self):
         if hasattr(super(), "_compute_line_margin"):

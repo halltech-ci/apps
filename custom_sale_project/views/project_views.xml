@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="edit_sale_project1_inherit">
+      <field name="name">edit_sale_project_custom</field>
+      <field name="model">project.project</field>
+      <field name="inherit_id" ref="project.edit_project"/>
+      <field name="arch" type="xml">
+          <!-- Insert purchase order page on project-->
+          <xpath expr="//page[@name='settings']" position="after">
+              <page string="Sale Orders">
+                  <field name="sale_order_ids" readony='True'/>
+              </page>
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

@@ -79,8 +79,9 @@
           <!-- Adding custom field sale_margin in sale order-->
           <xpath expr="//field[@name='amount_tax']" position="after">
               <field name="sale_margin" />
-              <field name="sale_discuss_margin" />
+              <field name='total_cost'/>
               <field name='total_margin_amount'/>
+              <field name="total_margin_percent"/>
           </xpath>
             <xpath expr="//sheet/notebook/page[@name='order_lines']/group[@name='note_group']/group[1]/field[@name='note']" position="replace">
             </xpath>
