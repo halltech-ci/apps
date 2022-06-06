@@ -152,26 +152,20 @@ class SaleOrderLine(models.Model):
     product_cost = fields.Float(string="Coût", digits='Product Price', copy=True)
     line_subtotal = fields.Monetary(compute='_compute_line_subtotal', string='Prix Total', readonly=True, store=True, copy=True)
     price_unit = fields.Float('Prix Unit.', required=True, digits='Product Price',
-        #compute='_compute_price_unit',
-        #store=True,
-        copy=True
+        compute='_compute_price_unit',
+        store=True, copy=True
     )
     line_margin = fields.Float(string="Marge (%)", compute="_compute_line_margin", store=True, readonly=False, copy=True)
     line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
     
-    @api.onchange('product_cost')
-    def _onchange_product_cost(self):
-        if self.product_cost > 0:
-            self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
-            self.line_subtotal = self.product_uom_qty * self.price_unit
-    
-    @api.onchange('line_margin')
-    def _onchange_line_margin(self):
-        if self.product_cost < 0:
-            raise UserError(_('Le coût ne peut etre negatif.'))
-        self.price_unit = self.product_cost * (1 + self.line_margin/100 + self.line_discuss_margin/100)
-        self.line_subtotal = self.product_uom_qty * self.price_unit
-            
+    @api.depends('product_cost', 'line_margin', 'product_id.standard_price')
+    def _compute_price_unit(self):
+        for line in self:
+            if line.product_cost != 0:
+                line.price_unit = line.product_cost * (1 + line.line_margin/100)
+            else:
+                pass
+                            
     @api.onchange('product_uom', 'product_uom_qty')
     def product_uom_change(self):
         if not self.product_uom or not self.product_id:
@@ -215,7 +209,7 @@ class SaleOrderLine(models.Model):
     @api.depends('product_uom_qty', 'price_unit')
     def _compute_line_subtotal(self):
         for line in self:
-            line.line_subtotal = line.product_uom_qty * line.price_unit     
+            line.line_subtotal = line.product_uom_qty * line.price_unit
         
     @api.model
     def create(self, vals):
