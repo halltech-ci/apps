@@ -10,7 +10,6 @@
                     <field name="slip_month"/>
                     <field name="salary_structure" required='1'/>
                 </group>
-                
                 <footer>
                     <button name="print_xlsx" string="Excel" type="object" class="oe_highlight"/>
                     <button string="Cancel" special="cancel"/>
@@ -21,18 +20,11 @@
       
     <act_window 
         id="action_paybook_excel_report"
-        name="Livre de Paye"
+        name="Livre de Paye Excel"
         res_model="paybook.xlsx.report"
         view_mode="form"
         target="new"
     />
-    <menuitem 
-        id="menu_paybook_excel_report"
-        action="action_paybook_excel_report"
-        name = "Livre de Paie Excel"
-        sequence="13"
-        parent="account.account_reports_management_menu"
-        groups='hta_custom_hr.group_hr_paybook_report'
-    />
+    <menuitem id="menu_paybook_excel_report" action="action_paybook_excel_report" name = "Livre de Paie Excel" sequence="13" parent="account.account_reports_management_menu" groups='hta_custom_hr.group_hr_paybook_report'/>
   </data>
 </odoo>
