@@ -15,10 +15,14 @@
                           <field name="company_id"/>
                       </group>
                       <group>
-                          <field name="code" required='True'/>
+                          <field name="code"/>
                           <field name="currency_id" invisible="1"/>
                       </group>
                   </group>
+                  <div>
+                      <label for='description'/>
+                      <field name="description" required='True'/>
+                  </div>
                   <notebook>
                       <page string="Work">
                           <field name='line_ids'>

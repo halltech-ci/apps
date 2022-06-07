@@ -10,6 +10,7 @@ class WorkorderSale(models.Model):
     
     name = fields.Char()
     code = fields.Char()
+    description = fields.Html(help="Indiquer ici les caracteristiques de l'ouvrage.")
     line_ids = fields.One2many('workorder.line', 'workorder_id')
     company_id = fields.Many2one('res.company', string='Company', required=True, index=True, readonly=True, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, default=lambda self: self.env.company.currency_id)
