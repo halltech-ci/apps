@@ -35,11 +35,14 @@
                                   <field name="price_subtotal"/>
                               </tree>
                           </field>
+                          <group col='6'>
+                              <group colspan='4'></group>
+                              <group class="oe_subtotal_footer oe_right" colspan='2' name='amount_total'>
+                                  <field name="amount_total"/>
+                              </group>
+                          </group>
                       </page>
                   </notebook>
-                 <div>
-                     <field name="amount_total"/>
-                 </div>
               </sheet>
           </form>
       </field>

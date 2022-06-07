@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class WorkorderSale(models.Model):
@@ -13,16 +13,40 @@ class WorkorderSale(models.Model):
     line_ids = fields.One2many('workorder.line', 'workorder_id')
     company_id = fields.Many2one('res.company', string='Company', required=True, index=True, readonly=True, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_compute_amount_total', tracking=4)
+    amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_compute_amount_total', tracking=4, default=10)
+    workorder_sale_id = fields.Many2one("sale.workorder.sale")
+    is_sale = fields.Boolean(compute='_compute_is_sale')
     
     
-    api.depends('line_ids.price_subtotal')
+    @api.depends('workorder_sale_id')
+    def _compute_is_sale(self):
+        for rec in self:
+            if rec.workorder_sale_id:
+                rec.is_sale = True
+            else: 
+                rec.is_sale = False
+    
+    @api.depends('line_ids.price_subtotal')
     def _compute_amount_total(self):
         for order in self:
             amount = 0
             for line in order.line_ids:
                 amount += line.price_subtotal
-            order.update({'amount_total': amount})
+            order.update({'amount_total': amount,})
+            
+    @api.model
+    def create(self, vals):
+        request = super(WorkorderSale, self).create(vals)
+        return request
+    
+    def write(self, vals):
+        res = super(WorkorderSale, self).write(vals)
+        return res
+    
+    def unlink(self):
+        if any(self.filtered(lambda workorder: workorder.is_sale == True)):
+            raise UserError(_('Vous ne pouvez pas supprimer une oeuvre déja utilisé !'))        
+        return super(WorkorderSale, self).unlink()
     
 class WorkorderLine(models.Model):
     _name = "workorder.line"
