@@ -16,12 +16,11 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Warehouse Management',
+    'category': 'Project Management',
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['stock',
-                'product',
                 'project'
                ],
 
@@ -35,6 +34,7 @@
         'views/project_views.xml',
         #data
         'data/workorder_ir_sequence.xml',
+        #'data/stock_data.xml',
         #report
         'report/workorder_report.xml',
         'report/workorder_request_report.xml',
@@ -44,4 +44,5 @@
     'demo': [
         'demo/demo.xml',
     ],
+    #"post_init_hook": "enable_multi_locations",
 }

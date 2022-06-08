@@ -6,18 +6,12 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
-            <!--<header>
-                <button name="button_action_product"
-                    string="MANAGE"
-                    type="object"
-                    class="oe_highlight"
-            />
-            </header>-->
             <xpath expr="/form/sheet/notebook" position="inside">
-                <page name="product_request" string="Products">
-                    <field name="product_lines">
+                <page name="product_request" string="Products" attrs="{'invisible': [('use_product', '=', False)]}">
+                    <field name="product_lines" attrs="{'required': [('use_product', '=', True)]}">
                         <tree editable="bottom">
-                              <field name='product_id' options="{'no_create': True}"/>
+                            <field name="request_state" invisible='1'/>
+                              <field name='product_id' options="{'no_create': True}" required='1' attrs="{'readonly': [('request_state', 'not in', ('draft'))]}"/>
                               <field name='initial_qty' attrs="{'readonly': [('request_state', 'not in', ['draft'])]}"/>
                               <field name='product_uom_qty' readonly='True'/>
                               <field name='qty_done' readonly='True'/>
@@ -29,6 +23,52 @@
                     </field>
                 </page>
             </xpath>
+            <!-- -->
+            <xpath expr="//sheet//notebook" position="before">
+                <div class="row mt16 o_settings_container">
+                    <div class="col-lg-6 o_setting_box" id="user_product">
+                        <div class="o_setting_left_pane">
+                            <field name="use_product"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="use_product" string="Stock"/>
+                            <div class="text-muted">
+                                Cette tache consomme des articles
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="view_project_edit_form" model="ir.ui.view">
+        <field name="name">project_stock_picking</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name='arch' type='xml'>
+            <xpath expr="//notebook/page[@name='settings']/group/group[@name='extra_settings']" position='inside'>
+                <field name="picking_type"/>
+                <field name="location_dest_id"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='settings']/group/group[@name='extra_settings']" position='after'>
+                <group>
+                    <field name="location_src_id"/>
+                </group>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_close_project" string="Cloturer Projet" type="object"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="wo_project_task_type_form" model="ir.ui.view">
+        <field name="model">project.task.type</field>
+        <field name="inherit_id" ref="project.task_type_edit" />
+        <field name="arch" type="xml">
+            <field name="fold" position="after">
+                <field name="closed" string="Cloturé"/>
+            </field>
         </field>
     </record>
 </odoo>

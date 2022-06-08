@@ -1,5 +1,5 @@
 {
-    'name': "hta_workorder_request",
+    'name': "hta_owl_tutorial",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as

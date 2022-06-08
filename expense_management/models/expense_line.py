@@ -68,9 +68,8 @@ class ExpenseLine(models.Model):
                                  #domain=lambda self: self._get_employee_id_domain()
                                 )
     requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange', related='request_id.requested_by')
-    #payment_mode = fields.Selection(selection=PAYMENT_MODE, string="Payment Mode", default='justify')
-    #payed_by = fields.Selection(selection=PAYMENT_TYPE, string="Payer Par", default='cash')
     analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account/Projet', domain=lambda self: self._get_analytic_domain())
+    analytic_line = fields.Many2one('account.analytic.line', string="Analytic_line")
     expense_type = fields.Boolean(string="Imputer au projet", default=True)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, 
                                   default=lambda self: self.env.company.currency_id
@@ -81,6 +80,7 @@ class ExpenseLine(models.Model):
     transfer_amount = fields.Float('Frais de transfert', digits='Product Price')
     project = fields.Many2one('project.project', string='Project', domain=lambda self: self._get_project_domain())
     expense_product = fields.Many2one('product.product', string='Product', domain="[('can_be_expensed', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", ondelete='restrict')
+    move_id = fields.Many2one('account.move', string="Account Move")
     
     
     def action_submit(self):

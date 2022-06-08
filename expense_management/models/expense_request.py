@@ -200,6 +200,27 @@ class ExpenseRequest(models.Model):
             return self.write({'state': 'post',})
         return True
     
+    def _create_analytic_line(self):
+        '''Create analytic lines from statement_line_ids in each expense_request'''
+        for request in self:
+            account = request.analytic_account
+            lines = self.mapped('statement_line_ids')
+            res = []
+            for line in lines:
+                aal = (0, 0, {
+                    'name': line.name,
+                    'ref': line.name,
+                    'unit_amount': 1,
+                    'amount': -line.amount,
+                    #'account_id': line.analytic_account.id,
+                    'expense_line': line.id,
+                    'company_id': request.company_id.id,
+                    'move_id': line.move_id.id,
+                })
+                res.append(aal)
+            account.write({'line_ids' : res})
+                
+    
     def create_move_values(self):
         self.ensure_one()
         for request in self:
@@ -209,18 +230,19 @@ class ExpenseRequest(models.Model):
             journal = request.journal
             company = request.company_id
             account_date = fields.Date.today()
-            
-            lines = self.mapped('statement_line_ids')
-            move_lines = []
-            for line in lines:
-                partner = line.partner_id
-                debit_account = line.debit_account
-                move_value = {
+            move_value = {
                     'ref': ref,
                     'date': account_date,
                     'journal_id': journal.id,
                     'company_id': company.id,
                 }
+            move = self.env['account.move'].create(move_value)
+            lines = self.mapped('statement_line_ids')
+            move_lines = []
+            for line in lines:
+                partner = line.partner_id
+                debit_account = line.debit_account
+                line.write({'move_id': move.id})
                 debit_line = (0, 0, {
                     'name': line.name,
                     'account_id': debit_account.id,
@@ -231,7 +253,7 @@ class ExpenseRequest(models.Model):
                     'date': account_date,
                     'statement_id': self.statement_id.id,
                     'statement_line_id': line.id,
-                    'analytic_account_id': line.analytic_account_id.id or line.project_id.analytic_account_id.id,
+                    'analytic_account_id': line.analytic_account_id.id and line.analytic_account_id or line.project_id.analytic_account_id.id,
                 })
                 move_lines.append(debit_line)
                 credit_line = (0, 0, {
@@ -248,11 +270,12 @@ class ExpenseRequest(models.Model):
                     'statement_line_id': line.id,
                 })
                 move_lines.append(credit_line)
-                move_value['line_ids'] = move_lines
-                move = self.env['account.move'].create(move_value)
+                #move_value['line_ids'] = move_lines
+                move = self.env['account.move'].write({'line_ids': move_lines})
                 move.write({'expense_id': request.id})
-                move.post()
+            move.post()
             request.write({'state': 'reconcile'})
+            #request._create_analytic_line()
         return True
     
     def action_submit(self):

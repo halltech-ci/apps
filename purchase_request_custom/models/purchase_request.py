@@ -33,7 +33,7 @@ class PurchaseRequest(models.Model):
             )
         return types[:1]
                
-    name = fields.Char(string="Request Reference", required=True, default=_get_default_name, index=True)
+    name = fields.Char(string="Request Reference", required=True, default='/', index=True, readonly=True)
     request_date = fields.Datetime(string="Request date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange",)
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
@@ -53,18 +53,16 @@ class PurchaseRequest(models.Model):
     
     @api.model
     def create(self, vals):
-        request = super(PurchaseRequest, self).create(vals)
-        if vals.get('name', _('New')) == _('New'):
+        #request = super(PurchaseRequest, self).create(vals)
+        if vals.get('name', '/') == '/':
             seq_date = None
-            if vals.get("assigned_to"):
-                partner_id = self._get_partner_id(request)
-                request.message_subscribe(partner_ids=[partner_id])
             if 'request_date' in vals:
                 seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['request_date']))
             if 'company_id' in vals:
-                vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code('purchase.request.sequence', sequence_date=seq_date) or _('New')
+                vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code('purchase.request.sequence', sequence_date=seq_date) or '/'
             else:
-                vals['name'] = self.env['ir.sequence'].next_by_code('purchase.request.sequence', sequence_date=seq_date) or _('New')
+                vals['name'] = self.env['ir.sequence'].next_by_code('purchase.request.sequence', sequence_date=seq_date) or '/'
+        request = super(PurchaseRequest, self).create(vals)
         return request
     
     def to_approve_check(self):

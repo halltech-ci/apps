@@ -7,22 +7,20 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="create_project_sale_confirm" 
-                        states="sale" 
+                         
                         type="object" 
                         class="oe_highlight"
                         string="Create Project"
-                        
+                        attrs="{'invisible': ['|', ('has_project', '=', True), ('state', 'not in', ('sale'))]}"
                 />
             </xpath>
-            <!--<xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="replace">
-                <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
-                        type="action" context="{'default_advance_payment_method': 'percentage'}"
-                        attrs="{'invisible': ['|',('invoice_status', '!=', 'no'), ('state', 'not in', ('sale', 'create_project'))]}"/>
-            </xpath>-->
 
             <xpath expr="//sheet/group/group/field[@name='payment_term_id']" position="after">
-                <field name="create_project" widget="radio" options="{'horizontal': true}" attrs="{'invisible': [('state', 'not in', ('sale'))]}"/>
-                <field name="project_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': [('create_project', '=', 'create_project')], 'required': [('create_project', 'in', ['add_to_project']), ('state', 'in', ('sale'))]}"/>
+                <field name="create_project" widget="radio" options="{'horizontal': true}" attrs="{'invisible': ['|', ('state', 'not in', ('sale')), ('has_project', '=', True)]}"/>
+                <field name='project_template' options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': [('create_project', 'in', ('add_to_project'))]}"/>
+                <field name="has_project" invisible='1'/>
+                <field name="project_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': ['|',('create_project', '=', 'create_project'), ('state', 'not in', ('sale'))], 'required':[('create_project', 'in', ['add_to_project']), ('state', 'in', ('sale'))], 'readonly': [('has_project', '=', True)]}"/>
+                <field name='analytic_group' options="{'no_create': True, 'no_create_edit':True}"/>
             </xpath>
             <xpath expr="//sheet/group" position="after">
                 <group>

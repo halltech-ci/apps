@@ -64,4 +64,3 @@ class ProductRequestAllocation(models.Model):
                 )
                 if rec.open_product_qty < 0.0:
                     rec.open_product_qty = 0.0
-        
