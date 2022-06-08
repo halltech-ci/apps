@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+      <record id="analytic_line_type_view" model='ir.ui.view'>
+          <field name="name">analytic_line_type_form</field>
+          <field name="model">account.analytic.type</field>
+          <field name="arch" type="xml">
+              <form>
+                  <sheet>
+                      <field name="name"/>
+                      <field name="account_id"/>
+                  </sheet>
+              </form>
+          </field>
+      </record>
+  </data>
+</odoo>

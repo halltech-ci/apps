@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hta_analytic_report_hta_analytic_report,hta_analytic_report.hta_analytic_report,model_hta_analytic_report_hta_analytic_report,base.group_user,1,1,1,1
+access_analytic_report_user,hta_analytic_report,model_account_analytic_type,base.group_user,1,1,1,1
