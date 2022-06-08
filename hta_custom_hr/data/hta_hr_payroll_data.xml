@@ -304,7 +304,11 @@ else:
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = SBI*6.3/100
+val = SBI
+if val &lt;= 2700000:
+    result = val*6.3/100
+else:
+    result = 2700000*6.3/100
         </field>
     </record>
     <!-- Regle de calcul CMU employer -->
@@ -771,7 +775,11 @@ result = RGI/employee.nbre_part
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = SBI*7.7/100
+val = SBI
+if val &lt;= 2700000:
+    result = val*7.7/100
+else:
+    result = 2700000*7.7/100
         </field>
     </record>
     
