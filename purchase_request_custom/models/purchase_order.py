@@ -109,6 +109,6 @@ class PurchaseOrderLine(models.Model):
                 pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
             line.project = pr_obj.project
             line.specifications = pr_obj.specifications
-            line.analytic_account_id = pr_obj.analytic_account_id
+            line.account_analytic_id = pr_obj.analytic_account_id
             
     
