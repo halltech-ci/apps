@@ -98,7 +98,7 @@ class PurchaseOrderLine(models.Model):
     specifications = fields.Text(string="Specifications", compute="_compute_specifications",)
     project = fields.Many2one('project.project', compute="_compute_specifications")
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
-    
+    account_analytic_id = fields.Many2one('account.analytic.account', compute='_compute_specifications')
     
     def _compute_specifications(self):
         for line in self:
@@ -109,5 +109,6 @@ class PurchaseOrderLine(models.Model):
                 pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
             line.project = pr_obj.project
             line.specifications = pr_obj.specifications
+            line.analytic_account_id = pr_obj.analytic_account_id
             
     

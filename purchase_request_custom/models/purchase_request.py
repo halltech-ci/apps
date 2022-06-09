@@ -38,10 +38,12 @@ class PurchaseRequest(models.Model):
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
-    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('travaux', 'Travaux'), ('Appro', 'Appro Magasin'), ('autres', 'Autres')], string="Type Achat")
+    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('travaux', 'Travaux'), ('stock', 'Appro Magasin'), ('autres', 'Autres')], string="Type Achat")
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
     picking_type_id = fields.Many2one(required=False)
+    account_analytic_id = fields.Many2one('account.analytic.line',)
+    
     
     def _compute_is_project_approver(self):
         for req in self:
@@ -86,10 +88,17 @@ class PurchaseRequestLine(models.Model):
     project = fields.Many2one(related="request_id.project", string="Project", readonly=True)
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
     product_tmpl_id = fields.Many2one("product.template", related="product_id.product_tmpl_id")
-    #product_attribute_ids = fields.Many2many('product.attribute.', related="product_tmpl_id.product_attribute_ids")
     attribute_line_ids = fields.One2many("product.template.attribute.line", related="product_tmpl_id.attribute_line_ids")
     specifications = fields.Text(default="")
-
+    analytic_account_id = fields.Many2one(compute="_compute_account_analytic", string="Analytic Account")
+    
+    
+    def _compute_account_analytic(self):
+        for line in self:
+            if line.project:
+                line.account_analytic_id = line.project.analytic_account_id
+            else:
+                line.account_analytic_id = line.request_id.analytic_account_id
     
     @api.onchange("product_id")
     def onchange_product_id(self):
