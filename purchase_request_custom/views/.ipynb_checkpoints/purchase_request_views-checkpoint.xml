@@ -7,14 +7,15 @@
         <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
         <field name="arch" type="xml">
             <h1 position="after">
-                    <field name="is_expense"/><label for="is_expense"/>
+                    <field name="is_expense" string="Note de frais"/><label for="is_expense"/>
                 </h1>
             <xpath expr="//sheet//group/group/field[@name='assigned_to']" position="after">
                 <field name='purchase_type' attrs="{'readonly': [('is_editable','=', False)], 'required': True}"/>
-                <field name='sale_order' attrs="{'required': [('purchase_type','=', 'project')]}" domain="[('state', 'in', ('sale', 'done'))]" options="{'no_create': True}"/>
+                <field name='sale_order' string="Devis" attrs="{'required': [('purchase_type','=', 'project')]}" domain="['|', ('state', 'in', ('done', 'False')), ('has_project', '=', True)]" options="{'no_create': True}"/>
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='group_id']" position="after">
                 <field name="project_code"/>
+<!--                 <field name=""/> -->
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='description']" position="attributes">
                 <attribute name="attrs">{'required':[('purchase_type', '=', 'autres')]}</attribute>
@@ -28,20 +29,42 @@
                    position="before">
                 <field name="product_code" readonly="True" string="Code"/>
             </xpath>
+            
+            <!-- ihnerit specification line views-->
+            <xpath expr="//sheet/notebook/page/field[@name='line_ids']/form/sheet/group[@name='main']/group/field[@name='name']" position="after">
+                <field name="specifications" string="Caractéristiques"/>
+            </xpath>
+            <xpath expr="//notebook/page/field[@name='line_ids']/tree/field[@name='name']" position="after">
+                <field name="specifications" string="Caractéristiques"/>
+            </xpath>
+            
+            <xpath expr="//notebook/page/field[@name='line_ids']//form/sheet/group[1]/group/field[@name='product_id']" position="attributes">
+                <attribute name="options">{'no_create_edit': True, 'no_create': True}</attribute>
+            </xpath>
+            
+            <xpath expr="//notebook/page/field[@name='line_ids']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="options">{'no_create_edit': True, 'no_create': True}</attribute>
+            </xpath>
+            
+            <field name="picking_type_id" position="attributes">
+                <attribute name="attrs">{'required':[('purchase_type', 'not in', ['travaux'])], 'invisible':[('purchase_type', 'in', ['travaux'])]}</attribute>
+            </field>
+            
+            <xpath expr="//notebook/page/field[@name='line_ids']/form/sheet/group[@name='main']/group/field[@name='name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
+    
     <!--Adding project_id in purchase_order-->
-    <record id="purchase_form_inherit" model="ir.ui.view">
-        <field name="name">purchase.order.form_inherit</field>
-        <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <record id="purchase_request_list_inherit" model="ir.ui.view">
+        <field name="name">purchase.request.form_inherit</field>
+        <field name="model">purchase.request</field>
+        <field name="inherit_id" ref="purchase_request.view_purchase_request_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet/group/group[2]/field[@name='company_id']" position="after">
-                <field name="project_id"/>
-            </xpath>
-            <xpath expr="//sheet/group/group[1]/field[@name='partner_id']" position="after">
-                <field name="dest_address_id"/>
-            </xpath>
+            <field name='origin' position="before">
+                <field name="project_code"/>
+            </field>
         </field>
     </record>
   </data>
