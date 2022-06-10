@@ -39,6 +39,7 @@ class PurchaseOrder(models.Model):
         ('cancel', 'Cancelled')
     ])
     amount_due = fields.Float(compute='_compute_debit_limit', string="Solde Credit", store=True)
+    account_analytic_id = fields.Many2one('account.analytic.account')
     
     @api.depends('partner_id.debit_limit', 'partner_id.debit')
     def _compute_debit_limit(self):
@@ -98,7 +99,7 @@ class PurchaseOrderLine(models.Model):
     specifications = fields.Text(string="Specifications", compute="_compute_specifications",)
     project = fields.Many2one('project.project', compute="_compute_specifications")
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
-    account_analytic_id = fields.Many2one('account.analytic.account', compute='_compute_specifications', store=True)
+    account_analytic_id = fields.Many2one('account.analytic.account', compute='_compute_analytic_id', store=True)
     
     
     @api.depends('purchase_request_lines')
@@ -111,6 +112,17 @@ class PurchaseOrderLine(models.Model):
                 pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
             line.project = pr_obj.project
             line.specifications = pr_obj.specifications
-            line.account_analytic_id = pr_obj.analytic_account_id or False
+            
+    @api.depends('')
+    def _compute_analytic_id(self):
+        for line in self:
+            if line.order_id.account_analytic_id:
+                line.account_analytic_id = order_id.account_analytic_id
+            else:
+                pr_line = line.mapped('purchase_request_lines')
+                pr_obj = self.env['purchase.request.line'].browse()
+                    if pr_line.ids :
+                        pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
+                line.account_analytic_id = pr_obj.analytic_account_id or False
             
     
