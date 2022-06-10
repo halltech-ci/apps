@@ -242,7 +242,7 @@ class ExpenseRequest(models.Model):
             for line in lines:
                 partner = line.partner_id
                 debit_account = line.debit_account
-                line.write({'move_id': move.id})
+                line.write({'move_name': move.name})
                 debit_line = (0, 0, {
                     'name': line.name,
                     'account_id': debit_account.id,
