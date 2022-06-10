@@ -105,12 +105,12 @@ class PurchaseOrderLine(models.Model):
     def _compute_specifications(self):
         for line in self:
             #request_line = self.env['purchase.order.line'].search([])
-            pr_line = line.mapped('purchase_request_lines').ids
+            pr_line = line.mapped('purchase_request_lines')
             pr_obj = self.env['purchase.request.line'].browse()
-            if len(pr_line) > 0:
+            if pr_line.ids :
                 pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
             line.project = pr_obj.project
             line.specifications = pr_obj.specifications
-            line.account_analytic_id = pr_obj.analytic_account_id if pr_obj.analytic_account_id else self.env['account.analytic.account'].browse()
+            line.account_analytic_id = pr_obj.analytic_account_id or False
             
     
