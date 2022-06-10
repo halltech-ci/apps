@@ -121,8 +121,8 @@ class PurchaseOrderLine(models.Model):
             else:
                 pr_line = line.mapped('purchase_request_lines')
                 pr_obj = self.env['purchase.request.line'].browse()
-                    if pr_line.ids :
-                        pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
+                if pr_line.ids :
+                    pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
                 line.account_analytic_id = pr_obj.analytic_account_id or False
             
     
