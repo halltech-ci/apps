@@ -271,9 +271,9 @@ class ExpenseRequest(models.Model):
                 })
                 move_lines.append(credit_line)
                 #move_value['line_ids'] = move_lines
-                move = self.env['account.move'].write({'line_ids': move_lines,'expense_id': request.id})
+                move.write({'line_ids': move_lines,'expense_id': request.id})
                 #move.write({'expense_id': request.id})
-            move.post()
+            #move.post()
             request.write({'state': 'reconcile'})
             #request._create_analytic_line()
         return True
