@@ -113,11 +113,11 @@ class PurchaseOrderLine(models.Model):
             line.project = pr_obj.project
             line.specifications = pr_obj.specifications
             
-    @api.depends('')
+    @api.depends('purchase_request_lines', 'order_id.account_analytic_id')
     def _compute_analytic_id(self):
         for line in self:
             if line.order_id.account_analytic_id:
-                line.account_analytic_id = order_id.account_analytic_id
+                line.account_analytic_id = line.order_id.account_analytic_id
             else:
                 pr_line = line.mapped('purchase_request_lines')
                 pr_obj = self.env['purchase.request.line'].browse()
