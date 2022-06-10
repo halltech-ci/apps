@@ -90,15 +90,17 @@ class PurchaseRequestLine(models.Model):
     product_tmpl_id = fields.Many2one("product.template", related="product_id.product_tmpl_id")
     attribute_line_ids = fields.One2many("product.template.attribute.line", related="product_tmpl_id.attribute_line_ids")
     specifications = fields.Text(default="")
-    analytic_account_id = fields.Many2one(compute="_compute_account_analytic", string="Analytic Account")
+    analytic_account_id = fields.Many2one(compute="_compute_account_analytic", string="Analytic Account", store=True)
     
     
     def _compute_account_analytic(self):
         for line in self:
             if line.project:
                 line.account_analytic_id = line.project.analytic_account_id
-            else:
+            if line.account_analytic_id:
                 line.account_analytic_id = line.request_id.analytic_account_id
+            else:
+                line.account_analytic_id = self.env['account.analytic.account'].browse()
     
     @api.onchange("product_id")
     def onchange_product_id(self):
