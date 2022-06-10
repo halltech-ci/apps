@@ -15,6 +15,7 @@
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='group_id']" position="after">
                 <field name="project_code"/>
+                <field name=""
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='description']" position="attributes">
                 <attribute name="attrs">{'required':[('purchase_type', '=', 'autres')]}</attribute>
