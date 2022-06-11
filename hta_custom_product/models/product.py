@@ -31,7 +31,7 @@ class ProductProduct(models.Model):
         )
     ]
     
-    def name_get(self):
+    """def name_get(self):
         # TDE: this could be cleaned a bit I think
 
         def _name_get(d):
@@ -112,3 +112,4 @@ class ProductProduct(models.Model):
                           }
                 result.append(_name_get(mydict))
         return result
+        """
