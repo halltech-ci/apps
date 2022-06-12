@@ -37,9 +37,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         for rec in self:
             if rec.create_project in ('add_to_project'):
-                rec.write({'project_id': rec.project_id.id,
-                      'state':'done',
-                      })
+                project = rec.project_id.id or False
             if rec.create_project == "create_project":
                 account = rec.analytic_account_id
                 if not account:
@@ -50,16 +48,11 @@ class SaleOrder(models.Model):
                     'name': rec.project_description or rec.name,
                     'analytic_account_id': account.id,
                     'partner_id': rec.partner_id.id,
-                    #'sale_line_id': self.id,
                     'sale_order_id': rec.id,
                     'active': True,
                     'company_id': rec.company_id.id,
                 }
-                #if rec.project_description:
-                #    values['project_description'] = rec.project_description
                 project = self.env['project.project'].create(values)
-                rec.write({'project_id': project.id,
-                      'state':'done',
-                      })
+            rec.write({'project_id': project.id, 'state':'done',})
         return project
             
