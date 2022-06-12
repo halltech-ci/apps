@@ -38,11 +38,13 @@ class PurchaseRequest(models.Model):
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
-    purchase_type = fields.Selection(selection=[('project', 'Projet'), ('travaux', 'Travaux'), ('stock', 'Appro Magasin'), ('autres', 'Autres')], string="Type Achat")
+    purchase_type = fields.Selection(selection=[('stock', 'Matières/Consommables'), ('travaux', 'Travaux/Sous Traitance'), ('transport', 'Transport/Location'), ('autres', 'Autres services')], string="Type Achat")
+    stock_purchase = fields.Selection(selection=[('stock', 'Matières/Consommables'), ('travaux', 'Travaux/Services'), ('asset', 'Immobilisation')])
+    is_for_project = fields.Boolean(string='Imputer au projet', default=True)
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
     picking_type_id = fields.Many2one(required=False)
-    account_analytic_id = fields.Many2one('account.analytic.line',)
+    account_analytic_id = fields.Many2one('account.analytic.account',)
     
     
     def _compute_is_project_approver(self):
