@@ -3,9 +3,9 @@
 # from odoo import models, fields, api
 
 
-# class workorder_sale(models.Model):
-#     _name = 'workorder_sale.workorder_sale'
-#     _description = 'workorder_sale.workorder_sale'
+# class hta_purchase_type(models.Model):
+#     _name = 'hta_purchase_type.hta_purchase_type'
+#     _description = 'hta_purchase_type.hta_purchase_type'
 
 #     name = fields.Char()
 #     value = fields.Integer()

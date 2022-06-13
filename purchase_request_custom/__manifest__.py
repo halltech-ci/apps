@@ -20,12 +20,8 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['uom', 'purchase_request',
-                'hta_custom_sale',
-                'mail',
-                'contacts',
-                'hta_document_sign',
-               ],
+
+    'depends': ['uom', 'purchase_request', 'hta_custom_sale', 'mail', 'contacts', 'hta_document_sign',],
 
     # always loaded
     'data': [
