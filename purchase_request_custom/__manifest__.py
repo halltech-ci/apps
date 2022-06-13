@@ -21,7 +21,6 @@
 
     # any module necessary for this one to work correctly
     'depends': ['uom', 'purchase_request',
-                #'custom_apps',
                 'hta_custom_sale',
                 'mail',
                 'contacts',
