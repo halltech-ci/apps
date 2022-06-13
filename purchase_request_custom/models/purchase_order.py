@@ -110,7 +110,7 @@ class PurchaseOrderLine(models.Model):
             pr_obj = self.env['purchase.request.line'].browse()
             if pr_line.ids :
                 pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
-            line.project = pr_obj.project
+            line.project = pr_obj.project.id
             line.specifications = pr_obj.specifications
             
     @api.depends('purchase_request_lines', 'order_id.account_analytic_id')
