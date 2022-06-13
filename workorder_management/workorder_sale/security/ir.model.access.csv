@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_workorder_line_manager,access_workorder_line,model_workorder_line,sales_team.group_sale_salesman,1,1,1,1
-access_workorder_sale_manager,access_workorder_sale,model_workorder_sale,sales_team.group_sale_salesman,1,1,1,1
-access_sale_workorder_sale,access_sale_workorder_sale,model_sale_workorder_sale,base.group_user,1,1,1,1
-access_sale_workorder_sale_line,access_sale_workorder_sale_line,model_sale_workorder_sale_line,base.group_user,1,1,1,1

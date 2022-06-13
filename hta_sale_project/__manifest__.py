@@ -20,9 +20,7 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hta_sale_approval',
-               'sale_timesheet',
-               ],
+    'depends': ['hta_sale_approval', 'sale_timesheet', ],
 
     # always loaded
     'data': [
