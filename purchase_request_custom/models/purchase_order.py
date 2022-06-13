@@ -95,7 +95,6 @@ class PurchaseOrderLine(models.Model):
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
     #account_analytic_id = fields.Many2one('account.analytic.account', compute='_compute_analytic_id', store=True)
     
-    
     @api.depends('purchase_request_lines')
     def _compute_specifications(self):
         for line in self:
