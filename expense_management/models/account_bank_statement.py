@@ -12,6 +12,11 @@ class AccountBankStatement(models.Model):
 class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
     
+    
+    '''def get_credit_account(self):
+        res = self.env['account.account'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
+        return res
+    '''
     analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account', ondelete='set null')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags', 
         #domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]", 
@@ -26,10 +31,6 @@ class AccountBankStatementLine(models.Model):
     p_amount = fields.Float("Montant", digits='Product Price', compute='_compute_p_amount')
     move_id = fields.Many2one('account.move')
     
-    def create_account_move_id(self, move):
-        for line in self:
-            line.write({'move_id': move})
-        
     @api.depends('amount')
     def _compute_p_amount(self):
         for line in self:
