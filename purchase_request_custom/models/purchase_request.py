@@ -90,7 +90,6 @@ class PurchaseRequestLine(models.Model):
     attribute_line_ids = fields.One2many("product.template.attribute.line", related="product_tmpl_id.attribute_line_ids")
     specifications = fields.Text(default="")
 
-    
     @api.onchange("product_id")
     def onchange_product_id(self):
         for rec in self:
