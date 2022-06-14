@@ -42,6 +42,7 @@ class PurchaseRequest(models.Model):
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
     is_expense = fields.Boolean('is_expense', default=False)
     picking_type_id = fields.Many2one(required=False)
+    is_for_project = fields.Boolean(string="Imputer au projet")
     
     def _compute_is_project_approver(self):
         for req in self:
