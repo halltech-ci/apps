@@ -10,17 +10,14 @@
                     <field name="is_expense" string="Note de frais"/><label for="is_expense"/>
                 </h1>
             <xpath expr="//sheet//group/group/field[@name='assigned_to']" position="after">
-                <field name='is_for_project' widget='boolean_button' attrs="{'readonly': [('state', 'in', ['approved', 'done'])]}"/>
-                <field name='sale_order' string="Devis" attrs="{'required': [('is_for_project','=', True)], 'invisible': [('is_for_project', '=', False)]}" domain="[('state', 'in', ('done', 'False')), ('has_project', '=', True)]" options="{'no_create': True}"/>
-                <field name='purchase_type' attrs="{'readonly': [('is_editable','=', False)], 'required': [('is_for_project', '=', True)] , 'invisible': [('is_for_project', '=', False)]}" />
-                <field name='stock_purchase' string='Type Achat' attrs="{'readonly': [('is_editable','=', False)], 'invisible': [('is_for_project', '=', True)] , 'required':[('is_for_project', '=', False)]}"/>
-                <field name='account_analytic_id' string="Compte Analytique" domain="[('project_ids', '=', False)]"/>
+                <field name='purchase_type' attrs="{'readonly': [('is_editable','=', False)], 'required': True}"/>
+                <field name='sale_order' string="Devis" attrs="{'required': [('purchase_type','=', 'project')]}" domain="['|', ('state', 'in', ('done', 'False')), ('has_project', '=', True)]" options="{'no_create': True}"/>
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='group_id']" position="after">
                 <field name="project_code"/>
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='description']" position="attributes">
-                <attribute name="attrs">{'required':[('is_for_project', '=', False)]}</attribute>
+                <attribute name="attrs">{'required':[('purchase_type', '=', 'autres')]}</attribute>
             </xpath>
             <!-- ihnerit purchase request line views-->
             <xpath expr="//sheet/notebook/page/field[@name='line_ids']/form/sheet/group[@name='main']/group/field[@name='product_id']" 

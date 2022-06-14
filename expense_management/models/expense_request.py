@@ -200,51 +200,27 @@ class ExpenseRequest(models.Model):
             return self.write({'state': 'post',})
         return True
     
-    def _create_analytic_line(self):
-        '''Create analytic lines from statement_line_ids in each expense_request'''
-        for request in self:
-            account = request.analytic_account
-            lines = self.mapped('statement_line_ids')
-            res = []
-            for line in lines:
-                aal = (0, 0, {
-                    'name': line.name,
-                    'ref': line.name,
-                    'unit_amount': 1,
-                    'amount': -line.amount,
-                    #'account_id': line.analytic_account.id,
-                    'expense_line': line.id,
-                    'company_id': request.company_id.id,
-                    'move_id': line.move_id.id,
-                })
-                res.append(aal)
-            account.write({'line_ids' : res})
-                
-    
     def create_move_values(self):
         self.ensure_one()
         for request in self:
+            #expense_line = request.statement_line_ids
             account_src = request.journal.default_credit_account_id.id
             ref = request.statement_id.name
             journal = request.journal
             company = request.company_id
             account_date = fields.Date.today()
-            move_value = {
-                    'date': account_date,
-                    'journal_id': journal.id,
-                    'company_id': company.id,
-                }
-            move = self.env['account.move'].create(move_value)
+            
             lines = self.mapped('statement_line_ids')
-            st_line = lines[0]
-            if st_line.ref:
-                ref = ref + '-' + st_line.ref
-            move.write({'ref': ref})
             move_lines = []
             for line in lines:
                 partner = line.partner_id
                 debit_account = line.debit_account
-                #line.write({'move_id': move.id})
+                move_value = {
+                    'ref': ref,
+                    'date': account_date,
+                    'journal_id': journal.id,
+                    'company_id': company.id,
+                }
                 debit_line = (0, 0, {
                     'name': line.name,
                     'account_id': debit_account.id,
@@ -255,7 +231,7 @@ class ExpenseRequest(models.Model):
                     'date': account_date,
                     'statement_id': self.statement_id.id,
                     'statement_line_id': line.id,
-                    'analytic_account_id': line.analytic_account_id.id and line.analytic_account_id or line.project_id.analytic_account_id.id,
+                    #'analytic_account_id': line.analytic_account_id.id or line.project_id.id,
                 })
                 move_lines.append(debit_line)
                 credit_line = (0, 0, {
@@ -266,14 +242,17 @@ class ExpenseRequest(models.Model):
                     'partner_id': partner.id,
                     'journal_id': journal.id,
                     'date': account_date,
+                    'analytic_account_id': line.analytic_account_id.id or line.project_id.analytic_account_id.id,
+                    #'reconciled': True,
                     'statement_id': self.statement_id.id,
                     'statement_line_id': line.id,
                 })
                 move_lines.append(credit_line)
-                move.write({'line_ids': move_lines, 'expense_id': request.id})
-            move.post()
-            for line in lines:
-                line.create_account_move_id(move)
+                move_value['line_ids'] = move_lines
+                move = self.env['account.move'].create(move_value)
+                for line in lines:
+                    line.write({'move_id': move.id})
+                move.post()
             request.write({'state': 'reconcile'})
         return True
     
@@ -309,7 +288,7 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
-        self.write({'statement_id' : self.get_default_statement_id()})
+        #self.write({'statement_id' : self.get_default_statement_id()})
         if not self.statement_id:
             raise UserError(
                     _(
@@ -388,4 +367,3 @@ class ExpenseRequest(models.Model):
         if any(self.filtered(lambda expense: expense.state not in ('draft'))):
             raise UserError(_('Vous ne pouvez pas supprimer une note de frais !'))        
         return super(ExpenseRequest, self).unlink()
-    
