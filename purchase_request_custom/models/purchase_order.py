@@ -39,7 +39,6 @@ class PurchaseOrder(models.Model):
         ('cancel', 'Cancelled')
     ])
     amount_due = fields.Float(compute='_compute_debit_limit', string="Solde Credit", store=True)
-    account_analytic_id = fields.Many2one('account.analytic.account')
     
     @api.depends('partner_id.debit_limit', 'partner_id.debit')
     def _compute_debit_limit(self):
@@ -50,6 +49,12 @@ class PurchaseOrder(models.Model):
     def _compute_purchase_approver(self):
         if self.state == 'approve':
             self.purchase_approver = self.user_id
+    """
+    def button_approve(self, force=False):
+        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now(), 'purchase_approver':self.user_id.id})
+        self.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
+        return {}
+    """
     
     @api.model
     def create(self, vals):
@@ -92,19 +97,15 @@ class PurchaseOrderLine(models.Model):
     
     specifications = fields.Text(string="Specifications", compute="_compute_specifications",)
     project = fields.Many2one('project.project', compute="_compute_specifications")
-    #account_analytic_id = fields.Many2one('account.analytic.account', compute='_compute_analytic_id', store=True)
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
     
-    @api.depends('purchase_request_lines')
+    
     def _compute_specifications(self):
         for line in self:
-            pr_line = line.mapped('purchase_request_lines')
+            #request_line = self.env['purchase.order.line'].search([])
+            pr_line = line.mapped('purchase_request_lines').ids
             pr_obj = self.env['purchase.request.line'].browse()
-            if pr_line.ids :
+            if len(pr_line) > 0:
                 pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
-            line.project = pr_obj.project.id
+            line.project = pr_obj.project
             line.specifications = pr_obj.specifications
-            
-    
-            
-    
