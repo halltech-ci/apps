@@ -224,27 +224,25 @@ class ExpenseRequest(models.Model):
     def create_move_values(self):
         self.ensure_one()
         for request in self:
+            #expense_line = request.statement_line_ids
             account_src = request.journal.default_credit_account_id.id
             ref = request.statement_id.name
             journal = request.journal
             company = request.company_id
             account_date = fields.Date.today()
             move_value = {
+                    'ref': ref,
                     'date': account_date,
                     'journal_id': journal.id,
                     'company_id': company.id,
                 }
             move = self.env['account.move'].create(move_value)
             lines = self.mapped('statement_line_ids')
-            st_line = lines[0]
-            if st_line.ref:
-                ref = ref + '-' + st_line.ref
-            move.write({'ref': ref})
             move_lines = []
             for line in lines:
                 partner = line.partner_id
                 debit_account = line.debit_account
-                #line.write({'move_id': move.id})
+                line.write({'move_id': move.id})
                 debit_line = (0, 0, {
                     'name': line.name,
                     'account_id': debit_account.id,
@@ -266,15 +264,18 @@ class ExpenseRequest(models.Model):
                     'partner_id': partner.id,
                     'journal_id': journal.id,
                     'date': account_date,
+                    #'analytic_account_id': line.analytic_account_id.id or line.project_id.analytic_account_id.id,
+                    #'reconciled': True,
                     'statement_id': self.statement_id.id,
                     'statement_line_id': line.id,
                 })
                 move_lines.append(credit_line)
-                move.write({'line_ids': move_lines, 'expense_id': request.id})
+                #move_value['line_ids'] = move_lines
+                move = self.env['account.move'].write({'line_ids': move_lines})
+                move.write({'expense_id': request.id})
             move.post()
-            for line in lines:
-                line.create_account_move_id(move)
             request.write({'state': 'reconcile'})
+            #request._create_analytic_line()
         return True
     
     def action_submit(self):

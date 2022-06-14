@@ -119,4 +119,3 @@ class ExpenseLine(models.Model):
 
     def write(self, vals):
         return super(ExpenseLine, self).write(vals)
-    
