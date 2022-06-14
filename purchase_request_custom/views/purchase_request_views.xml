@@ -18,7 +18,7 @@
                 <field name="project_code"/>
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='description']" position="attributes">
-                <attribute name="attrs">{'required':[('purchase_type', '=', 'autres')]}</attribute>
+                <attribute name="attrs">{'required':[('purchase_type', '!=', 'project')]}</attribute>
             </xpath>
             <!-- ihnerit purchase request line views-->
             <xpath expr="//sheet/notebook/page/field[@name='line_ids']/form/sheet/group[@name='main']/group/field[@name='product_id']" 
