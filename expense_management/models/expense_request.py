@@ -288,6 +288,7 @@ class ExpenseRequest(models.Model):
     
     def button_approve(self):
         self.is_approver_check()
+        #self.write({'statement_id' : self.get_default_statement_id()})
         self.write({'statement_id' : self.get_default_statement_id()})
         if not self.statement_id:
             raise UserError(
