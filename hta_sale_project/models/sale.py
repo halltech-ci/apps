@@ -37,7 +37,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         for rec in self:
             if rec.create_project in ('add_to_project'):
-                project = rec.project_id.id or False
+                project = rec.project_id
             if rec.create_project == "create_project":
                 account = rec.analytic_account_id
                 if not account:
