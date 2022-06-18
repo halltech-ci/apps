@@ -241,7 +241,7 @@
                                 <tr t-if="lines.get('SBI')[1]>0 and lines.get('RRE')[1]>0 and lines.get('RRP')[1]>0" style="border: 1px solid black">
                                     
                                     <td class='text-left' colspan="3">Regime de retraite</td>
-                                    <td class="text-center"><span t-esc="lines.get('SBI')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center"><span t-esc="lines.get('SBASE')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
                                     <td class="text-center"><span>6,3</span></td>
                                     <td></td>
                                     <td class="text-center"><span t-esc="lines.get('RRE')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
