@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+    <!--Adding account_analytic_id in purchase_request-->
+    <record id="purchase_request_custom_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.request.custom_form</field>
+        <field name="model">purchase.request</field>
+        <field name="inherit_id" ref="purchase_request_custom.purchase_request_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//group/group/field[@name='sale_order']" position="after">
+                <field name="account_analytic_id1" attrs="{'invisible':[('is_for_project', '=', True)], 'readonly': [('is_editable','=', False)], 'required': [('is_for_project', '=', False)]}" options="{'no_create':True}"/>
+                <!--<field name="account_analytic_id" readonly='True'/>-->
+            </xpath>
+            
+        </field>
+    </record>
+  </data>
+</odoo>

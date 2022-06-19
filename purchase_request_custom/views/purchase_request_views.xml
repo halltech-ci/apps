@@ -7,12 +7,15 @@
         <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
         <field name="arch" type="xml">
             <h1 position="after">
-                    <field name="is_expense" string="Note de frais"/><label for="is_expense"/>
-                </h1>
+                <field name="is_expense" string="Note de frais"/><label for="is_expense"/>
+            </h1>
+            <xpath expr="//sheet/h1/field[@name='name']" position="attributes">
+                <attribute name="attrs">{'readonly': True}</attribute>
+            </xpath>
             <xpath expr="//sheet//group/group/field[@name='assigned_to']" position="after">
                 <field name="is_for_project" widget='boolean_button' attrs="{'readonly': [('is_editable','=', False)],}"/>
                 <field name='purchase_type' attrs="{'readonly': [('is_editable','=', False)], 'required': True}"/>
-                <field name='sale_order' string="Devis" attrs="{'required': [('is_for_project','=', True)]}" domain="['|', ('state', 'in', ('done', 'False')), ('has_project', '=', True)]" options="{'no_create': True}"/>
+                <field name='sale_order' string="Devis" attrs="{'required': [('is_for_project','=', True)], 'invisible': [('is_for_project', '=', False)],}" domain="['|', ('state', 'in', ('done', 'False')), ('has_project', '=', True)]" options="{'no_create': True}"/>
             </xpath>
             <xpath expr="//sheet//group/group[2]/field[@name='group_id']" position="after">
                 <field name="project_code"/>

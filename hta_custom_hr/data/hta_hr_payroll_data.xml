@@ -20,7 +20,6 @@
         <field name="leave_type_ids" eval="[(6,0,[ref('hr_holidays.holiday_status_unpaid')])]"/>
     </record>
 
-
     <!-- HR SALARY RULE CATEGORIES-->
     <!--SALAIRE BRUT -->
     <record id="hr_payroll_brut_salary" model="hr.salary.rule.category">
@@ -171,6 +170,24 @@ result = contract.sursalaire
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = BASE
+        </field>
+    </record>
+    <!-- SBASE pour le calcul du regime de retraite-->
+    <record id="hr_salary_rule_base_retraite" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Base regime retraite</field>
+        <field name="code">SBASE</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="sequence">6</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+val = SBI
+if val &lt;= 2700000:
+    result = val
+else:
+    result = 2700000
         </field>
     </record>
     <!-- Regle de calcul du salaire brut -->
