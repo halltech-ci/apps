@@ -84,8 +84,8 @@ class ProductRequest(models.Model):
     location_src_id = fields.Many2one("stock.location", string="Emplacement Source", required=True, related="project_id.location_src_id",)
     #Adding destination location
     location_dest_id = fields.Many2one(string="Destination", comodel_name="stock.location", required=True, related="project_id.location_dest_id")
-    #Mange employee timesheet
-    #timesheet_ids = fields.One2many('account.analytic.line', 'request_id', string="Feuille de temps")
+    #Mange partner_id
+    partner_id = fields.Many2one('res.partner', related="project_id.partner_id")
     
     #get default location domain
     def _get_locations_domain(self):
