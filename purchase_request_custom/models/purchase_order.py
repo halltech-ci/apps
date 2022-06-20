@@ -95,10 +95,12 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
     
-    specifications = fields.Text(string="Specifications", compute="_compute_specifications",)
-    project = fields.Many2one('project.project', compute="_compute_specifications")
+    specifications = fields.Text(string="Specifications", compute="_compute_specifications", store=True)
+    project = fields.Many2one('project.project', compute="_compute_specifications", store=True)
     product_code = fields.Char(related="product_id.default_code", sting="Code Article")
-    purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], compute="_compute_specifications", store=True)
+    purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], 
+            #compute="_compute_specifications", store=True,
+    )
     
     
     def _compute_specifications(self):
@@ -110,4 +112,4 @@ class PurchaseOrderLine(models.Model):
                 pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
             line.project = pr_obj.project
             line.specifications = pr_obj.specifications
-            line.purchase_type = pr_obj.purchase_type
+            #line.purchase_type = pr_obj.purchase_type
