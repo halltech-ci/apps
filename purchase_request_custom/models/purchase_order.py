@@ -117,7 +117,7 @@ class PurchaseOrderLine(models.Model):
     def _compute_purchase_type(self):
         for line in self:
             pr_line = line.mapped('purchase_request_lines').ids
-            #pr_obj = self.env['purchase.request.line'].browse()
+            pr_obj = self.env['purchase.request.line'].browse()
             if len(pr_line) > 0:
                 pr_obj = self.env['purchase.request.line'].browse(pr_line[0])
             line.purchase_type = pr_obj.purchase_type or False
