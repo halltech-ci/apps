@@ -13,7 +13,7 @@
                 <attribute name="attrs">{'readonly': True}</attribute>
             </xpath>
             <xpath expr="//sheet//group/group/field[@name='assigned_to']" position="after">
-                <field name="is_for_project" widget='boolean_button' attrs="{'readonly': [('is_editable','=', False)],}"/>
+                <field name="is_for_project" widget='boolean_button' attrs="{'readonly': [('is_editable','=', False)],}" groups="purchase_request_custom.group_purchase_request_type"/>
                 <field name='purchase_type' attrs="{'readonly': [('is_editable','=', False)], 'required': True}"/>
                 <field name='sale_order' string="Devis" attrs="{'required': [('is_for_project','=', True)], 'invisible': [('is_for_project', '=', False)],}" domain="['|', ('state', 'in', ('done', 'False')), ('has_project', '=', True)]" options="{'no_create': True}"/>
             </xpath>
