@@ -169,29 +169,14 @@ class ProductRequest(models.Model):
     
     def action_close_task(self):
         self._action_close_task()
-        self._create_analytic_line_from_timesheet
+        #self._create_analytic_line_from_timesheet
     
     def _action_close_task(self):
         pickings = self.picking_ids.filtered(lambda l:l.state in ['done'])
         for picking in pickings:
             picking._create_stock_analytic_account()
+            picking._create_delivery_picking
             
-    def _create_analytic_line_from_timesheet(self):
-        lines = []
-        account = self.analytic_account_id
-        for sheet in self.timesheet_ids:
-            line = (0, 0, {
-                    'name' : sheet.name,
-                    'employee_id' : sheet.employee_id.id,
-                    'amount' : -sheet.employee_id.timesheet_cost * sheet.unit_amount,
-                    'unit_amount' : sheet.unit_amount,
-                    'task_id': self.project_task_id,
-                    'company_id' : self.company_id.id,
-                    }
-                )
-            lines.append(line)
-        account.write({'line_ids': lines})
-    
     @api.model
     def create(self, vals):
         if vals.get('name', '/') == '/':
