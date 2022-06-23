@@ -175,7 +175,13 @@ class ProductRequest(models.Model):
         pickings = self.picking_ids.filtered(lambda l:l.state in ['done'])
         for picking in pickings:
             picking._create_stock_analytic_account()
-            picking._create_delivery_picking
+            picking._create_delivery_picking()
+        self._action_close()
+            
+    def _action_close(self):
+        for line in self.line_ids:
+            line.action_close()
+        return self.write({'state':'close'})
             
     @api.model
     def create(self, vals):
