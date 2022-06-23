@@ -41,7 +41,7 @@ class Picking(models.Model):
         self.ensure_one()
         for picking in self:
             moves = []
-            picking_type = self.env['stock.picking.type'].search([('company_id', '=', picking.company_id), ('picking_type_code', '=', 'outgoing')])
+            picking_type = self.env['stock.picking.type'].search([('company_id', '=', picking.company_id), ('code', '=', 'outgoing')])
             location_id = self.env['stock.location'].search([('barcode', '=', 'WH-OUTPUT')])
             origin = picking.origin
             picking_value = {
