@@ -48,7 +48,7 @@ class Picking(models.Model):
                 'picking_type': picking_type.id,
                 'location_id': location_id.id,
                 'origin' : origin,
-                'company_id' : picking.company_id,
+                'company_id' : picking.company_id.id,
             }
             delivery_picking = self.env['stock.picking'].create(picking_value)
             move_value = []
