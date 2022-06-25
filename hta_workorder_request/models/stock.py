@@ -41,30 +41,31 @@ class Picking(models.Model):
         self.ensure_one()
         for picking in self:
             moves = []
-            picking_type = self.env['stock.picking.type'].search([('company_id', '=', picking.company_id), ('code', '=', 'outgoing')])
+            picking_type = self.env['stock.picking.type'].search([('company_id', '=', picking.company_id.id), ('code', '=', 'outgoing')], limit=1)
             location_id = self.env['stock.location'].search([('barcode', '=', 'WH-OUTPUT')])
             origin = picking.origin
             picking_value = {
-                'picking_type': picking_type.id,
+                'picking_type_id': picking_type.id,
                 'location_id': location_id.id,
+                'location_dest_id' : picking_type.default_location_dest_id.id,
                 'origin' : origin,
                 'company_id' : picking.company_id.id,
             }
             delivery_picking = self.env['stock.picking'].create(picking_value)
             move_value = []
             for move in picking.mapped('move_line_ids'):
-                description_picking = move.product_id.with_context(lang=move.product_request_id.project_id.partner_id.lang or self.env.user.lang)._get_description(picking_type)
+                description_picking = move.product_id.with_context(lang=move.move_id.product_line_id.project_id.partner_id.lang or self.env.user.lang)._get_description(picking_type)
                 moves = (0, 0, {
                         'name': move.product_id.display_name,
                         'product_id': move.product_id.id,
                         'description_picking': description_picking,
-                        'product_uom_qty': move.product_uom_qty,
+                        'product_uom_qty': move.qty_done,
                         'product_uom': move.product_uom_id.id,
                         'location_id': location_id.id,
-                        #'location_dest_id':location_dest_id.id,
+                        'location_dest_id': picking_type.default_location_dest_id.id,
                         'price_unit': move.product_id.standard_price,
-                        'product_line_id': move.product_line_id.id,
-                        'company_id': self.company_id.id,
+                        #'product_line_id': move.product_line_id.id,
+                        'company_id': picking.company_id.id,
                         'origin': origin,
                             }
                         )
@@ -93,6 +94,13 @@ class StockMove(models.Model):
     def _compute_analytic_line(self):
         for move in self:
             move.analytic_line = move.product_line_id.analytic_line
+            
+"""class StockMoveLine(self):
+    _inherit = 'stock.move.line'
+    
+    product_line_id = fields.Many2one('product.request.line', related="move_id.product_line_id",string='Product Request Line')
+"""  
+    
             
             
             
