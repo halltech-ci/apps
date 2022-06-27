@@ -12,10 +12,18 @@
                         <t t-if="doc.is_proforma">
                             <span>PROFORMA N°:</span>
                         </t>
-                        <span t-field="doc.name"/> 
+                        <span t-field="doc.name"/>
                     </h3>
                 </div>
             </div>
+        </xpath>
+        <xpath expr="//div[hasclass('container')]/div[hasclass('row', 'justify-content-end')]" position='after'>
+            <t t-if="doc.state not in ['done', 'sent', 'approve', 'sale']">
+                <div style="text-align: center; color: red;">
+                    <br/>
+                    <h3>BROUILLON. CE DEVIS N'ENGAGE PAS CONCEPTOR INDUSTRY</h3>
+                </div>
+            </t>
         </xpath>
     </template>
 </odoo>
