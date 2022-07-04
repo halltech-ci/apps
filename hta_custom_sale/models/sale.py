@@ -158,13 +158,15 @@ class SaleOrderLine(models.Model):
     line_margin = fields.Float(string="Marge (%)", compute="_compute_line_margin", store=True, readonly=False, copy=True)
     line_discuss_margin = fields.Float(compute="_compute_line_margin", store=True, readonly=False, copy=True)
     
-    @api.depends('product_cost', 'line_margin', 'product_id.standard_price')
+    @api.depends('product_cost', 'line_margin',)
     def _compute_price_unit(self):
         for line in self:
             if line.product_cost != 0:
                 line.price_unit = line.product_cost * (1 + line.line_margin/100)
+            if line.display_type:
+                line.price_unit = 0
             else:
-                pass
+                continue
                             
     @api.onchange('product_uom', 'product_uom_qty')
     def product_uom_change(self):

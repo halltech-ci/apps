@@ -45,6 +45,6 @@ class PurchaseRequestLine(models.Model):
                 line.analytic_account_id = line.request_id.account_analytic_id
             else:
                 return
-                
+            
 
     
