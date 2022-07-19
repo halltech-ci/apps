@@ -103,6 +103,7 @@ class PurchaseOrderLine(models.Model):
     )
     
     
+    @api.depends('purchase_request_lines')
     def _compute_specifications(self):
         for line in self:
             #request_line = self.env['purchase.order.line'].search([])
