@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
+from datetime import date, datetime, timedelta
 
 class PurchaseRequest(models.Model):
     _inherit = "purchase.request"
@@ -43,6 +44,32 @@ class PurchaseRequest(models.Model):
     is_expense = fields.Boolean('is_expense', default=False)
     picking_type_id = fields.Many2one(required=False)
     is_for_project = fields.Boolean(string="Imputer au projet", default=True)
+    requested_by = fields.Many2one('res.users', string="Demandeur DA")
+    date_approve = fields.Date(string="Date Approve")
+    purchase_status = fields.Selection(selection=[('no', "Non Commandé"),
+                                                  ('partial', "Commandé Partiellement"),
+                                                  ('purchased', "Commandé Totalement"),], 
+                                       compute="_compute_purchase_status",
+                                       string="Status Commande DA",
+                                       store=True,
+    )
+    
+    
+    @api.depends('line_ids')
+    def _compute_purchase_status(self):
+        for req in self:
+            pr_status = 'no'
+            if req.line_ids:
+                if all([line.product_qty == line.purchased_qty for line in req.line_ids]):
+                    pr_status = 'purchased'
+                if any([line.product_qty != line.purchased_qty for line in req.line_ids]):
+                    pr_status = 'partial'
+                else:
+                    pr_status = 'no'
+            else:
+                pr_status = "no"
+            req.purchase_state = pr_status
+                
     
     def _compute_is_project_approver(self):
         for req in self:
@@ -79,7 +106,11 @@ class PurchaseRequest(models.Model):
             raise UserError(
                     _("You are not allow to approve this request.")
                 )
-        return self.write({"state": "approved"})
+        return self.write({"state": "approved", "date_approve": date.today()})
+    
+    def write(self, vals):
+        res = super(PurchaseRequest, self).write(vals)
+        return res
     
 class PurchaseRequestLine(models.Model):
     _inherit = "purchase.request.line"

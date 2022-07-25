@@ -40,7 +40,7 @@ class ExpenseRequest(models.Model):
     name = fields.Char(default='/',)
     description = fields.Char('Description', required=True)
     state = fields.Selection(selection=[
-        ('draft', 'Broullon'),
+        ('draft', 'Brouillon'),
         ('submit', 'Soumis'),
         ('validate', 'Validate'),
         ('to_approve', 'A approuver'),
