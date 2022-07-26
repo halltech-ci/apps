@@ -55,20 +55,18 @@ class PurchaseRequest(models.Model):
     )
     
     
-    @api.depends('line_ids')
+    @api.depends('line_ids.purchased_qty', 'line_ids.product_qty')
     def _compute_purchase_status(self):
         for req in self:
-            pr_status = 'no'
-            if req.line_ids:
-                if all([line.product_qty == line.purchased_qty for line in req.line_ids]):
+            #pr_status = 'no'
+            if req.purchase_count == 0:
+                pr_status = 'no'
+            if req.purchase_count > 0:
+                if any([line.product_qty == line.purchased_qty for line in req.line_ids]):
                     pr_status = 'purchased'
-                if any([line.product_qty != line.purchased_qty for line in req.line_ids]):
-                    pr_status = 'partial'
-                else:
-                    pr_status = 'no'
-            else:
-                pr_status = "no"
-            req.purchase_state = pr_status
+                elif all([line.product_qty != line.purchased_qty for line in req.line_ids]):
+                    pr_status = 'partial'   
+            req.purchase_status = pr_status
                 
     
     def _compute_is_project_approver(self):
