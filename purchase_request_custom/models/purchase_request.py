@@ -61,7 +61,7 @@ class PurchaseRequest(models.Model):
             #pr_status = 'no'
             if req.purchase_count == 0:
                 pr_status = 'no'
-            if req.purchase_count > 0:
+            else:
                 if any([line.product_qty == line.purchased_qty for line in req.line_ids]):
                     pr_status = 'purchased'
                 elif all([line.product_qty != line.purchased_qty for line in req.line_ids]):
