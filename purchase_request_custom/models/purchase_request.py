@@ -46,11 +46,13 @@ class PurchaseRequest(models.Model):
     is_for_project = fields.Boolean(string="Imputer au projet", default=True)
     requested_by = fields.Many2one('res.users', string="Demandeur DA")
     date_approve = fields.Date(string="Date Approve")
-    purchase_status = fields.Selection(selection=[('no', "Non Commandé"),
-                                                  ('partial', "Commandé Partiellement"),
-                                                  ('purchased', "Commandé Totalement"),], 
+    purchase_status = fields.Selection(selection=[('no', "Non Commandé"), ('partial', "Commandé Partiellement"), ('purchased', "Commandé Totalement"),], 
                                        compute="_compute_purchase_status",
                                        string="Status Commande DA",
+                                       store=True,
+    )
+    stock_status = fields.Selection(selection=[('no', "Non Reçu"), ('partial', "Reçu Partiellement"), ('received', "Reçu Totalement"),], compute="_compute_stock_status",
+                                       string="Status Reception DA",
                                        store=True,
     )
     
@@ -62,11 +64,21 @@ class PurchaseRequest(models.Model):
             if req.purchase_count == 0:
                 pr_status = 'no'
             else:
-                if any([line.product_qty == line.purchased_qty for line in req.line_ids]):
+                if all([line.product_qty == line.purchased_qty for line in req.line_ids]):
                     pr_status = 'purchased'
-                elif all([line.product_qty != line.purchased_qty for line in req.line_ids]):
+                elif any([line.product_qty != line.purchased_qty for line in req.line_ids]):
                     pr_status = 'partial'   
             req.purchase_status = pr_status
+            
+    @api.depends('line_ids.purchased_qty', 'line_ids.product_qty')
+    def _compute_stock_status(self):
+        for req in self:
+            #pr_status = 'no'
+            if req.move_count == 0:
+                pr_status = 'no'
+            else:
+                pr_status = 'received'   
+            req.stock_status = pr_status
                 
     
     def _compute_is_project_approver(self):
