@@ -45,6 +45,7 @@ class PurchaseRequest(models.Model):
     picking_type_id = fields.Many2one(required=False)
     is_for_project = fields.Boolean(string="Imputer au projet", default=True)
     requested_by = fields.Many2one('res.users', string="Demandeur DA")
+    date_approve = fields.Date(string="Date Approve")
     
     
     def _compute_is_project_approver(self):
@@ -82,7 +83,7 @@ class PurchaseRequest(models.Model):
             raise UserError(
                     _("You are not allow to approve this request.")
                 )
-        return self.write({"state": "approved"})
+        return self.write({"state": "approved", "date_approve": date.today()})
     
     def write(self, vals):
         res = super(PurchaseRequest, self).write(vals)

@@ -7,7 +7,6 @@ from datetime import date, datetime, timedelta
 class PurchaseRequest(models.Model):
     _inherit = 'purchase.request'
     
-    date_approve = fields.Date(string="Date Approve")
     purchase_status = fields.Selection(selection=[('no', "Non Commandé"), ('partial', "Commandé Partiellement"), ('purchased', "Commandé Totalement"),], compute="_compute_purchase_status", string="Status Commande DA", store=True,)
     stock_status = fields.Selection(selection=[('no', "Non Reçu"), ('partial', "Reçu Partiellement"), ('received', "Reçu Totalement"),], compute="_compute_stock_status", string="Status Reception DA", store=True,)
     
@@ -35,12 +34,6 @@ class PurchaseRequest(models.Model):
             else:
                 st_status = 'received'  
             req.stock_status = st_status
-            
-    def button_approved(self):
-        res = super(PurchaseRequest, self).button_confirm()
-        self.write({"date_approve": date.today()})
-        return res
-
 
 class PurchaseRequestLine(models.Model):
     _inherit = "purchase.request.line"
