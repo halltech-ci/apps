@@ -45,41 +45,7 @@ class PurchaseRequest(models.Model):
     picking_type_id = fields.Many2one(required=False)
     is_for_project = fields.Boolean(string="Imputer au projet", default=True)
     requested_by = fields.Many2one('res.users', string="Demandeur DA")
-    date_approve = fields.Date(string="Date Approve")
-    purchase_status = fields.Selection(selection=[('no', "Non Commandé"), ('partial', "Commandé Partiellement"), ('purchased', "Commandé Totalement"),], 
-                                       compute="_compute_purchase_status",
-                                       string="Status Commande DA",
-                                       store=True,
-    )
-    stock_status = fields.Selection(selection=[('no', "Non Reçu"), ('partial', "Reçu Partiellement"), ('received', "Reçu Totalement"),], compute="_compute_stock_status",
-                                       string="Status Reception DA",
-                                       store=True,
-    )
     
-    
-    @api.depends('line_ids.purchased_qty', 'line_ids.product_qty')
-    def _compute_purchase_status(self):
-        for req in self:
-            #pr_status = 'no'
-            if req.purchase_count == 0:
-                pr_status = 'no'
-            else:
-                if all([line.product_qty == line.purchased_qty for line in req.line_ids]):
-                    pr_status = 'purchased'
-                elif any([line.product_qty != line.purchased_qty for line in req.line_ids]):
-                    pr_status = 'partial'   
-            req.purchase_status = pr_status
-            
-    @api.depends('line_ids.purchased_qty', 'line_ids.product_qty')
-    def _compute_stock_status(self):
-        for req in self:
-            #pr_status = 'no'
-            if req.move_count == 0:
-                pr_status = 'no'
-            else:
-                pr_status = 'received'   
-            req.stock_status = pr_status
-                
     
     def _compute_is_project_approver(self):
         for req in self:
@@ -116,7 +82,7 @@ class PurchaseRequest(models.Model):
             raise UserError(
                     _("You are not allow to approve this request.")
                 )
-        return self.write({"state": "approved", "date_approve": date.today()})
+        return self.write({"state": "approved"})
     
     def write(self, vals):
         res = super(PurchaseRequest, self).write(vals)
@@ -141,7 +107,7 @@ class PurchaseRequestLine(models.Model):
     attribute_line_ids = fields.One2many("product.template.attribute.line", related="product_tmpl_id.attribute_line_ids")
     specifications = fields.Text(default="")
     product_id = fields.Many2one(comodel_name="product.product", string="Product", domain= lambda self:self.get_product_domain(), track_visibility="onchange",)
-    purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], related='request_id.purchase_type')
+    purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], related='request_id.purchase_type')    
     
     
     @api.onchange("product_id")

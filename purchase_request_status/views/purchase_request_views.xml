@@ -1,0 +1,23 @@
+<odoo>
+  <data>
+    <record id="purchase_request_status_inherit" model="ir.ui.view">
+        <field name="name">purchase.request.status_form_inherit</field>
+        <field name="model">purchase.request</field>
+        <field name="inherit_id" ref="purchase_request.view_purchase_request_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="replace"></field>
+            <field name="date_start" position="after">
+                <field name='state' string="Etat DA"/>
+                <field name="date_approve" string="Date de validation DA"/>
+            </field>
+            <field name='origin' position="attributes">
+                <attribute name="optional">hidden</attribute>
+            </field>
+            <field name="requested_by" position="after">
+                <field name="purchase_status"/>
+                <field name="stock_status"/>
+            </field>
+        </field>
+    </record>
+  </data>
+</odoo>
