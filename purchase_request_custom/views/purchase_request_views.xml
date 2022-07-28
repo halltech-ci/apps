@@ -79,6 +79,7 @@
             </field>
             <field name="requested_by" position="after">
                 <field name="purchase_status"/>
+                <field name="stock_status"/>
             </field>
         </field>
     </record>
