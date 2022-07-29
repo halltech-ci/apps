@@ -44,7 +44,7 @@ class PurchaseRequest(models.Model):
     is_expense = fields.Boolean('is_expense', default=False)
     picking_type_id = fields.Many2one(required=False)
     is_for_project = fields.Boolean(string="Imputer au projet", default=True)
-    requested_by = fields.Many2one('res.users', string="Demandeur DA")
+    requested_by = fields.Many2one('res.users', string="Demandeur DA", readonly=True)
     date_approve = fields.Date(string="Date Approve")
     
     
