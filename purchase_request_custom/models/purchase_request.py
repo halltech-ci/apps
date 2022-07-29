@@ -33,6 +33,11 @@ class PurchaseRequest(models.Model):
                 [("code", "=", "incoming"), ("warehouse_id", "=", False)]
             )
         return types[:1]
+    
+    @api.model
+    def _default_date_required(self):
+        req_date = date.today() + timedelta(days=7)
+        return req_date
                
     name = fields.Char(string="Request Reference", required=True, default='/', index=True, readonly=True)
     request_date = fields.Datetime(string="Request date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange", readonly=True)
@@ -45,6 +50,7 @@ class PurchaseRequest(models.Model):
     picking_type_id = fields.Many2one(required=False)
     is_for_project = fields.Boolean(string="Imputer au projet", default=True)
     requested_by = fields.Many2one('res.users', string="Demandeur DA", readonly=True)
+    date_required = fields.Date(string="Request Date", track_visibility="onchange", default=lambda self:self._default_date_required())
     date_approve = fields.Date(string="Date Approve")
     
     
@@ -108,8 +114,8 @@ class PurchaseRequestLine(models.Model):
     attribute_line_ids = fields.One2many("product.template.attribute.line", related="product_tmpl_id.attribute_line_ids")
     specifications = fields.Text(default="")
     product_id = fields.Many2one(comodel_name="product.product", string="Product", domain= lambda self:self.get_product_domain(), track_visibility="onchange",)
-    purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], related='request_id.purchase_type')    
-    
+    purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], related='request_id.purchase_type')
+    date_required = fields.Date(string="Request Date", required=True, track_visibility="onchange", related="request_id.date_required")
     
     @api.onchange("product_id")
     def onchange_product_id(self):
