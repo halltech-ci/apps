@@ -35,7 +35,7 @@ class PurchaseRequest(models.Model):
         return types[:1]
                
     name = fields.Char(string="Request Reference", required=True, default='/', index=True, readonly=True)
-    request_date = fields.Datetime(string="Request date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange",)
+    request_date = fields.Datetime(string="Request date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange", readonly=True)
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
