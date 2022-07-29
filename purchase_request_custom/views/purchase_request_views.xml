@@ -57,6 +57,13 @@
             <xpath expr="//notebook/page/field[@name='line_ids']/form/sheet/group[@name='main']/group/field[@name='name']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+            
+            <!-- Adding date_required-->
+            <xpath expr="//sheet/group/group[3]" position="after">
+                <group>
+                    <field name="date_required" string="Date de réception" attrs="{'readonly': [('is_editable','=', False)],}"/>
+                </group>
+            </xpath>
         </field>
     </record>
     
@@ -66,8 +73,16 @@
         <field name="model">purchase.request</field>
         <field name="inherit_id" ref="purchase_request.view_purchase_request_tree"/>
         <field name="arch" type="xml">
-            <field name='origin' position="before">
-                <field name="project_code"/>
+            <field name="state" position="replace"></field>
+            <field name='name' position="after">
+                <field name="project_code" string="Code Projet"/>
+            </field>
+            <field name="date_start" position="after">
+                <field name='state' string="Etat DA"/>
+                <field name="date_approve" string="Date de validation DA"/>
+            </field>
+            <field name='origin' position="attributes">
+                <attribute name="optional">hidden</attribute>
             </field>
         </field>
     </record>

@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
+from datetime import date, datetime, timedelta
 
 class PurchaseRequest(models.Model):
     _inherit = "purchase.request"
@@ -32,9 +33,14 @@ class PurchaseRequest(models.Model):
                 [("code", "=", "incoming"), ("warehouse_id", "=", False)]
             )
         return types[:1]
+    
+    @api.model
+    def _default_date_required(self):
+        req_date = date.today() + timedelta(days=7)
+        return req_date
                
     name = fields.Char(string="Request Reference", required=True, default='/', index=True, readonly=True)
-    request_date = fields.Datetime(string="Request date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange",)
+    request_date = fields.Datetime(string="Request date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange", readonly=True)
     sale_order = fields.Many2one('sale.order', string='Sale Order')
     project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
@@ -43,6 +49,10 @@ class PurchaseRequest(models.Model):
     is_expense = fields.Boolean('is_expense', default=False)
     picking_type_id = fields.Many2one(required=False)
     is_for_project = fields.Boolean(string="Imputer au projet", default=True)
+    requested_by = fields.Many2one('res.users', string="Demandeur DA", readonly=True)
+    date_required = fields.Date(string="Request Date", track_visibility="onchange", default=lambda self:self._default_date_required())
+    date_approve = fields.Date(string="Date Approve")
+    
     
     def _compute_is_project_approver(self):
         for req in self:
@@ -79,7 +89,11 @@ class PurchaseRequest(models.Model):
             raise UserError(
                     _("You are not allow to approve this request.")
                 )
-        return self.write({"state": "approved"})
+        return self.write({"state": "approved", "date_approve": date.today()})
+    
+    def write(self, vals):
+        res = super(PurchaseRequest, self).write(vals)
+        return res
     
 class PurchaseRequestLine(models.Model):
     _inherit = "purchase.request.line"
@@ -101,7 +115,7 @@ class PurchaseRequestLine(models.Model):
     specifications = fields.Text(default="")
     product_id = fields.Many2one(comodel_name="product.product", string="Product", domain= lambda self:self.get_product_domain(), track_visibility="onchange",)
     purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], related='request_id.purchase_type')
-    
+    date_required = fields.Date(string="Request Date", required=True, track_visibility="onchange", related="request_id.date_required")
     
     @api.onchange("product_id")
     def onchange_product_id(self):

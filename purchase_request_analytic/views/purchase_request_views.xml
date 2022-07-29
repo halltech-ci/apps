@@ -10,7 +10,24 @@
                 <field name="account_analytic_id1" attrs="{'invisible':[('is_for_project', '=', True)], 'readonly': [('is_editable','=', False)], 'required': [('is_for_project', '=', False)]}" options="{'no_create':True}"/>
                 <!--<field name="account_analytic_id" readonly='True'/>-->
             </xpath>
-            
+        </field>
+    </record>
+      
+    <!-- Adding search filter -->
+    <record id="purchase_request_search_inherit_view" model="ir.ui.view">
+        <field name="name">view_purchase_request_search_inherit</field>
+        <field name="model">purchase.request</field>
+        <field name="inherit_id" ref="purchase_request.view_purchase_request_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='requested_by']" position="before">
+                <filter
+                        name="account_analytic_id"
+                        string="Projet"
+                        icon="fa-user"
+                        domain="[]"
+                        context="{'group_by':'account_analytic_id'}"
+                    />
+            </xpath>
         </field>
     </record>
   </data>
