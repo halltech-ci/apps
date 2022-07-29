@@ -44,7 +44,7 @@ class PurchaseRequestLine(models.Model):
     _inherit = "purchase.request.line"
     
     
-    stock_state = fields.Selection(compute="_compute_stock_state", string="Purchase Status", selection=lambda self: self.env["stock.move"]._fields["state"].selection, store=True,)
+    stock_state = fields.Selection(compute="_compute_stock_state", string="Stock Status", selection=lambda self: self.env["stock.move"]._fields["state"].selection, store=True,)
     
     @api.depends("purchase_lines.state", "purchase_lines.order_id.state")
     def _compute_purchase_state(self):
