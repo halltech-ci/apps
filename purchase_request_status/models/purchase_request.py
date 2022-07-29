@@ -71,7 +71,8 @@ class PurchaseRequestLine(models.Model):
                 ):
                     temp_purchase_state = "draft"
             rec.purchase_state = temp_purchase_state
-                   
+            
+            
     @api.depends("purchase_request_allocation_ids.stock_move_id.state")
     def _compute_stock_state(self):
         for rec in self:
