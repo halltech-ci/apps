@@ -16,7 +16,7 @@ class ProjectTask(models.Model):
                 rec.checklist_progress = (check_list_len*100) / total_len
 
     task_checklist = fields.Many2many('task.checklist', string='Check List')
-    checklist_progress = fields.Float(compute=checklist_progress, string='Progress', store=True, recompute=True, default=0.0)
+    checklist_progress = fields.Float(compute=checklist_progress, string='Check list Progress', store=True, recompute=True, default=0.0)
     max_rate = fields.Integer(string='Maximum rate', default=100)
 
 
