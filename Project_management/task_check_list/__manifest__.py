@@ -27,6 +27,9 @@
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        #views
+        'views/project_task_views.xml',
+        'views/task_check_list_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
