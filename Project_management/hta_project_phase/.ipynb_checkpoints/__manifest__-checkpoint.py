@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "task_check_list",
+    'name': "hta_project_phase",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -28,11 +28,10 @@
         'views/views.xml',
         'views/templates.xml',
         #views
-        'views/project_task_views.xml',
-        'views/task_check_list_views.xml',
+        'views/project_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
-        'demo/check_list_demo.xml',
+        'demo/demo.xml',
     ],
 }

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "task_check_list",
+    'name': "project_mark_as_done",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,19 +20,20 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['project'],
+    'depends': ['base', 'project', 'sale_timesheet'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
         'views/views.xml',
+        "views/project_views.xml",
         'views/templates.xml',
-        #views
-        'views/project_task_views.xml',
-        'views/task_check_list_views.xml',
+    ],
+    'qweb': [
+        "static/src/buttons.xml",
     ],
     # only loaded in demonstration mode
     'demo': [
-        'demo/check_list_demo.xml',
+        'demo/demo.xml',
     ],
 }
