@@ -49,7 +49,7 @@
             <field name="inherit_id" ref="project.edit_project"/>
             <field name="arch" type="xml">
                  <button name="action_view_all_rating" position="after">
-                    <button class="oe_stat_button" name="action_project_phase" type="object" icon="fa-tasks" attrs="{'invisible': [('project_phase_count', '=', 0)]}"> 
+                    <button class="oe_stat_button" name="action_project_phase" type="object" icon="fa-tasks"> 
 					    <field name="project_phase_count" widget="statinfo" string="Phases" />
 				    </button>
                 </button>

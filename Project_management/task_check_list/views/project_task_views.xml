@@ -9,13 +9,23 @@
             <page name="extra_info" position="after">
                 <page name="checklist" string="Checklist">
                     <group>
-                        <group string="Checklist">
-                            <field name="task_checklist" widget="many2many_checkboxes"/>
+                        <group string="Planned hour">
+                            <field name="planned_hours"/>
                         </group>
                         <group string="Completed">
                             <field name="checklist_progress" widget="percentpie"/>
                         </group>
                     </group>
+                    <field name="check_list">
+                        <tree editable="bottom" string="Check List">
+                            <field name="task_id" invisible="1"/>
+                            <field name="check_box" widget="checkbox"/>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="employee_id"/>
+                            <field name="unit_time" widget="timesheet_uom"/>
+                        </tree>
+                    </field>
                 </page>
             </page>
         </field>
