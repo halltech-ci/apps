@@ -16,14 +16,14 @@
                             <field name="checklist_progress" widget="percentpie"/>
                         </group>
                     </group>
-                    <field name="check_list">
+                    <field name="check_list_ids">
                         <tree editable="bottom" string="Check List">
                             <field name="task_id" invisible="1"/>
                             <field name="check_box" widget="checkbox"/>
                             <field name="name"/>
                             <field name="description"/>
                             <field name="employee_id"/>
-                            <field name="unit_time" widget="timesheet_uom"/>
+                            <field name="unit_time" widget="timesheet_uom" sum="Spent Hours"/>
                         </tree>
                     </field>
                 </page>
