@@ -7,7 +7,7 @@ class ProjectTask(models.Model):
     _inherit = 'project.task'
 
     #task_checklist = fields.Many2many('task.checklist', string='Check List')
-    checklist_progress = fields.Float(compute=_compute_checklist_progress, string='Check list Progress', store=True, recompute=True, default=0.0)
+    checklist_progress = fields.Float(compute="_compute_checklist_progress", string='Check list Progress', store=True, recompute=True, default=0.0)
     max_rate = fields.Integer(string='Maximum rate', compute="_compute_max_rate")
     check_list_ids = fields.One2many('task.checklist', "task_id", string="Check list")
     
