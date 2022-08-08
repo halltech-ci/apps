@@ -19,6 +19,7 @@ class ProjectPhase(models.Model):
     user_id = fields.Many2one('res.users', string='Responsible User', default=lambda self: self.env.uid)
     task_count = fields.Integer(compute="get_task",string='Count')
     notes = fields.Text(string='Notes')
+    phase_status = fields.Boolean('Status',default=False)
 
     def action_project_phase_task(self):
         self.ensure_one()
@@ -29,6 +30,10 @@ class ProjectPhase(models.Model):
             'res_model': 'project.task',
             'domain': [('phase_id', '=', self.id)],
         }
+    
+    def mark_mhase_done(self):
+        for phase in self:
+            tasks = self.env['project.task'].search([('phase_id', '=', phase.id)])
 
     def get_task(self):
         for rec in self:
