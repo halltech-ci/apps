@@ -159,6 +159,54 @@ result = contract.sursalaire
         </field>
     </record>
     
+    <!-- Regle de calcul des indemnites mortuaire -->
+    <record id="hr_salary_rule_death_transport_contribution" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Indemnité de transport mortuaire</field>
+        <field name="code">IDTM</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">2</field>
+        <field name="sequence">1</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.death_transport
+        </field>
+    </record>
+    
+    <!-- Regle de calcul des indemnites mortuaire -->
+    <record id="hr_salary_rule_death_contribution" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Frais Mortuaires</field>
+        <field name="code">FMORT</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">2</field>
+        <field name="sequence">1</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.death_contribution
+        </field>
+    </record>
+    
+    <!-- Regle de calcul des indemnites mortuaire -->
+    <record id="hr_salary_rule_commission" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Commissions</field>
+        <field name="code">CCOM</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">2</field>
+        <field name="sequence">1</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.commission_fees
+        </field>
+    </record>
+
     <record id="hr_salary_rule_basic_salary" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_brut_salary"/> 
         <field name="name">Basic Salary</field>
@@ -202,7 +250,7 @@ else:
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = BASE + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HSUP + HS15 + HS50 + HS75 + HS100 + PREND + ICP + IL + ICG + PAMCI
+result = BASE + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HSUP + HS15 + HS50 + HS75 + HS100 + PREND + ICP + IL + ICG + PAMCI + FMORT + CCOM + IDTM 
         </field>
     </record>
     <!-- Regle de calcul Prime anciennete-->

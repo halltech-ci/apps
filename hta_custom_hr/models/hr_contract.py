@@ -32,6 +32,12 @@ class HrContract(models.Model):
         help="Number of days of paid leaves the employee gets per year."
     )
     communication_flotte = fields.Monetary(string="Coût Communication Flotte")
+    
+    #frais funeraires
+    death_contribution = fields.Monetary(string="Frais funéraires")
+    death_transport = fields.Monetary(string="Indemnité de transport mortuaire")
+    commission_fees = fields.Monetary(string="Commissions")
+
     #Traitement special AVS, pret
     
     loan_account = fields.Many2one('account.account', 'Loan Account', company_dependent=True, domain=[('deprecated', '=', False)])
@@ -43,3 +49,4 @@ class HrContract(models.Model):
     # Account 
     account_debit = fields.Many2one('account.account', 'Debit Account', company_dependent=True, domain=[('deprecated', '=', False)])
     account_credit = fields.Many2one('account.account', 'Credit Account', company_dependent=True, domain=[('deprecated', '=', False)])
+     

@@ -24,6 +24,7 @@
                           <field name="prime_assurance_mci"/> 
                           <field name="prime_logement" string="indemnité de logement"/>
                           <field name="indemnite_transport" string="Indemnité de Transport"/>
+                          <field name="commission_fees" string="Commissions"/>
                       </group>
                       <group string="Traitements Annuels" name="avantage_annuel">
                           <field name="indemnite_conge" string="Indemnité de Congé"/>
@@ -42,6 +43,8 @@
                   <group string="Rupture de Contrat">
                       <field name="indemnite_licencement" string="Indemnité de Licencement"/>
                       <field name="indemnite_compensatrice" string="Indemnité Compensatrice préavis"/>
+                      <field name="death_contribution" string="Participation aux frais funéraires"/>
+                      <field name="death_transport" string="Indemnité de transport mortuaire"/>
                   </group>
               </group>
           </xpath>
