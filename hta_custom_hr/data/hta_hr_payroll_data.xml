@@ -206,7 +206,7 @@ result = contract.death_contribution
 result = contract.commission_fees
         </field>
     </record>
-    
+
     <record id="hr_salary_rule_basic_salary" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_brut_salary"/> 
         <field name="name">Basic Salary</field>
