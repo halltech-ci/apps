@@ -42,6 +42,8 @@
                   <group string="Rupture de Contrat">
                       <field name="indemnite_licencement" string="Indemnité de Licencement"/>
                       <field name="indemnite_compensatrice" string="Indemnité Compensatrice préavis"/>
+                      <field name="death_contribution" string="Participation aux frais funéraires"/>
+                      <field name="death_transport" string="Indemnité de transport mortuaire"/>
                   </group>
               </group>
           </xpath>
