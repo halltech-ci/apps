@@ -36,7 +36,8 @@ class HrContract(models.Model):
     #frais funeraires
     death_contribution = fields.Monetary(string="Frais funéraires")
     death_transport = fields.Monetary(string="Indemnité de transport mortuaire")
-    commercial_commission = fields.Monetary(string="Commissions")
+    commission_fees = fields.Monetary(string="Commissions")
+
     #Traitement special AVS, pret
     
     loan_account = fields.Many2one('account.account', 'Loan Account', company_dependent=True, domain=[('deprecated', '=', False)])

@@ -129,6 +129,35 @@
                                     <td></td>
                                     <td></td> 
                                 </tr>
+                                <tr t-if="lines.get('IDTM')[1]>0" style="border: 1px solid black">
+                                    <td class='text-left' colspan="3">Indemnité de transport mortuaire</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('IDTM')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> 
+                                </tr>
+                                <tr t-if="lines.get('FMORT')[1]>0" style="border: 1px solid black">
+                                    <td class='text-left' colspan="3">Frais mortuaire</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('FMORT')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> 
+                                </tr>
+                                
+                                <tr t-if="lines.get('CCOM')[1]>0" style="border: 1px solid black">
+                                    <td class='text-left' colspan="3">Commissions</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-center"><span t-esc="lines.get('CCOM')[1]" t-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> 
+                                </tr>
+                                
                                 <tr t-if="lines.get('PDG')[1]>0" style="border: 1px solid black">
                                     <td class='text-left' colspan="3">Gratification/Départ</td>
                                     <td></td>
