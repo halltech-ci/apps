@@ -29,6 +29,7 @@ class ProjectPhase(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'project.task',
             'domain': [('phase_id', '=', self.id)],
+            'context': {'default_phase_id': self.id,}
         }
     
     def mark_mhase_done(self):
@@ -64,6 +65,8 @@ class ProjectProject(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'project.task.phase',
             'domain': [('project_id', '=', self.id)],
+            'context': {'search_default_project_id': self.id, 'default_project_id': self.id}
+            
         }
         
 class ReportProjectTaskUser(models.Model):
