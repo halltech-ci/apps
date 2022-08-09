@@ -20,7 +20,7 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['project'],
+    'depends': ['project', 'task_check_list'],
 
     # always loaded
     'data': [
