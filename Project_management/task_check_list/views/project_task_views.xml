@@ -28,6 +28,9 @@
                     </field>
                 </page>
             </page>
+            <xpath expr="//notebook/page[@id='timesheets_tab']/group/group[2]/field[@name='progress']" position="after">
+                <field name="checklist_progress" string='Effective Progress' widget="progressbar"/>
+            </xpath>
         </field>
     </record>
 
@@ -38,6 +41,9 @@
         <field name="arch" type="xml">
             <field name="stage_id" position="before">
                 <field name="checklist_progress" widget="progressbar"/>
+            </field>
+            <field name="remaining_hours" position="after">
+                <field name="total_hours_spent"/>
             </field>
         </field>
     </record>
