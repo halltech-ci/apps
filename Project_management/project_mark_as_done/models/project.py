@@ -83,6 +83,7 @@ class ProjectProject(models.Model):
             domain = [('partner_id','=',self.partner_id.id)]
         else:
             domain = []
+            
         self.status = True
         
         return {
