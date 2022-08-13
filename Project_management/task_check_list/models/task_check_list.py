@@ -7,7 +7,7 @@ class ProjectTask(models.Model):
     _inherit = 'project.task'
 
     #task_checklist = fields.Many2many('task.checklist', string='Check List')
-    checklist_progress = fields.Float(compute="_compute_checklist_progress", string='Check list Progress', store=True, recompute=True, default=0.0)
+    checklist_progress = fields.Float(compute="_compute_checklist_progress", string='Check list Progress', store=True, recompute=True, default=0.0, group_operator="avg")
     max_rate = fields.Integer(string='Maximum rate', compute="_compute_max_rate")
     check_list_ids = fields.One2many('task.checklist', "task_id", string="Check list")
     task_status = fields.Boolean(string="Status", default=False)
@@ -48,8 +48,8 @@ class TaskChecklist(models.Model):
     name = fields.Char(string='Name', required=True)
     description = fields.Char(string='Description')
     task_id = fields.Many2one("project.task")
-    employee_id = fields.Many2one('hr.employee')
+    #employee_id = fields.Many2one('hr.employee')
     check_box = fields.Boolean(default=False)
     unit_time = fields.Float(string="Duration", default=0, requied=True)
-    date = fields.Date()
+    date = fields.Date(default=fields.Datetime.now().date())
     
