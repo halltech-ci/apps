@@ -3,9 +3,9 @@
 # from odoo import models, fields, api
 
 
-# class purchase_work_acceptance(models.Model):
-#     _name = 'purchase_work_acceptance.purchase_work_acceptance'
-#     _description = 'purchase_work_acceptance.purchase_work_acceptance'
+# class hta_work_acceptance(models.Model):
+#     _name = 'hta_work_acceptance.hta_work_acceptance'
+#     _description = 'hta_work_acceptance.hta_work_acceptance'
 
 #     name = fields.Char()
 #     value = fields.Integer()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "purchase_work_acceptance",
+    'name': "hta_work_acceptance",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,7 +20,7 @@
     'version': '13.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['purchase'],
+    'depends': ['purchase_request_custom'],
 
     # always loaded
     'data': [
