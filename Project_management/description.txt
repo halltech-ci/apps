@@ -1,0 +1,7 @@
+Project --> Phases --> Tasks --> Check list
+
+1. Manage tasks
+    - Link check_list_progress and progress
+- if all check_list are done ==> Task done
+if all tasks in phase are done ==> Phase done
+if all phases in project are done ==> Project done

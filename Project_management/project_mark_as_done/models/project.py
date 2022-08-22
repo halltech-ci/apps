@@ -69,13 +69,23 @@ class ProjectProject(models.Model):
             'target': 'main',
             'domain': [('active','=',False)]
         }
+    
+    def project_as_done(self):
+        for project in self:
+            phases = self.env['project.task.phase'].search([('project_id', '=', project.id)])
+            if all([phase.phase_status is True for phase in phases ]):
+                project.status = True
+            else:
+                project.status = False
 
     def mark_done(self):
         if self.partner_id.check_domain==True:
             domain = [('partner_id','=',self.partner_id.id)]
         else:
             domain = []
+            
         self.status = True
+        
         return {
             'name': 'Projects',
             'view_type': 'kanban',

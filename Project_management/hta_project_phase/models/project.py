@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-# Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
-##############################################################################
 
 from odoo import api, fields, models, _,tools
 
@@ -29,11 +27,16 @@ class ProjectPhase(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'project.task',
             'domain': [('phase_id', '=', self.id)],
+            'context': {'default_phase_id': self.id,}
         }
     
-    def mark_mhase_done(self):
+    def mark_phase_done(self):
         for phase in self:
             tasks = self.env['project.task'].search([('phase_id', '=', phase.id)])
+            if all([task.task_status is True for task in tasks]):
+                phase.phase_status = True
+            else:
+                phase.phase_status = False
 
     def get_task(self):
         for rec in self:
@@ -64,6 +67,8 @@ class ProjectProject(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'project.task.phase',
             'domain': [('project_id', '=', self.id)],
+            'context': {'search_default_project_id': self.id, 'default_project_id': self.id}
+            
         }
         
 class ReportProjectTaskUser(models.Model):
