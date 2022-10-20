@@ -24,7 +24,7 @@ class PurchaseRequest(models.Model):
             pr_status = 'no'
             state = []
             for line in order.line_ids:
-                po_lines = line.purchase_lines.filtered(lambda l : l.state == 'purchase')
+                po_lines = line.purchase_lines.filtered(lambda l : l.state == 'purchase' or l.state == 'done')
                 po_qty = sum([l.product_qty for l in po_lines])
                 if po_qty >= line.product_qty:
                     state.append('purchase')
