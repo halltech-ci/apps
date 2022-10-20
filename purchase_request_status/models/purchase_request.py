@@ -11,13 +11,6 @@ class PurchaseRequest(models.Model):
     stock_status = fields.Selection(selection=[('no', "Non Reçu"), ('partial', "Reçu Partiellement"), ('received', "Reçu Totalement"),], compute="_compute_stock_status", string="Status Reception DA", store=True,)
     #purchase_order_count = fields.Integer(string="Purchases count", compute="_compute_po_count", readonly=True)
     
-    
-    @api.depends('line_ids')
-    def _compute_po_count(self):
-        po = self.line_ids.purchase_lines.filtered(lambda l : l.state == 'purchase').ids
-        self.po_count = len(po)
-    
-    
     @api.depends('line_ids', 'line_ids.purchase_lines')
     def _compute_purchase_status(self):
         for order in self:
@@ -25,15 +18,20 @@ class PurchaseRequest(models.Model):
             state = []
             for line in order.line_ids:
                 po_lines = line.purchase_lines.filtered(lambda l : l.state == 'purchase' or l.state == 'done')
-                po_qty = sum([l.product_qty for l in po_lines])
-                if po_qty >= line.product_qty:
-                    state.append('purchase')
+                if po_lines:
+                    po_qty = sum([l.product_qty for l in po_lines])
+                    if po_qty >= line.product_qty:
+                        state.append('purchase')
+                    else:
+                        state.append('partial')
                 else:
-                    state.append('partial')
+                    state.append('no')
             if all([status == 'purchase' for status in state]):
                 pr_status = 'purchase'
             elif any([status == 'partial' for status in state]):
                 pr_status = 'partial'
+            else:
+                pr_status == 'no'
             order.purchase_status = pr_status
             
     @api.depends('line_ids.stock_state')
