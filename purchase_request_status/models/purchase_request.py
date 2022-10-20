@@ -34,7 +34,7 @@ class PurchaseRequest(models.Model):
                 pr_status = 'purchase'
             elif any([status == 'partial' for status in state]):
                 pr_status = 'partial'
-            req.purchase_status = pr_status
+            order.purchase_status = pr_status
             
     @api.depends('line_ids.stock_state')
     def _compute_stock_status(self):
