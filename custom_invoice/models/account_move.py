@@ -36,7 +36,10 @@ class AccountMove(models.Model):
             
             
             
-
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
+    
+    acompte = fields.Boolean(default=False)
            
             
             
