@@ -5,7 +5,6 @@
          <t t-call="web.html_container">
              <t t-foreach="docs" t-as="o">
                  <t t-call="web.internal_layout">
-                     
                 <div class="page">
                     <br/>
                     <br/>
@@ -36,7 +35,6 @@
                         </tbody>
                     </table>
                     </div>
-                    
                     <br/>
                     <br/>                    
                     
@@ -122,7 +120,12 @@
                                     <t t-if="not line.display_type" name="account_invoice_line_accountable">
                                         <td name="account_invoice_line_name"><span t-field="line.name" t-options="{'widget': 'text'}"/></td>
                                         <td class="text-right">
-                                            <span t-field="line.quantity"/>
+                                            <t t-if="line.acompte">
+                                                <span t-esc="abs(line.quantity)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-field="line.quantity"/>
+                                            </t>
                                             <span t-field="line.product_uom_id" groups="uom.group_uom"/>
                                         </td>
                                         <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
@@ -133,8 +136,14 @@
                                         </td>
                                     
                                         <td class="text-right o_price_total">
-                                            <span class="text-nowrap" t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                            <span class="text-nowrap" t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                            <t t-if="line.acompte">
+                                                <span class="text-nowrap" t-esc="abs(line.price_subtotal)"  groups="account.group_show_line_subtotals_tax_excluded"/>
+                                                <span class="text-nowrap" t-esc="abs(line.price_total)" groups="account.group_show_line_subtotals_tax_included"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="text-nowrap" t-field="line.price_subtotal"  groups="account.group_show_line_subtotals_tax_excluded"/>
+                                                <span class="text-nowrap" t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                            </t>
                                         </td>
                                     </t>
                                     <t t-if="line.display_type == 'line_section'">
