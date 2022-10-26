@@ -17,7 +17,7 @@ class PurchaseRequest(models.Model):
             pr_status = 'no'
             state = []
             if all([line.purchase_state in ('purchase', 'done') for line in order.line_ids]):
-                pr_status = 'purchase'
+                pr_status = 'purchased'
             elif any([line.purchase_state in ('purchase','done') for line in  order.line_ids]):
                 pr_status = 'partial'
             order.purchase_status = pr_status
