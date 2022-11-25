@@ -9,7 +9,7 @@ class PurchaseRequest(models.Model):
     
     @api.model
     def _get_default_name(self):
-        return self.env["ir.sequence"].next_by_code("purchase.da.sequence")
+        return self.env["ir.sequence"].next_by_code("purchase.request.sequence")
     
     @api.depends('requested_by')
     def _compute_has_manager(self):
