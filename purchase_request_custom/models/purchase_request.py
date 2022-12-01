@@ -95,6 +95,15 @@ class PurchaseRequest(models.Model):
         res = super(PurchaseRequest, self).write(vals)
         return res
     
+    
+    def unlink(self):
+        for request in self:
+            if request.line_ids:
+                raise UserError(
+                    _("You cannot delete a purchase request which has any line.")
+                )
+        return super(PurchaseRequest, self).unlink()
+    
 class PurchaseRequestLine(models.Model):
     _inherit = "purchase.request.line"
     
