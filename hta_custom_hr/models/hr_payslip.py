@@ -18,6 +18,19 @@ class HrPayslip(models.Model):
     def _compute_worked_hours(self):
         for slip in self:
             slip.worked_hours = slip.contract_id._get_work_hours(slip.date_from, slip.date_to)[1]
+            
+            
+    def compute_sheet(self):
+        for payslip in self.filtered(lambda slip: slip.state not in ['cancel', 'done']):
+            number = payslip.number or self.env['ir.sequence'].next_by_code('salary.slip')
+            for employee in payslip.mapped('employee_id'):
+                employee._compute_seniority()
+            # delete old payslip lines
+            payslip.line_ids.unlink()
+            lines = [(0, 0, line) for line in payslip._get_payslip_lines()]
+            payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
+        return True
+    
     
     #check unique payslip for employee for a given date
     """@api.constrains('slip_month', 'employee_id')
