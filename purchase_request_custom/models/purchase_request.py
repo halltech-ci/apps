@@ -100,7 +100,7 @@ class PurchaseRequest(models.Model):
         for request in self:
             if request.line_ids:
                 raise UserError(
-                    _("You cannot delete a purchase request which has any line.")
+                    _("Vous ne pouvez plus supprimer de DA. Veuillez la modifier")
                 )
         return super(PurchaseRequest, self).unlink()
     
