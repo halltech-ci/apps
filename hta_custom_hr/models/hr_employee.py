@@ -40,6 +40,16 @@ class HrEmployee(models.Model):
             else:
                 rec.seniority = 0
                 
+    def compute_seniority(self):
+        today = fields.Date.today()
+        today_date = fields.Date.from_string(today)
+        for rec in self:
+            if rec.hiring_date:
+                age = today_date - fields.Date.from_string(rec.hiring_date)
+                rec.seniority = int(age.days/366)
+            else:
+                rec.seniority = 0
+                
     def _get_overtime(self, date_from, date_to):
         pass
     
