@@ -11,6 +11,21 @@
             <field name="name" position="after">
                 <field name="project"/>
             </field>
+            <field name="estimated_cost" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="requested_by" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="assigned_to" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="analytic_account_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="company_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
         </field>
     </record>
       
