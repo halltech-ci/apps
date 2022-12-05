@@ -131,13 +131,13 @@ class PurchaseRequestLine(models.Model):
     def _compute_qty_ordered(self):
         for rec in self:
             rec.ordered_qty = 0.0
-            rec.order_price_total = 0
+            rec.ordered_price_total = 0
             for line in rec.purchase_lines.filtered(lambda x: x.state in ["done", "purchase"]):
                 if rec.product_uom_id and line.product_uom != rec.product_uom_id:
                     rec.ordered_qty += line.product_uom._compute_quantity(
                         line.product_qty, rec.product_uom_id
                     )
-                    rec.order_price_total += line.price_subtotal
+                    rec.ordered_price_total += line.price_subtotal
                 else:
                     rec.ordered_qty += line.product_qty
                     rec.ordered_price_total += line.price_subtotal
