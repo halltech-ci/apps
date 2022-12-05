@@ -42,7 +42,7 @@ class PurchaseRequest(models.Model):
     name = fields.Char(string="Request Reference", required=True, default='/', index=True, readonly=True)
     request_date = fields.Datetime(string="Request date", help="Date when the user initiated the request.", default=fields.Datetime.now, track_visibility="onchange", readonly=True)
     sale_order = fields.Many2one('sale.order', string='Sale Order')
-    project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True)
+    project = fields.Many2one('project.project', related="sale_order.project_id", string="Project", readonly=True, store=True)
     project_code = fields.Char(related='project.code', string="Project Code", readonly=True)
     purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], string="Type Achat")
     is_project_approver = fields.Boolean(compute='_compute_is_project_approver')
@@ -116,8 +116,8 @@ class PurchaseRequestLine(models.Model):
             domain.append(('type', 'not in', ('product')))
         return domain
     
-    project = fields.Many2one(related="request_id.project", string="Project", readonly=True)
-    product_code = fields.Char(related="product_id.default_code", sting="Code Article")
+    project = fields.Many2one('project.project', string="Project", readonly=True, store=True, compute="compute_project_id")
+    product_code = fields.Char(related="product_id.default_code", sting="Code Article", store=True)
     product_tmpl_id = fields.Many2one("product.template", related="product_id.product_tmpl_id")
     #product_attribute_ids = fields.Many2many('product.attribute.', related="product_tmpl_id.product_attribute_ids")
     attribute_line_ids = fields.One2many("product.template.attribute.line", related="product_tmpl_id.attribute_line_ids")
@@ -125,6 +125,12 @@ class PurchaseRequestLine(models.Model):
     product_id = fields.Many2one(comodel_name="product.product", string="Product", domain= lambda self:self.get_product_domain(), track_visibility="onchange",)
     purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], related='request_id.purchase_type')
     date_required = fields.Date(string="Request Date", required=True, track_visibility="onchange", related="request_id.date_required")
+    
+    @api.depends('request_id.project')
+    def compute_project_id(self):
+        for line in self:
+            if line.request_id.project:
+                line.project_id = line.request_id.project
     
     @api.onchange("product_id")
     def onchange_product_id(self):
