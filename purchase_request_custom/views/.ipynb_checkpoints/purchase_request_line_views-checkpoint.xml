@@ -13,6 +13,22 @@
             </field>
         </field>
     </record>
-
+      
+      <record id="purchase_request_line_search_inherit" model="ir.ui.view">
+          <field name="name">purchase_request_line_inherit</field>
+          <field name="model">purchase.request.line</field>
+          <field name="inherit_id" ref="purchase_request.purchase_request_line_search"/>
+          <field name="arch" type="xml">
+              <xpath expr="//search/field[@name='request_id']" position="after">
+                  <field name="project"/>
+                  <field name="supplier_id"/>
+              </xpath>
+              <xpath expr="//search/group/filter[@name='request']" position="replace"></xpath>
+              <xpath expr="//search/group/filter[@name='product']" position="after">
+                  <filter name="project" string="Projet" domain="[]" context="{'group_by': 'project'}"/>
+                  <filter name="request_id" string="DA" domain="[]" context="{'group_by': 'request_id'}"/>
+              </xpath>
+          </field>
+      </record>
   </data>
 </odoo>
