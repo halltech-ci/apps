@@ -125,6 +125,24 @@ class PurchaseRequestLine(models.Model):
     product_id = fields.Many2one(comodel_name="product.product", string="Product", domain= lambda self:self.get_product_domain(), track_visibility="onchange",)
     purchase_type = fields.Selection(selection=[('project', 'Matières/Consommables'), ('travaux', 'Travaux'), ('transport', 'Transport'), ('subcontract', 'Sous Traitance'), ('stock', 'Appro'),], related='request_id.purchase_type')
     date_required = fields.Date(string="Request Date", required=True, track_visibility="onchange", related="request_id.date_required")
+    ordered_qty = fields.Float(compute='_compute_qty_ordered', help="Effective qty buy")
+    ordered_price_total = fields.Float(compute='_compute_qty_ordered')
+    
+    def _compute_qty_ordered(self):
+        for rec in self:
+            rec.ordered_qty = 0.0
+            rec.order_price_total = 0
+            for line in rec.purchase_lines.filtered(lambda x: x.state in ["done", "purchase"]):
+                if rec.product_uom_id and line.product_uom != rec.product_uom_id:
+                    rec.ordered_qty += line.product_uom._compute_quantity(
+                        line.product_qty, rec.product_uom_id
+                    )
+                    rec.order_price_total += line.price_subtotal
+                else:
+                    rec.ordered_qty += line.product_qty
+                    rec.ordered_price_total += line.price_subtotal
+            
+            
     
     @api.depends('request_id.project')
     def compute_project_id(self):
