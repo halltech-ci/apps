@@ -5,11 +5,18 @@
         <field name="model">purchase.request.line</field>
         <field name="inherit_id" ref="purchase_request.purchase_request_line_tree"/>
         <field name="arch" type="xml">
+            <!--<xpath expr="//tree" position="attributes">
+                <attribute name="attrs">{'readonly':[('purchase_state', 'in', ['done', 'purchase'])]}</attribute>
+            </xpath>-->
             <field name="request_id" position="before">
                 <field name="product_code"/>
             </field>
             <field name="name" position="after">
                 <field name="project"/>
+            </field>
+            <field name="product_qty" position="after">
+                <field name="ordered_qty"/>
+                <field name="ordered_price_total"  widget="monetary"/>
             </field>
             <field name="estimated_cost" position="attributes">
                 <attribute name="optional">hide</attribute>
