@@ -116,7 +116,7 @@ class PurchaseRequestLine(models.Model):
             domain.append(('type', 'not in', ('product')))
         return domain
     
-    project = fields.Many2one('project.project', string="Project", readonly=True, related="request_id.project")
+    project = fields.Many2one('project.project', string="Project", readonly=True, store=True, related="request_id.project")
     product_code = fields.Char(related="product_id.default_code", sting="Code Article", store=True)
     product_tmpl_id = fields.Many2one("product.template", related="product_id.product_tmpl_id")
     #product_attribute_ids = fields.Many2many('product.attribute.', related="product_tmpl_id.product_attribute_ids")
