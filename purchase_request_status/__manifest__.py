@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/purchase_request_views.xml',
+        'views/purchase_request_line.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
