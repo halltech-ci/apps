@@ -12,7 +12,7 @@
                 <field name="product_code"/>
             </field>
             <field name="name" position="after">
-                <field name="project"/>
+                <field name="project_id"/>
             </field>
             <field name="product_qty" position="after">
                 <field name="ordered_qty"/>
@@ -56,7 +56,7 @@
               </xpath>
               <xpath expr="//search/group/filter[@name='request']" position="replace"></xpath>
               <xpath expr="//search/group/filter[@name='product']" position="after">
-                  <filter name="project" string="Projet" domain="[]" context="{'group_by': 'project'}"/>
+                  <filter name="project_id" string="Projet" domain="[]" context="{'group_by': 'project_id'}"/>
                   <filter name="request_id" string="DA" domain="[]" context="{'group_by': 'request_id'}"/>
               </xpath>
           </field>
