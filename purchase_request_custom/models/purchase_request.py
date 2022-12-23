@@ -127,6 +127,17 @@ class PurchaseRequestLine(models.Model):
     date_required = fields.Date(string="Request Date", required=True, track_visibility="onchange", related="request_id.date_required")
     ordered_qty = fields.Float(compute='_compute_qty_ordered', help="Effective qty buy")
     ordered_price_total = fields.Float(compute='_compute_qty_ordered')
+    project_id = fields.Many2one('project.project', compute="_compute_project_id", store=True,)
+    
+    
+    @api.depends('project')
+    def _compute_project_id(self):
+        for rec in self:
+            if rec.project:
+                rec.project_id = rec.project
+            else:
+                rec.project_id = False
+        
     
     def _compute_qty_ordered(self):
         for rec in self:
