@@ -9,17 +9,20 @@
                 <attribute name="attrs">{'readonly':[('purchase_state', 'in', ['done', 'purchase'])]}</attribute>
             </xpath>-->
             <field name="request_id" position="before">
-                <field name="product_code"/>
+                <field name="product_code" optional="show"/>
             </field>
             <field name="name" position="after">
-                <field name="project_id"/>
+                <field name="project_id" optional="show"/>
             </field>
             <field name="product_qty" position="after">
-                <field name="ordered_qty"/>
-                <field name="qty_receive"/>
-                <field name="ordered_price_total"  widget="monetary"/>
+                <field name="ordered_qty" optional='show'/>
+                <field name="qty_receive" string='Qté reçue' optional="show"/>
+                <field name="ordered_price_total"  widget="monetary" optional="show"/>
             </field>
             <field name="estimated_cost" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="product_uom_id" position="attributes">
                 <attribute name="optional">hide</attribute>
             </field>
             <field name="name" position="attributes">
