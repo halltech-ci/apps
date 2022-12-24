@@ -147,7 +147,7 @@ class PurchaseRequestLine(models.Model):
             rec.qty_receive = 0
             for line in rec.purchase_lines.filtered(lambda x:x.state in ['done', 'purchase']):
                 if rec.product_uom_id and line.product_uom != rec.product_uom_id:
-                    rec.qty_receive += line.product_uom.compute(line.qty_received, rec.product_uom_id)
+                    rec.qty_receive += line.product_uom.compute_quantity(line.qty_received, rec.product_uom_id)
                 else:
                     rec.qty_receive += line.qty_received
                 
