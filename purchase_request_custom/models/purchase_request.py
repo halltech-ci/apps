@@ -97,11 +97,12 @@ class PurchaseRequest(models.Model):
     
     
     def unlink(self):
-        for request in self:
+        """for request in self:
             if request.line_ids:
                 raise UserError(
                     _("Vous ne pouvez plus supprimer de DA. Veuillez la modifier")
                 )
+        """
         return super(PurchaseRequest, self).unlink()
     
 class PurchaseRequestLine(models.Model):
